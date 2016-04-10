@@ -121,8 +121,8 @@ to the actual port (usually 443) where your http server is listening on the inte
 
 22. sh start_server.sh
 23. point your browser to
-    https://+hostname+:(+https-poxy-port+|+https-port+)/lab/add-admin/
-    where \+hostname\+  is the value  of the variable setted  in point
+    https://+hostname+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
+    where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the
     internet (\+https-poxy-port\+ or \+https-port\+).
 
