@@ -35,8 +35,8 @@ disposing.
   - crane.
 
     Except for  crane all  of them are  available from  quicklisp. For
-    crane            patched             version            available:
-    [[https://github.com/cage2/crane/tree/sqlite][here]] is needed.
+    crane            patched             version            (available
+    [[https://github.com/cage2/crane/tree/sqlite][here]]) is needed.
 
   Also be sure to install the following C libraries:
   - libgd;
@@ -61,7 +61,8 @@ Also     basic     [[https://www.common-lisp.net/project/asdf/][ASDF]]
 knowlege is mandatory.
 
 Also  steps 6-12  should  be  skipped if  you  have quicklisp  already
-installed and ASDF configured.
+installed  and  ASDF  configured  (but  you  should  install  all  the
+[[dependency]] anyway, via quiciklisp).
 
 1. cd ~/lisp/
 2. clone niccolo repository;
@@ -74,7 +75,7 @@ installed and ASDF configured.
 9. wget https://beta.quicklisp.org/release-key.txt
 10. check quicklisp gpg key
 11. cd niccolo
-12. bash ./quick_quicklisp.sh (the script will download, install most of the libraries and will help you to configure ASDF);
+12. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
 13. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
 14. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
 15. make
@@ -83,6 +84,9 @@ installed and ASDF configured.
 18. put your ssl certificate in ssl/
 19. edit config.lisp
 #+BEGIN_SRC lisp
+
+(define-constant +path-prefix+ "/niccolo" :test #'string=)
+
 ;; ssl
 
 (define-constant +hostname+   "xxxxxxxxx" :test #'string=)
@@ -116,8 +120,11 @@ If you plan to put niccolo behind a revers proxy (and we recommend to do so) als
 to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
 22. sh start_server.sh
-23. point your browser to https://+hostname+:8443/lab/add-admin/
- where \+hostname\+ is the value of the variable setted in point 19.
+23. point your browser to
+    https://+hostname+:(+https-poxy-port+|+https-port+)/lab/add-admin/
+    where \+hostname\+  is the value  of the variable setted  in point
+    19, also specify  the actual port your server is  listening on the
+    internet (\+https-poxy-port\+ or \+https-port\+).
 
 to generate the administrator account.
 
