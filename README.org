@@ -108,7 +108,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 (define-constant +cas-server-path-prefix+  ""    :test #'string=)
 #+END_SRC
 
-you need to compile mini-cas library to use this feature see: [[mini-cas]] below.
+you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
 21. Optional (but *strongly* recommended)
 If you plan to put niccolo behind a revers proxy (and we recommend to do so) also set:
@@ -121,7 +121,7 @@ to the actual port (usually 443) where your http server is listening on the inte
 
 22. sh start_server.sh
 23. point your browser to
-    https://+hostname+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
+    https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
     where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the
     internet (\+https-poxy-port\+ or \+https-port\+).
@@ -137,7 +137,6 @@ to generate the administrator account.
  We *does not*  recommend using this kind of authentication  as it was
  developed just for testing purposes.
 
-<<mini-cas>>
 ** CAS authentication
    Niccolo                          includes                         a
    [[https://github.com/Jasig/cas/blob/master/cas-server-documentation/protocol/CAS-Protocol-Specification.md][CAS]]
