@@ -1,0 +1,605 @@
+/*
+   niccolo': a chemicals inventory
+   Copyright (C) 2016  Universita' degli Studi di Palermo
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, version 3 of the License.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+body {
+    background: white;
+    font-family: sans;
+    font-size: 12pt;
+}
+
+a {
+    text-decoration: underline;
+    color:           #0F99C0;
+}
+
+a:visited {
+    text-decoration: none;
+    color:           #047595;
+}
+
+label {
+    font-weight: bold;
+}
+
+sub {
+    font-size: 65%;
+}
+
+select {
+    display: block;
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+
+}
+
+input {
+    display: block;
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+    font-size: 100%;
+}
+
+input[type=image] {
+    display: block;
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+}
+
+input[type=file] {
+    border: 0;
+    height: 24pt;
+    min-width:  150pt;
+}
+
+
+input[type=text] {
+    border: thin inset #047595;
+    background: #83D1E7;
+    width:  150pt;
+}
+
+input[disabled] {
+    border: thin solid #047595;
+    background: #ffffff;
+    width:  150pt;
+}
+
+
+input[type=submit] {
+    background: #FFCF5E;
+    height: 21pt;
+    width:  110pt;
+}
+
+input[type=password] {
+    background: #FFCF5E;
+    width:  150pt;
+}
+
+textarea {
+    background: #83D1E7;
+    border: thin inset #047595;
+    resize: none;
+    font-size: 100%;
+}
+
+.textarea-add-chem-prod {
+    width: 150pt;
+    height: 45pt;
+}
+
+#textarea-note-waste {
+    width: 50%;
+    height: 300pt;
+    display: block;
+
+}
+
+
+#waste-form-adr-select {
+    width: 100%;
+
+}
+
+#adr-list {
+    width: 30%;
+    float:right;
+    position: relative;
+    top: 0;
+
+}
+
+#footer {
+    text-align: center;
+    font-size: 80%;
+    width: 90%;
+}
+
+.nyan-logo {
+    width: 100%;
+}
+
+.nyan-caption {
+    text-size:   200%;
+    font-weight: bold;
+    text-align:  center;
+}
+
+
+.button-login {
+    background: lightgreen;
+}
+
+.button-logout {
+    background: #FFCF5E;
+}
+
+
+.logout-link {
+    float: right;
+    font-size: 80%;
+}
+
+.logout-username {
+    font-size: 75%;
+    font-family: serif;
+}
+
+.section-title {
+    color: #047595;
+    font-size: 20pt;
+    font-variant: small-caps;
+}
+
+.messages {
+    display: table-cell;
+    float: none;
+    border: thin solid #0F99C0;
+    min-width: 20%;
+}
+
+.info-message {
+    list-style-image: url("../images/info-bullet.png");
+    margin: 10pt;
+}
+
+.info-message li{
+    font-style: italic;
+}
+
+.error-message {
+    list-style-image: url("../images/error-bullet.png");
+}
+
+.error-message li{
+    color:            #FF2D0C;
+    font-weight:      bolder;
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+}
+
+tr:nth-child(odd) {
+    background: #FFDD8C;
+}
+
+fieldset {
+    border:     1pt solid #047595;
+    margin: 5pt;
+}
+
+fieldset.map-image-fieldset  {
+    background: #dfdfdf;
+    margin: 0;
+}
+
+fieldset.add-new-chem-prod  {
+    width: 200pt;
+    float: left;
+    margin: 5pt;
+    height: pt;
+}
+
+fieldset.search-chem-prod  {
+    width: 200pt;
+    margin: 5pt;
+    height: 370pt;
+    float: left;
+}
+
+fieldset.other-ops-chem-prod  {
+    width: 200pt;
+    margin: 5pt;
+    height: 370pt;
+}
+
+fieldset.lending  {
+    padding: 1pt;
+    margin: 0;
+    border: 0;
+}
+
+fieldset.lending  legend {
+    float: right;
+    padding: 0.5pt;
+    margin: 0;
+    border: .1pt solid #047595;
+}
+
+legend {
+    border:     1pt solid #047595;
+    background: #32ABCD;
+    color: black;
+    padding-left: 2pt;
+    padding-right: 2pt;
+    padding-top:   1pt;
+    padding-bottom:   1pt;
+}
+
+th {
+    font-weight: bolder;
+    background: #83D1E7;
+    padding: 5pt;
+    text-align: center;
+    border: 1pt solid #EFA700;
+    margin: 0;
+}
+
+td {
+    border: 1pt solid #83D1E7;
+    padding: 5pt;
+    text-align: center;
+}
+
+.left-menu {
+    float: left;
+    width: 15%;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right:  2pt;
+    margin: 0;
+    min-height: 1200px;
+}
+
+.left-menu ul{
+    padding: 0;
+    margin: 0;
+}
+
+.menu-level-1 {
+    list-style-type: none;
+    display:         block;
+    background:      #32ABCD;
+    min-height:      10pt;
+    margin:          0;
+    padding-left:    2pt;
+    padding-top:     5pt;
+    padding-bottom:  5pt;
+    text-align:      center;
+    font-size:       120%;
+}
+
+.menu-level-2 {
+    list-style-type: none;
+    display: block;
+    min-height: 20pt;
+}
+
+.menu-level-2 ul{
+    display: block;
+    padding-left: 0;
+
+}
+
+.menu-level-2 ul li {
+    list-style-type: none;
+    display: block;
+    float: none;
+    clear: both;
+    min-height: 20pt;
+    background: #BBEBF2;
+    vertical-align: middle;
+    padding:      0;
+    margin:       0;
+}
+
+.menu-level-2 ul li a{
+    text-decoration: none;
+    color:           #000000;
+    padding-left: 5pt;
+    display: block;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.menu-level-2 ul li a:hover{
+    background: #FFDD8C;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+
+}
+
+
+.link-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         16px;
+    height:	         16px;
+    background-image:    url("../images/icon-ext-link.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+
+.delete-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-delete.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.ghs-prec-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-ghs-prec.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.ghs-haz-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-ghs-haz.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.msds-pdf-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         23px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-msds-pdf.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.add-msds-pdf-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         23px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-add-msds-pdf.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.add-map-file-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/location-add-icon.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.location-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/location-icon.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.location-add-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/location-add-icon.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.remove-lending-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-lending-remove.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.tag-with-string-button {
+   margin:              auto;
+   display:             inline-block;
+   width:	         32px;
+   min-height:	         32px;
+   background-image:    url("../images/tag-w-string.png");
+   background-repeat:   no-repeat;
+   background-position: 0% 0%;
+   text-decoration:     none;
+}
+
+.edit-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-edit.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+div[class*=button] a {
+    display: block;
+}
+
+
+.pict-preview {
+    display:             inline;
+    vertical-align:      middle;
+    height:              32px;
+
+}
+
+.chemical-data-sheet {
+    width: 32px;
+    text-align:center;
+}
+
+.chemical-data-sheet a div{
+    display: table-cell;
+    width:   32px;
+    height:  32px;
+    margin:auto;
+}
+
+.map-coord-submit {
+    display: block;
+    margin: auto;
+}
+
+.fieldset-subst-msds {
+    display: none;
+    width: 25%;
+    margin:    auto;
+
+}
+
+td.select-id-id input {
+    margin: auto;
+}
+
+.parent-subscript {
+    color: #504343;
+    font-weight: bold;
+}
+
+.lend-hand {
+    vertical-align: bottom;
+}
+
+
+#update-chemical-id-box {
+    font-size: 200%;
+    text-align: right;
+    width: 30%;
+}
+
+div.biblio-ref{
+    margin-top: 10pt;
+    font-size: 80%;
+}
+
+.biblio-ref .authors {
+
+}
+
+.biblio-ref .title {
+    font-style: bold;
+}
+
+.biblio-ref .publication {
+    font-style: italic;
+}
+
+
+.biblio-ref .biblio-id {
+
+}
+
+/* ghs hazard dialog list*/
+
+#dialog-GHS-haz ul img {
+    display: block;
+    vertical-align: middle;
+}
+
+#dialog-GHS-haz ul li {
+    list-style-type: none;
+}
+
+
+/* decision tree */
+
+#tree-container {
+    display: table;
+    width: 70%;
+}
+
+.description {
+    border: thin solid #047595;
+    background: #83D1E7;
+    font-size: 200%;
+    display: block;
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+    min-width: 50%;
+    text-align: center;
+}
+
+a.back {
+    width: 20%;
+    display: block;
+    font-weight: bolder;
+    text-decoration: underline;
+    margin-top: 10pt;
+    cursor: pointer;
+}
+
+a.decision {
+    border: thin solid #047595;
+    display: table-cell;
+    font-size: 120%;
+    padding-top: 5pt;
+    padding-left: 10pt;
+    padding-right: 10pt;
+    cursor: pointer;
+}
+
+a.breadcrumb-link {
+    font-size: 80%;
+}

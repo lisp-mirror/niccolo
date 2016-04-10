@@ -1,0 +1,36 @@
+<quantity>
+  <segment>
+    <qmin>0</qmin>
+    <qmax>100</qmax>
+    <min> 1.1 </min>
+    <max> 1.1 </max>
+  </segment>
+
+  <segment>
+    <qmin>10</qmin>
+    <qmax>1000</qmax>
+    <min> 1.2 </min>
+    <max> 1.2 </max>
+  </segment>
+
+  <segment>
+    <qmin>1000</qmin>
+    <qmax>10000</qmax>
+    <min> 1.4 </min>
+    <max> 1.4 </max>
+  </segment>
+
+  <segment>
+    <qmin>10000</qmin>
+    <qmax>50000</qmax>
+    <min> 1.8 </min>
+    <max> 1.8 </max>
+  </segment>
+
+  <segment>
+    <qmin>50000</qmin>
+    <qmax>500000</qmax>
+    <min> 2 </min>
+    <max> 2 </max>
+  </segment>
+</quantity>

@@ -1,0 +1,1355 @@
+<phrases>
+  <label>
+    <phrase>
+      R1
+    </phrase>
+    <explanation>
+      Esplosivo allo stato secco
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R2
+    </phrase>
+    <explanation>
+      Rischio di esplosione per urto
+    </explanation>
+    <points>
+       sfregamento
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R3
+    </phrase>
+    <explanation>
+      Elevato rischio di esplosione per urto
+    </explanation>
+    <points>
+       sfregamento
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R4
+    </phrase>
+    <explanation>
+      Forma composti metallici esplosivi molto sensibili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R5
+    </phrase>
+    <explanation>
+      Pericolo di esplosione per riscaldamento
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R6
+    </phrase>
+    <explanation>
+      Esplosivo a contatto o senza contatto con l&#039;aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R7
+    </phrase>
+    <explanation>
+      Puo&#039; provocare un incendio
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R8
+    </phrase>
+    <explanation>
+      puo&#039; provocare l&#039;accensione di materie combustibili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R9
+    </phrase>
+    <explanation>
+      Esplosivo in miscela con miscele combustibili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R10
+    </phrase>
+    <explanation>
+      Incendiabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R11
+    </phrase>
+    <explanation>
+      Facilmente infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R12
+    </phrase>
+    <explanation>
+      Estremamente infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R13
+    </phrase>
+    <explanation>
+      Gas che a temperatura e pressione ambiente si infiammano con l&#039;aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R14
+    </phrase>
+    <explanation>
+      Reagisce violentemente con l&#039;acqua
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R15
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera gas estremamente infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R16
+    </phrase>
+    <explanation>
+      Pericolo di esplosione se mescolato con sostanze comburenti
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R17
+    </phrase>
+    <explanation>
+      Spontaneamente incendiabile all&#039;aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R18
+    </phrase>
+    <explanation>
+      Durante l&#039;uso puo&#039; formare con aria miscele esplosive/infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R19
+    </phrase>
+    <explanation>
+      Puo&#039; formare perossidi esplosivi
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R20
+    </phrase>
+    <explanation>
+      Nocivo per inalazione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R21
+    </phrase>
+    <explanation>
+      Nocivo per contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R22
+    </phrase>
+    <explanation>
+      Nocivo per ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R23
+    </phrase>
+    <explanation>
+      Tossico per inalazione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R24
+    </phrase>
+    <explanation>
+      Tossico a contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R25
+    </phrase>
+    <explanation>
+      Tossico per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R26
+    </phrase>
+    <explanation>
+      Molto tossico per inalazione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R27
+    </phrase>
+    <explanation>
+      Molto tossico a contatto con la pelle
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R28
+    </phrase>
+    <explanation>
+      Molto tossico per ingestione
+    </explanation>
+    <points>
+      2.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R29
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera gas tossici
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R30
+    </phrase>
+    <explanation>
+      Puo&#039; divenire facilmente infiammabile durante l&#039;uso
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R31
+    </phrase>
+    <explanation>
+      A contatto con acidi libera gas tossico
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R32
+    </phrase>
+    <explanation>
+      A contatto con acidi libera gas altamente tossico
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R33
+    </phrase>
+    <explanation>
+      Pericolo di effetti cumulativi
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R34
+    </phrase>
+    <explanation>
+      Provoca ustioni
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R35
+    </phrase>
+    <explanation>
+      Provoca gravi ustioni
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R36
+    </phrase>
+    <explanation>
+      Irritante per gli occhi
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R37
+    </phrase>
+    <explanation>
+      Irritante per le vie respiratorie
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R38
+    </phrase>
+    <explanation>
+      Irritante per la pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39
+    </phrase>
+    <explanation>
+      Pericolo di effetti irreversibili molto gravi
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40
+    </phrase>
+    <explanation>
+      Possibilita&#039; di effetti irreversibili
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R41
+    </phrase>
+    <explanation>
+      Rischio di gravi lesioni oculari
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R42
+    </phrase>
+    <explanation>
+      Puo&#039; provocare sensibilizzazione per inalazione
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R43
+    </phrase>
+    <explanation>
+      Puo&#039; provocare sensibilizzazione per contatto con la pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R44
+    </phrase>
+    <explanation>
+      Rischio di esplosione per riscaldamento in ambiente confinato
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R45
+    </phrase>
+    <explanation>
+      Puo&#039; provocare il cancro
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R46
+    </phrase>
+    <explanation>
+      Puo&#039; provocare alterazioni genetiche ereditarie
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48
+    </phrase>
+    <explanation>
+      Pericolo di gravi danni alla salute in caso di esposizione prolungata
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R49
+    </phrase>
+    <explanation>
+      Puo&#039; provocare il cancro per inalazione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R50
+    </phrase>
+    <explanation>
+      Altamente tossico per gli organismi acquatici
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R51
+    </phrase>
+    <explanation>
+      Tossico per gli organismi acquatici
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R52
+    </phrase>
+    <explanation>
+      Nocivo per gli organismi acquatici
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R53
+    </phrase>
+    <explanation>
+      Puo&#039; provocare a lungo termine effetti negativi per l&#039;ambiente acquatico
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R54
+    </phrase>
+    <explanation>
+      Tossico per la flora
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R55
+    </phrase>
+    <explanation>
+      Tossico per la fauna
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R56
+    </phrase>
+    <explanation>
+      Tossico per gli organismi del terreno
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R57
+    </phrase>
+    <explanation>
+      tossico per le api
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R58
+    </phrase>
+    <explanation>
+      Puo&#039; provocare a lungo termine effetti negativi per l&#039;ambiente
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R59
+    </phrase>
+    <explanation>
+      Pericoloso per lo strato di ozono
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R60
+    </phrase>
+    <explanation>
+      Puo&#039; ridurre la fertilita&#039;
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R61
+    </phrase>
+    <explanation>
+      Puo&#039; danneggiare i bambini non ancora nati
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R62
+    </phrase>
+    <explanation>
+      Possibile rischio di ridotta fertilita&#039;
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R63
+    </phrase>
+    <explanation>
+      Possibile rischio di danni ai bambini non ancora nati
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R64
+    </phrase>
+    <explanation>
+      Possibile rischio per i bambini allattati al seno
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R65
+    </phrase>
+    <explanation>
+      Puo&#039; causare danni polmonari se ingerito
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R66
+    </phrase>
+    <explanation>
+      L&#039;esposizione ripetuta puo&#039; provocare secchezza e screpolatura della pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R67
+    </phrase>
+    <explanation>
+      L&#039;inalazione dei vapori puo&#039; provocare sonnolenza e vertigini
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R68
+    </phrase>
+    <explanation>
+      Possibilita&#039; di effetti irreversibili
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R14/15
+    </phrase>
+    <explanation>
+      Reagisce violentemente con l&#039;acqua liberando gas estremamente infiammabili
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R15/21
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera gas tossici estremamente infiammabili
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R20/21
+    </phrase>
+    <explanation>
+      Nocivo per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R20/22
+    </phrase>
+    <explanation>
+      Nocivo per inalazione e ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R20/21/22
+    </phrase>
+    <explanation>
+      Nocivo per inalazione
+    </explanation>
+    <points>
+       contatto con la pelle e ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R21/22
+    </phrase>
+    <explanation>
+      Nocivo per contatto con la pelle e ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R23/24
+    </phrase>
+    <explanation>
+      Tossico per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R23/25
+    </phrase>
+    <explanation>
+      Tossico per inalazione e ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R23/24/25
+    </phrase>
+    <explanation>
+      Tossico per inalazione
+    </explanation>
+    <points>
+       contatto con la pelle e per ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R24/25
+    </phrase>
+    <explanation>
+      Tossico a contatto con la pelle e per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R26/27
+    </phrase>
+    <explanation>
+      Molto tossico per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R26/27/28
+    </phrase>
+    <explanation>
+      Molto tossico per inalazione
+    </explanation>
+    <points>
+       contatto con la pelle e per ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R27/28
+    </phrase>
+    <explanation>
+      Molto tossico a contatto con la pelle e per ingestione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R36/37
+    </phrase>
+    <explanation>
+      Irritante per gli occhi e le vie respiratorie
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R36/38
+    </phrase>
+    <explanation>
+      Irritante per gli occhi e la pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R36/37/38
+    </phrase>
+    <explanation>
+      irritante per gli occhi
+    </explanation>
+    <points>
+       le vie respiratorie e la pelle
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R37/38
+    </phrase>
+    <explanation>
+      irritante per le vie respiratorie e la pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/23
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi per inalazione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/24
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi a contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/23/24
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi per inalazione e a contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/23/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi per inalazione e per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/24/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi a contatto con la pelle e per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/23/24/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di effetti irreversibili molto gravi per inalazione
+    </explanation>
+    <points>
+       contatto con la pelle e per ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/26
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi per inalazione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/27
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi a contatto con la pelle
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/28
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi per ingestione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/26/27
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/26/28
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi per inalazione ed ingestione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/27/28
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi a contatto con la pelle e per inalazione
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R39/26/27/28
+    </phrase>
+    <explanation>
+      Molto tossico: pericolo di effetti irreversibili molto gravi per inalazione
+    </explanation>
+    <points>
+        contatto con la pelle e per inalazione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/20
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per inalazione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/21
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per inalazione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/22
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/20/21
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/20/22
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/21/22
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili a contatto con la pelle e per ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R40/20/21/22
+    </phrase>
+    <explanation>
+      Nocivo: possibilità di effetti irreversibili per inalazione
+    </explanation>
+    <points>
+       contatto con la pelle e per ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R42/43
+    </phrase>
+    <explanation>
+      Può provocare sensibilizzazione per inalazione e contatto con la pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/20
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/21
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata a contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/22
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/20/21
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione e a contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/20/22
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione e ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/21/22
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata a contatto con la pelle e ingestione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/20/21/22
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione
+    </explanation>
+    <points>
+       a contatto con la pelle e per ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/23
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/24
+    </phrase>
+    <explanation>
+      Nocivo: pericolo di gravi danni alla salute in caso di esposizione prolungata per contatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di gravi danni alla salute in caso di esposizione prolungata per ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/23/24
+    </phrase>
+    <explanation>
+      Tossico: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione e a contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/23/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione e ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/24/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di gravi danni alla salute in caso di esposizione prolungata a contatto con la pelle e ingestione
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R48/23/24/25
+    </phrase>
+    <explanation>
+      Tossico: pericolo di gravi danni alla salute in caso di esposizione prolungata per inalazione
+    </explanation>
+    <points>
+       a contatto con la pelle e ingestione
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R50/53
+    </phrase>
+    <explanation>
+      Altamente tossico per gli organismi acquatici
+    </explanation>
+    <points>
+       può provocare a lungo termine effetti negativi per l&#039;ambiente acquatico
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R51/53
+    </phrase>
+    <explanation>
+      Tossico per gli organismi acquatici
+    </explanation>
+    <points>
+       può provocare a lungo termine effetti negativi per l&#039;ambiente acquatico
+    </points>
+  </label>
+  <label>
+    <phrase>
+      R52/53
+    </phrase>
+    <explanation>
+      Nocivo per gli organismi acquatici
+    </explanation>
+    <points>
+       può provocare a lungo termine effetti negativi per l&#039;ambiente acquatico
+    </points>
+  </label>
+</phrases>

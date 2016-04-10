@@ -1,0 +1,187 @@
+* Introduction
+
+Niccolo' is  a web based software  aimed at safe chemicals  storage, using and
+disposing.
+
+* Building
+  Niccolo' is  written in Common Lisp,  except for a couple  of library
+  (written in C) it depends on.
+
+** Dependency
+*** Library
+  Niccolo' depend on the following common lisp libraries:
+
+  - alexandria;
+  - cl-ppcre-unicode;
+  - dbi;
+  - envy;
+  - parse-number;
+  - xmls;
+  - html-template;
+  - cl-base64;
+  - osicat;
+  - log4cl;
+  - ironclad;
+  - cl-who;
+  - cl-json;
+  - flexi-streams;
+  - cl-gd;
+  - hunchentoot;
+  - restas;
+  - restas-directory-publisher;
+  - cl-pslib;
+  - cl-pslib-barcode;
+  - cl-i18n;
+  - crane.
+
+    Except for  crane all  of them are  available from  quicklisp. For
+    crane            patched             version            available:
+    [[https://github.com/cage2/crane/tree/sqlite][here]] is needed.
+
+  Also be sure to install the following C libraries:
+  - libgd;
+  - libsqlite3;
+  - pslib.
+
+*** External programs
+    - sbcl;
+    - wget;
+    - sqlite3;
+    - screen;
+    - gcc;
+    - bash;
+    - qrencode;
+    - autotools build system (i.e. autoconf, automake etc).
+
+** Installation
+
+Note: Assuming directory ~/lisp exists and is writable.
+
+Also     basic     [[https://www.common-lisp.net/project/asdf/][ASDF]]
+knowlege is mandatory.
+
+Also  steps 6-12  should  be  skipped if  you  have quicklisp  already
+installed and ASDF configured.
+
+1. cd ~/lisp/
+2. clone niccolo repository;
+3. cd niccolo
+4. autoreconf -fiv
+5. ./configure
+6. cd ..
+7. wget https://beta.quicklisp.org/quicklisp.lisp
+8. wget https://beta.quicklisp.org/quicklisp.lisp.asc
+9. wget https://beta.quicklisp.org/release-key.txt
+10. check quicklisp gpg key
+11. cd niccolo
+12. bash ./quick_quicklisp.sh (the script will download, install most of the libraries and will help you to configure ASDF);
+13. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
+14. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
+15. make
+16. cd ~/lisp/niccolo/
+17. make
+18. put your ssl certificate in ssl/
+19. edit config.lisp
+#+BEGIN_SRC lisp
+;; ssl
+
+(define-constant +hostname+   "xxxxxxxxx" :test #'string=)
+
+(defparameter *ssl-certfile* (asdf:system-relative-pathname :lab #p"ssl/xxx.pem"))
+
+(defparameter *ssl-key* (asdf:system-relative-pathname :lab #p"ssl/xxxx.pem"))
+
+(define-constant +ssl-pass+   "xxxxxx" :test #'string=)
+
+#+END_SRC
+20. Optional (but *strongly* recommended), use CAS autentication
+
+#+BEGIN_SRC lisp
+;; cas config
+
+(define-constant +cas-server-host-name+    "" :test #'string=)
+
+(define-constant +cas-server-path-prefix+  ""    :test #'string=)
+#+END_SRC
+
+you need to compile mini-cas library to use this feature see: [[mini-cas]] below.
+
+21. Optional (but *strongly* recommended)
+If you plan to put niccolo behind a revers proxy (and we recommend to do so) also set:
+
+#+BEGIN_SRC lisp
+(define-constant +https-poxy-port+ -1 :test #'=)
+#+END_SRC
+
+to the actual port (usually 443) where your http server is listening on the internet/intranet.
+
+22. sh start_server.sh
+23. point your browser to https://+hostname+:8443/lab/add-admin/
+ where \+hostname\+ is the value of the variable setted in point 19.
+
+to generate the administrator account.
+
+* Authentication
+ Niccolo comes with two kinds of autenthication mechanism.
+
+** Internal database of users
+ The first is based on an table in its own database that stores username/password.
+
+ We *does not*  recommend using this kind of authentication  as it was
+ developed just for testing purposes.
+
+<<mini-cas>>
+** CAS authentication
+   Niccolo                          includes                         a
+   [[https://github.com/Jasig/cas/blob/master/cas-server-documentation/protocol/CAS-Protocol-Specification.md][CAS]]
+   client library (in .../lib/ directory)  for authentication, this is what
+   we use in our production environment.
+
+   To enable CAS authentication just  puth the mini-cas directory in a
+   place where ASDF is  going to be able to find  it, niccolo will use
+   CAS automatically. Then edit config.lisp in the CAS section.
+
+   If  mini-cas is  not available  to ASDF  niccolo will  use internal
+   authentication instead.
+
+   Please   note   that,   depending    of   the   content   of   your
+   source-registry.conf  file   (expecially  if  you  use   the  :tree
+   options), .../lib/mini-cas/ *will* be reached by ASDF.
+
+* BUGS
+
+  Please send bug report to cage at katamail dot com
+
+* License
+
+  This  program  is Copyright  (C)  2016  Universita' degli  Studi  di
+  Palermo and released under GNU General Public license version 3 (see
+  COPYING file).
+
+  The  program  use data  and  code  from  other sources,  please  see
+  LICENSE.org.
+
+  Although any efforts  has  been  put to  make  the  list of  credits
+  exaustive,  errors are  always possible.  Please send  correction to
+  cage at katamail dot com.
+
+* Contributing
+  Any  help  is  appreciated. Please send a message to
+  cage at katamail dot com.
+
+* NO WARRANTY
+
+  niccolo': a chemicals inventory
+  Copyright (C) 2016  Universita' degli Studi di Palermo
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, version 3 of the License.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.

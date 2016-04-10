@@ -1,0 +1,6 @@
+<devices>
+  <closed_lifecycle>1</closed_lifecycle>
+  <good_fume_cupboard_lifecycle>2</good_fume_cupboard_lifecycle>
+  <partially_fume_cupboard_lifecycle>5</partially_fume_cupboard_lifecycle>
+  <no_fume_cupboard_lifecycle>10</no_fume_cupboard_lifecycle>
+</devices>

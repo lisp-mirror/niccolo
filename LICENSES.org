@@ -1,0 +1,191 @@
+* Data
+- www/images/chem-nyan/chem-nyan.gif
+  this works derived from:
+  © 2015 /g/
+  according to:
+
+  https://archive.org/details/M00GNU
+
+  released under Creative Commons Attribution-ShareAlike 3.0
+
+  and © laobc
+
+  according to https://openclipart.org/detail/26692/chemistry-flask
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+  hence it is released under Creative Commons Attribution-ShareAlike 3.0
+
+- www/images/ghs-pictograms/*.png
+  data/ghs-pictograms/*.eps
+  Got from http://www.unece.org/trans/danger/publi/ghs/pictograms.html
+  The United Nations Economic Commission for Europe (UNECE)
+
+- www/images/lab-logo.svg
+  © 2016 Universita' degli Studi di Palermo
+  released under GPL version 3
+
+- www/images/error-bullet.png
+  © molumen
+  according to https://openclipart.org/detail/109/red-round-error-warning-icon
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/hand.png
+  www/images/icon-lending-remove.png
+  derived from works © Anonymous
+  according to https://openclipart.org/detail/12799/hand
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/icon-add-msds-pdf.png
+  www/images/icon-msds-pdf.png
+  derived from works © leandrosciola
+  according to https://openclipart.org/detail/171857/icon-pdf-a%C2%8Dcone
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/icon-delete.png
+  © dagobert83
+  according to https://openclipart.org/detail/1645/cancel
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/icon-ext-link.png
+  © pnx
+  according to https://openclipart.org/detail/202731/external-link-icon
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/info-bullet
+  © kuba
+  according to https://openclipart.org/detail/15472/information-icons-set-3
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/location-add-icon.png
+  www/images/location-add-icon.png
+  © snodnipper
+  according to https://openclipart.org/detail/177208/map-location
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/sorry.png
+  derived from © laobc
+  according to https://openclipart.org/detail/26692/chemistry-flask
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/favicon.ico
+  derived from © laobc
+  according to https://openclipart.org/detail/26692/chemistry-flask
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/tag-w-string
+  © crisg
+  according to https://openclipart.org/detail/188919/name-tag
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/icon-edit.png
+  © crisg
+  according to https://openclipart.org/detail/116083/write-document-icon
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/ghs-pictograms/none.png
+  © uroesch
+  according to https://openclipart.org/detail/185355/happy-cloud
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- data/font.afm
+  Copyright (URW)++,Copyright 1999 by (URW)++ Design & Development
+  Released under (GNU General Public License)
+
+- www/css/images/*
+  jQuery UI - v1.11.4 - 2015-07-19
+  http://jqueryui.com
+
+  Copyright 2015 jQuery Foundation and other contributors; Licensed MIT
+
+* Code
+  - conditions.lisp
+  - xml-utils.lisp
+  - configuration-utils.lisp
+  - quick_quicklisp.sh.in
+
+  Are © 2013,2014,2015,2016 Valerio Benfante released under GNU GPL version
+  3 or later
+
+- jquery-ui.min.js
+  jquery-ui.js
+  jQuery UI - v1.11.4 - 2015-07-19
+  http://jqueryui.com
+
+  Includes: core.js,  widget.js, mouse.js,  position.js, draggable.js,
+  droppable.js,     resizable.js,      selectable.js,     sortable.js,
+  accordion.js, autocomplete.js,  button.js, datepicker.js, dialog.js,
+  menu.js,   progressbar.js,  selectmenu.js,   slider.js,  spinner.js,
+  tabs.js,  tooltip.js, effect.js,  effect-blind.js, effect-bounce.js,
+  effect-clip.js,  effect-drop.js, effect-explode.js,  effect-fade.js,
+  effect-fold.js,         effect-highlight.js,         effect-puff.js,
+  effect-pulsate.js, effect-scale.js, effect-shake.js, effect-size.js,
+  effect-slide.js, effect-transfer.js
+
+  Copyright 2015 jQuery Foundation and other contributors; Licensed MIT
+
+- jquery.js
+  jQuery JavaScript Library v1.10.2
+  http://jquery.com/
+
+  Includes Sizzle.js
+  http://sizzlejs.com/
+
+  Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors
+  Released under the MIT license
+  http://jquery.org/license
+
+- sugar--1.4.1.js
+
+  Sugar Library v1.4.1
+
+  Freely distributable and licensed under the MIT-style license.
+  Copyright (c) 2014 Andrew Plummer
+  http://sugarjs.com/
+
+- jquery-ui.structure.css
+
+  jQuery UI CSS Framework 1.11.4
+  http://jqueryui.com
+
+  Copyright jQuery Foundation and other contributors
+  Released under the MIT license.
+  http://jquery.org/license
+
+  http://api.jqueryui.com/category/theming/
+
+
+- jquery-ui.structure.min.css
+
+  jQuery UI - v1.11.4 - 2015-07-19
+  http://jqueryui.com
+  Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
+
+
+- jquery-ui.css
+  jquery-ui.min.css
+  jQuery UI - v1.11.4 - 2015-07-21
+  http://jqueryui.com
+
+  Includes:  core.css,  draggable.css,  resizable.css,  selectable.css,
+  sortable.css,     accordion.css,    autocomplete.css,     button.css,
+  datepicker.css,      dialog.css,      menu.css,      progressbar.css,
+  selectmenu.css,   slider.css,  spinner.css,   tabs.css,  tooltip.css,
+  theme.css
+
+  Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
+
+- jquery-ui.theme.css
+
+  jQuery UI CSS Framework 1.11.4
+  http://jqueryui.com
+
+  Copyright jQuery Foundation and other contributors
+  Released under the MIT license.
+  http://jquery.org/license
+
+
+- jquery-ui.theme.min.css
+
+  jQuery UI - v1.11.4 - 2015-07-21
+  http://jqueryui.com
+  Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */

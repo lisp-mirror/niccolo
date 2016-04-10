@@ -1,0 +1,15 @@
+<devices>
+<good_fume_cupboard>3</good_fume_cupboard>
+<bad_fume_cupboard>2</bad_fume_cupboard>
+<no_fume_cupboard>1</no_fume_cupboard>
+<written_instructions>2</written_instructions>
+<dpi_coat>1.7</dpi_coat>
+<goggles>2</goggles>
+<gloves>1.3</gloves>
+<good_aspiration>2.3</good_aspiration>
+<bad_aspiration>1.5</bad_aspiration>
+<no_aspiration>1.0</no_aspiration>
+<other_manipulation_devices>1.3</other_manipulation_devices>
+<specific_skills>2.3</specific_skills>
+<separate_collecting_substances>1.5</separate_collecting_substances>
+</devices>

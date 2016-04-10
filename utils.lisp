@@ -1,0 +1,244 @@
+;; niccolo': a chemicals inventory
+;; Copyright (C) 2016  Universita' degli Studi di Palermo
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, version 3 of the License.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(in-package :utils)
+
+(defmacro define-lab-route (name params &body body)
+  `(restas:define-route ,name ,(append (list (concatenate 'string
+							  +path-prefix+
+							  (first params)))
+				       (rest params))
+     ,@body))
+
+;; credentials
+
+(defun cat-salt-password (salt password)
+  (concatenate 'string salt password))
+
+(defun generate-salt ()
+  (let ((vec (make-array +salt-byte-length+ :element-type '(unsigned-byte 8))))
+    (loop for i from 0 below (length vec) do
+	 (setf (elt vec i) (random 256)))
+    (string-utils:base64-encode vec)))
+
+(defun encode-pass (salt pass)
+  (string-utils:sha-encode->string (cat-salt-password salt pass)))
+
+;; web/json
+
+(defun obj->json-string (object)
+  (with-output-to-string (stream)
+    (cl-json:encode-json object stream)))
+
+(defun plist->json (obj)
+  (with-output-to-string (stream)
+    (cl-json:encode-json-plist obj stream)))
+
+(defmacro gen-autocomplete-functions (class data-fn)
+  (let* ((class-string (string-upcase (symbol-name class)))
+	 (fn-name-common   (if (find ":" class-string)
+			       (subseq class-string (1+ (position ":" class-string)))
+			       class-string))
+	 (fn-name      (format-symbol t "~:@(array-autocomplete-~a~)" fn-name-common))
+	 (fn-name-id   (format-symbol t "~:@(array-autocomplete-~a-id~)" fn-name-common)))
+    `(progn
+       (defun ,fn-name ()
+	 ,(with-gensyms (all)
+             `(let ((,all (sort (filter (quote ,class))  #'< :key #'db:id)))
+		(obj->json-string
+		 (loop for i in ,all collect
+		      (,data-fn i))))))
+       (defun ,fn-name-id ()
+	 ,(with-gensyms (all)
+	    `(let ((,all (sort (filter (quote ,class)) #'< :key #'db:id)))
+	       (obj->json-string
+		(loop for i in ,all collect
+		     (db:id i)))))))))
+
+;; web/tbnl
+
+(defun get-post-filename (name)
+  (and (> (length (tbnl:post-parameter name)) 2)
+       (elt (tbnl:post-parameter name) 0)))
+
+;; web uri
+
+(defun path-prefix-tpl ()
+  (list :path-prefix +path-prefix+))
+
+(defmacro with-path-prefix (&rest tpls)
+  `(nconc
+    (path-prefix-tpl)
+    (list ,@tpls)))
+
+(defun alist->query-uri (alist)
+  (reduce #'(lambda (o n) (concatenate 'string o (and o "&") (format nil "~a=~a" (car n) (cdr n))))
+	  alist :initial-value nil))
+
+(defun local-uri (path)
+  (with-output-to-string (stream)
+    (puri:render-uri (make-instance 'puri:uri
+				    :scheme :https
+				    :host +hostname+
+				    :port (if (> +https-poxy-port+ 0)
+					      +https-poxy-port+
+					      +https-port+)
+				    :path path)
+		     stream)))
+
+(defun local-uri-noport (path)
+  (with-output-to-string (stream)
+    (puri:render-uri (make-instance 'puri:uri
+				    :scheme :https
+				    :host +hostname+
+				    :path path)
+		     stream)))
+
+;; web, "lab" specific
+
+(defun prepare-for-update (id class error-msg-not-exists success-fn)
+  (let* ((errors-msg-id (validation:regexp-validate (list (list id
+								validation:+pos-integer-re+
+								"Id invalid"))))
+	 (errors-msg-1  (when (and (not errors-msg-id)
+				   (not (db-utils:object-exists-in-db-p class id)))
+			  error-msg-not-exists))
+	 (errors-msg (concatenate 'list errors-msg-id errors-msg-1))
+	 (success-msg (and (not errors-msg) "Ok")))
+    (if (not errors-msg)
+	(funcall success-fn (and success-msg id) nil errors-msg)
+	(progn
+	  (log-message* +security-warning-log-level+
+			"Someone tried to modify a ~s with id ~s but such object does not exists in database!"
+			class id)
+	  +http-not-found+))))
+
+;; pictograms
+
+(defun all-pictograms ()
+  (crane:filter 'db:ghs-pictogram))
+
+(defun pictogram->preview-path (orig-path prefix-path &key (extension +pictogram-web-image-ext+))
+  (concatenate 'string
+	       +path-prefix+
+	       (uiop:unix-namestring prefix-path)
+	       (string-utils:find-filename-from-path orig-path :extension extension)))
+
+(defun pictograms-alist (&optional (prefix (concatenate 'string +images-url-path+
+							+pictogram-web-image-subdir+)))
+  (mapcar #'(lambda (r)
+	      (cons (db:id r)
+		    (pictogram->preview-path (db:pictogram-file r) (uiop:unix-namestring prefix)
+					     :extension +pictogram-web-image-ext+)))
+	  (all-pictograms)))
+
+(defun pictogram-preview-url (id-pictogram)
+  (and (db-utils:object-exists-in-db-p 'db:ghs-pictogram id-pictogram)
+       (local-uri (pictogram->preview-path (db:pictogram-file
+					    (single 'db:ghs-pictogram :id id-pictogram))
+					   (concatenate 'string
+							+images-url-path+
+							+pictogram-web-image-subdir+)
+					   :extension +pictogram-web-image-ext+))))
+; rendering
+
+(defun pictograms-template-struct (&optional
+				     (prefix (concatenate 'string +images-url-path+
+							  +pictogram-web-image-subdir+)))
+  (list :pictogram-buttons
+	 (mapcar #'(lambda (a) (list :pict-id (car a) :path (cdr a)))
+		 (pictograms-alist prefix))))
+
+(defmacro with-standard-html-frame ((stream title &key
+					    (infos nil)
+					    (errors nil)
+					    (css-file "style.css"))
+				    &body body)
+
+    `(with-output-to-string (,stream)
+       (html-template:fill-and-print-template #p"header.tpl"
+					      (with-path-prefix
+						  :css-file (restas:genurl
+							     'restas.lab::-css-.route
+							     :path ,css-file)
+						  :jquery-ui-css (restas:genurl
+								  'restas.lab::-css-.route
+								  :path "jquery-ui.min.css")
+						  :jquery (restas:genurl 'restas.lab::-js-.route
+									 :path "jquery.js")
+						  :jquery-ui (restas:genurl
+							      'restas.lab::-js-.route
+							      :path "jquery-ui.js")
+						  :sugar (restas:genurl 'restas.lab::-js-.route
+									:path "sugar-1.4.1.js")
+						  :title    ,title)
+					      :stream ,stream)
+       (restas.lab::render-main-menu stream)
+       (html-template:fill-and-print-template #p"main-content-wrapper-header.tpl"
+					      nil
+					      :stream ,stream)
+
+       (html-template:fill-and-print-template #p"section-title.tpl"
+					      (list :title ,title)
+					      :stream ,stream)
+       (html-template:fill-and-print-template #p"messages.tpl"
+					      (list :display-messages-p (or ,errors
+									    ,infos)
+						    :add-errors-p ,errors
+						    :errors ,(when errors
+								   `(loop for e in ,errors collect
+									 (list :error e)))
+						    :add-infos-p ,infos
+						    :infos ,(when infos
+								  `(loop for e in ,infos collect
+									(list :info e))))
+					      :stream ,stream)
+       ,@body
+       (html-template:fill-and-print-template #p"main-content-wrapper-footer.tpl"
+					      nil
+					      :stream ,stream)
+
+       (html-template:fill-and-print-template #p"footer.tpl"
+					      (with-path-prefix)
+					      :stream ,stream)))
+
+(defun fetch-raw-template-list (what template-keyword &key
+							(delete-link nil)
+							(additional-tpl nil))
+  (let ((raw (filter what)))
+    (loop for data in raw collect
+	 (let ((plist '()))
+	   (loop
+	      for kw in template-keyword do
+		(push (slot-value data (format-symbol :db "~:@(~a~)" kw)) plist)
+		(push kw plist))
+	   (when delete-link
+	     (push (restas:genurl delete-link :id (db:id data)) plist)
+	     (push :delete-link plist))
+	   (when additional-tpl
+	     (if (functionp additional-tpl)
+		 (setf plist (nconc plist (funcall additional-tpl data)))
+		 (setf plist (nconc plist additional-tpl))))
+	   plist))))
+
+
+;; date/time
+
+(defun now-date-for-label ()
+  (let ((decoded (multiple-value-list (get-decoded-time))))
+    (format nil "(yyyy-mm-dd): ~a-~2,'0-d-~2,'0d"
+	    (elt decoded 5) ; year
+	    (elt decoded 4) ; month
+	    (elt decoded 3)))) ; day
