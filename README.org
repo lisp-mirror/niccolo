@@ -111,7 +111,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
 21. Optional (but *strongly* recommended)
-    If you plan to put niccolo behind a revers proxy (and we recommend to do so) also set:
+    If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
 (define-constant +https-poxy-port+ -1 :test #'=)
