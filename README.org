@@ -62,7 +62,7 @@ Also     basic     [[https://www.common-lisp.net/project/asdf/][ASDF]] knowledge
 
 Moreover  steps 6-12  should  be  skipped if  you  have quicklisp  already
 installed  and  ASDF  configured  (but  you  should  install  all  the
-[[dependency]] anyway, via quiciklisp).
+[[Dependency]] anyway, via quicklisp).
 
 1. cd ~/lisp/
 2. clone niccolo repository;
@@ -83,7 +83,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 17. make
 18. put your ssl certificate in ssl/
 19. edit config.lisp
-#+BEGIN_SRC lisp
+    #+BEGIN_SRC lisp
 
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
 
@@ -97,25 +97,25 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
 (define-constant +ssl-pass+   "xxxxxx" :test #'string=)
 
-#+END_SRC
+   #+END_SRC
 20. Optional (but *strongly* recommended), use CAS autentication
 
-#+BEGIN_SRC lisp
+   #+BEGIN_SRC lisp
 ;; cas config
 
 (define-constant +cas-server-host-name+    "" :test #'string=)
 
 (define-constant +cas-server-path-prefix+  ""    :test #'string=)
-#+END_SRC
+   #+END_SRC
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
 21. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a revers proxy (and we recommend to do so) also set:
 
-#+BEGIN_SRC lisp
+   #+BEGIN_SRC lisp
 (define-constant +https-poxy-port+ -1 :test #'=)
-#+END_SRC
+   #+END_SRC
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
