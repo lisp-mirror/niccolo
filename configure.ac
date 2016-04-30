@@ -15,7 +15,7 @@ dnl along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 dnl program
 
-AC_INIT([lab],[0.0.1],[],[lab])
+AC_INIT([niccolo],[0.0.1],[],[niccolo])
 AM_INIT_AUTOMAKE([foreign])
 AC_SUBST([VERSION],AC_PACKAGE_VERSION)
 AC_SUBST([TARNAME],AC_PACKAGE_TARNAME)
@@ -23,11 +23,14 @@ AC_SUBST([TARNAME],AC_PACKAGE_TARNAME)
 AC_SUBST([PACKAGE_NAME],AC_PACKAGE_NAME)
 
 AC_PROG_INSTALL
+AC_PATH_PROG([BASH],[bash],[no])
 AC_PATH_PROG([WGET],[wget],[no])
 AC_PATH_PROG([SBCL],[sbcl],[no])
 AC_PATH_PROG([SCREEN],[screen],[no])
-AC_PATH_PROG([QRENCODE],[qrencode],[no])
-AC_PATH_PROG([CHMOD],[chmod],[no])
+
+if test $BASH = "no"; then
+   AC_MSG_WARN("bash not found: quick_quicklisp.sh will not works")
+fi
 
 if test $WGET = "no"; then
    AC_MSG_WARN("wget not found: quick_quicklisp.sh will not works")
@@ -41,14 +44,5 @@ if test $SCREEN = "no"; then
    AC_MSG_ERROR("screen not found")
 fi
 
-if test $QRENCODE = "no"; then
-   AC_MSG_ERROR("qrencode not found")
-fi
-
-if test $CHMOD = "no"; then
-   AC_MSG_ERROR("chmod not found")
-fi
-
-
-AC_CONFIG_FILES([Makefile start_server.sh quick_quicklisp.sh script/lab-encode-query.sh])
+AC_CONFIG_FILES([Makefile start_server.sh quick_quicklisp.sh])
 AC_OUTPUT

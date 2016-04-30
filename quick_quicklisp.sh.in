@@ -1,6 +1,6 @@
-#! /bin/sh
+#! /bin/bash
 
-# lab
+# quick_quicklisp.sh
 # Copyright (C) 2016 cage
 
 # This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,6 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-#echo "@WGET@ http://beta.quicklisp.org/quicklisp.lisp"
-
-#echo "disabled "
-
-#exit 1
 
 @SBCL@ --load quicklisp.lisp \
  --eval "(quicklisp-quickstart:install)" \
@@ -50,9 +43,7 @@
  --eval "(ql:add-to-init-file)" \
  --eval "(sb-ext:quit)"
 
-
 echo "Type the directory, relative to $HOME, (ex. \"lisp/\") where the sources (*.lisp) are, followed by [ENTER]:"
-
 
 read -e tree
 

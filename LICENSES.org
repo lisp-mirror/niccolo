@@ -82,6 +82,11 @@
   according to https://openclipart.org/detail/116083/write-document-icon
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
+- www/images/icon-gen-qrcode.png
+  © dexMilano
+  according to https://openclipart.org/detail/132709/qrcode-reader
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
 - www/ghs-pictograms/none.png
   © uroesch
   according to https://openclipart.org/detail/185355/happy-cloud
@@ -183,9 +188,17 @@
   Released under the MIT license.
   http://jquery.org/license
 
-
 - jquery-ui.theme.min.css
 
   jQuery UI - v1.11.4 - 2015-07-21
   http://jqueryui.com
   Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
+
+- qrcode.js
+
+  Copyright (c) 2009 Kazuhiko Arase
+
+  URL: http://www.d-project.com/
+
+  Licensed under the MIT license:
+  http://www.opensource.org/licenses/mit-license.php

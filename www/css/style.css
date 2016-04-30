@@ -473,6 +473,18 @@ td {
     text-decoration:     none;
 }
 
+.gen-qrcode-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-gen-qrcode.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+    cursor:              pointer;
+}
+
 div[class*=button] a {
     display: block;
 }

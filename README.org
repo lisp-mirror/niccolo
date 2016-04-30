@@ -51,7 +51,6 @@ disposing.
     - screen;
     - gcc;
     - bash;
-    - qrencode;
     - autotools build system (i.e. autoconf, automake etc).
 
 ** Installation
@@ -65,24 +64,22 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 [[Dependency]] anyway, via quicklisp).
 
 1. cd ~/lisp/
-2. clone niccolo repository;
-3. cd niccolo
-4. autoreconf -fiv
-5. ./configure
-6. cd ..
-7. wget https://beta.quicklisp.org/quicklisp.lisp
-8. wget https://beta.quicklisp.org/quicklisp.lisp.asc
-9. wget https://beta.quicklisp.org/release-key.txt
-10. check quicklisp gpg key
-11. cd niccolo
-12. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
-13. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
-14. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
-15. make
-16. cd ~/lisp/niccolo/
-17. make
-18. put your ssl certificate in ssl/
-19. edit config.lisp
+2. wget https://beta.quicklisp.org/quicklisp.lisp
+3. wget https://beta.quicklisp.org/quicklisp.lisp.asc
+4. wget https://beta.quicklisp.org/release-key.txt
+5. check quicklisp gpg key
+5. clone niccolo repository;
+6. cd niccolo
+7. autoreconf -fiv
+8. ./configure
+9. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
+10. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
+11. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
+12. make
+13. cd ~/lisp/niccolo/
+14. make
+15. put your ssl certificate in ssl/
+16. edit config.lisp
     #+BEGIN_SRC lisp
 
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
@@ -98,7 +95,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 (define-constant +ssl-pass+   "xxxxxx" :test #'string=)
 
    #+END_SRC
-20. Optional (but *strongly* recommended), use CAS autentication
+17. Optional (but *strongly* recommended), use CAS autentication
 
    #+BEGIN_SRC lisp
 ;; cas config
@@ -110,7 +107,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
-21. Optional (but *strongly* recommended)
+18. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
@@ -119,8 +116,8 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
-22. sh start_server.sh
-23. point your browser to
+19. sh start_server.sh
+20. point your browser to
     https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
     where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the

@@ -33,6 +33,25 @@
 
 (define-constant +map-image-coord-name+       "coord"                      :test #'string=)
 
+(defun gen-qr-code-search-query (building storage)
+  (with-output-to-string (stream)
+    (let ((alist (list (cons +search-chem-id+       "")
+		       (cons +search-chem-owner+    "")
+		       (cons +search-chem-name+     "")
+		       (cons +search-chem-building+ building)
+		       (cons +search-chem-floor+    "")
+		       (cons +search-chem-storage+  storage)
+		       (cons +search-chem-shelf+    ""))))
+      (puri:render-uri (make-instance 'puri:uri
+				    :scheme :https
+				    :host +hostname+
+				    :port (if (> +https-poxy-port+ 0)
+					      +https-poxy-port+
+					      +https-port+)
+				    :path (restas:genurl'restas.lab:search-chem-prod)
+				    :query (utils:alist->query-uri alist))
+		     stream))))
+
 (defun gen-map-storage-link (id sc tc)
   (restas:genurl 'display-map
 		 :id id
@@ -68,6 +87,7 @@
 		  :storage-link storage-link
 		  :location-add-link location-add-link
 		  :has-storage-link (getf row :|map-link-id|)
+		  :qr-string  (gen-qr-code-search-query building-name name)
 		  :floor floor)
 	    (if delete-link
 		(list :delete-link (restas:genurl delete-link :id sid)))

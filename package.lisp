@@ -372,4 +372,13 @@
    :string-utils
    :db-utils
    :utils
-   :views))
+   :views)
+  (:export
+   :search-chem-prod
+   :+search-chem-id+
+   :+search-chem-owner+
+   :+search-chem-name+
+   :+search-chem-building+
+   :+search-chem-floor+
+   :+search-chem-storage+
+   :+search-chem-shelf+))

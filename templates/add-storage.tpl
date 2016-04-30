@@ -1,6 +1,15 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/qrcode.js"></script>
+
 <script>
+    function cleanDialog(){
+  	$( "#dialog" ).children("br").remove();
+	$( "#dialog" ).children("p").remove();
+	$( "#dialog" ).children("a").remove();
+	$( "#dialog" ).children("img").remove();
+    }
+
     // Shorthand for $( document ).ready()
     $(function() {
 	var availableBuilding = <!-- TMPL_VAR json-buildings -->;
@@ -17,9 +26,9 @@
 	$( "#dialog" ).dialog({
 	    show:  { effect: false },
 	    title: "Information",
-	    autoOpen: false
+	    autoOpen: false,
+	    width:'auto'
 	});
-
 
 
 	$( ".building-link" ).click(function(e){
@@ -33,8 +42,7 @@
 		// address
 		// link
 		// name
-		$( "#dialog" ).children("p").remove();
-		$( "#dialog" ).children("a").remove();
+		cleanDialog();
 		$( "#dialog" ).append("<p>" + info.name + "</p>");
 		$( "#dialog" ).append("<p>" + info.address + "</p>");
 		var link =$("<a>Website</a>");
@@ -45,7 +53,28 @@
 	    $( "#dialog" ).dialog("open");
 	})
 
+
     });
+
+function drawQRcode(text, typeNumber, errorCorrectLevel) {
+    cleanDialog();
+    $( "#dialog" ).append(createQRcode(text, typeNumber, errorCorrectLevel));
+    $( "#dialog" ).append("<br />");
+    $( "#dialog" ).append("<a id='save-qr-code'>Save image</a>");
+    $( "#dialog" ).dialog("open");
+    $( "#save-qr-code" ).on("click",function(e){
+	var sib = $(this).siblings("img");
+	window.location.href = sib.attr('src').replace('image/gif', 'image/octet-stream')});
+};
+
+function createQRcode(text, typeNumber, errorCorrectLevel) {
+    var qr = qrcode(typeNumber || 7, errorCorrectLevel || 'M');
+    qr.addData(text);
+    qr.make();
+    return qr.createImgTag(8, 8);
+
+};
+
 </script>
 
 <div id="dialog" title="">
@@ -116,6 +145,11 @@
       </a>
       <a href="<!-- TMPL_VAR update-storage-link -->">
 	<div class="edit-button">&nbsp;</div>
+      </a>
+      <a>
+	<div class="gen-qrcode-button" onclick="drawQRcode('<!-- TMPL_VAR qr-string -->')" />
+	&nbsp;
+        </div>
       </a>
     </td>
   </tr>
