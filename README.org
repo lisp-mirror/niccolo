@@ -137,17 +137,21 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
    Niccolo includes a  [[https://github.com/Jasig/cas/blob/master/cas-server-documentation/protocol/CAS-Protocol-Specification.md][CAS]] client library (in  .../lib/ directory) for
    authentication, this is what we use in our production environment.
 
-   To enable CAS authentication just  put the mini-cas directory in a
-   place where ASDF is  going to be able to find  it, niccolo will use
-   CAS automatically. Then edit config.lisp in the CAS section.
+   To enable CAS  authentication just put the mini-cas  directory in a
+   place where ASDF  is going to be able to  find (load, actually) it,
+   niccolo will  use CAS automatically.  Then edit config.lisp  in the
+   CAS section.
 
-   If  mini-cas is  not available  to ASDF  niccolo' will  use internal
+   If  mini-cas is  not loaded with ASDF  niccolo' will  use internal
    authentication instead.
 
    Please   note   that,   depending    of   the   content   of   your
    source-registry.conf  file   (expecially  if  you  use   the  :tree
    options), .../lib/mini-cas/ *will* be reached by ASDF.
 
+* Start server
+  Use the  'start_server.sh' or 'start_server-cas.sh' scripts to  start the server
+  without or with CAS authentication respectively.
 * BUGS
 
   Please send bug report to cage at katamail dot com
