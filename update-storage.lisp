@@ -19,35 +19,35 @@
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list (list id
 								 +pos-integer-re+
-								 "ID invalid")
+								 (_ "ID invalid"))
 							   (list building-id
 								 +pos-integer-re+
-								 "Address id invalid")
+								 (_ "Address id invalid"))
 							   (list name
 								 +free-text-re+
-								 "Name invalid")
+								 (_ "Name invalid"))
 							   (list floor
 								 +free-text-re+
-								 "Floor invalid")))))
+								 (_ "Floor invalid"))))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (not (object-exists-in-db-p 'db:storage id)))
-			  (list "Storage does not exists in database")))
+			  (list (_ "Storage does not exists in database"))))
 	 (errors-msg-building-not-found (when (and (not errors-msg-1)
 						   (not (single 'db:building :id building-id)))
-					 (list "Building not in the database")))
+					 (list (_ "Building not in the database"))))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
 			      (exists-with-different-id-validate 'db:storage
 								 id
 								 (:name :building-id :floor-number)
 								 (name  building-id  floor)
-								 "Storage already in the database with different ID")))
+								 (_ "Storage already in the database with different ID"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-2
 				  errors-msg-building-not-found
 				  errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list "Storage updated"))))
+			   (list (_ "Storage updated")))))
     (if (not errors-msg)
       (let ((storage-updated (single 'db:storage :id id)))
 	(setf (db:name         storage-updated) name
@@ -60,7 +60,7 @@
 (defun prepare-for-update-storage (id)
   (prepare-for-update id
 		      'db:storage
-		      "Storage does not exists in database."
+		      (_ "Storage does not exists in database.")
 		      #'manage-update-storage))
 
 (defun manage-update-storage (id infos errors)
@@ -89,7 +89,8 @@
 			  :floor             +name-storage-floor+
 			  :json-buildings    json-buildings
 			  :json-buildings-id json-buildings-id)))
-    (with-standard-html-frame (stream "Update Building" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update Building")
+				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-storage.tpl"
 					     template
 					     :stream stream))))

@@ -155,9 +155,11 @@
     (restas:redirect 'root)))
 
 (defmacro with-authentication (&body body)
+  "Check if user is authenticated, if true try to set the translation table"
   `(authenticate ((tbnl:parameter +auth-name-login-name+)
 		  (tbnl:parameter +auth-name-login-password+))
-     ,@body))
+     (i18n:with-user-translation ((get-session-user-id))
+       ,@body)))
 
 (defmacro with-admin-privileges (if-admin if-not)
   `(if (session-admin-p)

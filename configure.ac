@@ -44,5 +44,5 @@ if test $SCREEN = "no"; then
    AC_MSG_ERROR("screen not found")
 fi
 
-AC_CONFIG_FILES([Makefile start_server.sh quick_quicklisp.sh])
+AC_CONFIG_FILES([Makefile config.lisp start_server.sh quick_quicklisp.sh])
 AC_OUTPUT

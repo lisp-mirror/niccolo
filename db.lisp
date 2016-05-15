@@ -185,6 +185,14 @@
    (db:password object)
    (utils:encode-pass (db:salt object) pass)))
 
+(deftable user-preferences ()
+  (owner
+   :type integer
+   :foreign (user :restrict :cascade))
+  (language
+   :type text
+   :nullp nil))
+
 (deftable chemical-product ()
   (compound
    :type integer

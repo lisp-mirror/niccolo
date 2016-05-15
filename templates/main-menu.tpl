@@ -132,6 +132,11 @@
 	    Change password
 	  </a>
 	</li>
+	<li>
+	  <a href="<!-- TMPL_VAR user-preferences -->">
+	    User preferences
+	  </a>
+	</li>
 
       </ul>
     </li>

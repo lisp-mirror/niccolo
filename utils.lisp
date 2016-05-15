@@ -111,12 +111,12 @@
 (defun prepare-for-update (id class error-msg-not-exists success-fn)
   (let* ((errors-msg-id (validation:regexp-validate (list (list id
 								validation:+pos-integer-re+
-								"Id invalid"))))
+								(_ "Id invalid")))))
 	 (errors-msg-1  (when (and (not errors-msg-id)
 				   (not (db-utils:object-exists-in-db-p class id)))
 			  error-msg-not-exists))
 	 (errors-msg (concatenate 'list errors-msg-id errors-msg-1))
-	 (success-msg (and (not errors-msg) "Ok")))
+	 (success-msg (and (not errors-msg) (_ "Ok"))))
     (if (not errors-msg)
 	(funcall success-fn (and success-msg id) nil errors-msg)
 	(progn

@@ -21,17 +21,17 @@
 
 (defun add-new-cer-code (code expl)
   (let* ((errors-msg-1  (regexp-validate (list
-					  (list code +cer-code-re+ "CER code invalid")
-					  (list expl +free-text-re+ "CER phrase invalid"))))
+					  (list code +cer-code-re+ (_"CER code invalid"))
+					  (list expl +free-text-re+ (_ "CER phrase invalid")))))
 	 (errors-msg-2  (when (not errors-msg-1)
 			  (unique-p-validate 'db:cer-code
 					     :code
 					     code
-					     "CER code already in the database")))
+					     (_ "CER code already in the database"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
 	 (success-msg (and (not errors-msg)
 			   (list (format nil
-					 "Saved new CER code: ~s - ~s"
+					 (_ "Saved new CER code: ~s - ~s")
 					 code expl)))))
     (when (not errors-msg)
       (let ((ghs (create 'db:cer-code
@@ -44,7 +44,7 @@
   (let ((all-ghss (fetch-raw-template-list 'db:cer-code
 					   '(:id :code :explanation)
 					   :delete-link 'delete-cer)))
-    (with-standard-html-frame (stream "Manage CER codes"
+    (with-standard-html-frame (stream (_ "Manage CER codes")
 				      :infos  infos
 				      :errors errors)
 

@@ -62,3 +62,17 @@
 (define-constant +mime-postscript+               "application/postscript"    :test #'string=)
 
 (define-constant +security-warning-log-level+    "SECURITY WARNING"          :test #'string=)
+
+(define-constant +search-chem-id+                "s-id"                      :test #'string=)
+
+(define-constant +search-chem-owner+             "s-owner"                   :test #'string=)
+
+(define-constant +search-chem-name+              "s-name"                    :test #'string=)
+
+(define-constant +search-chem-building+          "s-building"                :test #'string=)
+
+(define-constant +search-chem-floor+             "s-floor"                   :test #'string=)
+
+(define-constant +search-chem-storage+           "s-storage"                 :test #'string=)
+
+(define-constant +search-chem-shelf+             "s-shelf"                   :test #'string=)

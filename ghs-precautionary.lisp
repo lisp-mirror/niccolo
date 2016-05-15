@@ -24,19 +24,19 @@
 				    (regexp-validate (list
 						      (list code
 							    +ghs-precautionary-code-re+
-							    "GHS code invalid")
+							    (_ "GHS code invalid"))
 						      (list expl
 							    +free-text-re+
-							    "GHS phrase invalid")))))
+							    (_ "GHS phrase invalid"))))))
 	 (errors-msg-2  (when (not errors-msg-1)
 			  (unique-p-validate 'db:ghs-precautionary-statement
 					     :code
 					     code
-					     "GHS code already in the database")))
+					     (_ "GHS code already in the database"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
 	 (success-msg (and (not errors-msg)
 			   (list (format nil
-					 "Saved new GHS precautionary statements: ~s - ~s"
+					 (_ "Saved new GHS precautionary statements: ~s - ~s")
 					 code expl)))))
     (when (not errors-msg)
       (let ((ghs (create 'db:ghs-precautionary-statement
@@ -55,7 +55,7 @@
 						:update-link
 						(restas:genurl 'update-precautionary
 							       :id (db:id row)))))))
-    (with-standard-html-frame (stream "Manage GHS Precautionary Statements"
+    (with-standard-html-frame (stream (_ "Manage GHS Precautionary Statements")
 				      :infos  infos
 				      :errors errors)
 

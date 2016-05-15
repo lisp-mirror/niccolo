@@ -50,7 +50,7 @@
 					      +https-port+)
 				    :path (restas:genurl'restas.lab:search-chem-prod)
 				    :query (utils:alist->query-uri alist))
-		     stream))))
+		       stream))))
 
 (defun gen-map-storage-link (id sc tc)
   (restas:genurl 'display-map
@@ -120,28 +120,28 @@
 				    (regexp-validate (list
 						      (list name
 							    +free-text-re+
-							    "Name invalid")
+							    (_ "Name invalid"))
 						      (list building-id
 							    +pos-integer-re+
-							    "Building invalid")
+							    (_ "Building invalid"))
 						      (list floor
 							    +free-text-re+
-							    "Floor invalid")))))
+							    (_ "Floor invalid"))))))
 	 (errors-msg-building-not-found (when (and (not errors-msg-1)
 						   (not (single 'db:building :id building-id)))
-					  (list "Building not in the database")))
+					  (list (_ "Building not in the database"))))
 	 (errors-msg-already-in-db (when (and (not errors-msg-1)
 					      (not errors-msg-building-not-found))
 				     (unique-p-validate* 'db:storage
 							 (:name :building-id :floor-number)
 							 (name building-id floor)
-							 "Storage already in the database")))
+							 (_ "Storage already in the database"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-building-not-found
 				  errors-msg-already-in-db))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Saved storage: ~s" name)))))
+			   (list (format nil (_ "Saved storage: ~s") name)))))
     (when (not errors-msg)
       (let ((storage (create 'db:storage
 			     :name name
@@ -186,30 +186,30 @@
 					    (regexp-validate (list
 							      (list mid
 								    +pos-integer-re+
-								    "Map id invalid")
+								    (_ "Map id invalid"))
 							      (list sid
 								    +pos-integer-re+
-								    "Storage id ivalid")))))
+								    (_ "Storage id ivalid"))))))
 
 		 (errors-msg-storage-not-found (when (and (not errors-msg-1)
 							  (not (single 'db:storage :id sid)))
-						 (list "Storage not in the database")))
+						 (list (_ "Storage not in the database"))))
 		 (errors-msg-map-not-found (when (and (not errors-msg-1)
 						      (not (single 'db:plant-map :id mid)))
-					     (list "Map not in the database")))
+					     (list (_ "Map not in the database"))))
 		 (error-no-coords          (regexp-validate (list (list x
 									+pos-integer-re+
-									"x coordinate not valid")
+									(_ "x coordinate not valid"))
 								  (list y
 									+pos-integer-re+
-									"y coordinate not valid"))))
+									(_ "y coordinate not valid")))))
 		 (errors-msg (concatenate 'list
 					  errors-msg-1
 					  errors-msg-storage-not-found
 					  errors-msg-map-not-found
 					  error-no-coords))
 		 (success-msg (and (not errors-msg)
-				   (list (format nil "Saved maps coordinates")))))
+				   (list (format nil (_ "Saved maps coordinates"))))))
 	    (if success-msg
 		(progn
 		  (with-dump-map (tmp-image-file mid)

@@ -24,20 +24,20 @@
 (defun add-new-adr-code (code-class uncode expl)
   (let* ((errors-msg-1  (regexp-validate (list
 					  (list code-class +adr-code-class-re+
-						"ADR code class invalid")
+						(_ "ADR code class invalid"))
 					  (list uncode +adr-uncode-re+
-						"UN code invalid")
+						(_ "UN code invalid"))
 					  (list expl +free-text-re+
-						"ADR phrase invalid"))))
+						(_ "ADR phrase invalid")))))
 	 (errors-msg-2  (when (not errors-msg-1)
 			  (unique-p-validate* 'db:adr-code
 					     (:uncode)
 					     (uncode)
-					     "ADR code already in the database")))
+					     (_ "ADR code already in the database"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
 	 (success-msg (and (not errors-msg)
 			   (list (format nil
-					 "Saved new ADR code: ~s - ~s"
+					 (_ "Saved new ADR code: ~s - ~s")
 					 code-class expl)))))
     (when (not errors-msg)
       (let ((ghs (create 'db:adr-code
@@ -51,7 +51,7 @@
   (let ((all-ghss (fetch-raw-template-list 'db:adr-code
 					   '(:id :code-class :uncode :explanation)
 					   :delete-link 'delete-adr)))
-    (with-standard-html-frame (stream "Manage ADR codes"
+    (with-standard-html-frame (stream (_ "Manage ADR codes")
 				      :infos  infos
 				      :errors errors)
       (html-template:fill-and-print-template #p"add-adr.tpl"

@@ -77,7 +77,7 @@
 (defun manage-building (infos errors)
   (let ((all-buildings (fetch-all-buildings 'delete-building 'update-building-route)))
     (with-standard-html-frame (stream
-			       "Manage Buildings"
+			       (_ "Manage Buildings")
 			       :errors errors
 			       :infos  infos)
       (let ((html-template:*string-modifier* #'identity)
@@ -100,11 +100,11 @@
 				    (regexp-validate   (list
 							(list name
 							      +free-text-re+
-							      "Name invalid")))
+							      (_ "Name invalid"))))
 				    (regexp-validate (list
 						      (list address-id
 							    +pos-integer-re+
-							    "Address invalid")))))
+							    (_ "Address invalid"))))))
 	 (errors-msg-address-not-found (when (and (not errors-msg-1)
 						  (not (single 'db:address :id address-id)))
 					 (list "Address not in the database")))
@@ -113,13 +113,13 @@
 				     (unique-p-validate* 'db:building
 							 (:name :address-id)
 							 (name  address-id)
-							 "Building already in the database")))
+							 (_ "Building already in the database"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-already-in-db
 				  errors-msg-address-not-found))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Saved building: ~s - ~s" name
+			   (list (format nil (_ "Saved building: ~s - ~s") name
 					 (db:build-complete-address
 					  (single 'db:address :id address-id)))))))
     (when (not errors-msg)

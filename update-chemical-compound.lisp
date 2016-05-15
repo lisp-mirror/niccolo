@@ -22,8 +22,8 @@
 (define-constant +name-chem-cid+         "pubchem-cid" :test #'string=)
 
 (defun update-chem (id name cid)
-  (let* ((errors-msg-1  (regexp-validate (list  (list name +free-text-re+ "Name invalid"))))
-	 (errors-msg-id  (regexp-validate (list (list id +pos-integer-re+ "Id invalid"))))
+  (let* ((errors-msg-1  (regexp-validate (list  (list name +free-text-re+ (_ "Name invalid")))))
+	 (errors-msg-id  (regexp-validate (list (list id +pos-integer-re+ (_ "Id invalid")))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (not errors-msg-id)
 				   (not (single 'db:chemical-compound :id id)))
@@ -33,14 +33,14 @@
 								 id
 								 (:name)
 								 (name)
-								 "Chemical name already in the database with different ID")))
+								 (_ "Chemical name already in the database with different ID"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-id
 				  errors-msg-2
 				  errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Chemical: ~s updated" name)))))
+			   (list (format nil (_ "Chemical: ~s updated") name)))))
     (if (not errors-msg)
 	(let ((new-chem (single 'db:chemical-compound :id id)))
 	  (setf (db:name        new-chem) name
@@ -54,12 +54,14 @@
 (defun prepare-for-update-chem (id)
   (prepare-for-update id
 		      'db:chemical-compound
-		      "Chemical does not exists in database."
+		      (_ "Chemical does not exists in database.")
 		      #'manage-update-chem))
 
 (defun manage-update-chem (id infos errors)
   (let ((new-chem (and id (single 'db:chemical-compound :id id))))
-    (with-standard-html-frame (stream "Update Chemical Compound" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update Chemical Compound")
+				      :infos infos
+				      :errors errors)
       (html-template:fill-and-print-template #p"update-chemical.tpl"
 					     (with-path-prefix
 						 :id   (and id

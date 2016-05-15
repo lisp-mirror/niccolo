@@ -15,7 +15,7 @@
 
 (asdf:defsystem #:niccolo
   :description "Chemicals inventory"
-  :author "cage <cage@unipa.it>"
+  :author "cage <cage@katamail.com>"
   :license "GPLv3"
   :depends-on (#-asdf3 :uiop
 	       :alexandria
@@ -59,6 +59,7 @@
 	       (:file "db-config")
 	       (:file "db")
 	       (:file "utils")
+	       (:file "i18n")
 	       (:file "authentication")
 	       (:file "views")
 	       (:file "address")

@@ -16,14 +16,17 @@
 (in-package :config)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+
+  (define-constant +program-name+ :@PACKAGE_NAME@ :test #'eq)
+
   (defgeneric local-system-path (path))
 
   (defmethod local-system-path ((path string))
-    (asdf:system-relative-pathname :niccolo
+    (asdf:system-relative-pathname  +program-name+
 				   (uiop:parse-unix-namestring path)))
 
   (defmethod local-system-path ((path pathname))
-    (asdf:system-relative-pathname :niccolo path)))
+    (asdf:system-relative-pathname  +program-name+ path)))
 
 ;; pubchem config
 

@@ -58,7 +58,7 @@
 (defun manage-assoc-chem-prec (compound infos errors)
   (let ((preccodes-owned (fetch-prec-from-compound compound 'delete-assoc-chem-prec)))
     (with-standard-html-frame (stream
- 			       "Associate precautionary phrases to chemical compound"
+ 			       (_ "Associate precautionary phrases to chemical compound")
  			       :errors errors
  			       :infos  infos)
 
@@ -82,28 +82,28 @@
 				    (regexp-validate (list
 						      (list prec-id
 							    +pos-integer-re+
-							    "Code invalid")
+							    (_ "Code invalid"))
 						      (list chem-id
 							    +pos-integer-re+
-							    "Chemical ID invalid")))))
+							    (_ "Chemical ID invalid"))))))
 	 (errors-msg-chem-not-found (when (and (not errors-msg-1)
 					       (not (single 'db:chemical-compound
 							    :id chem-id)))
-				      (list "Chemical compound not in database")))
+				      (list (_ "Chemical compound not in database"))))
 	 (errors-msg-prec-not-found (when (and (not errors-msg-1)
 					       (not (single 'db:ghs-precautionary-statement
 							    :id prec-id)))
-				      (list "GHS Precautionary code not in database")))
+				      (list (_ "GHS Precautionary code not in database"))))
 	 (error-assoc-exists       (when (and (not errors-msg-1)
 					      (fetch-prec-assoc-by-ids prec-id chem-id))
-				     (list "GHS Precautionary code already associated with this chemical compound.")))
+				     (list (_ "GHS Precautionary code already associated with this chemical compound."))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-chem-not-found
 				  errors-msg-prec-not-found
 				  error-assoc-exists))
 	 (success-msg (and (not errors-msg)
-			   (list "Saved association"))))
+			   (list (_ "Saved association")))))
     (when (not errors-msg)
       (let ((prec-assoc (create 'db:chemical-precautionary
 				:ghs-p prec-id

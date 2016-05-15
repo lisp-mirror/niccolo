@@ -22,6 +22,7 @@
    :hunchentoot
    :crane)
   (:export
+   :+program-name+
    :local-system-path
    :+openstreetmap-query-url+
    :*default-css*
@@ -92,7 +93,14 @@
    :+mime-postscript+
    :+security-warning-log-level+
    :+db-invalid-id+
-   :+db-invalid-id-number+))
+   :+db-invalid-id-number+
+   :+search-chem-id+
+   :+search-chem-owner+
+   :+search-chem-name+
+   :+search-chem-building+
+   :+search-chem-floor+
+   :+search-chem-storage+
+   :+search-chem-shelf+))
 
 (defpackage :conditions
   (:use :cl)
@@ -172,6 +180,8 @@
    :salt
    :level
    :chkpass
+   :user-preferences
+   :language
    :chemical-compound
    :pubchem-cid
    :msds
@@ -224,6 +234,22 @@
    :+adr-code-radioactive+
    :+barcode-id-re+
    :+waste-form-weight-re+))
+
+(defpackage :string-utils
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :config
+   :constants)
+  (:export
+   :clean-string
+   :string-empty-p
+   :base64-encode
+   :base64-decode
+   :sha-encode->string
+   :encode-barcode
+   :find-filename-from-path))
 
 (defpackage :ps-utils
   (:use
@@ -300,7 +326,7 @@
    :pictogram-preview-url
    :now-date-for-label))
 
-(defpackage :string-utils
+(defpackage :i18n
   (:use
    :cl
    :alexandria
@@ -308,13 +334,13 @@
    :config
    :constants)
   (:export
-   :clean-string
-   :string-empty-p
-   :base64-encode
-   :base64-decode
-   :sha-encode->string
-   :encode-barcode
-   :find-filename-from-path))
+   :*availables-translations*
+   :translation
+   :translation-description
+   :translation-table
+   :translation-select-options
+   :find-translation
+   :with-user-translation))
 
 (defpackage :views
   (:use

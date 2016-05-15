@@ -90,6 +90,7 @@
 		      :manage-chemicals      (restas:genurl 'chemical)
 		      :manage-chemical-products (restas:genurl 'chem-prod)
 		      :manage-user           (restas:genurl 'user)
+		      :user-preferences      (restas:genurl 'user-preferences)
 		      :change-password       (restas:genurl 'change-pass)
 		      :waste-letter          (restas:genurl 'waste-letter)
 		      :l-factor-calculator   (restas:genurl 'l-factor)

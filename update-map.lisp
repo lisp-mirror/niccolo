@@ -18,27 +18,27 @@
 (defun update-map (id description)
   (let* ((errors-msg-1  (regexp-validate (list (list description
 						     +free-text-re+
-						     "Description invalid"))))
+						     (_ "Description invalid")))))
 	 (errors-msg-id (regexp-validate (list (list id
 						     +pos-integer-re+
-						     "Id invalid"))))
+						     (_ "Id invalid")))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (not errors-msg-id)
 				   (not (single 'db:plant-map :id id)))
-			  "Map not in database"))
+			  (_ "Map not in database")))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-id errors-msg-2)
 			      (exists-with-different-id-validate 'db:plant-map
 								 id
 								 (:description)
 								 (description)
-								 "Map description already in the database with different ID")))
+								 (_ "Map description already in the database with different ID"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-id
 				  errors-msg-2
 				  errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Map: ~s updated" description)))))
+			   (list (format nil (_ "Map: ~s updated") description)))))
     (if (not errors-msg)
 	(let ((new-map (single 'db:plant-map :id id)))
 	  (setf (db:description new-map) description)
@@ -49,12 +49,12 @@
 (defun prepare-for-update-map (id)
   (prepare-for-update id
 		      'db:plant-map
-		      "Map does not exists in database."
+		      (_ "Map does not exists in database.")
 		      #'manage-update-map))
 
 (defun manage-update-map (id infos errors)
   (let ((new-map (and id (single 'db:plant-map :id id))))
-    (with-standard-html-frame (stream "Update Map" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update Map") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-map.tpl"
 					     (with-path-prefix
 						 :id         (and id

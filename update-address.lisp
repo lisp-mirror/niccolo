@@ -19,31 +19,31 @@
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list (list id
 								 +pos-integer-re+
-								 "ID invalid")
+								 (_ "ID invalid"))
 							   (list line-1
 								 +free-text-re+
-								 "Line-1 invalid")
+								 (_ "Line-1 invalid"))
 							   (list city
 								 +free-text-re+
-								 "City field invalid")
+								 (_ "City field invalid"))
 							   (list zipcode
 								 +free-text-re+
-								 "Zipcode invalid")
+								 (_ "Zipcode invalid"))
 							   (list link
 								 +free-text-re+
-								 "Link invalid")))))
+								 (_ "Link invalid"))))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (not (object-exists-in-db-p 'db:address id)))
-			  (list "Address does not exists in database")))
+			  (list (_ "Address does not exists in database"))))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
 			      (exists-with-different-id-validate 'db:address
 								 id
 								 (:line-1 :city :zipcode)
 								 (line-1   city  zipcode)
-								 "Address already in the database with different ID")))
+								 (_ "Address already in the database with different ID"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list "Address updated"))))
+			   (list (_ "Address updated")))))
     (if (not errors-msg)
       (let ((address-updated (single 'db:address :id id)))
 	(setf (db:line-1  address-updated) line-1
@@ -57,13 +57,13 @@
 (defun prepare-for-update-address (id)
   (prepare-for-update id
 		      'db:address
-		      "Address does not exists in database."
+		      (_ "Address does not exists in database.")
 		      #'manage-update-address))
 
 (defun manage-update-address (id infos errors)
   (let ((new-address (and id
 			  (object-exists-in-db-p 'db:address id))))
-    (with-standard-html-frame (stream "Update Address" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-address.tpl"
 					     (with-path-prefix
 						 :id         (and id

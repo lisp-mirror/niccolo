@@ -19,32 +19,32 @@
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list (list id
 								 +pos-integer-re+
-								 "ID invalid")
+								 (_ "ID invalid"))
 							   (list address-id
 								 +pos-integer-re+
-								 "Address id invalid")
+								 (_ "Address id invalid"))
 							   (list name
 								 +free-text-re+
-								 "Name invalid")))))
+								 (_ "Name invalid"))))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (not (object-exists-in-db-p 'db:building id)))
-			  (list "Building does not exists in database")))
+			  (list (_ "Building does not exists in database"))))
 	 (errors-msg-address-not-found (when (and (not errors-msg-1)
 						  (not (single 'db:address :id address-id)))
-					 (list "Address not in the database")))
+					 (list (_ "Address not in the database"))))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
 			      (exists-with-different-id-validate 'db:building
 								 id
 								 (:name :address-id)
 								 (name  address-id)
-								 "Building already in the database with different ID")))
+								 (_ "Building already in the database with different ID"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-2
 				  errors-msg-address-not-found
 				  errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list "Building updated"))))
+			   (list (_ "Building updated")))))
     (if (not errors-msg)
       (let ((building-updated (single 'db:building :id id)))
 	(setf (db:name       building-updated) name
@@ -56,7 +56,7 @@
 (defun prepare-for-update-building (id)
   (prepare-for-update id
 		      'db:building
-		      "Building does not exists in database."
+		      (_ "Building does not exists in database.")
 		      #'manage-update-building))
 
 (defun manage-update-building (id infos errors)
@@ -82,7 +82,7 @@
 			    :address-id  +name-building-address-id+
 			    :json-addresses json-addresses
 			    :json-addresses-id json-addresses-id)))
-    (with-standard-html-frame (stream "Update Building" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update Building") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-building.tpl"
 					     template
 					     :stream stream))))

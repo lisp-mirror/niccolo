@@ -64,17 +64,17 @@
 
 (defun add-new-ghs-hazard-code (code expl carcenogenic)
   (let* ((errors-msg-1 (regexp-validate (list
-					 (list code +ghs-hazard-code-re+ "GHS code invalid")
-					 (list expl +free-text-re+"GHS phrase invalid")
+					 (list code +ghs-hazard-code-re+ (_ "GHS code invalid"))
+					 (list expl +free-text-re+ (_ "GHS phrase invalid"))
 					 (list expl +free-text-re+
-					       "GHS Carcinogenic code invalid"))))
+					       (_ "GHS Carcinogenic code invalid")))))
 	 (errors-msg-2 (when (not errors-msg-1)
 			 (unique-p-validate 'db:ghs-hazard-statement
 					    :code code
-					    "GHS code already in the database")))
+					    (_ "GHS code already in the database"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Saved new GHS hazard statements: ~s - ~s"
+			   (list (format nil (_ "Saved new GHS hazard statements: ~s - ~s")
 					 code expl)))))
     (when (not errors-msg)
       (let ((ghs (create 'db:ghs-hazard-statement
@@ -89,7 +89,8 @@
   (let ((all-ghss (build-template-list-hazard-code
 		   :delete-link 'delete-ghs-hazard
 		   :update-link 'update-hazard)))
-    (with-standard-html-frame (stream "Manage GHS Hazard Statements" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Manage GHS Hazard Statements")
+				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-hazard.tpl"
 					     (with-path-prefix
 						 :code +name-ghs-hazard-code+

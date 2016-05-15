@@ -17,10 +17,11 @@
 
 (define-lab-route ws-building ("/ws/building/:id" :method :get)
   (with-authentication
-    (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+ "Map id invalid"))))
+    (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
+							  (_ "Map id invalid")))))
 	   (error-msg-storage-not-found (when (and (not error-msg-no-int)
 						   (not (single 'db:building :id id)))
-					  (list "Storage not in the database")))
+					  (list (_ "Storage not in the database"))))
 	   (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
 	  (obj->json-string (plist-alist (fetch-single-building id)))
@@ -28,11 +29,12 @@
 
 (define-lab-route ws-ghs-hazard ("/ws/GHS-haz/:id" :method :get)
   (with-authentication
-    (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
-							  "Chemical compound id invalid"))))
+    (let* ((error-msg-no-int (regexp-validate (list (list id
+							  +pos-integer-re+
+							  (_ "Chemical compound id invalid")))))
 	   (error-msg-storage-not-found (when (and (not error-msg-no-int)
 						   (not (single 'db:chemical-compound :id id)))
-					  (list "Chemical compound not in the database")))
+					  (list (_ "Chemical compound not in the database"))))
 	   (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
 	  (obj->json-string (loop for i in (fetch-hazard-from-compound-id id) collect
@@ -41,11 +43,12 @@
 
 (define-lab-route ws-ghs-prec ("/ws/GHS-prec/:id" :method :get)
   (with-authentication
-    (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
-							  "Chemical compound id invalid"))))
+    (let* ((error-msg-no-int (regexp-validate (list (list id
+							  +pos-integer-re+
+							  (_ "Chemical compound id invalid")))))
 	   (error-msg-storage-not-found (when (and (not error-msg-no-int)
 						   (not (single 'db:chemical-compound :id id)))
-					  (list "Chemical compound not in the database")))
+					  (list (_ "Chemical compound not in the database"))))
 	   (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
 	  (obj->json-string (loop for i in (fetch-prec-from-compound-id id) collect
@@ -96,7 +99,7 @@
 							   (%extract-parse :safety-threshold params)
 							   1.0))))
 	     (utils:plist->json (list :res results :err risk-calculator:*errors*))))
-	 (utils:plist->json (list :res "0.0" :err "empty request")))))
+	 (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
 
 (define-lab-route l-factor-carc-i ("/l-factor-carc/" :method :post)
   (with-authentication

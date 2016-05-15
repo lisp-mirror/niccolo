@@ -69,18 +69,18 @@
 
 (defun add-new-map (data-file description)
   (let* ((errors-msg-desc (regexp-validate (list (list description +free-text-re+
-						       "Description invalid"))))
+						       (_ "Description invalid")))))
 	 (errors-msg-file (when (not (png-validate-p data-file))
 			    (list "Invalid png file")))
 	 (errors-msg-unique (unique-p-validate 'db:plant-map
 					       'db:description
 					       description
 					       (format nil
-						       "Map: ~s Already exists."
+						       (_ "Map: ~s Already exists.")
 						       description)))
 	 (errors-msg (concatenate 'list errors-msg-desc errors-msg-file errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Map ~s saved" description)))))
+			   (list (format nil (_ "Map ~s saved") description)))))
     (when (not errors-msg)
       (with-open-file (stream data-file
 			      :direction :input
@@ -159,10 +159,10 @@
 	  (let ((has-not-errors  (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 				      (get-post-filename +name-map-data+)
 				      (png-validate-p (get-post-filename +name-map-data+))))
-		(success-msg     (list "Map uploaded"))
-		(error-general   (list "Map not uploaded"))
+		(success-msg     (list (_ "Map uploaded")))
+		(error-general   (list (_ "Map not uploaded")))
 		(error-not-found (list (format nil
-					       "Map file not uploaded, map (id: ~a) not found"
+					       (_ "Map file not uploaded, map (id: ~a) not found")
 					       id))))
 	    (if has-not-errors
 		(let ((map-file (get-post-filename +name-map-data+))

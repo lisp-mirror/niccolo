@@ -29,20 +29,6 @@
 
 (define-constant +name-notes+               "notes"            :test #'string=)
 
-(define-constant +search-chem-id+           "s-id"             :test #'string=)
-
-(define-constant +search-chem-owner+        "s-owner"          :test #'string=)
-
-(define-constant +search-chem-name+         "s-name"           :test #'string=)
-
-(define-constant +search-chem-building+     "s-building"       :test #'string=)
-
-(define-constant +search-chem-floor+        "s-floor"          :test #'string=)
-
-(define-constant +search-chem-storage+      "s-storage"        :test #'string=)
-
-(define-constant +search-chem-shelf+        "s-shelf"          :test #'string=)
-
 (define-constant +op-submit-gen-barcode+    "Generate barcode" :test #'string=)
 
 (define-constant +op-submit-lend-to+        "Lend to"          :test #'string=)
@@ -188,7 +174,7 @@
 
 (defun manage-chem-prod (infos errors &key (data (fetch-all-product 'delete-chem-prod)))
   (with-standard-html-frame (stream
-			     "Manage Chemical Products"
+			     (_ "Manage Chemical Products")
 			     :errors errors
 			     :infos  infos)
     (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
@@ -252,28 +238,28 @@
 (defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes)
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
-					   (list chemical-id +pos-integer-re+  "Chemical invalid")
-					   (list storage-id  +pos-integer-re+  "Storage invalid")
-					   (list shelf       +pos-integer-re+  "Shelf not an integer")
+					   (list chemical-id +pos-integer-re+  (_ "Chemical invalid"))
+					   (list storage-id  +pos-integer-re+  (_ "Storage invalid"))
+					   (list shelf       +pos-integer-re+  (_ "Shelf not an integer"))
 					   (list (clean-string notes)
-						 +free-text-re+ "Notes invalid" )
-					   (list quantity    +pos-integer-re+ "Quantity invalid")
-					   (list units       +free-text-re+ "Units invalid"))))
+						 +free-text-re+ (_ "Notes invalid"))
+					   (list quantity    +pos-integer-re+ (_ "Quantity invalid"))
+					   (list units       +free-text-re+ (_ "Units invalid")))))
 	   (errors-msg-chem-not-found (when (and (not errors-msg-1)
 						 (not (single 'db:chemical-compound
 							      :id chemical-id)))
-					(list "Chemical compound not in the database")))
+					(list (_ "Chemical compound not in the database"))))
 	   (errors-msg-stor-not-found (when (and (not errors-msg-1)
 						 (not errors-msg-chem-not-found)
 						 (not (single 'db:storage
 							      :id storage-id)))
-					(list "Storage not in the database")))
+					(list (_ "Storage not in the database"))))
 	   (errors-msg (concatenate 'list
 				    errors-msg-1
 				    errors-msg-chem-not-found
 				    errors-msg-stor-not-found))
 	   (success-msg (and (not errors-msg)
-			     (list (format nil "Saved chemical product")))))
+			     (list (format nil (_ "Saved chemical product"))))))
       (when (and user
 		 (not errors-msg))
 	(let ((chem (create 'db:chemical-product
@@ -332,9 +318,9 @@
 				   (return-from add-loop err)))))))
 	    (if errors
 		(manage-chem-prod nil errors)
-		(manage-chem-prod (list "Successfully added products") nil
+		(manage-chem-prod (list (_ "Successfully added products")) nil
 				  :data (fetch-product-min-id max-id 'delete-chem-prod))))
-	  (manage-chem-prod nil (list "Item count must be a positive integer"))))))
+	  (manage-chem-prod nil (list (_ "Item count must be a positive integer")))))))
 
 (define-lab-route delete-chem-prod ("/delete-chem-prod/:id/:owner" :method :get)
   (with-authentication
@@ -347,38 +333,38 @@
 		       (= (db:id user) (parse-integer owner))))
 	      (progn
 		(del to-trash)
-		(manage-chem-prod (list "Product deleted") nil))
-	      (manage-chem-prod nil (list "Product not deleted"))))))))
+		(manage-chem-prod (list (_ "Product deleted")) nil))
+	      (manage-chem-prod nil (list (_ "Product not deleted")))))))))
 
 (defun lend-to (from-uid to-username id)
   (let* ((errors-msg-1 (regexp-validate (list
-					 (list to-username +free-text-re+ "Username invalid")
+					 (list to-username +free-text-re+ (_ "Username invalid"))
 					 (list id          +pos-integer-re+
-					       "Id product invalid")))))
+					       (_ "Id product invalid"))))))
     (if errors-msg-1
 	(manage-chem-prod nil errors-msg-1)
 	(if (not (single 'db:user :id from-uid))
-	    (manage-chem-prod nil (list "You are not an user!"))
+	    (manage-chem-prod nil (list (_ "You are not an user!")))
 	    (if (not (single 'db:user :username to-username))
-		(manage-chem-prod nil (list (format nil "There is not any user called ~s"
+		(manage-chem-prod nil (list (format nil (_ "There is not any user called ~s")
 						    to-username)))
 		(if (not (single 'db:chemical-product :id (parse-integer id)))
-		    (manage-chem-prod nil (list "Id product invalid"))
+		    (manage-chem-prod nil (list (_ "Id product invalid")))
 		    (if (single 'db:loans :product (parse-integer id))
-			(manage-chem-prod nil (list "Product already lent"))
+			(manage-chem-prod nil (list (_ "Product already lent")))
 			(if (not (= (db:owner (single 'db:chemical-product
 						      :id (parse-integer id)))
 				    from-uid))
-			    (manage-chem-prod nil (list "You do not own this product"))
+			    (manage-chem-prod nil (list (_ "You do not own this product")))
 			    (if (= (db:id (single 'db:user :username to-username)) from-uid)
-				(manage-chem-prod nil (list "You can not lend to yourself"))
+				(manage-chem-prod nil (list (_ "You can not lend to yourself")))
 				(progn
 				  (create 'db:loans
 					  :product   (parse-integer id)
 					  :user-from from-uid
 					  :user-to   (db:id (single 'db:user
 								    :username to-username)))
-				  (manage-chem-prod (list (format nil "Lent product to ~a"
+				  (manage-chem-prod (list (format nil (_ "Lent product to ~a")
 								  to-username))
 						    nil)))))))))))
 
@@ -390,8 +376,8 @@
 	       (= (get-session-user-id) (db:user-from loan)))
 	  (progn
 	    (del loan)
-	    (manage-chem-prod (list "Success") nil))
-	  (manage-chem-prod nil (list "Failure"))))))
+	    (manage-chem-prod (list (_ "Success")) nil))
+	  (manage-chem-prod nil (list (_ "Failure")))))))
 
 (defun get-code (key row)
   (if (eq (getf key row) :nil)
@@ -515,7 +501,7 @@
 	(with-save-restore (doc)
 	  (ps:translate doc +page-margin-left+ (/ pict-size 2.0))
 	  (ps:show-xy doc
-		      (format nil "Owner: ~a. Printing date ~a"
+		      (format nil (_ "Owner: ~a. Printing date ~a")
 			      (and haz-data (getf (elt haz-data 0) :owner))
 			      (now-date-for-label))
 		      0 0))))))
@@ -529,7 +515,7 @@
 	  (progn
 	    (setf (header-out :content-type) +mime-postscript+)
 	    (generate-ps-custom-label product))
-	  (manage-chem-prod nil (list "Failure"))))))
+	  (manage-chem-prod nil (list (_ "Failure")))))))
 
 (defun massive-delete (ids)
   (with-authentication
@@ -537,7 +523,7 @@
       (let ((all-errors   "")
 	    (all-messages ""))
 	(loop for id in ids do
-	     (if (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
+	     (if (not (regexp-validate (list (list id +pos-integer-re+ (_ "no")))))
 		 (let ((product (crane:single 'db:chemical-product :id id)))
 		   (if (and (not (null product))
 			    (or (session-admin-p)
@@ -545,13 +531,17 @@
 		       (progn
 			 (setf all-messages (concatenate 'string
 							 all-messages
-							 (format nil "Product ~a deleted. " id)))
+							 (format nil
+								 (_ "Product ~a deleted. ")
+								 id)))
 			 (crane:del product))
 		       (setf all-errors (concatenate 'string
 						     all-errors
 						     (concatenate 'string
 							 all-messages
-							 (format nil "Product ~a not deleted. " id))))))))
+							 (format nil
+								 (_ "Product ~a not deleted. ")
+								 id))))))))
 	(manage-chem-prod (and (not (string= "" all-messages))
 			       (list all-messages))
 			  (and (not (string= "" all-errors))

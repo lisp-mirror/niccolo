@@ -24,18 +24,18 @@
 (define-constant +name-chem-msds-data+   "msds-pdf"    :test #'string=)
 
 (defun add-new-chem (name msds-filename cid)
-  (let* ((errors-msg-1  (regexp-validate (list (list name +free-text-re+ "Name invalid"))))
+  (let* ((errors-msg-1  (regexp-validate (list (list name +free-text-re+ (_ "Name invalid")))))
 	 (errors-msg-file (when (and msds-filename
 				     (not (pdf-validate-p msds-filename)))
-			    (list "Invalid pdf file")))
+			    (list (_ "Invalid pdf file"))))
 	 (errors-msg-2  (when (and (not errors-msg-1)
 				   (unique-p-validate
 				    'db:chemical-compound
 				    :name name
-				    "Chemical compound already in the database"))))
+				    (_ "Chemical compound already in the database")))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-file))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Saved chemical: ~s" name)))))
+			   (list (format nil (_ "Saved chemical: ~s") name)))))
     (when (not errors-msg)
       (let ((new-chem (create 'db:chemical-compound
 			      :name name
@@ -70,7 +70,9 @@
 				    :has-msds (if (getf row :msds) t nil)
 				    :msds-pdf-link
 				    (restas:genurl 'chemical-get-msds :id (getf row :id)))))))))
-    (with-standard-html-frame (stream "Manage Chemical Compound" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Manage Chemical Compound")
+				      :infos infos
+				      :errors errors)
       (html-template:fill-and-print-template #p"add-chemical.tpl"
 					     (with-path-prefix
 						 :id +name-chem-id+
@@ -123,10 +125,10 @@
 	  (let ((has-not-errors  (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 				      (get-post-filename +name-chem-msds-data+)
 				      (pdf-validate-p (get-post-filename +name-chem-msds-data+))))
-		(success-msg     (list "MSDS uploaded"))
-		(error-general   (list "MSDS not uploaded"))
+		(success-msg     (list (_ "MSDS uploaded")))
+		(error-general   (list (_ "MSDS not uploaded")))
 		(error-not-found (list (format nil
-					       "MSDS not uploaded, chemical (id: ~a) not found"
+					       (_ "MSDS not uploaded, chemical (id: ~a) not found")
 					       id))))
 	    (if has-not-errors
 		(let ((msds-file (get-post-filename +name-chem-msds-data+))

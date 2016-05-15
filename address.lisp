@@ -30,26 +30,28 @@
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list (list line-1
 								 +free-text-re+
-								 "Line-1 invalid")
+								 (_ "Line-1 invalid"))
 							   (list city
 								 +free-text-re+
-								 "City field invalid")
+								 (_ "City field invalid"))
 							   (list zipcode
 								 +free-text-re+
-								 "Zipcode invalid")))))
+								 (_ "Zipcode invalid"))))))
 	 (errors-msg-link (when (not (null link))
 			    (regexp-validate (list (list link
 							 +free-text-re+
-							 "Link invalid")))))
+							 (_ "Link invalid"))))))
 	 (errors-msg-2  (when (and (all-null-p errors-msg-1 errors-msg-link)
 				   (single 'db:address
 					   :line-1  line-1
 					   :city    city
 					   :zipcode zipcode))
-			  (list "Address already in the database")))
+			  (list (_ "Address already in the database"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "Saved address: ~s - ~s ~s" line-1 zipcode city)))))
+			   (list (format nil
+					 (_ "Saved address: ~s - ~s ~s")
+					 line-1 zipcode city)))))
     (when (not errors-msg)
       (let ((address (create 'db:address
 			     :line-1 line-1
@@ -71,7 +73,7 @@
 						     :update-address-link
 						     (restas:genurl 'update-address
 								    :id (db:id row)))))))
-    (with-standard-html-frame (stream "Manage Address" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Manage Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-address.tpl"
 					     (with-path-prefix
 						 :line-1 +name-address-line-1+

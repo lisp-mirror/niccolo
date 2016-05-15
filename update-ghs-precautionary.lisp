@@ -16,25 +16,26 @@
 (in-package :restas.lab)
 
 (defun update-prec (id code expl)
-  (let* ((errors-msg-1 (regexp-validate (list (list id +pos-integer-re+ "GHS id invalid")
+  (let* ((errors-msg-1 (regexp-validate (list (list id +pos-integer-re+
+						    (_ "GHS id invalid"))
 					      (list code
 						    +ghs-precautionary-code-re+
-						    "GHS code invalid")
+						    (_ "GHS code invalid"))
 					      (list expl
 						    +free-text-re+
-						    "GHS phrase invalid"))))
+						    (_ "GHS phrase invalid")))))
 	 (errors-msg-2 (when (and (not errors-msg-1)
 				  (not (object-exists-in-db-p 'db:ghs-precautionary-statement id)))
-			 "GHS statement does not exists in database."))
+			 (_ "GHS statement does not exists in database.")))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
 			      (exists-with-different-id-validate 'db:ghs-precautionary-statement
 								 id
 								 (:code)
 								 (code)
-								 "GHS code already in the database with different ID")))
+								 (_ "GHS code already in the database with different ID"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "GHS precautionary statements updated.")))))
+			   (list (format nil (_ "GHS precautionary statements updated."))))))
     (if (not errors-msg)
       (let ((new-prec (single 'db:ghs-precautionary-statement :id id)))
 	(setf (db:code         new-prec) code
@@ -46,12 +47,13 @@
 (defun prepare-for-update-prec (id)
   (prepare-for-update id
 		      'db:ghs-precautionary-statement
-		      "GHS statement does not exists in database."
+		      (_ "GHS statement does not exists in database.")
 		      #'manage-update-prec))
 
 (defun manage-update-prec (id infos errors)
   (let ((new-prec (and id (single 'db:ghs-precautionary-statement :id id))))
-    (with-standard-html-frame (stream "Update GHS precautionary statement" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update GHS precautionary statement")
+				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-precautionary.tpl"
 					     (with-path-prefix
 						 :id         (and id

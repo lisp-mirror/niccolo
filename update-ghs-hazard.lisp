@@ -17,23 +17,23 @@
 
 (defun update-haz (id code expl carcinogenic)
   (let* ((errors-msg-1 (regexp-validate (list
-					 (list id   +pos-integer-re+ "GHS id invalid")
-					 (list code +ghs-hazard-code-re+ "GHS code invalid")
-					 (list expl +free-text-re+"GHS phrase invalid")
+					 (list id   +pos-integer-re+ (_ "GHS id invalid"))
+					 (list code +ghs-hazard-code-re+ (_ "GHS code invalid"))
+					 (list expl +free-text-re+ (_ "GHS phrase invalid"))
 					 (list expl +free-text-re+
-					       "GHS Carcinogenic code invalid"))))
+					       (_ "GHS Carcinogenic code invalid")))))
 	 (errors-msg-2 (when (and (not errors-msg-1)
 				  (not (object-exists-in-db-p 'db:ghs-hazard-statement id)))
-			 "GHS statement does not exists in database."))
+			 (_ "GHS statement does not exists in database.")))
 	 (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
 			      (exists-with-different-id-validate 'db:ghs-hazard-statement
 								 id
 								 (:code)
 								 (code)
-								 "GHS code already in the database with different ID")))
+								 (_ "GHS code already in the database with different ID"))))
 	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-unique))
 	 (success-msg (and (not errors-msg)
-			   (list (format nil "GHS hazard statements updated.")))))
+			   (list (format nil (_ "GHS hazard statements updated."))))))
     (if (not errors-msg)
       (let ((new-haz (single 'db:ghs-hazard-statement :id id)))
 	(setf (db:code         new-haz) code
@@ -46,12 +46,13 @@
 (defun prepare-for-update-haz (id)
   (prepare-for-update id
 		      'db:ghs-hazard-statement
-		      "GHS statement does not exists in database."
+		      (_ "GHS statement does not exists in database.")
 		      #'manage-update-haz))
 
 (defun manage-update-haz (id infos errors)
   (let ((new-haz (and id (single 'db:ghs-hazard-statement :id id))))
-    (with-standard-html-frame (stream "Update GHS hazard statement" :infos infos :errors errors)
+    (with-standard-html-frame (stream (_ "Update GHS hazard statement")
+				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-hazard.tpl"
 					     (with-path-prefix
 						 :id         (and id

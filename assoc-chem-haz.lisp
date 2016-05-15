@@ -48,7 +48,7 @@
 	    (list :id id
 		  :desc (concatenate 'string code " " expl carc
 				     (and (string= +ghs-carcinogenic-code+ carc)
-					  " Carcinogenic"))
+					  (_ " Carcinogenic")))
 		  :pictogram-uri pictogram-uri)
 	    (if delete-link
 		(list :delete-link (restas:genurl delete-link :id id :id-chem chem-id))))))))
@@ -68,7 +68,7 @@
 (defun manage-assoc-chem-haz (compound infos errors)
   (let ((hazcodes-owned (fetch-hazard-from-compound compound'delete-assoc-chem-haz)))
     (with-standard-html-frame (stream
- 			       "Associate hazardous phrases to chemical compound"
+ 			       (_ "Associate hazardous phrases to chemical compound")
  			       :errors errors
  			       :infos  infos)
 
@@ -92,28 +92,28 @@
 				    (regexp-validate (list
 						      (list haz-id
 							    +pos-integer-re+
-							    "Code invalid")
+							    (_ "Code invalid"))
 						      (list chem-id
 							    +pos-integer-re+
-							    "Chemical ID invalid")))))
+							    (_ "Chemical ID invalid"))))))
 	 (errors-msg-chem-not-found (when (and (not errors-msg-1)
 					       (not (single 'db:chemical-compound
 							    :id chem-id)))
-				      (list "Chemical compound not in database")))
+				      (list (_ "Chemical compound not in database"))))
 	 (errors-msg-haz-not-found (when (and (not errors-msg-1)
 					      (not (single 'db:ghs-hazard-statement
 							   :id haz-id)))
-				     (list "GHS Hazardous code not in database")))
+				     (list (_ "GHS Hazardous code not in database"))))
 	 (error-assoc-exists       (when (and (not errors-msg-1)
 					      (fetch-assoc-by-ids haz-id chem-id))
-				     (list "GHS Hazardous code already associated with this chemical compound.")))
+				     (list (_ "GHS Hazardous code already associated with this chemical compound."))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-chem-not-found
 				  errors-msg-haz-not-found
 				  error-assoc-exists))
 	 (success-msg (and (not errors-msg)
-			   (list "Saved association"))))
+			   (list (_ "Saved association")))))
     (when (not errors-msg)
       (let ((haz-assoc (create 'db:chemical-hazard
 			       :ghs-h haz-id
