@@ -27,114 +27,114 @@
   <!-- /TMPL_IF -->
 
   <ul>
-    <li class="menu-level-1">Safety</li>
+    <li class="menu-level-1"><!-- TMPL_VAR safety-lbl --></li>
     <li class="menu-level-2">
       <ul>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-ghs-hazard -->">
-	    GHS Hazard Codes
+	    <!-- TMPL_VAR manage-ghs-hazard-lbl -->
 	  </a>
 	</li>
 	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR manage-ghs-precaution -->">
-	    GHS precautionary statements
+	    <!-- TMPL_VAR manage-ghs-precaution-lbl -->
 	  </a>
 	</li>
 	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR manage-cer -->">
-	    CER codes
+	    <!-- TMPL_VAR manage-cer-lbl -->
 	  </a>
 	</li>
 	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR manage-adr -->">
-	    ADR codes
+	    <!-- TMPL_VAR manage-adr-lbl -->
 	  </a>
 	</li>
 	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR waste-letter -->">
-	    Hazardous waste form
+	    <!-- TMPL_VAR waste-letter-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR l-factor-calculator -->">
-	    Chemical risk calculator
+	    <!-- TMPL_VAR l-factor-calculator-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR l-factor-calculator-carc -->">
-	    Chemical risk calculator (carcinogenic)
+	    <!-- TMPL_VAR l-factor-calculator-carc-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR store-classify-tree -->">
-	    Chemical classifications for safe storage.
+	    <!-- TMPL_VAR store-classify-tree-lbl -->
 	  </a>
 	</li>
 
       </ul>
     </li>
-    <li class="menu-level-1">Places</li>
+    <li class="menu-level-1"><!-- TMPL_VAR places-lbl --></li>
     <li class="menu-level-2">
       <ul>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-address -->">
-	    Address
+	    <!-- TMPL_VAR manage-address-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-building -->">
-	    Building
+	    <!-- TMPL_VAR manage-building-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-maps -->">
-	    Maps
+	    <!-- TMPL_VAR manage-maps-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-storage -->">
-	    Storage
+	    <!-- TMPL_VAR manage-storage-lbl -->
 	  </a>
 	</li>
       </ul>
     </li>
-    <li class="menu-level-1">Chemical compounds</li>
+    <li class="menu-level-1"><!-- TMPL_VAR chemical-compounds-lbl --></li>
     <li class="menu-level-2">
       <ul>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-chemicals -->">
-	    Compound
+	    <!-- TMPL_VAR manage-chemicals-lbl -->
 	  </a>
 	</li>
       </ul>
     </li>
-    <li class="menu-level-1">Chemical products</li>
+    <li class="menu-level-1"><!-- TMPL_VAR chemical-products-lbl --></li>
     <li class="menu-level-2">
       <ul>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-chemical-products -->">
-	    Managing
+	    <!-- TMPL_VAR manage-chemical-products-lbl -->
 	  </a>
 	</li>
       </ul>
     </li>
 
-    <li class="menu-level-1">Users</li>
+    <li class="menu-level-1"><!-- TMPL_VAR users-lbl --></li>
     <li class="menu-level-2">
       <ul>
 	<li>
 	  <a href="<!-- TMPL_VAR manage-user -->">
-	    Manage users
+	    <!-- TMPL_VAR manage-user-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR change-password -->">
-	    Change password
+	    <!-- TMPL_VAR change-password-lbl -->
 	  </a>
 	</li>
 	<li>
 	  <a href="<!-- TMPL_VAR user-preferences -->">
-	    User preferences
+	    <!-- TMPL_VAR user-preferences-lbl -->
 	  </a>
 	</li>
 

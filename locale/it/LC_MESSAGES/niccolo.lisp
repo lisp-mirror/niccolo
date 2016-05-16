@@ -1,525 +1,521 @@
 "italian-plural-form"
-(
-
- id "Phrase ~a does not exists"
+(id "Phrase ~a does not exists"
 translation "La frase ~a non esiste"
 plurals-form "Phrase ~a does not exists"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition type ~a not found"
+ id "Exposition type ~a not found"
 translation "Tipo di esposizione ~a non valida"
 plurals-form "Exposition type ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "Physical state ~a not found"
+ id "Physical state ~a not found"
 translation "Stato fisico ~a non valido"
 plurals-form "Physical state ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition time ~a not found"
+ id "Exposition time ~a not found"
 translation "Tempo di esposizione pari a ~a non valido"
 plurals-form "Exposition time ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "Usage ~a not found"
+ id "Usage ~a not found"
 translation "Modalità di utilizzo (~a) non valida"
 plurals-form "Usage ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "Quantity ~a too large"
+ id "Quantity ~a too large"
 translation "Quantità eccessiva (~a)"
 plurals-form "Quantity ~a too large"
 status :TRANSLATED
 plurals NIL
 
-id "Work type ~a not found"
+ id "Work type ~a not found"
 translation "Tipo di mansione ~a sconosciuta"
 plurals-form "Work type ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "Duplicated entry in ~a"
+ id "Duplicated entry in ~a"
 translation "Elemento duplicato in ~a"
 plurals-form "Duplicated entry in ~a"
 status :TRANSLATED
 plurals NIL
 
-id "Devices type ~a not found"
+ id "Devices type ~a not found"
 translation "Tipo di dispositivo ~a non valido"
 plurals-form "Devices type ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "+inalation-el+"
+ id "+inalation-el+"
 translation "Inalazione"
 plurals-form "+inalation-el+"
 status :TRANSLATED
 plurals NIL
 
-id "+skin-possible+"
+ id "+skin-possible+"
 translation "Cutanea (contatto diretto possibile)"
 plurals-form "+skin-possible+"
 status :TRANSLATED
 plurals NIL
 
-id "+skin-accidental+"
+ id "+skin-accidental+"
 translation "Cutanea (contatto accidentale)"
 plurals-form "+skin-accidental+"
 status :TRANSLATED
 plurals NIL
 
-id "+liquid-gas+"
+ id "+liquid-gas+"
 translation "liquido/gas"
 plurals-form "+liquid-gas+"
 status :TRANSLATED
 plurals NIL
 
-id "+highly-volatile+"
+ id "+highly-volatile+"
 translation "Altamente volatile"
 plurals-form "+highly-volatile+"
 status :TRANSLATED
 plurals NIL
 
-id "+medium-volatile+"
+ id "+medium-volatile+"
 translation "Mediamente volatile"
 plurals-form "+medium-volatile+"
 status :TRANSLATED
 plurals NIL
 
-id "+low-volatile+"
+ id "+low-volatile+"
 translation "Bassa volatilità"
 plurals-form "+low-volatile+"
 status :TRANSLATED
 plurals NIL
 
-id "+powder+"
+ id "+powder+"
 translation "Polvere"
 plurals-form "+powder+"
 status :TRANSLATED
 plurals NIL
 
-id "+solid+"
+ id "+solid+"
 translation "Solido"
 plurals-form "+solid+"
 status :TRANSLATED
 plurals NIL
 
-id "HIGHLY_VOLATILE"
+ id "HIGHLY_VOLATILE"
 translation "Altamente volatile"
 plurals-form "HIGHLY_VOLATILE"
 status :TRANSLATED
 plurals NIL
 
-id "MEDIUM_VOLATILE"
+ id "MEDIUM_VOLATILE"
 translation "Mediamente volatile"
 plurals-form "MEDIUM_VOLATILE"
 status :TRANSLATED
 plurals NIL
 
-id "LOW_VOLATILE"
+ id "LOW_VOLATILE"
 translation "Bassa volatilità"
 plurals-form "LOW_VOLATILE"
 status :TRANSLATED
 plurals NIL
 
-id "POWDER"
+ id "POWDER"
 translation "Polvere"
 plurals-form "POWDER"
 status :TRANSLATED
 plurals NIL
 
-id "SOLID"
+ id "SOLID"
 translation "Solido"
 plurals-form "SOLID"
 status :TRANSLATED
 plurals NIL
 
-id "+tlv-twa+"
+ id "+tlv-twa+"
 translation "tlv-twa"
 plurals-form "+tlv-twa+"
 status :TRANSLATED
 plurals NIL
 
-id "+tlv-stel+"
+ id "+tlv-stel+"
 translation "tlv-stel"
 plurals-form "+tlv-stel+"
 status :TRANSLATED
 plurals NIL
 
-id "+tlv-ceiling+"
+ id "+tlv-ceiling+"
 translation "tlv-ceiling"
 plurals-form "+tlv-ceiling+"
 status :TRANSLATED
 plurals NIL
 
-id "+almost-closed-system+"
+ id "+almost-closed-system+"
 translation "Sistema chiuso con possibili esposizioni"
 plurals-form "+almost-closed-system+"
 status :TRANSLATED
 plurals NIL
 
-id "+matrix-inclusion+"
+ id "+matrix-inclusion+"
 translation "Inclusione in matrice"
 plurals-form "+matrix-inclusion+"
 status :TRANSLATED
 plurals NIL
 
-id "+low-dispersion+"
+ id "+low-dispersion+"
 translation "Uso poco dispersivo"
 plurals-form "+low-dispersion+"
 status :TRANSLATED
 plurals NIL
 
-id "+high-dispersion+"
+ id "+high-dispersion+"
 translation "Uso con dispersione significativa"
 plurals-form "+high-dispersion+"
 status :TRANSLATED
 plurals NIL
 
-id "+Maintenance+"
+ id "+Maintenance+"
 translation "Manutenzione"
 plurals-form "+Maintenance+"
 status :TRANSLATED
 plurals NIL
 
-id "+normal-job+"
+ id "+normal-job+"
 translation "Normale lavoro"
 plurals-form "+normal-job+"
 status :TRANSLATED
 plurals NIL
 
-id "+cleaning+"
+ id "+cleaning+"
 translation "Pulizia"
 plurals-form "+cleaning+"
 status :TRANSLATED
 plurals NIL
 
-id "+good-fume-cupboard+"
+ id "+good-fume-cupboard+"
 translation "Efficiente cappa d'aspirazione"
 plurals-form "+good-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 
-id "+bad-fume-cupboard+"
+ id "+bad-fume-cupboard+"
 translation "Poco efficiente cappa d'aspirazione"
 plurals-form "+bad-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 
-id "+no-fume-cupboard+"
+ id "+no-fume-cupboard+"
 translation "Inefficiente/inesistente/non utilizzata cappa d'aspirazione"
 plurals-form "+no-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 
-id "+written-instructions+"
+ id "+written-instructions+"
 translation "Istruzioni scritte"
 plurals-form "+written-instructions+"
 status :TRANSLATED
 plurals NIL
 
-id "+dpi-coat+"
+ id "+dpi-coat+"
 translation "Indumenti protettivi"
 plurals-form "+dpi-coat+"
 status :TRANSLATED
 plurals NIL
 
-id "+goggles+"
+ id "+goggles+"
 translation "Occhiali"
 plurals-form "+goggles+"
 status :TRANSLATED
 plurals NIL
 
-id "+gloves+"
+ id "+gloves+"
 translation "Guanti"
 plurals-form "+gloves+"
 status :TRANSLATED
 plurals NIL
 
-id "+good-aspiration+"
+ id "+good-aspiration+"
 translation "Efficiente aspirazione"
 plurals-form "+good-aspiration+"
 status :TRANSLATED
 plurals NIL
 
-id "+bad-aspiration+"
+ id "+bad-aspiration+"
 translation "Poco efficiente aspirazione"
 plurals-form "+bad-aspiration+"
 status :TRANSLATED
 plurals NIL
 
-id "+no-aspiration+"
+ id "+no-aspiration+"
 translation "Inefficiente/inesistente/non utilizzata aspirazione"
 plurals-form "+no-aspiration+"
 status :TRANSLATED
 plurals NIL
 
-id "+other-manipulation-devices+"
+ id "+other-manipulation-devices+"
 translation "Altri sistemi di manipolazione"
 plurals-form "+other-manipulation-devices+"
 status :TRANSLATED
 plurals NIL
 
-id "+specific-skills+"
+ id "+specific-skills+"
 translation "Formazione specifica"
 plurals-form "+specific-skills+"
 status :TRANSLATED
 plurals NIL
 
-id "+separate-collecting-substances+"
+ id "+separate-collecting-substances+"
 translation "Raccolta separata acidi, basi, infiammabili"
 plurals-form "+separate-collecting-substances+"
 status :TRANSLATED
 plurals NIL
 
-id "Physical state"
+ id "Physical state"
 translation "Stato fisico"
 plurals-form "Physical state"
 status :TRANSLATED
 plurals NIL
 
-id "Working temperature"
+ id "Working temperature"
 translation "Temperatura di lavoro(°C)"
 plurals-form "Working temperature"
 status :TRANSLATED
 plurals NIL
 
-id "Boiling point"
+ id "Boiling point"
 translation "Temperatura di ebollizione(°C)"
 plurals-form "Boiling point"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition type"
+ id "Exposition type"
 translation "Tipo di esposizione"
 plurals-form "Exposition type"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition time (week)"
+ id "Exposition time (week)"
 translation "Tempo di esposizione per settimana (min.)"
 plurals-form "Exposition time (week)"
 status :TRANSLATED
 plurals NIL
 
-id "L"
+ id "L"
 translation "L fattore di rischio"
 plurals-form "L"
 status :TRANSLATED
 plurals NIL
 
-id "VL"
+ id "VL"
 translation "VL valore limite di soglia"
 plurals-form "VL"
 status :TRANSLATED
 plurals NIL
 
-id "K"
+ id "K"
 translation "K fattori di prevenzione e protezione"
 plurals-form "K"
 status :TRANSLATED
 plurals NIL
 
-id "A"
+ id "A"
 translation "A tipo di attività lavorativa"
 plurals-form "A"
 status :TRANSLATED
 plurals NIL
 
-id "D"
+ id "D"
 translation "D quantità in stoccaggio"
 plurals-form "D"
 status :TRANSLATED
 plurals NIL
 
-id "Q"
+ id "Q"
 translation "Q quantità utilizzata"
 plurals-form "Q"
 status :TRANSLATED
 plurals NIL
 
-id "U"
+ id "U"
 translation "U modalità d’uso della sostanza"
 plurals-form "U"
 status :TRANSLATED
 plurals NIL
 
-id "T"
+ id "T"
 translation "T tipo di esposizione"
 plurals-form "T"
 status :TRANSLATED
 plurals NIL
 
-id "R"
+ id "R"
 translation "R proprietà pericolose intrinseche dell'agente chimico"
 plurals-form "R"
 status :TRANSLATED
 plurals NIL
 
-
-id "Value ~a for \"~a\" not valid please insert a new one:"
+ id "Value ~a for \"~a\" not valid please insert a new one:"
 translation "Valore ~a per \"~a\" non valido, reintrodurre:"
 plurals-form "Value ~a for \"~a\" not valid please insert a new one:"
 status :TRANSLATED
 plurals NIL
 
-id "exposition time (week)"
+ id "exposition time (week)"
 translation "tempo di esposizione per settimana (min.)"
 plurals-form "exposition time (week)"
 status :TRANSLATED
 plurals NIL
 
-id "L factor"
+ id "L factor"
 translation "Fattore di rischio (L)"
 plurals-form "L factor"
 status :TRANSLATED
 plurals NIL
 
-id "Quantity used"
+ id "Quantity used"
 translation "Quantità utilizzata"
 plurals-form "Quantity used"
 status :TRANSLATED
 plurals NIL
 
-id "Quantity stocked"
+ id "Quantity stocked"
 translation "Quantità immagazzinata"
 plurals-form "Quantity stocked"
 status :TRANSLATED
 plurals NIL
 
-id "Chemical"
+ id "Chemical"
 translation "Composto"
 plurals-form "Chemical"
 status :TRANSLATED
 plurals NIL
 
-id "Safety threshold"
+ id "Safety threshold"
 translation "Livello massimo di esposizione"
 plurals-form "Safety threshold"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition time"
+ id "Exposition time"
 translation "Tempo di esposizione"
 plurals-form "Exposition time"
 status :TRANSLATED
 plurals NIL
 
-
-id "Protective device \"~a\" not found"
+ id "Protective device \"~a\" not found"
 translation "Dispositivo di protezione \"~a\" non trovato"
 plurals-form "Protective device \"~a\" not found"
 status :TRANSLATED
 plurals NIL
 
-id "+closed-lifecycle+"
+ id "+closed-lifecycle+"
 translation "Ciclo chiuso"
 plurals-form "+closed-lifecycle+"
 status :TRANSLATED
 plurals NIL
 
-id "+good-fume-cupboard-lifecycle+"
+ id "+good-fume-cupboard-lifecycle+"
 translation "Cappa funzionante (efficiente)"
 plurals-form "+good-fume-cupboard-lifecycle+"
 status :TRANSLATED
 plurals NIL
 
-id "+partially-fume-cupboard-lifecycle+"
+ id "+partially-fume-cupboard-lifecycle+"
 translation "Parzialmente sotto cappa"
 plurals-form "+partially-fume-cupboard-lifecycle+"
 status :TRANSLATED
 plurals NIL
 
-id "+no-fume-cupboard-lifecycle+"
+ id "+no-fume-cupboard-lifecycle+"
 translation "Senza cappa"
 plurals-form "+no-fume-cupboard-lifecycle+"
 status :TRANSLATED
 plurals NIL
 
-id "Carcinogenic risk valutation:"
+ id "Carcinogenic risk valutation:"
 translation "Valutazione rischio sostanze cancerogene/mutagene"
 plurals-form "Carcinogenic risk valutation:"
 status :TRANSLATED
 plurals NIL
 
-id "+solid-compact-gel+"
+ id "+solid-compact-gel+"
 translation "Gel, solido compatto"
 plurals-form "+solid-compact-gel+"
 status :TRANSLATED
 plurals NIL
 
-id "+non-volatile-liquid-cristals+"
+ id "+non-volatile-liquid-cristals+"
 translation "Liquido non volatile, cristalli"
 plurals-form "+non-volatile-liquid-cristals+"
 status :TRANSLATED
 plurals NIL
 
-id "+fluid-powder-volatile-liquid+"
+ id "+fluid-powder-volatile-liquid+"
 translation "Gas, vapore, liquido volatile, polvere fine"
 plurals-form "+fluid-powder-volatile-liquid+"
 status :TRANSLATED
 plurals NIL
 
-id "Physical state \"~a\" not found"
+ id "Physical state \"~a\" not found"
 translation "Stato fisico ~a non valido"
 plurals-form "Physical state \"~a\" not found"
 status :TRANSLATED
 plurals NIL
 
-id "F"
+ id "F"
 translation "F fattore frequenza di utilizzo"
 plurals-form "F"
 status :TRANSLATED
 plurals NIL
 
-id "E"
+ id "E"
 translation "E durata dell'esposizione"
 plurals-form "E"
 status :TRANSLATED
 plurals NIL
 
-id "S"
+ id "S"
 translation "S stato fisico della sostanza"
 plurals-form "S"
 status :TRANSLATED
 plurals NIL
 
-id "P"
+ id "P"
 translation "P fattore di uso ed efficienza dei dispositivi di protezione"
 plurals-form "P"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition time per day"
+ id "Exposition time per day"
 translation "Tempo di esposizione giornaliero"
 plurals-form "Exposition time per day"
 status :TRANSLATED
 plurals NIL
 
-id "Minutes"
+ id "Minutes"
 translation "Minuti"
 plurals-form "Minutes"
 status :TRANSLATED
 plurals NIL
 
-id "Exposition time per year"
+ id "Exposition time per year"
 translation "Tempo di esposizione annuale"
 plurals-form "Exposition time per year"
 status :TRANSLATED
 plurals NIL
 
-id "Days"
+ id "Days"
 translation "Giorni"
 plurals-form "Days"
 status :TRANSLATED
 plurals NIL
 
-id "Tables"
+ id "Tables"
 translation "Tabelle"
 plurals-form "Tables"
 status :TRANSLATED
@@ -546,7 +542,7 @@ plurals NIL
  id "Add admin user"
 translation "Aggiungi utente amministratore"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "No valid user id (id: ~a)"
@@ -568,7 +564,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage user"
-translation "Gestisci gli utenti"
+translation "Gestione utente"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -628,9 +624,9 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage Address"
-translation ""
+translation "Gestisci Indirizzi"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved address: ~s - ~s ~s"
@@ -1396,6 +1392,162 @@ status :UNTRANSLATED
 plurals NIL
 
  id "Ok"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical classifications for safe storage."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical risk calculator (carcinogenic)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical risk calculator"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Hazardous waste form"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User preferences"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage users"
+translation "Gestisci gli utenti"
+plurals-form ""
+status :translated
+plurals NIL
+
+ id "Managing"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Compound"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Storage"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Maps"
+translation "Mappe"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Building"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Address"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "ADR codes"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "CER codes"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "GHS precautionary statements"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "GHS Hazard Codes"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Physical state \\\"~a\\\" not found"
+translation "Stato fisico ~a non trovato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Protective device not specified"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Protective device \\\"~a\\\" not found"
+translation "Dispositivo di protezione \"~a\" non trovato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Exposition type not specidied"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "No \\\"H phrases\\\" not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Users"
+translation "Utenti"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Chemical products"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical compound"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Places"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Safety"
 translation ""
 plurals-form ""
 status :UNTRANSLATED
