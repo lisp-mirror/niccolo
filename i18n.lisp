@@ -32,10 +32,16 @@
 			   :store-plural-function    nil
 			   :store-hashtable          nil
 			   :update-translation-table nil)))
-(defstruct translation
-  description
-  table
-  plural-function)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defstruct translation
+    description
+    table
+    plural-function)
+  (defparameter *empty-translation*
+      (make-translation :description     "Default"
+			:table           (make-hash-table)
+			:plural-function #'cl-i18n:n/=1-plural-form))
+  (setf (gethash "" (translation-table *empty-translation*)) ""))
 
 (defun cons-translations (locale &optional (description locale))
   (multiple-value-bind (table plural-fn)
@@ -45,7 +51,8 @@
 				   :plural-function plural-fn))))
 
 (defparameter *availables-translations*
-  (list (cons-translations "it" "Italiano")))
+  (list (cons              ""   *empty-translation*)
+	(cons-translations "it" "Italiano")))
 
 (defun translation-select-options ()
   (loop for i in *availables-translations* collect
@@ -59,18 +66,21 @@
 
 (defmacro with-user-translation ((user-id) &body body)
   (with-gensyms (locale locale-table locale-plural preferences)
-    `(if (> ,user-id 0)
+    `(when (> ,user-id 0)
+       (handler-bind ((i18n-conditions:no-translation-table-error
+		       #'(lambda(e)
+			   (declare (ignore e))
+			   (invoke-restart 'cl-i18n:return-untranslated))))
 	 (let ((,preferences (crane:single 'db:user-preferences :owner ,user-id)))
 	   (if ,preferences
-	       (let* ((,locale          (i18n:find-translation     (db:language ,preferences)))
-		      (,locale-table    (translation-table           ,locale))
-		      (,locale-plural   (translation-plural-function ,locale)))
-		 (cl-i18n:with-translation (,locale-table ,locale-plural)
-		   ,@body))
-	       (handler-bind ((i18n-conditions:no-translation-table-error
-			       #'(lambda(e)
-				   (declare (ignore e))
-				   (invoke-restart 'cl-i18n:return-untranslated))))
-		 (cl-i18n:with-translation ((make-hash-table :test 'equal)
-					    #'cl-i18n:english-plural-form)
-		   ,@body)))))))
+	       (let* ((,locale          (i18n:find-translation (db:language ,preferences)))
+		      (,locale-table    (if ,locale
+					    (translation-table ,locale)
+					    (make-hash-table)))
+		      (,locale-plural   (and ,locale
+					     (translation-plural-function ,locale))))
+		     (cl-i18n:with-translation (,locale-table ,locale-plural)
+		       ,@body))
+	       (cl-i18n:with-translation ((make-hash-table :test 'equal)
+					  #'cl-i18n:english-plural-form)
+		 ,@body)))))))
