@@ -26,40 +26,37 @@
 	(check-with-cas-authenticate () nil)
 	(restas:redirect 'root))
       (authenticate (nil nil)
-	(with-standard-html-frame (stream "Welcome"))))
+	(i18n:with-user-translation ((get-session-user-id))
+	  (with-standard-html-frame (stream "Welcome")))))
   #-mini-cas
-    (authenticate (nil nil)
-      (with-standard-html-frame (stream "Welcome"))))
+  (authenticate (nil nil)
+    (i18n:with-user-translation ((get-session-user-id))
+      (with-standard-html-frame (stream "Welcome")))))
 
 (define-lab-route root-login ("/login" :method :post)
-  (authenticate ((hunchentoot:parameter +auth-name-login-name+)
-		 (hunchentoot:parameter +auth-name-login-password+))
+  (with-authentication
     (with-standard-html-frame (stream "Welcome"))))
 
 (define-lab-route storing-classify ("/storage-classify/" :method :get)
-  (authenticate ((hunchentoot:parameter +auth-name-login-name+)
-		 (hunchentoot:parameter +auth-name-login-password+))
+  (with-authentication
     (with-standard-html-frame (stream "Classify")
       (html-template:fill-and-print-template #p"classification-tree.tpl"
 					     nil
 					     :stream stream))))
 
 (define-lab-route acknowledgment ("/acknowledgment" :method :get)
-  (authenticate ((hunchentoot:parameter +auth-name-login-name+)
-		 (hunchentoot:parameter +auth-name-login-password+))
+  (with-authentication
     (with-standard-html-frame (stream "Acknowledgment")
       (html-template:fill-and-print-template #p"acknowledgment.tpl"
 					     nil
 					     :stream stream))))
 
 (define-lab-route legal ("/legal" :method :get)
-  (authenticate ((hunchentoot:parameter +auth-name-login-name+)
-		 (hunchentoot:parameter +auth-name-login-password+))
+  (with-authentication
     (with-standard-html-frame (stream "Acknowledgment")
       (html-template:fill-and-print-template #p"legal.tpl"
 					     nil
 					     :stream stream))))
-
 (defun time-to-nyan ()
   (let ((decoded (multiple-value-list (get-decoded-time))))
     (and (= (elt decoded 4) 4)

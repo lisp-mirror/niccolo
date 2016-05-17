@@ -630,801 +630,801 @@ status :TRANSLATED
 plurals NIL
 
  id "Saved address: ~s - ~s ~s"
-translation ""
+translation "Indirizzo salvato ~s - ~s ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address already in the database"
-translation ""
+translation "Indirizzo già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Link invalid"
-translation ""
+translation "Link non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Zipcode invalid"
-translation ""
+translation "CAP non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "City field invalid"
-translation ""
+translation "Campo Città non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Line-1 invalid"
-translation ""
+translation "Linea-1 non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage ADR codes"
-translation ""
+translation "Gestisci Codici ADR"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new ADR code: ~s - ~s"
-translation ""
+translation "Nuovo codice ADR ~s - ~s salvato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "ADR code already in the database"
-translation ""
+translation "Codice ADR già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "ADR phrase invalid"
-translation ""
+translation "Frase ADR non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "UN code invalid"
-translation ""
+translation "Codice UN non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "ADR code class invalid"
-translation ""
+translation "Codice di classe ADR non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved association"
-translation ""
+translation "Associazione salvata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Hazardous code already associated with this chemical compound."
-translation ""
+translation "Codice di pericolo GHS già associato a questo composto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Hazardous code not in database"
-translation ""
+translation "Codice di pericolo GHS non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical compound not in database"
-translation ""
+translation "Composto chimico non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical ID invalid"
-translation ""
+translation "ID chimico non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Code invalid"
-translation ""
+translation "Codice non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Associate hazardous phrases to chemical compound"
-translation ""
+translation "Associa frase di pericolo al composto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id " Carcinogenic"
-translation ""
+translation "Cancerogeno"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Precautionary code already associated with this chemical compound."
-translation ""
+translation "Codice di precauzione GHS già associa a questo composto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Precautionary code not in database"
-translation ""
+translation "Codice di precauzione GHS non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Associate precautionary phrases to chemical compound"
-translation ""
+translation "Associa la frase di precauzione al composto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved building: ~s - ~s"
-translation ""
+translation "Edificio salvato ~s - ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building already in the database"
-translation ""
+translation "Edificio già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address invalid"
-translation ""
+translation "Indirizzo non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Name invalid"
-translation ""
+translation "Nome non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage Buildings"
-translation ""
+translation "Gestisci edifici"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage CER codes"
-translation ""
+translation "Gestisci codici CER"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new CER code: ~s - ~s"
-translation ""
+translation "Nuovo codice CER ~s - ~s salvato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "CER code already in the database"
-translation ""
+translation "Codice CER già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "CER phrase invalid"
-translation ""
+translation "Frase CER non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "MSDS not uploaded, chemical (id: ~a) not found"
-translation ""
+translation "Scheda di sicurezza non caricata, composto chimico (id: ~a) non trovato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "MSDS not uploaded"
-translation ""
+translation "Scheda di sicurezza non caricata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "MSDS uploaded"
-translation ""
+translation "Scheda di sicurezza caricata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage Chemical Compound"
-translation ""
+translation "Gestisci composti chimici"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved chemical: ~s"
-translation ""
+translation "Composto chimico salvato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical compound already in the database"
-translation ""
+translation "Composto chimico già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Invalid pdf file"
-translation ""
+translation "File pdf non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ~a not deleted. "
-translation ""
+translation "Prodotto ~a non cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ~a deleted. "
-translation ""
+translation "Prodotto ~a cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "no"
-translation ""
+translation "no"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Owner: ~a. Printing date ~a"
-translation ""
+translation "Proprietario: ~a. Data di stampa ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Failure"
-translation ""
+translation "Fallito"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
 
  id "Success"
-translation ""
+translation "Riuscito"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Lent product to ~a"
-translation ""
+translation "Presta prodotto a ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "You can not lend to yourself"
-translation ""
+translation "Non puoi prestare a te stesso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "You do not own this product"
-translation ""
+translation "Non possiedi questo prodotto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product already lent"
-translation ""
+translation "Prodotto già prestato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "There is not any user called ~s"
-translation ""
+translation "Non c'è alcun utente ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "You are not an user!"
-translation ""
+translation "Non sei un utente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Id product invalid"
-translation ""
+translation "Id prodotto non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product not deleted"
-translation ""
+translation "Prodotto non cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product deleted"
-translation ""
+translation "Prodotto cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Item count must be a positive integer"
-translation ""
+translation "La quantità dell'articolo deve essere un intero positivo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Successfully added products"
-translation ""
+translation "Prodotto aggiunto con successo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved chemical product"
-translation ""
+translation "Prodotto chimico salvato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage not in the database"
-translation ""
+translation "Unità di stoccaggio non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical compound not in the database"
-translation ""
+translation "Composto chimico non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Units invalid"
-translation ""
+translation "Unità non valide"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Quantity invalid"
-translation ""
+translation "Quantità non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Notes invalid"
-translation ""
+translation "Note non valide"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Shelf not an integer"
-translation ""
+translation "Il numero dello scaffale non è un intero"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage invalid"
-translation ""
+translation "Unità di stoccaggio non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical invalid"
-translation ""
+translation "Composto chimico non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage Chemical Products"
-translation ""
+translation "Gestisci prodotti chimici"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage GHS Hazard Statements"
-translation ""
+translation "Gestisci frasi di pericolo GHS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new GHS hazard statements: ~s - ~s"
-translation ""
+translation "Nuova frase GHS: ~s - ~s,  salvata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS code already in the database"
-translation ""
+translation "Codice GHS già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Carcinogenic code invalid"
-translation ""
+translation "Codice GHS di cancerogenicità non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS phrase invalid"
-translation ""
+translation "Frase GHS non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS code invalid"
-translation ""
+translation "Codice GHS non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage GHS Precautionary Statements"
-translation ""
+translation "Gestisci frasi di precauzione GHS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new GHS precautionary statements: ~s - ~s"
-translation ""
+translation "Nuova frase di precauzione GHS: ~s - ~s, salvata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map file not uploaded, map (id: ~a) not found"
-translation ""
+translation "file della mappa non caricato, la mappa (id: ~a) non è stata trovata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map not uploaded"
-translation ""
+translation "Mappa non caricata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map uploaded"
-translation ""
+translation "Mappa caricata"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
 
  id "Map ~s saved"
-translation ""
+translation "Mappa ~s salvata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map: ~s Already exists."
-translation ""
+translation "La mappa: ~s esiste già"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Description invalid"
-translation ""
+translation "Descrizione non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "empty request"
-translation ""
+translation "richiesta vuota"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical compound id invalid"
-translation ""
+translation "Id del composto chimico non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map id invalid"
-translation ""
+translation "Id della mappa non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved maps coordinates"
-translation ""
+translation "Coordinate delle mappe salvate"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "y coordinate not valid"
-translation ""
+translation "Coordinata y non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "x coordinate not valid"
-translation ""
+translation "Coordinata x non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map not in the database"
-translation ""
+translation "Mappa non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage id ivalid"
-translation ""
+translation "Unità di stoccaggio non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved storage: ~s"
-translation ""
+translation "Unità di stoccaggio: ~s, salvata "
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage already in the database"
-translation ""
+translation "Unità di stoccaggio già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building not in the database"
-translation ""
+translation "Edificio non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Floor invalid"
-translation ""
+translation "Piano non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building invalid"
-translation ""
+translation "Edificio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Address"
-translation ""
+translation "Aggiorna indirizzo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address does not exists in database."
-translation ""
+translation "L'indirizzo non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address updated"
-translation ""
+translation "Indirizzo aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address already in the database with different ID"
-translation ""
+translation "Indirizzo già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address does not exists in database"
-translation ""
+translation "L'indirizzo non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "ID invalid"
-translation ""
+translation "ID non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Building"
-translation ""
+translation "Aggiorna edificio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building does not exists in database."
-translation ""
+translation "l'Edificio non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building updated"
-translation ""
+translation "Edificio aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building already in the database with different ID"
-translation ""
+translation "Edificio già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address not in the database"
-translation ""
+translation "Indirizzo non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Building does not exists in database"
-translation ""
+translation "L'edificio non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address id invalid"
-translation ""
+translation "L'ID dell'indirizzo non è valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Chemical Compound"
-translation ""
+translation "Aggiorna compsoto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical does not exists in database."
-translation ""
+translation "Il composto chimico non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical: ~s updated"
-translation ""
+translation "Prodotto Chimico: ~s aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical name already in the database with different ID"
-translation ""
+translation "Nome del prodotto chimico già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Id invalid"
-translation ""
+translation "ID non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update GHS hazard statement"
-translation ""
+translation "Aggiorna frase GHS di pericolo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS hazard statements updated."
-translation ""
+translation "Frase di pericolo GHS aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS code already in the database with different ID"
-translation ""
+translation "Code GHS già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS statement does not exists in database."
-translation ""
+translation "Frase GHS non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS id invalid"
-translation ""
+translation "ID GHS non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update GHS precautionary statement"
-translation ""
+translation "Aggiorna frase di precauzione GHS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS precautionary statements updated."
-translation ""
+translation "Frase di precauzione GHS aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Map"
-translation ""
+translation "Mappa aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map does not exists in database."
-translation ""
+translation "La mappa non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map: ~s updated"
-translation ""
+translation "Mappa: ~s aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map description already in the database with different ID"
-translation ""
+translation "Descrizione della mappa già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map not in database"
-translation ""
+translation "Mappa non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage does not exists in database."
-translation ""
+translation "Unità di stoccaggio non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage updated"
-translation ""
+translation "Unità di stoccaggio aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage already in the database with different ID"
-translation ""
+translation "Unità di stoccaggio già presente nel database con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage does not exists in database"
-translation ""
+translation "Unità di stoccaggio non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Ok"
-translation ""
+translation "Ok"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical classifications for safe storage."
-translation ""
+translation "Classificazione dei composti chimici per uno stoccaggio sicuro"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical risk calculator (carcinogenic)"
-translation ""
+translation "Valutazione del rischio chimico (cancerogeni)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical risk calculator"
-translation ""
+translation "Valutazione del rischio chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Hazardous waste form"
-translation ""
+translation "Modulo per i rifiuti speciali pericolosi"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User preferences"
-translation ""
+translation "Preferenze dell'utente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage users"
@@ -1434,21 +1434,21 @@ status :translated
 plurals NIL
 
  id "Managing"
-translation ""
+translation "Gestione degli articoli"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Compound"
-translation ""
+translation "Composto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage"
-translation ""
+translation "Unità di stoccaggio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Maps"
@@ -1458,39 +1458,39 @@ status :TRANSLATED
 plurals NIL
 
  id "Building"
-translation ""
+translation "Edificio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Address"
-translation ""
+translation "Indirizzo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "ADR codes"
-translation ""
+translation "Codici ADR"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "CER codes"
-translation ""
+translation "Codici CER"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS precautionary statements"
-translation ""
+translation "Frasi di precauzione GHS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "GHS Hazard Codes"
-translation ""
+translation "Codici di pericolo GHS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Physical state \\\"~a\\\" not found"
@@ -1500,9 +1500,9 @@ status :TRANSLATED
 plurals NIL
 
  id "Protective device not specified"
-translation ""
+translation "Dispositivo di protezione non specificato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Protective device \\\"~a\\\" not found"
@@ -1512,15 +1512,15 @@ status :TRANSLATED
 plurals NIL
 
  id "Exposition type not specidied"
-translation ""
+translation "Tipo di esposizione non specificata"
 plurals-form ""
-status :UNTRANSLATED
+status NTRANSLATED
 plurals NIL
 
- id "No \\\"H phrases\\\" not found"
-translation ""
+ id "\\\"H phrases\\\" not found"
+translation "Frase H \\\"H prases\" non trovata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Users"
@@ -1530,26 +1530,26 @@ status :TRANSLATED
 plurals NIL
 
  id "Chemical products"
-translation ""
+translation "Prodotto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical compound"
-translation ""
+translation "Composto Chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Places"
-translation ""
+translation "Posti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Safety"
-translation ""
+translation "Sicurezza"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )
