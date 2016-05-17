@@ -77,6 +77,9 @@
  	    (json-addresses-id (array-autocomplete-ghs-hazard-statement-id)))
  	(html-template:fill-and-print-template #p"assoc-chem-haz.tpl"
 					       (with-path-prefix
+						   :name-lb       (_ "Name")
+						   :description-lb (_ "Description")
+						   :operations-lb (_ "Operations")
 						   :compound-name (db:name compound)
 						   :haz-desc      +name-haz-desc+
 						   :haz-code-id   +name-hazcode-id+

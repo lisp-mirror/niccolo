@@ -44,7 +44,7 @@
 </script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/write-waste-letter/">
-  <label for="name-text">Name</label>
+  <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
   <input id="target-cer-id" type="hidden" name="<!-- TMPL_VAR cer-id -->" />
 
@@ -55,15 +55,15 @@
 
   <input id="target-building-id" type="hidden" name="<!-- TMPL_VAR building-id -->" />
 
-  <label for="target-building">Building</label>
+  <label for="target-building"><!-- TMPL_VAR building-lb --></label>
   <span class="ui-widget">
     <input type="text" id="target-building"/>
   </span>
 
-  <label for="lab-no">Laboratory</label>
+  <label for="lab-no"><!-- TMPL_VAR laboratory-lb --></label>
   <input type="text" id="lab-no" name="<!-- TMPL_VAR lab-num -->" />
 
-  <label for="weight">Weight</label>
+  <label for="weight"><!-- TMPL_VAR weight-lb --></label>
   <input type="text" id="weight" name="<!-- TMPL_VAR weight -->" />
 
 
@@ -79,7 +79,7 @@
   </fieldset>
 
   <div>
-    <div><label for="textarea-note-waste">Description</label>
+    <div><label for="textarea-note-waste"><!-- TMPL_VAR description-lb --></label>
     <textarea id="textarea-note-waste" name="<!-- TMPL_VAR description -->"></textarea>
     <input type="submit" />
   </div>

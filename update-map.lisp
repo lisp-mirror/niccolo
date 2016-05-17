@@ -57,6 +57,7 @@
     (with-standard-html-frame (stream (_ "Update Map") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-map.tpl"
 					     (with-path-prefix
+						 :description-lb (_ "Description")
 						 :id         (and id
 								  (db:id new-map))
 						 :desc-value (and id

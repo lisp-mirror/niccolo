@@ -1,9 +1,9 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-cer/">
-  <label for="code-text">Code</label>
+  <label for="code-text"><!-- TMPL_VAR code-lb --></label>
   <input id="code-text" type="text" name="<!-- TMPL_VAR code -->" />
-  <label for="expl-text">Explaination</label>
+  <label for="expl-text"><!-- TMPL_VAR explanation-lb --></label>
   <input id="expl-text" type="text" name="<!-- TMPL_VAR expl -->" />
   <input type="submit" />
 </form>
@@ -12,9 +12,9 @@
   <thead>
     <tr>
       <th class="cer-id-hd">ID</th>
-      <th class="cer-code-hd">Code</th>
-      <th class="cer-name-hd">Statement</th>
-      <th class="cer-delete-link-d">Delete</th>
+      <th class="cer-code-hd"><!-- TMPL_VAR code-lb --></th>
+      <th class="cer-name-hd"><!-- TMPL_VAR statement-lb --></th>
+      <th class="cer-delete-link-d"><!-- TMPL_VAR delete-lb --></th>
     </tr>
   </thead>
   <tbody>

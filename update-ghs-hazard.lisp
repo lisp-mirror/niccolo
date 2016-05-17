@@ -55,6 +55,9 @@
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-hazard.tpl"
 					     (with-path-prefix
+						 :code-lb (_ "Code")
+						 :statement-lb (_ "Statement")
+						 :carcinogenic-p-lb (_ "Carcinogenic?")
 						 :id         (and id
 								  (db:id new-haz))
 						 :code-value (and id

@@ -56,6 +56,8 @@
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-precautionary.tpl"
 					     (with-path-prefix
+						 :code-lb (_ "Code")
+						 :statement-lb (_ "Statement")
 						 :id         (and id
 								  (db:id new-prec))
 						 :code-value (and id

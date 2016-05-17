@@ -8,8 +8,10 @@
 
 
 <div id="footer">
-  <a href="<!-- TMPL_VAR path-prefix -->/acknowledgment">Acknowledgment</a> -
-  <a href="<!-- TMPL_VAR path-prefix -->/legal">Legal</a>
+  <a href="<!-- TMPL_VAR path-prefix -->/acknowledgment">
+    <!-- TMPL_VAR acknowledgment-lb --></a> -
+  <a href="<!-- TMPL_VAR path-prefix -->/legal">
+    <!-- TMPL_VAR legal-lb --></a>
 </div>
   </body>
 </html>

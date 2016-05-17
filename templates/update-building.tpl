@@ -19,12 +19,12 @@
 	 id="update-building-id"
 	 value="<!-- TMPL_VAR id -->"
 	 disabled="true"/>
-  <label for="name-text">Name</label>
+  <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text"
 	 type="text"
 	 value="<!-- TMPL_VAR name-value -->"
 	 name="<!-- TMPL_VAR name -->" />
-  <label for="target-address">Address</label>
+  <label for="target-address"><!-- TMPL_VAR address-lb --></label>
   <input id="target-address-id" type="hidden"
 	 value="<!-- TMPL_VAR address-id-value -->"
 	 name="<!-- TMPL_VAR address-id -->" />

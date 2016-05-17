@@ -93,6 +93,11 @@
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-hazard.tpl"
 					     (with-path-prefix
+						 :code-lb (_ "Code")
+						 :statement-lb (_ "Statement")
+						 :carcinogenic-p-lb (_ "Carcinogenic?")
+						 :carcinogenic-lb (_ "Carcinogenic (according to IARC)")
+						 :operations-lb   (_ "Operations")
 						 :code +name-ghs-hazard-code+
 						 :expl +name-ghs-hazard-expl+
 						 :carcinogenic +name-ghs-hazard-carcinogenic+

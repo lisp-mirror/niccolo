@@ -209,9 +209,10 @@
        (html-template:fill-and-print-template #p"main-content-wrapper-footer.tpl"
 					      nil
 					      :stream ,stream)
-
        (html-template:fill-and-print-template #p"footer.tpl"
-					      (with-path-prefix)
+					      (with-path-prefix
+						  :acknowledgment-lb (_ "Acknowledgment")
+						  :legal-lb          (_ "Legal"))
 					      :stream ,stream)))
 
 (defun fetch-raw-template-list (what template-keyword &key

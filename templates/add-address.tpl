@@ -1,13 +1,13 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-address/">
-  <label for="line-1-text">Address</label>
+  <label for="line-1-text"><!-- TMPL_VAR address-lb --></label>
   <input id="line-1-text" type="text" name="<!-- TMPL_VAR line-1 -->" />
   <label for="city-text">City</label>
   <input id="city-text" type="text" name="<!-- TMPL_VAR city -->" />
-  <label for="zipcode-text">Zipcode</label>
+  <label for="zipcode-text"><!-- TMPL_VAR zipcode-lb --></label>
   <input id="zipcode-text" type="text" name="<!-- TMPL_VAR zipcode -->" />
-  <label for="link-text">Weblink</label>
+  <label for="link-text"><!-- TMPL_VAR link-lb --></label>
   <input id="link-text" type="text" name="<!-- TMPL_VAR link -->" />
   <input type="submit" />
 </form>
@@ -15,9 +15,9 @@
 <table class="sortable ghs-hazard-list">
   <thead>
     <tr>
-      <th class="address-all-hd">Address</th>
-      <th class="address-link-hd">Link</th>
-      <th class="address-op-link-hd">Operation</th>
+      <th class="address-all-hd"><!-- TMPL_VAR address-lb --></th>
+      <th class="address-link-hd"><!-- TMPL_VAR link-lb --></th>
+      <th class="address-op-link-hd"><!-- TMPL_VAR operation-lb --></th>
     </tr>
   </thead>
   <tbody>

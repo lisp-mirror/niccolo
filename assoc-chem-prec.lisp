@@ -67,6 +67,9 @@
  	    (json-addresses-id (array-autocomplete-ghs-precautionary-statement-id)))
  	(html-template:fill-and-print-template #p"assoc-chem-prec.tpl"
 					       (with-path-prefix
+						   :name-lb       (_ "Name")
+						   :description-lb (_ "Description")
+						   :operations-lb (_ "Operations")
 						   :compound-name (db:name compound)
 						   :prec-desc      +name-prec-desc+
 						   :prec-code-id   +name-preccode-id+

@@ -50,6 +50,10 @@
 
       (html-template:fill-and-print-template #p"add-cer.tpl"
 					     (with-path-prefix
+						 :code-lb        (_ "Code")
+						 :statement-lb   (_ "Statement")
+						 :delete-lb      (_ "Delete")
+						 :explanation-lb (_ "Explanation")
 						 :code +name-cer-code+
 						 :expl +name-cer-expl+
 						 :data-table all-ghss)

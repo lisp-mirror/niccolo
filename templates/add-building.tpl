@@ -16,9 +16,9 @@
 </script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-building/">
-  <label for="name-text">Name</label>
+  <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
-  <label for="target-address">Address</label>
+  <label for="target-address"><!-- TMPL_VAR address-lb --></label>
   <input id="target-address-id" type="hidden" name="<!-- TMPL_VAR address-id -->" />
   <span class="ui-widget">
     <input type="text" id="target-address"/>
@@ -31,10 +31,10 @@
 <table class="sortable building-list">
   <thead>
     <tr>
-      <th class="build-name-hd">Name</th>
-      <th class="build-address-hd">Address</th>
-      <th class="build-address-link-hd">Link</th>
-      <th class="build-operations">Operations</th>
+      <th class="build-name-hd"><!-- TMPL_VAR name-lb --></th>
+      <th class="build-address-hd"><!-- TMPL_VAR address-lb --></th>
+      <th class="build-address-link-hd"><!-- TMPL_VAR link-lb --></th>
+      <th class="build-operations"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
   <tbody>

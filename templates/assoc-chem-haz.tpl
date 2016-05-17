@@ -18,7 +18,7 @@
 <div class="compound-name"><!-- TMPL_VAR compound-name --></div>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-haz/">
-  <label for="target-haz">Name</label>
+  <label for="target-haz"><!-- TMPL_VAR name-lb --></label>
   <input id="target-compound-id" type="hidden" name="<!-- TMPL_VAR haz-compound-id -->"
 	 value="<!-- TMPL_VAR value-haz-compound-id -->"/>
   <input id="target-hazcode-id" type="hidden" name="<!-- TMPL_VAR haz-code-id -->" />
@@ -32,8 +32,8 @@
   <thead>
     <tr>
       <th class="haz-id-hd">ID</th>
-      <th class="haz-desc-hd">Description</th>
-      <th class="haz-op-hd">Operation</th>
+      <th class="haz-desc-hd"><!-- TMPL_VAR description-lb --></th>
+      <th class="haz-op-hd"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
   <tbody>

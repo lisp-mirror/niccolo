@@ -1,11 +1,11 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-ghs-hazard/">
-  <label for="code-text">Code</label>
+  <label for="code-text"><!-- TMPL_VAR code-lb --></label>
   <input id="code-text" type="text" name="<!-- TMPL_VAR code -->" />
-  <label for="expl-text">Statement</label>
+  <label for="expl-text"><!-- TMPL_VAR statement-lb --></label>
   <input id="expl-text" type="text" name="<!-- TMPL_VAR expl -->" />
-  <label for="carcinogenic-chk">Carcinogenic?</label>
+  <label for="carcinogenic-chk"><!-- TMPL_VAR carcinogenic-p-lb --></label>
   <input id="carcinogenic-chk" type="text" name="<!-- TMPL_VAR carcinogenic -->" />
   <input type="submit" />
 </form>
@@ -14,10 +14,10 @@
   <thead>
   <tr>
     <th class="hazard-id-hd">ID</th>
-    <th class="hazard-code-hd">Code</th>
-    <th class="hazard-name-hd">Statement</th>
-    <th class="hazard-carcinogenic-hd">Carcinogenic (according to IARC)</th>
-    <th class="hazard-operations-hd">Operation</th>
+    <th class="hazard-code-hd"><!-- TMPL_VAR code-lb --></th>
+    <th class="hazard-name-hd"><!-- TMPL_VAR statement-lb --></th>
+    <th class="hazard-carcinogenic-hd"><!-- TMPL_VAR carcinogenic-lb --></th>
+    <th class="hazard-operations-hd"><!-- TMPL_VAR operations-lb --></th>
   </tr>
   </thead>
   <tbody>

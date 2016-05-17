@@ -1430,7 +1430,7 @@ plurals NIL
  id "Manage users"
 translation "Gestisci gli utenti"
 plurals-form ""
-status :translated
+status :TRANSLATED
 plurals NIL
 
  id "Managing"
@@ -1542,7 +1542,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Places"
-translation "Posti"
+translation "Luoghi"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1551,5 +1551,341 @@ plurals NIL
 translation "Sicurezza"
 plurals-form ""
 status :TRANSLATED
+plurals NIL
+
+ id "Zipcode"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Operation"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Link"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Delete"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Proper Shipping Name"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "UNCode (for example UN1000)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Explanation"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "UN Code"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Class"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Operations"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Description"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Name"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Statement"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Code"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Data Sheet"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "MSDS file"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Notes"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Structure"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Select"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Deselect all"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Select all"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sum quantities"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User"
+translation "Utente"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Lending"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Generate barcode"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Other operations"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Notes (optional)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Floor"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Owner"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Barcode number (ID)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Search products"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Item count"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Unit of measure"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Quantity (Mass or Volume)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Shelf"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Storage name"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Compound name"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Add new product"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Carcinogenic (according to IARC)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Carcinogenic?"
+translation "Cancerogeno?"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Acknowledgment"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Classify"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Welcome"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "No \\\"H phrases\\\" not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Map"
+translation "Mappa"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Weblink"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "City"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update Storage"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Password"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Confirm new password"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "New password"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Old password"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "This system  uses a  central authentication  system (CAS).  Ask your  system administrators/Webmaster/IT Department about users identity management."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Legal"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Weight"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
 plurals NIL
 )

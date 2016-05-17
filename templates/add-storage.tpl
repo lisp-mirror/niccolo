@@ -82,14 +82,14 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
 </div>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-storage/">
-  <label for="name-text">Name</label>
+  <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
-  <label for="target-building">Building</label>
+  <label for="target-building"><!-- TMPL_VAR building-lb --></label>
   <input id="target-building-id" type="hidden" name="<!-- TMPL_VAR building-id -->" />
   <span class="ui-widget">
     <input type="text" id="target-building"/>
   </span>
-  <label for="floor-text">Floor</label>
+  <label for="floor-text"><!-- TMPL_VAR floor-lb --></label>
   <input id="floor-text" type="text" name="<!-- TMPL_VAR floor -->" />
   <input type="submit" />
 </form>
@@ -99,11 +99,11 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
   <thead>
     <tr>
       <th class="storage-id-hd">ID</th>
-      <th class="storage-map-link-hd">Map</th>
-      <th class="storage-name-hd">Name</th>
-      <th class="storage-building-name-hd">Building</th>
-      <th class="storage-floor-hd">Floor</th>
-      <th class="storage-operations">Operations</th>
+      <th class="storage-map-link-hd"><!-- TMPL_VAR map-lb --></th>
+      <th class="storage-name-hd"><!-- TMPL_VAR name-lb --></th>
+      <th class="storage-building-name-hd"><!-- TMPL_VAR building-lb --></th>
+      <th class="storage-floor-hd"><!-- TMPL_VAR floor-lb --></th>
+      <th class="storage-operations"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
   <tbody>

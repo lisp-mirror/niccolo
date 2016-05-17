@@ -184,6 +184,36 @@
 	  (json-all-storage-long-desc)
 	(html-template:fill-and-print-template #p"add-chemical-product.tpl"
 					       (with-path-prefix
+						   :add-new-product-lb (_ "Add new product")
+						   :compound-name-lb  (_ "Compound name")
+						   :storage-name-lb   (_ "Storage name")
+						   :shelf-lb          (_ "Shelf")
+						   :quantity-lb      (_ "Quantity (Mass or Volume)")
+						   :units-lb          (_ "Unit of measure")
+						   :item-count-lb     (_ "Item count")
+						   :search-products-legend-lb (_ "Search products")
+						   :barcode-number-lb  (_ "Barcode number (ID)")
+						   :owner-lb           (_ "Owner")
+						   :name-lb            (_ "Name")
+						   :building-lb        (_ "Building")
+						   :floor-lb           (_ "Floor")
+						   :shelf-lb           (_ "Shelf")
+						   :notes-optional-lb  (_ "Notes (optional)")
+						   :other-operations-lb (_ "Other operations")
+						   :submit-gen-barcode-lb  (_ "Generate barcode")
+						   :submit-massive-delete-lb  (_ "Delete")
+						   :lending-lb          (_ "Lending")
+						   :submit-lend-to-lb     +op-submit-lend-to+
+						   :user-lb             (_ "User")
+						   :sum-quantities-lb     (_ "Sum quantities")
+						   :select-all-lb       (_ "Select all")
+						   :deselect-all-lb       (_ "Deselect all")
+						   :select-lb           (_ "Select")
+						   :owner-lb            (_ "Owner")
+						   :structure-lb        (_ "Structure")
+						   :storage-lb           (_ "Storage")
+						   :notes-lb            (_ "Notes")
+						   :operations-lb        (_ "Operations")
 						   :chemical-id +name-chem-id+
 						   :storage-id  +name-chp-storage-id+
 						   :shelf       +name-shelf+

@@ -1,11 +1,11 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
 <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/add-chemical/" enctype="multipart/form-data">
-  <label for="name-text">Name</label>
+  <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
   <label for="cid-text">Pubchem CID</label>
   <input id="cid-text" type="text" name="<!-- TMPL_VAR pubchem-cid -->" />
-  <label for="msds-file">MSDS file</label>
+  <label for="msds-file"><!-- TMPL_VAR msds-file-lb --></label>
   <input id="msds-file" type="file" name="<!-- TMPL_VAR msds-pdf -->" />
   <input type="submit" />
 </form>
@@ -15,9 +15,9 @@
   <thead>
     <tr>
       <th class="chemical-id-hd">ID</th>
-      <th class="chemical-name-hd">Name</th>
-      <th class="chemical-data-sheet-hd">Data Sheet</th>
-      <th class="chemical-operations">Operations</th>
+      <th class="chemical-name-hd"><!-- TMPL_VAR name-lb --></th>
+      <th class="chemical-data-sheet-hd"><!-- TMPL_VAR data-sheet-lb --></th>
+      <th class="chemical-operations"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
   <tbody>

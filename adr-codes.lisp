@@ -56,6 +56,12 @@
 				      :errors errors)
       (html-template:fill-and-print-template #p"add-adr.tpl"
 					     (with-path-prefix
+						 :class-lb   (_ "Class")
+						 :un-code-lb (_ "UN Code")
+						 :explanation-lb (_ "Explanation")
+						 :uncode-ex-lb (_ "UNCode (for example UN1000)")
+						 :proper-shipping-lb (_ "Proper Shipping Name")
+						 :delete-lb          (_ "Delete")
 						 :code-class +name-adr-code-class+
 						 :uncode     +name-adr-uncode+
 						 :expl       +name-adr-expl+

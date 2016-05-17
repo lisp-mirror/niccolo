@@ -88,29 +88,29 @@
 <div id="dialog-sum-quantity" title="Total"></div>
 
 <fieldset class="add-new-chem-prod">
-  <legend>Add new product</legend>
+  <legend><!-- TMPL_VAR add-new-product-lb --></legend>
   <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-chem-prod/">
-    <label for="target-chemical">Compound name</label>
+    <label for="target-chemical"><!-- TMPL_VAR compound-name-lb --></label>
     <input id="target-chemical-id" type="hidden" name="<!-- TMPL_VAR chemical-id -->" />
     <span class="ui-widget">
       <input type="text" id="target-chemical"/>
     </span>
-    <label for="target-storage">Storage name</label>
+    <label for="target-storage"><!-- TMPL_VAR storage-name-lb --></label>
     <input id="target-storage-id" type="hidden" name="<!-- TMPL_VAR storage-id -->" />
     <span class="ui-widget">
       <input type="text" id="target-storage"/>
     </span>
 
-    <label for="shelf">Shelf</label>
+    <label for="shelf"><!-- TMPL_VAR shelf-lb --></label>
     <input id="shelf" type="text" name="<!-- TMPL_VAR shelf -->" />
-    <label for="quantity">Quantity (Mass or Volume)</label>
+    <label for="quantity"><!-- TMPL_VAR quantity-lb --></label>
     <input id="quantity" type="text" name="<!-- TMPL_VAR quantity -->" />
-    <label for="units">Unit of measure</label>
+    <label for="units"><!-- TMPL_VAR units-lb --></label>
     <input id="units" type="text" name="<!-- TMPL_VAR units -->" />
-    <label for="count">Item count</label>
+    <label for="count"><!-- TMPL_VAR item-count-lb --></label>
     <input id="count" type="text" name="<!-- TMPL_VAR count -->" />
 
-    <label for="textarea-add-chem-prod">Notes (optional)</label>
+    <label for="textarea-add-chem-prod"><!-- TMPL_VAR  notes-optional-lb --></label>
     <textarea id ="textarea-add-chem-prod" class="textarea-add-chem-prod"
 	      name="<!-- TMPL_VAR notes -->"></textarea>
 
@@ -119,22 +119,22 @@
 </fieldset>
 
 <fieldset class="search-chem-prod">
-  <legend>Search products</legend>
+  <legend><!-- TMPL_VAR search-products-legend-lb --></legend>
   <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/search-chem-prod/">
-    <label for="chem-owner">Barcode number (ID)</label>
+    <label for="chem-owner"><!-- TMPL_VAR barcode-number-lb --></label>
     <input id="chem-id" type="text" name="<!-- TMPL_VAR chemp-id -->">
-    <label for="chem-owner">Owner</label>
+    <label for="chem-owner"><!-- TMPL_VAR owner-lb --></label>
     <input id="chem-owner" type="text" name="<!-- TMPL_VAR owner -->"
 	   value="<!-- TMPL_VAR value-owner -->" />
-    <label for="chem-name">Name</label>
+    <label for="chem-name"><!-- TMPL_VAR name-lb --></label>
     <input id="chem-name" type="text" name="<!-- TMPL_VAR name -->" />
-    <label for="chem-building">Building</label>
+    <label for="chem-building"><!-- TMPL_VAR building-lb --></label>
     <input id="chem-building" type="text" name="<!-- TMPL_VAR building -->" />
-    <label for="chem-floor">Floor</label>
+    <label for="chem-floor"><!-- TMPL_VAR floor-lb --></label>
     <input id="chem-floor" type="text" name="<!-- TMPL_VAR floor -->" />
-    <label for="chem-storage">Storage name</label>
+    <label for="chem-storage"><!-- TMPL_VAR storage-name-lb --></label>
     <input id="chem-storage" type="text" name="<!-- TMPL_VAR storage -->" />
-    <label for="chem-shelf">Shelf</label>
+    <label for="chem-shelf"><!-- TMPL_VAR shelf-lb --></label>
     <input id="chem-shelf" type="text" name="<!-- TMPL_VAR search-shelf -->" />
     <input id="submit-search" type="submit" />
   </form>
@@ -143,52 +143,53 @@
 
 <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/others-op-chem-prod/">
   <fieldset class="other-ops-chem-prod">
-    <legend>Other operations</legend>
+    <legend><!-- TMPL_VAR  other-operations-lb --></legend>
     <input id="submit-gen-barcode" type="submit"
 	   name="<!-- TMPL_VAR submit-gen-barcode -->"
-	   value="<!-- TMPL_VAR submit-gen-barcode -->"/>
+	   value="<!-- TMPL_VAR submit-gen-barcode-lb -->"/>
     <input id="submit-gen-barcode" type="submit"
 	   name="<!-- TMPL_VAR submit-massive-delete -->"
-	   value="<!-- TMPL_VAR submit-massive-delete -->"/>
+	   value="<!-- TMPL_VAR submit-massive-delete-lb -->"/>
     <fieldset class="lending">
-      <legend>Lending</legend>
-      <label for="username-lending">User</label>
-      <input id="username-lending" type="text" name="<!-- TMPL_VAR username-lending -->" />
+      <legend><!-- TMPL_VAR lending-lb --></legend>
+      <label for="username-lending"><!-- TMPL_VAR user-lb --></label>
+      <input id="username-lending" type="text"
+	     name="<!-- TMPL_VAR username-lending -->" />
       <input id="submit-lend-to" type="submit"
 	     name="<!-- TMPL_VAR submit-lend-to -->"
-	     value="<!-- TMPL_VAR submit-lend-to -->"/>
+	     value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
     </fieldset>
     <input id="sum-selected" type="submit"
 	   name=""
-	   value="Sum quantities"/>
+	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
 
     <input id="select-all" type="submit"
 	   name=""
-	   value="Select all"/>
+	   value="<!-- TMPL_VAR select-all-lb -->"/>
     <input id="deselect-all" type="submit"
 	   name=""
-	   value="Deselect all"/>
+	   value="<!-- TMPL_VAR deselect-all-lb -->"/>
 
   </fieldset>
 
   <table class="sortable chemp-list">
     <thead>
       <tr>
-	<th class="chemp-select-id-hd">Select</th>
+	<th class="chemp-select-id-hd"><!-- TMPL_VAR select-lb --></th>
 	<th class="chemp-id-hd">ID</th>
-	<th class="chemp-owner-hd">Owner</th>
-	<th class="chemp-name-hd">Name</th>
-	<th class="chemp-thumb-hd">Structure</th>
-	<th class="chemp-building-name-hd">Building</th>
-	<th class="chemp-floor-hd">Floor</th>
-	<th class="chemp-storage-hd">Storage</th>
-	<th class="chemp-shelf-hd">Shelf</th>
+	<th class="chemp-owner-hd"><!-- TMPL_VAR owner-lb --></th>
+	<th class="chemp-name-hd"><!-- TMPL_VAR  name-lb --></th>
+	<th class="chemp-thumb-hd"><!-- TMPL_VAR  structure-lb --></th>
+	<th class="chemp-building-name-hd"><!-- TMPL_VAR building-lb --></th>
+	<th class="chemp-floor-hd"><!-- TMPL_VAR floor-lb --></th>
+	<th class="chemp-storage-hd"><!-- TMPL_VAR storage-lb --></th>
+	<th class="chemp-shelf-hd"><!-- TMPL_VAR shelf-lb --></th>
 	<th class="chemp-quantity-hd">
-	  Quantity (mass or volume)
+	  <!-- TMPL_VAR quantity-lb -->
 	</th>
-	<th class="chemp-quantity-hd">Unit of measure</th>
-	<th class="chemp-notes-hd">Notes</th>
-	<th class="chemp-operations">Operations</th>
+	<th class="chemp-quantity-hd"><!-- TMPL_VAR units-lb --></th>
+	<th class="chemp-notes-hd"><!-- TMPL_VAR notes-lb --></th>
+	<th class="chemp-operations"><!-- TMPL_VAR operations-lb --></th>
       </tr>
     </thead>
     <tbody>

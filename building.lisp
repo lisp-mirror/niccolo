@@ -85,6 +85,10 @@
 	    (json-addresses-id (array-autocomplete-address-id)))
 	(html-template:fill-and-print-template #p"add-building.tpl"
 					       (with-path-prefix
+						   :name-lb       (_ "Name")
+						   :address-lb    (_ "Address")
+						   :link-lb       (_ "Link")
+						   :operations-lb (_ "Operations")
 						   :id         +name-building-id+
 						   :name       +name-building-proper-name+
 						   :address    +name-building-address+

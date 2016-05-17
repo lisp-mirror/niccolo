@@ -61,6 +61,9 @@
 
       (html-template:fill-and-print-template #p"add-precautionary.tpl"
 					     (with-path-prefix
+						 :code-lb (_ "Code")
+						 :statement-lb (_ "Statement")
+						 :operations-lb   (_ "Operations")
 						 :code +name-ghs-precautionary-code+
 						 :expl +name-ghs-precautionary-expl+
 						 :data-table all-ghss)

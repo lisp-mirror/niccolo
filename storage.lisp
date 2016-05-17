@@ -107,6 +107,11 @@
 	    (json-building-id (array-autocomplete-building-id)))
 	(html-template:fill-and-print-template #p"add-storage.tpl"
 					       (with-path-prefix
+						   :name-lb       (_ "Name")
+						   :building-lb   (_ "Building")
+						   :floor-lb      (_ "Floor")
+						   :map-lb        (_ "Map")
+						   :operations-lb (_ "Operations")
 						   :name        +name-storage-proper-name+
 						   :building-id +name-storage-building-id+
 						   :floor       +name-storage-floor+

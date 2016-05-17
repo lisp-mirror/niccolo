@@ -66,6 +66,8 @@
 	 (new-building (and id
 			    (object-exists-in-db-p 'db:building id)))
 	 (template      (with-path-prefix
+			    :name-lb          (_ "Name")
+			    :address-lb       (_ "Address")
 			    :id               (and id
 						   (db:id new-building))
 			    :name-value       (and id

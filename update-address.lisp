@@ -66,6 +66,10 @@
     (with-standard-html-frame (stream (_ "Update Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-address.tpl"
 					     (with-path-prefix
+						 :address-lb (_ "Address")
+						 :city-lb    (_ "City")
+						 :zipcode-lb (_ "Zipcode")
+						 :weblink-lb (_ "Weblink")
 						 :id         (and id
 								  (db:id new-address))
 						 :line-1-value (and id

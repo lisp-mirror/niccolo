@@ -70,6 +70,9 @@
 	 (new-storage (and id
 			    (object-exists-in-db-p 'db:storage id)))
 	 (template    (with-path-prefix
+			  :name-lb     (_ "Name")
+			  :building-lb (_ "Building")
+			  :floor-lb    (_ "Floor")
 			  :id               (and id
 						 (db:id new-storage))
 			  :name-value       (and id
@@ -89,7 +92,7 @@
 			  :floor             +name-storage-floor+
 			  :json-buildings    json-buildings
 			  :json-buildings-id json-buildings-id)))
-    (with-standard-html-frame (stream (_ "Update Building")
+    (with-standard-html-frame (stream (_ "Update Storage")
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-storage.tpl"
 					     template

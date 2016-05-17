@@ -44,7 +44,7 @@
 
 (defun manage-waste-letter (infos errors)
   (with-standard-html-frame (stream
-			     "Hazardous waste form"
+			     (_ "Hazardous waste form")
 			     :errors errors
 			     :infos  infos)
     (let ((html-template:*string-modifier* #'identity)
@@ -54,6 +54,11 @@
 	  (json-building-id (array-autocomplete-building-id)))
 	(html-template:fill-and-print-template #p"waste-letter.tpl"
 					       (with-path-prefix
+						   :name-lb          (_ "Name")
+						   :building-lb      (_ "Building")
+						   :laboratory-lb    (_ "Laboratory")
+						   :weight-lb        (_ "Weight")
+						   :description-lb   (_ "Description")
 						   :name             +name-waste-user-name+
 						   :cer-id           +name-waste-cer-id+
 						   :building-id      +name-waste-building-id+

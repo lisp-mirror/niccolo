@@ -18,7 +18,7 @@
 <div class="compound-name"><!-- TMPL_VAR compound-name --></div>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-prec/">
-  <label for="target-prec">Name</label>
+  <label for="target-prec"><!-- TMPL_VAR name-lb --></label>
   <input id="target-compound-id" type="hidden" name="<!-- TMPL_VAR prec-compound-id -->"
 	 value="<!-- TMPL_VAR value-prec-compound-id -->"/>
   <input id="target-preccode-id" type="hidden" name="<!-- TMPL_VAR prec-code-id -->" />
@@ -32,8 +32,8 @@
   <thead>
     <tr>
       <th class="prec-id-hd">ID</th>
-      <th class="prec-desc-hd">Description</th>
-      <th class="prec-op-hd">Operation</th>
+      <th class="prec-desc-hd"><!-- TMPL_VAR description-lb --></th>
+      <th class="prec-op-hd"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
   <tbody>

@@ -27,33 +27,33 @@
 	(restas:redirect 'root))
       (authenticate (nil nil)
 	(i18n:with-user-translation ((get-session-user-id))
-	  (with-standard-html-frame (stream "Welcome")))))
+	  (with-standard-html-frame (stream (_ "Welcome"))))))
   #-mini-cas
   (authenticate (nil nil)
     (i18n:with-user-translation ((get-session-user-id))
-      (with-standard-html-frame (stream "Welcome")))))
+      (with-standard-html-frame (stream (_ "Welcome"))))))
 
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
-    (with-standard-html-frame (stream "Welcome"))))
+    (with-standard-html-frame (stream (_ "Welcome")))))
 
 (define-lab-route storing-classify ("/storage-classify/" :method :get)
   (with-authentication
-    (with-standard-html-frame (stream "Classify")
+    (with-standard-html-frame (stream (_ "Classify"))
       (html-template:fill-and-print-template #p"classification-tree.tpl"
 					     nil
 					     :stream stream))))
 
 (define-lab-route acknowledgment ("/acknowledgment" :method :get)
   (with-authentication
-    (with-standard-html-frame (stream "Acknowledgment")
+    (with-standard-html-frame (stream (_ "Acknowledgment"))
       (html-template:fill-and-print-template #p"acknowledgment.tpl"
 					     nil
 					     :stream stream))))
 
 (define-lab-route legal ("/legal" :method :get)
   (with-authentication
-    (with-standard-html-frame (stream "Acknowledgment")
+    (with-standard-html-frame (stream (_ "Acknowledgment"))
       (html-template:fill-and-print-template #p"legal.tpl"
 					     nil
 					     :stream stream))))

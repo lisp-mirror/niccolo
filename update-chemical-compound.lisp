@@ -64,6 +64,7 @@
 				      :errors errors)
       (html-template:fill-and-print-template #p"update-chemical.tpl"
 					     (with-path-prefix
+						 :name-lb (_ "Name")
 						 :id   (and id
 							    (db:id new-chem))
 						 :name-value (and id

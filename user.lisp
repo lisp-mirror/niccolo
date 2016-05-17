@@ -126,11 +126,16 @@
   (with-standard-html-frame (stream (_ "Change password") :infos infos :errors errors)
     #+mini-cas
     (html-template:fill-and-print-template #p"change-password.tpl"
-					   nil
+					   (list
+					    :message-lb
+					    (_ "This system  uses a  central authentication  system (CAS).  Ask your  system administrators/Webmaster/IT Department about users identity management."))
 					   :stream stream)
     #-mini-cas
     (html-template:fill-and-print-template #p"change-password-no-cas.tpl"
 					   (with-path-prefix
+					       :old-password-lb (_ "Old password")
+					       :new-password-lb (_ "New password")
+					       :confirm-new-password-lb (_ "Confirm new password")
 					       :old-password +name-user-old-password+
 					       :password     +name-user-password+
 					       :password-2   +name-user-password-2+
@@ -144,6 +149,9 @@
     (with-standard-html-frame (stream (_ "Manage user") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-user.tpl"
 					     (with-path-prefix
+						 :name-lb       (_ "Name")
+						 :password-lb   (_ "Password")
+						 :operations-lb (_ "Operations")
 						 :login-name +name-user-name+
 						 :login-pass +name-user-password+
 						 :data-table all-users)
