@@ -78,108 +78,110 @@
     });
 </script>
 
-    <label for="r-phrases">H phrase</label>
+    <label for="r-phrases"><!-- TMPL_VAR h-phrase-lb --></label>
     <select id="r-phrases" multiple>
       <!-- TMPL_LOOP option-h-codes -->
       <option value="<!-- TMPL_VAR h-code -->"><!-- TMPL_VAR h-code --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="exp-types">Exposition types</label>
+    <label for="exp-types"><!-- TMPL_VAR exposition-types-lb --></label>
     <select id="exp-types" multiple>
       <!-- TMPL_LOOP option-exp-types -->
       <option value="<!-- TMPL_VAR exp-type -->"><!-- TMPL_VAR exp-type --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="phys-states">Physical state</label>
+    <label for="phys-states"><!-- TMPL_VAR physical-state-lb --></label>
     <select id="phys-states">
       <!-- TMPL_LOOP option-phys-states -->
       <option value="<!-- TMPL_VAR phys-state -->"><!-- TMPL_VAR phys-state --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="working-temp">Working temperature (°C)</label>
+    <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
     <input type="text" id="working-temp" value="25"/>
-    <label for="boiling-point">Boiling point (°C)</label>
+    <label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
     <input type="text" id="boiling-point" value="100"/>
-    <label for="exp-time-type">Exposition time type</label>
+    <label for="exp-time-type"><!-- TMPL_VAR exposition-time-type-lb --></label>
     <select id="exp-time-type">
       <!-- TMPL_LOOP option-exp-time-type -->
       <option value="<!-- TMPL_VAR exp-time-type -->"><!-- TMPL_VAR exp-time-type --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="esposition-time">Exposition time (min)</label>
+    <label for="esposition-time"><!-- TMPL_VAR exposition-time-lb --></label>
     <input type="text" id="exposition-time" value="100"/>
-    <label for="usage">Usage</label>
+    <label for="usage"><!-- TMPL_VAR usage-lb --></label>
     <select id="usage">
       <!-- TMPL_LOOP option-usages -->
       <option value="<!-- TMPL_VAR usage -->"><!-- TMPL_VAR usage --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="quantity-used">Quantity used (g)</label>
+    <label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
     <input type="text" id="quantity-used" value="0.0" />
-    <label for="quantity-stocked">Quantity stocked (g)</label>
+    <label for="quantity-stocked"><!-- TMPL_VAR quantity-stocked-lb --></label>
     <input type="text" id="quantity-stocked" value="0.0" />
-    <label for="work-type">Work type</label>
+    <label for="work-type"><!-- TMPL_VAR work-type-lb --></label>
     <select id="work-type">
       <!-- TMPL_LOOP option-work-types -->
       <option value="<!-- TMPL_VAR work-type -->"><!-- TMPL_VAR work-type --></option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="protection-factors">Protection factors</label>
+    <label for="protection-factors"><!-- TMPL_VAR protection-factors-lb --></label>
     <select id="protection-factors" multiple>
       <!-- TMPL_LOOP option-protection-factors -->
       <option value="<!-- TMPL_VAR protection-factor -->"><!-- TMPL_VAR protection-factor -->
       </option>
       <!-- /TMPL_LOOP  -->
     </select>
-    <label for="safety-threshold">Safety threshold ( g/(m<sup>3</sup> * h) )</label>
+    <label for="safety-threshold">
+      <!-- TMPL_VAR safety-threshold-lb --> ( g/(m<sup>3</sup> * h) )
+    </label>
     <input type="text" id="safety-threshold" value="0.1" />
     <input id="start" type="submit" value="Calculate" />
     <table id="results">
       <tr>
 	<th>
-	  GHS Codes
+	  <!-- TMPL_VAR h-phrase-lb -->
 	</th>
 	<th>
-	  Exposition types
+	  <!-- TMPL_VAR exposition-types-lb -->
 	</th>
 	<th>
-	  Physical state
+	  <!-- TMPL_VAR physical-state-lb -->
 	</th>
 	<th>
-	  Working temperature
+	  <!-- TMPL_VAR working-temp-lb -->
 	</th>
 	<th>
-	  Boiling point
+	  <!-- TMPL_VAR boiling-point-lb -->
 	</th>
 	<th>
-	  Exposition time type
+	  <!-- TMPL_VAR exposition-time-type-lb -->
 	</th>
 	<th>
-	  Exposition time
+	  <!-- TMPL_VAR exposition-time-lb -->
 	</th>
 	<th>
-	  Usage
+	  <!-- TMPL_VAR usage-lb -->
 	</th>
 	<th>
-	  Quantity used
+	  <!-- TMPL_VAR quantity-used-lb -->
 	</th>
 	<th>
-	  Quantity stocked
+	  <!-- TMPL_VAR quantity-stocked-lb -->
 	</th>
 	<th>
-	  Work type
+	  <!-- TMPL_VAR work-type-lb -->
 	</th>
 	<th>
-	  Protection factor
+	  <!-- TMPL_VAR protection-factors-lb -->
 	</th>
 	<th>
-	  Safety threshold
+	  <!-- TMPL_VAR safety-threshold-lb -->
 	</th>
 	<th>
-	  Results
+	  <!-- TMPL_VAR results-lb -->
 	</th>
 	<th>
-	  Errors
+	  <!-- TMPL_VAR errors-lb -->
 	</th>
       </tr>
     </table>

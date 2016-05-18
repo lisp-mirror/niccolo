@@ -1888,4 +1888,100 @@ translation ""
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
+
+ id "Usage per year (days)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Usage per day (min.)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Protective devices"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Errors"
+translation "errori"
+plurals-form ""
+status :translated
+plurals NIL
+
+ id "Results"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Protection factors"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Work type"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Quantity stocked (g)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Quantity used (g)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Usage"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Exposition time (min)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Exposition time type"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Boiling point (°C)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Exposition types"
+translation "Tipi di esposizione"
+plurals-form ""
+status :translated
+plurals NIL
+
+ id "H phrase"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Working temperature (°C)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
 )
