@@ -29,7 +29,7 @@
 		     (risk-phrases:get-points b))))
 	      r-keys :initial-value 0)
       	(progn
-	  (push (_ "No \"H phrases\" not found") *errors*)
+	  (push (_ "No \"H phrases\" found") *errors*)
 	  10.0)))
 
 (alexandria:define-constant +exposition-type-el-root+ "exposition_type"

@@ -203,7 +203,7 @@
 						   :submit-gen-barcode-lb  (_ "Generate barcode")
 						   :submit-massive-delete-lb  (_ "Delete")
 						   :lending-lb          (_ "Lending")
-						   :submit-lend-to-lb     +op-submit-lend-to+
+						   :submit-lend-to-lb   (_ "Lend to")
 						   :user-lb             (_ "User")
 						   :sum-quantities-lb     (_ "Sum quantities")
 						   :select-all-lb       (_ "Select all")

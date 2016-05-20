@@ -1518,7 +1518,7 @@ status NTRANSLATED
 plurals NIL
 
  id "\\\"H phrases\\\" not found"
-translation "Frase H \\\"H prases\" non trovata"
+translation "Nessuna frase \\\"H prases\\\" trovata"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1554,135 +1554,135 @@ status :TRANSLATED
 plurals NIL
 
  id "Zipcode"
-translation ""
+translation "CAP"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Operation"
-translation ""
+translation "Operazione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Link"
-translation ""
+translation "Collegamento"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Delete"
-translation ""
+translation "Cancella"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Proper Shipping Name"
-translation ""
+translation "Identificato di spedizione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "UNCode (for example UN1000)"
-translation ""
+translation "Codice UN (Per esempio UN1000)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Explanation"
-translation ""
+translation "Spiegazione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "UN Code"
-translation ""
+translation "Codice UN"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Class"
-translation ""
+translation "Classe"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Operations"
-translation ""
+translation "Operazioni"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Description"
-translation ""
+translation "Descrizione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Name"
-translation ""
+translation "Nome"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Statement"
-translation ""
+translation "Frase"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Code"
-translation ""
+translation "Codice"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Data Sheet"
-translation ""
+translation "Scheda delle specifiche"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
 
  id "MSDS file"
-translation ""
+translation "File MSDS"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Notes"
-translation ""
+translation "Note"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Structure"
-translation ""
+translation "Formula di struttura"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Select"
-translation ""
+translation "Seleziona"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Deselect all"
-translation ""
+translation "Deseleziona tutto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Select all"
-translation ""
+translation "Seleziona tutto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sum quantities"
-translation ""
+translation "Somma le quantità"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User"
@@ -1692,99 +1692,99 @@ status :TRANSLATED
 plurals NIL
 
  id "Lending"
-translation ""
+translation "Prestito"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Generate barcode"
-translation ""
+translation "Genera barcode"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Other operations"
-translation ""
+translation "Altre operazioni"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Notes (optional)"
-translation ""
+translation "Note (opzionali)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Floor"
-translation ""
+translation "Piano"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Owner"
-translation ""
+translation "Proprietario"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Barcode number (ID)"
-translation ""
+translation "Codice a barre identificativo (ID)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Search products"
-translation ""
+translation "Cerca prodotto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Item count"
-translation ""
+translation "Numero di prodotti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Unit of measure"
-translation ""
+translation "Unità di misura"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Quantity (Mass or Volume)"
-translation ""
+translation "Quantità (massa o volume)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Shelf"
-translation ""
+translation "Scaffale"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Storage name"
-translation ""
+translation "Nome dell'unità di stoccaggio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Compound name"
-translation ""
+translation "Nome del composto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Add new product"
-translation ""
+translation "Aggiungi nuovo prodotto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Carcinogenic (according to IARC)"
-translation ""
+translation "Cancerogeno (secondo la IARC)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Carcinogenic?"
@@ -1794,27 +1794,21 @@ status :TRANSLATED
 plurals NIL
 
  id "Acknowledgment"
-translation ""
+translation "Ringraziamenti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Classify"
-translation ""
+translation "Classifica"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Welcome"
-translation ""
+translation "Benvenuto"
 plurals-form ""
-status :UNTRANSLATED
-plurals NIL
-
- id "No \\\"H phrases\\\" not found"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map"
@@ -1824,163 +1818,175 @@ status :TRANSLATED
 plurals NIL
 
  id "Weblink"
-translation ""
+translation "Collegamento web"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "City"
-translation ""
+translation "Città"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Storage"
-translation ""
+translation "Aggiorna unità di stoccaggio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Password"
-translation ""
+translation "Password"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Confirm new password"
-translation ""
+translation "Conferma nuova password"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "New password"
-translation ""
+translation "Nuova password"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Old password"
-translation ""
+translation "Vecchia password"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "This system  uses a  central authentication  system (CAS).  Ask your  system administrators/Webmaster/IT Department about users identity management."
-translation ""
+translation "Questo sistema utilizza un central authentication  system (CAS). Chiedi al tuo amministratore di sistema/webmaster/sezione_informatica chiarimenti sulla gestione delle identità degli utenti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Legal"
-translation ""
+translation "Note legali"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Weight"
-translation ""
+translation "Peso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory"
-translation ""
+translation "Laboratorio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Usage per year (days)"
-translation ""
+translation "Giorni l'anno di uso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Usage per day (min.)"
-translation ""
+translation "Minuti al giorno di uso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Protective devices"
-translation ""
+translation "Dispositivi di protezione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Errors"
-translation "errori"
+translation "Errori"
 plurals-form ""
-status :translated
+status :TRANSLATED
 plurals NIL
 
  id "Results"
-translation ""
+translation "Risultati"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Protection factors"
-translation ""
+translation "Fattori di protezione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Work type"
-translation ""
+translation "Tipo di lavoro"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Quantity stocked (g)"
-translation ""
+translation "Quantità stoccata in g"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Quantity used (g)"
-translation ""
+translation "Quantità utilizzata in g"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Usage"
-translation ""
+translation "Uso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Exposition time (min)"
-translation ""
+translation "Tempo di esposizione in min"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Exposition time type"
-translation ""
+translation "Tipo di tempo di esposizione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Boiling point (°C)"
-translation ""
+translation "Punto di ebollizione in °C"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Exposition types"
 translation "Tipi di esposizione"
 plurals-form ""
-status :translated
+status :TRANSLATED
 plurals NIL
 
  id "H phrase"
-translation ""
+translation "Frase H"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Working temperature (°C)"
-translation ""
+translation "Temperatura di lavoro in °C"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "No \\\"H phrases\\\" found"
+translation "Nessuna frase \\\"H prases\\\" trovata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Lend to"
+translation "Presta"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
