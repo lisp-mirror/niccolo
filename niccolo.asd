@@ -22,6 +22,7 @@
 	       :cl-ppcre-unicode
 	       :dbi
 	       :envy
+	       :local-time
                :crane
 	       :parse-number
 	       :html-template

@@ -58,6 +58,9 @@
 (defun integer-validate (i)
   (parse-integer i :junk-allowed nil))
 
+(defun date-validate-p (d)
+  (local-time:parse-timestring d :fail-on-error nil))
+
 (defun magic-validate-p (file magic)
   (if file
       (with-open-file (stream file

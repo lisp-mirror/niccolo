@@ -219,6 +219,7 @@
    :unique-p-validate*
    :exists-with-different-id-validate
    :integer-validate
+   :date-validate-p
    :magic-validate-p
    :png-validate-p
    :pdf-validate-p

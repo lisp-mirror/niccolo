@@ -31,7 +31,7 @@
 "R31","A contatto con acidi libera gas tossico","2"
 "R32","A contatto con acidi libera gas altamente tossico","2.5"
 "R33","Pericolo di effetti cumulativi","2"
-"R34","Provoca ustioni"","1.6"
+"R34","Provoca ustioni","1.6"
 "R35","Provoca gravi ustioni"","1.6"
 "R36","Irritante per gli occhi","1.2"
 "R37","Irritante per le vie respiratorie","1.2"
@@ -121,9 +121,3 @@
 "R50/53","Altamente tossico per gli organismi acquatici, può provocare a lungo termine effetti negativi per l'ambiente acquatico","0"
 "R51/53","Tossico per gli organismi acquatici, può provocare a lungo termine effetti negativi per l'ambiente acquatico","0"
 "R52/53","Nocivo per gli organismi acquatici, può provocare a lungo termine effetti negativi per l'ambiente acquatico","0"
-
-
-
-
-
-

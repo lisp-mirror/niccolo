@@ -107,6 +107,14 @@
     <input id="quantity" type="text" name="<!-- TMPL_VAR quantity -->" />
     <label for="units"><!-- TMPL_VAR units-lb --></label>
     <input id="units" type="text" name="<!-- TMPL_VAR units -->" />
+
+    <label for="validity-date"><!-- TMPL_VAR validity-date-lb --></label>
+    <input id="validity-date" type="text" name="<!-- TMPL_VAR validity-date -->" />
+
+    <label for="expire-date"><!-- TMPL_VAR expire-date-lb --></label>
+    <input id="expire-date" type="text" name="<!-- TMPL_VAR expire-date -->" />
+
+
     <label for="count"><!-- TMPL_VAR item-count-lb --></label>
     <input id="count" type="text" name="<!-- TMPL_VAR count -->" />
 
@@ -184,10 +192,10 @@
 	<th class="chemp-floor-hd"><!-- TMPL_VAR floor-lb --></th>
 	<th class="chemp-storage-hd"><!-- TMPL_VAR storage-lb --></th>
 	<th class="chemp-shelf-hd"><!-- TMPL_VAR shelf-lb --></th>
-	<th class="chemp-quantity-hd">
-	  <!-- TMPL_VAR quantity-lb -->
-	</th>
+	<th class="chemp-quantity-hd"><!-- TMPL_VAR quantity-lb --></th>
 	<th class="chemp-quantity-hd"><!-- TMPL_VAR units-lb --></th>
+	<th class="chemp-validity-date-hd"><!-- TMPL_VAR validity-date-lb --></th>
+	<th class="chemp-expire-date-hd"><!-- TMPL_VAR expire-date-lb --></th>
 	<th class="chemp-notes-hd"><!-- TMPL_VAR notes-lb --></th>
 	<th class="chemp-operations"><!-- TMPL_VAR operations-lb --></th>
       </tr>
@@ -304,6 +312,12 @@
 	</td>
 	<td class="chemp-units">
 	  <!-- TMPL_VAR units -->
+	</td>
+	<td class="validity-date">
+	  <!-- TMPL_VAR validity-date -->
+	</td>
+	<td class="expire-date">
+	  <!-- TMPL_VAR expire-date -->
 	</td>
 	<td class="chemp-notes">
 	  <!-- TMPL_VAR notes -->

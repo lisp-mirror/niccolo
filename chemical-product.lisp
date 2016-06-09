@@ -25,6 +25,10 @@
 
 (define-constant +name-units+               "units"            :test #'string=)
 
+(define-constant +name-validity-date+       "validity-date"    :test #'string=)
+
+(define-constant +name-expire-date+         "expire-date"      :test #'string=)
+
 (define-constant +name-count+               "count"            :test #'string=)
 
 (define-constant +name-notes+               "notes"            :test #'string=)
@@ -190,6 +194,8 @@
 						   :shelf-lb          (_ "Shelf")
 						   :quantity-lb      (_ "Quantity (Mass or Volume)")
 						   :units-lb          (_ "Unit of measure")
+						   :expire-date-lb    (_ "Expire date")
+						   :validity-date-lb  (_ "Validity date")
 						   :item-count-lb     (_ "Item count")
 						   :search-products-legend-lb (_ "Search products")
 						   :barcode-number-lb  (_ "Barcode number (ID)")
@@ -219,7 +225,9 @@
 						   :shelf       +name-shelf+
 						   :quantity    +name-quantity+
 						   :units       +name-units+
-						   :count       +name-count+
+						   :validity-date  +name-validity-date+
+						   :expire-date +name-expire-date+
+ 						   :count       +name-count+
 						   :notes       +name-notes+
 						   :json-storages-id  json-storage-id
 						   :json-storages  json-storage
@@ -265,7 +273,8 @@
 						     (%match-or-null shelf +pos-integer-re+)
 						     'delete-chem-prod))))
 
-(defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes)
+(defun add-single-chem-prod (chemical-id storage-id shelf quantity
+			     units notes validity-date expire-date)
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
 					   (list chemical-id +pos-integer-re+  (_ "Chemical invalid"))
@@ -284,22 +293,30 @@
 						 (not (single 'db:storage
 							      :id storage-id)))
 					(list (_ "Storage not in the database"))))
+	   (errors-msg-validity-date       (when (not (date-validate-p validity-date))
+					  (list (_ "Validity date not valid"))))
+	   (errors-msg-expire-date       (when (not (date-validate-p expire-date))
+					   (list (_ "Expire date not valid"))))
 	   (errors-msg (concatenate 'list
 				    errors-msg-1
 				    errors-msg-chem-not-found
-				    errors-msg-stor-not-found))
+				    errors-msg-stor-not-found
+				    errors-msg-validity-date
+				    errors-msg-expire-date))
 	   (success-msg (and (not errors-msg)
 			     (list (format nil (_ "Saved chemical product"))))))
       (when (and user
 		 (not errors-msg))
 	(let ((chem (create 'db:chemical-product
-			    :compound chemical-id
-			    :storage  storage-id
-			    :shelf    shelf
-			    :quantity quantity
-			    :units units
-			    :owner (db:id user)
-			    :notes (clean-string notes))))
+			    :compound      chemical-id
+			    :storage       storage-id
+			    :shelf         shelf
+			    :quantity      quantity
+			    :units         units
+			    :validity-date (local-time::parse-timestring validity-date)
+			    :expire-date   (local-time::parse-timestring expire-date)
+			    :owner         (db:id user)
+			    :notes         (clean-string notes))))
 	  (save chem)))
       (values errors-msg success-msg))))
 
@@ -342,7 +359,9 @@
 							 (get-parameter +name-units+)
 							 (if (string/= "" actual-notes)
 							     actual-notes
-							     "none"))
+							     "none")
+							 (get-parameter +name-validity-date+)
+							 (get-parameter +name-expire-date+))
 				 (declare (ignore success))
 				 (when err
 				   (return-from add-loop err)))))))

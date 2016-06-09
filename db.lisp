@@ -206,6 +206,12 @@
   (units
    :type text
    :nullp nil)
+  (validity-date
+   :type datetime
+   :nullp nil)
+  (expire-date
+   :type datetime
+   :nullp nil)
   (shelf
    :type integer
    :nullp nil)
