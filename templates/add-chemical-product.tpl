@@ -37,7 +37,10 @@
 	// let's try to align button
 	var addPos= $( "#submit-add" ).position();
 	$( "#submit-search").css("position", "absolute");
-	$( "#submit-search").css("top", addPos.top);
+        $( "#submit-search").css("top", addPos.top);
+	$( ".search-chem-prod").height(addPos.top);
+	$( ".add-new-chem-prod").height(addPos.top);
+	$( ".other-ops-chem-prod").height(addPos.top);
         placeFooter();
 	$( "#select-all").click(function (e){
 	    e.preventDefault();
@@ -158,15 +161,6 @@
     <input id="submit-gen-barcode" type="submit"
 	   name="<!-- TMPL_VAR submit-massive-delete -->"
 	   value="<!-- TMPL_VAR submit-massive-delete-lb -->"/>
-    <fieldset class="lending">
-      <legend><!-- TMPL_VAR lending-lb --></legend>
-      <label for="username-lending"><!-- TMPL_VAR user-lb --></label>
-      <input id="username-lending" type="text"
-	     name="<!-- TMPL_VAR username-lending -->" />
-      <input id="submit-lend-to" type="submit"
-	     name="<!-- TMPL_VAR submit-lend-to -->"
-	     value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
-    </fieldset>
     <input id="sum-selected" type="submit"
 	   name=""
 	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
@@ -177,6 +171,15 @@
     <input id="deselect-all" type="submit"
 	   name=""
 	   value="<!-- TMPL_VAR deselect-all-lb -->"/>
+    <fieldset class="lending">
+      <legend><!-- TMPL_VAR lending-lb --></legend>
+      <label for="username-lending"><!-- TMPL_VAR user-lb --></label>
+      <input id="username-lending" type="text"
+	     name="<!-- TMPL_VAR username-lending -->" />
+      <input id="submit-lend-to" type="submit"
+	     name="<!-- TMPL_VAR submit-lend-to -->"
+	     value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
+    </fieldset>
 
   </fieldset>
 
