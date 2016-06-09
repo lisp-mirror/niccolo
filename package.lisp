@@ -325,7 +325,9 @@
    :pictograms-template-struct
    :pictogram->preview-path
    :pictogram-preview-url
-   :now-date-for-label))
+   :now-date-for-label
+   :encode-datetime-string
+   :decode-datetime-string))
 
 (defpackage :i18n
   (:use

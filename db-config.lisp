@@ -22,7 +22,7 @@
 		    (list :type :sqlite3
 			  :name (uiop:unix-namestring (config:local-system-path #p"lab.db"))))
    ;; use debug t for query printing
-   :debug t)
+   :debug nil)
   (connect)
   ;; set foreign_keys support
   ;; (crane:query-low-level "PRAGMA foreign_keys = ON;" crane:*default-db*)

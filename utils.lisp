@@ -243,3 +243,9 @@
 	    (elt decoded 5) ; year
 	    (elt decoded 4) ; month
 	    (elt decoded 3)))) ; day
+
+(defun encode-datetime-string (d)
+  (local-time:parse-timestring d))
+
+(defun decode-datetime-string (obj)
+  (local-time:format-timestring nil obj :format '(:year "-" :month "-" :day)))

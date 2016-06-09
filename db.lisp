@@ -207,10 +207,10 @@
    :type text
    :nullp nil)
   (validity-date
-   :type datetime
+   :type timestamp
    :nullp nil)
   (expire-date
-   :type datetime
+   :type timestamp
    :nullp nil)
   (shelf
    :type integer

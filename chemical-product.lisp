@@ -59,6 +59,8 @@
 	    (:as :chemp.shelf          :shelf)
 	    (:as :chemp.quantity       :quantity)
 	    (:as :chemp.units          :units)
+	    (:as :chemp.validity-date  :validity-date)
+	    (:as :chemp.expire-date    :expire-date)
 	    (:as :chemp.notes          :notes)
 	    (:as :chem.name            :chem-name)
 	    (:as :chem.id              :chem-id)
@@ -108,7 +110,11 @@
 				 (actual-image-unknown-struct-path)))
 	   (remove-loan-link (restas:genurl 'remove-loan :id (getf row :chemp-id)))
 	   (lending-user  (fetch-loan (getf row :chemp-id)))
-	   (gen-custom-label-link  (restas:genurl 'gen-custom-label :id (getf row :chemp-id))))
+	   (gen-custom-label-link  (restas:genurl 'gen-custom-label :id (getf row :chemp-id)))
+	   (encoded-expire-date    (encode-datetime-string (getf row :expire-date)))
+	   (encoded-validity-date  (encode-datetime-string (getf row :validity-date)))
+	   (decoded-expire-date    (decode-datetime-string encoded-expire-date))
+	   (decoded-validity-date  (decode-datetime-string encoded-validity-date)))
       (setf (elt raw rown)
 	    (nconc row
 		   (list :storage-link
@@ -117,7 +123,10 @@
 						   (getf row :storage-s-coord)
 						   (getf row :storage-t-coord))
 			     nil))
-
+		   (list :expire-date-encoded   encoded-expire-date)
+		   (list :validity-date-encoded encoded-validity-date)
+		   (list :expire-date-decoded   decoded-expire-date)
+		   (list :validity-date-decoded decoded-validity-date)
 		   (list :building-link building-link)
 		   (list :ghs-haz-link  ghs-haz-link)
 		   (list :ghs-prec-link ghs-prec-link)
@@ -313,8 +322,8 @@
 			    :shelf         shelf
 			    :quantity      quantity
 			    :units         units
-			    :validity-date (local-time::parse-timestring validity-date)
-			    :expire-date   (local-time::parse-timestring expire-date)
+			    :validity-date (encode-datetime-string validity-date)
+			    :expire-date   (encode-datetime-string expire-date)
 			    :owner         (db:id user)
 			    :notes         (clean-string notes))))
 	  (save chem)))
@@ -550,9 +559,11 @@
 	(with-save-restore (doc)
 	  (ps:translate doc +page-margin-left+ (/ pict-size 2.0))
 	  (ps:show-xy doc
-		      (format nil (_ "Owner: ~a. Printing date ~a")
+		      (format nil (_ "Owner: ~a. Printing date ~a Validity: ~a Expire: ~a")
 			      (and haz-data (getf (elt haz-data 0) :owner))
-			      (now-date-for-label))
+			      (now-date-for-label)
+			      (decode-datetime-string (db::validity-date product))
+			      (decode-datetime-string (db::expire-date product)))
 		      0 0))))))
 
 (define-lab-route gen-custom-label ("/custom-label/:id" :method :get)

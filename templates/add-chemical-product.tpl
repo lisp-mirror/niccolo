@@ -259,27 +259,29 @@
 	  <!-- TMPL_ELSE -->
           <!-- TMPL_VAR chem-name -->
 	  <!-- /TMPL_IF -->
-	  <sub>
-	    <span class="parent-subscript">[</span>
-	    <a class="msds-link" href="<!-- TMPL_VAR msds-link -->">
-	      MSDS
-	    </a>
-	    <span class="parent-subscript">]</span>
-	  </sub>
-	  <sub>
-	    <span class="parent-subscript">[</span>
-	    <a class="GHS-haz-link" href="<!-- TMPL_VAR ghs-haz-link -->">
-	      H
-	    </a>
-	    <span class="parent-subscript">]</span>
-	  </sub>
-	  <sub>
-	    <span class="parent-subscript">[</span>
-	    <a class="GHS-prec-link" href="<!-- TMPL_VAR ghs-prec-link -->">
-	      P
-	    </a>
-	    <span class="parent-subscript">]</span>
-	  </sub>
+	  <div>
+	    <sub>
+	      <span class="parent-subscript">[</span>
+	      <a class="msds-link" href="<!-- TMPL_VAR msds-link -->">
+		MSDS
+	      </a>
+	      <span class="parent-subscript">]</span>
+	    </sub>
+	    <sub>
+	      <span class="parent-subscript">[</span>
+	      <a class="GHS-haz-link" href="<!-- TMPL_VAR ghs-haz-link -->">
+		H
+	      </a>
+	      <span class="parent-subscript">]</span>
+	    </sub>
+	    <sub>
+	      <span class="parent-subscript">[</span>
+	      <a class="GHS-prec-link" href="<!-- TMPL_VAR ghs-prec-link -->">
+		P
+	      </a>
+	      <span class="parent-subscript">]</span>
+	    </sub>
+	  </div>
 	</td>
 	<td class="chemp-thumb-name">
 	  <a class="struct-large-link" href="<!-- TMPL_VAR structure-link -->"
@@ -314,10 +316,10 @@
 	  <!-- TMPL_VAR units -->
 	</td>
 	<td class="validity-date">
-	  <!-- TMPL_VAR validity-date -->
+	  <!-- TMPL_VAR validity-date-decoded -->
 	</td>
 	<td class="expire-date">
-	  <!-- TMPL_VAR expire-date -->
+	  <!-- TMPL_VAR expire-date-decoded -->
 	</td>
 	<td class="chemp-notes">
 	  <!-- TMPL_VAR notes -->
