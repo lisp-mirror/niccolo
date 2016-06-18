@@ -113,3 +113,17 @@
 						     (%extract-parse :usage-per-day params)
 						     (%extract-parse :usage-per-year params))))
       (utils:plist->json (list :res results :err risk-calculator:*errors*)))))
+
+(define-lab-route ws-get-user-message ("/ws/user-messages/:id" :method :get)
+;  (with-authentication
+    (let* ((error-msg-no-int (regexp-validate (list (list id
+							  +pos-integer-re+
+							  (_ "Id message invalid")))))
+	   (error-msg-not-found (when (and (not error-msg-no-int)
+					   (not (single 'db:message :id id)))
+				  (list (_ "Message not found"))))
+	   (all-errors (append error-msg-no-int error-msg-not-found)))
+      (if (not all-errors)
+	  (let ((template (fetch-template-message-by-id id)))
+	    (plist->json template))
+	  +http-not-found+)));)

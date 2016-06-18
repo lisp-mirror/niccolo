@@ -16,14 +16,17 @@
 (asdf:defsystem #:niccolo
   :description "Chemicals inventory"
   :author "cage <cage@katamail.com>"
+  :version "0.8.0"
   :license "GPLv3"
   :depends-on (#-asdf3 :uiop
 	       :alexandria
 	       :cl-ppcre-unicode
 	       :dbi
 	       :envy
-	       :local-time
                :crane
+	       :local-time
+	       :cl-smtp
+	       :sanitize
 	       :parse-number
 	       :html-template
 	       :osicat
@@ -63,6 +66,7 @@
 	       (:file "i18n")
 	       (:file "authentication")
 	       (:file "views")
+	       (:file "messages")
 	       (:file "address")
 	       (:file "update-address")
 	       (:file "building")
@@ -82,8 +86,10 @@
 	       (:file "storage")
 	       (:file "update-storage")
 	       (:file "user")
+	       (:file "update-chemical-product")
 	       (:file "chemical-product")
 	       (:file "waste-letter")
+	       (:file "waste-stats")
 	       (:file "l-factor")
 	       (:file "services")
 	       (:file "lab")))

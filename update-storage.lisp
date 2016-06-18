@@ -68,7 +68,7 @@
 	 (json-buildings    (array-autocomplete-building))
 	 (json-buildings-id (array-autocomplete-building-id))
 	 (new-storage (and id
-			    (object-exists-in-db-p 'db:storage id)))
+			   (object-exists-in-db-p 'db:storage id)))
 	 (template    (with-path-prefix
 			  :name-lb     (_ "Name")
 			  :building-lb (_ "Building")

@@ -78,6 +78,9 @@
 (defun pdf-validate-p (file)
   (magic-validate-p file '(#x25 #x50 #x44 #x46)))
 
+(defun strip-tags (s)
+  (sanitize:clean s +no-html-tags-at-all+))
+
 (define-constant +email-re+ "(?i)[a-z,0-9,\\-,_]+\\.?[a-z,0-9,\\-,_]+@[a-z,0-9,\\-,_]+\\.[a-z,0-9,\\-,_]+" :test #'string=)
 
 (define-constant +ghs-hazard-code-re+        "^((H|EUH)[0-9]+[a-z]?)(\\/?(H|EUH)[0-9]+[a-z]?)?$"
@@ -91,7 +94,7 @@
 
 (define-constant +barcode-id-re+             "^[0-9][0-9]*$"                     :test #'string=)
 
-(define-constant +free-text-re+              "^[^;\\\"'<>]+$"                    :test #'string=)
+(define-constant +free-text-re+              "^[^;\\\"'<>&]+$"                   :test #'string=)
 
 (define-constant +cer-code-re+               "^CER[0-9]+\\*?$"                   :test #'string=)
 

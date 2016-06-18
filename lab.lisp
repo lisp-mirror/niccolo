@@ -15,9 +15,9 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-ghs-precautionary-expl+         "expl" :test #'string=)
+(define-constant +name-ghs-precautionary-expl+ "expl" :test #'string=)
 
-(define-constant +name-ghs-precautionary-code+         "code" :test #'string=)
+(define-constant +name-ghs-precautionary-code+ "code" :test #'string=)
 
 (define-lab-route root ("/" :method :get)
   #+mini-cas
@@ -36,6 +36,12 @@
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
     (with-standard-html-frame (stream (_ "Welcome")))))
+
+(define-lab-route user-messages ("/messages" :method :get)
+  (with-authentication
+    (create-expiration-messages (fetch-expired-products))
+    (create-validity-expired-messages (fetch-validity-expired-products))
+    (print-messages nil nil)))
 
 (define-lab-route storing-classify ("/storage-classify/" :method :get)
   (with-authentication
@@ -103,12 +109,16 @@
 		      :users-lbl             (_ "Users")
 		      :manage-user           (restas:genurl 'user)
 		      :manage-user-lbl       (_ "Manage users")
+		      :user-messages-lb      (_ "Messages")
+		      :user-messages         (restas:genurl 'user-messages)
 		      :user-preferences      (restas:genurl 'user-preferences)
 		      :user-preferences-lbl  (_ "User preferences")
 		      :change-password       (restas:genurl 'change-pass)
 		      :change-password-lbl   (_ "Change password")
 		      :waste-letter          (restas:genurl 'waste-letter)
 		      :waste-letter-lbl      (_ "Hazardous waste form")
+		      :waste-stats           (restas:genurl 'waste-statistics)
+		      :waste-stats-lbl       (_ "Waste report")
 		      :l-factor-calculator   (restas:genurl 'l-factor)
 		      :l-factor-calculator-lbl (_ "Chemical risk calculator")
 		      :l-factor-calculator-carc (restas:genurl 'l-factor-carc)

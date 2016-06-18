@@ -57,7 +57,7 @@
 						   :name-lb          (_ "Name")
 						   :building-lb      (_ "Building")
 						   :laboratory-lb    (_ "Laboratory")
-						   :weight-lb        (_ "Weight")
+						   :weight-lb        (_ "Weight (Kg)")
 						   :description-lb   (_ "Description")
 						   :name             +name-waste-user-name+
 						   :cer-id           +name-waste-cer-id+
@@ -137,7 +137,7 @@
 		       0
 		       ps:+boxed-text-h-mode-center+ "")
 	(cond
-	  ((not (scan +waste-form-weight-re+  weight))
+	  ((not (scan +integer-re+  weight))
 	   (ps:show-boxed doc "Attenzione! Non hai indicato correttamente il peso."
 			+page-margin-left+
 			(- (ps:height ps:+a4-page-size+) +page-margin-top+ +header-image-export-height+)
@@ -173,30 +173,55 @@
 			  ps:+boxed-text-h-mode-left+
 			  ""))
 	  (t
-	   (ps:show-boxed doc (write-letter username lab-number building weight actual-cer body
-					    (mapcar #'(lambda (a) (format nil "~a (classe ~a)"
-									  (db:uncode a)
-									  (db:code-class a)))
-						    all-adrs))
-			  +page-margin-left+
-			  (- (ps:height ps:+a4-page-size+)
-			     +page-margin-top+
-			     +header-image-export-height+)
-			  (- (ps:width ps:+a4-page-size+) (* 2.0 +page-margin-left+))
-			  0
-			  ps:+boxed-text-h-mode-left+
-			  "")
-	   (let ((sign-pos (ps:get-value doc ps:+boxed-text-value-boxheight+)))
-	     (ps:show-boxed doc
-			    "In fede."
+	   (let* ((msg-text (write-letter username lab-number building weight actual-cer body
+					  (mapcar #'(lambda (a) (format nil "~a (classe ~a)"
+									(db:uncode a)
+									(db:code-class a)))
+						  all-adrs)))
+		  (reminder-message (send-user-message (make-instance 'db:waste-message)
+						       (get-session-user-id)
+						       (get-session-user-id)
+						       (_ "Waste production")
+						       msg-text
+						       :parent-message nil
+						       :child-message nil
+						       :cer-code-id cer-id
+						       :building-id building-id
+						       :weight      weight
+						       :adr-ids     adrs)))
+	     ;; message for admin
+	     (send-user-message (make-instance 'db:waste-message)
+				(get-session-user-id)
+				(admin-id)
+				(_ "Waste production")
+				msg-text
+				:parent-message nil
+				:child-message  nil
+				:echo-message   (db:id reminder-message)
+				:cer-code-id    cer-id
+				:building-id    building-id
+				:weight         weight
+				:adr-ids        adrs)
+	     (ps:show-boxed doc msg-text
 			    +page-margin-left+
 			    (- (ps:height ps:+a4-page-size+)
-			       (/ sign-pos 2.5)
 			       +page-margin-top+
 			       +header-image-export-height+)
 			    (- (ps:width ps:+a4-page-size+) (* 2.0 +page-margin-left+))
 			    0
-			    ps:+boxed-text-h-mode-right+ ""))))))))
+			    ps:+boxed-text-h-mode-left+
+			    "")
+	     (let ((sign-pos (ps:get-value doc ps:+boxed-text-value-boxheight+)))
+	       (ps:show-boxed doc
+			      "In fede."
+			      +page-margin-left+
+			      (- (ps:height ps:+a4-page-size+)
+				 (/ sign-pos 2.5)
+				 +page-margin-top+
+				 +header-image-export-height+)
+			      (- (ps:width ps:+a4-page-size+) (* 2.0 +page-margin-left+))
+			      0
+			      ps:+boxed-text-h-mode-right+ "")))))))))
 
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication

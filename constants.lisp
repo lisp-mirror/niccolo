@@ -29,6 +29,8 @@
 
 (define-constant +user-acl-level+                10                          :test #'=)
 
+(define-constant +user-account-enabled+          1                           :test #'=)
+
 (define-constant +user-session+                  'user                       :test 'eq)
 
 (define-constant +auth-name-login-name+          "user"                      :test #'string=)
@@ -76,3 +78,9 @@
 (define-constant +search-chem-storage+           "s-storage"                 :test #'string=)
 
 (define-constant +search-chem-shelf+             "s-shelf"                   :test #'string=)
+
+(define-constant +name-validity-date+            "validity-date"             :test #'string=)
+
+(define-constant +name-expire-date+              "expire-date"               :test #'string=)
+
+(sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())

@@ -30,6 +30,12 @@
 		 :level      (db:level db-user)
 		 :password   (db:password db-user)))
 
+(defun user-session->user (user)
+  (and user
+       (db:id user)
+       (> (db:id user) 0)
+       (single 'db:user :id (db:id user))))
+
 (defun authenticate-user (uname password)
   "Return user, if authenticated, nil otherwise"
   (when (and uname password (single 'db:user :username uname))
@@ -108,6 +114,9 @@
       (db:id (tbnl:session-value +user-session+))
       0))
 
+(defun admin-id ()
+  (db:id (single 'db:user :level +admin-acl-level+)))
+
 (defun get-session-level ()
   (if (and (tbnl:start-session)
 	   (tbnl:session-value +user-session+)
@@ -154,12 +163,22 @@
     (logout-user)
     (restas:redirect 'root)))
 
+(defun account-enabled-p (user)
+  (let ((db-user (user-session->user user)))
+    (and db-user
+	 (= (db:account-enabled db-user) +user-account-enabled+))))
+
 (defmacro with-authentication (&body body)
   "Check if user is authenticated, if true try to set the translation table"
-  `(authenticate ((tbnl:parameter +auth-name-login-name+)
-		  (tbnl:parameter +auth-name-login-password+))
-     (i18n:with-user-translation ((get-session-user-id))
-       ,@body)))
+  (with-gensyms (session-user)
+    `(authenticate ((tbnl:parameter +auth-name-login-name+)
+		    (tbnl:parameter +auth-name-login-password+))
+       (i18n:with-user-translation ((get-session-user-id))
+	 (with-session-user (,session-user)
+	   (if (account-enabled-p ,session-user)
+	       (progn
+		  ,@body)
+	       (logout-user)))))))
 
 (defmacro with-admin-privileges (if-admin if-not)
   `(if (session-admin-p)

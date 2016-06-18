@@ -78,7 +78,6 @@ input[disabled] {
     width:  150pt;
 }
 
-
 input[type=submit] {
     background: #FFCF5E;
     height: 21pt;
@@ -113,7 +112,6 @@ textarea {
 
 }
 
-
 #waste-form-adr-select {
     width: 100%;
 
@@ -143,7 +141,6 @@ textarea {
     text-align:  center;
 }
 
-
 .button-login {
     background: lightgreen;
 }
@@ -151,7 +148,6 @@ textarea {
 .button-logout {
     background: #FFCF5E;
 }
-
 
 .logout-link {
     float: right;
@@ -192,6 +188,53 @@ textarea {
 .error-message li{
     color:            #FF2D0C;
     font-weight:      bolder;
+}
+
+table.expiration-messages {
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+}
+
+table.expiration-messages .message {
+    text-align: justify;
+}
+
+td.user-message-reply-row {
+    background: white;
+    border: 0;
+    text-align: left;
+}
+
+td.user-message-reply-row table {
+    margin-left: 1%;
+}
+
+td.user-message-reply-row a{
+    text-decoration: none;
+    font-weight:     bold;
+    font-style:      italic;
+    font-size:       80%;
+
+}
+
+td.name-disabled {
+    text-decoration: line-through;
+}
+
+table.product-diff {
+    border: 0
+}
+
+table.product-diff td{
+    border: 0;
+}
+
+table.product-diff .new-date{
+    font-weight: bold;
+}
+
+table.product-diff .old-date{
+    color: gray;
 }
 
 table {
@@ -359,6 +402,28 @@ td {
 
 }
 
+.close-w-success-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/activate.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.close-w-failure-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/prohibition.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
 
 .link-button {
     margin:              auto;
@@ -371,6 +436,27 @@ td {
     text-decoration:     none;
 }
 
+.activate-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/activate.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.prohibition-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/prohibition.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
 
 .delete-button {
     margin:              auto;
@@ -583,6 +669,8 @@ div.biblio-ref{
 
 }
 
+
+
 /* ghs hazard dialog list*/
 
 #dialog-GHS-haz ul img {
@@ -634,4 +722,19 @@ a.decision {
 
 a.breadcrumb-link {
     font-size: 80%;
+}
+
+fieldset.waste-stats legend {
+
+}
+
+table.waste-stats {
+    margin-top:    5pt;
+    margin-bottom: 5pt;
+}
+
+table.waste-stats caption {
+    text-align: left;
+    font-weight: bold;
+    font-size:   110%;
 }

@@ -96,6 +96,26 @@
 							+path-prefix+)
   :test #'string=)
 
+;; smtp config
+
+;; you want  actually to use mail  notification? Set this value  to a
+;; non nil value ('t' for example).
+(define-constant +use-smtp+            nil                 :test #'eq)
+
+(define-constant +smtp-host+           "localhost"         :test #'string=)
+
+(define-constant +smtp-from-address+   "noreply@localhost" :test #'string=)
+
+(define-constant +smtp-port-address+   465                 :test #'=)
+
+;; '() for no authentication
+(define-constant +smtp-autentication+  '("username" "password") :test #'equalp)
+
+;; use nil for no ssl
+(define-constant +smtp-ssl+             t                       :test #'string=)
+
+(define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
+
 ;; templates config
 
 (setf html-template:*default-template-pathname*

@@ -52,3 +52,8 @@
 
 (defun object-exists-in-db-p (class id)
   (crane:single class :id id))
+
+(defmacro if-db-nil-else (expr else)
+  `(if (not (eq ,expr :nil))
+       ,expr
+       ,else))

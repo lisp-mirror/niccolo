@@ -17,6 +17,8 @@
 
 (define-constant +name-user-name+         "username"     :test #'string=)
 
+(define-constant +name-user-email+        "email"        :test #'string=)
+
 (define-constant +name-user-password+     "password"     :test #'string=)
 
 (define-constant +name-user-password-2+   "password-2"   :test #'string=)
@@ -29,14 +31,19 @@
 
 (define-constant +name-pref-locale+       "locale"       :test #'string=)
 
-(defun add-new-user (name password)
+(define-constant +name-pref-email+        "email"       :test #'string=)
+
+(defun add-new-user (name email password)
   (let* ((errors-msg-invalid (regexp-validate (list
 					       (list name
 						     +free-text-re+
 						     (_ "Username invalid"))
 					       (list password
 						     +free-text-re+
-						     (_ "Password invalid")))))
+						     (_ "Password invalid"))
+					       (list email
+						     +email-re+
+						     (_ "Email invalid")))))
 	 (errors-msg-already-in-db  (when (and (not errors-msg-invalid)
 					       (single 'db:user
 						       :username name))
@@ -47,10 +54,12 @@
     (when (not errors-msg)
       (let* ((salt (generate-salt))
 	     (new-user (create 'db:user
-			      :username name
-			      :password (encode-pass salt password)
-			      :salt     salt
-			      :level    +user-acl-level+)))
+			       :username name
+			       :email email
+			       :password (encode-pass salt password)
+			       :salt     salt
+			       :account-enabled +user-account-enabled+
+			       :level    +user-acl-level+)))
 	(save new-user)))
     (manage-user success-msg errors-msg)))
 
@@ -108,18 +117,28 @@
 (defun exists-admin-p ()
   (single 'db:user :level +admin-acl-level+))
 
-(defun add-admin-password (new-pass new-pass-confirm)
+(defun add-admin-password (name email new-pass new-pass-confirm)
   (multiple-value-bind (errors-msg success-msg)
       (validate-add-admin-password new-pass new-pass-confirm)
     (declare (ignore success-msg))
     (when (and (not errors-msg)
 	       (not (exists-admin-p)))
-      (let* ((new-salt  (generate-salt)))
-	(create 'db:user
-		:username +admin-name+
-		:salt     new-salt
-		:password (encode-pass new-salt new-pass)
-		:level    +admin-acl-level+)))
+      (let* ((errors-msg-invalid (regexp-validate (list
+						   (list name
+							 +free-text-re+
+						     (_ "Username invalid"))
+						   (list email
+							 +email-re+
+							 (_ "Email invalid"))))))
+	(when (not errors-msg-invalid)
+	  (let* ((new-salt  (generate-salt)))
+	    (create 'db:user
+		    :username name
+		    :salt     new-salt
+		    :email email
+		    :account-enabled +user-account-enabled+
+		    :password (encode-pass new-salt new-pass)
+		    :level    +admin-acl-level+)))))
     (restas:redirect 'root)))
 
 (defun manage-password-change (infos errors)
@@ -143,15 +162,25 @@
 					   :stream stream)))
 
 (defun manage-user (infos errors)
-  (let ((all-users (fetch-raw-template-list 'db:user
-					    '(:username)
-					    :delete-link 'delete-user)))
+  (let ((all-users (mapcar #'(lambda (a)
+			       (append a
+				       (list :active-p (if (= (getf a :account-enabled)
+							      +user-account-enabled+)
+							   t
+							   nil))))
+			   (fetch-raw-template-list 'db:user
+						    '(:username :email :account-enabled)
+						    :delete-link 'delete-user
+						    :disable-link 'disable-user
+						    :enable-link  'enable-user))))
     (with-standard-html-frame (stream (_ "Manage user") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-user.tpl"
 					     (with-path-prefix
 						 :name-lb       (_ "Name")
 						 :password-lb   (_ "Password")
+						 :email-lb      (_ "Email")
 						 :operations-lb (_ "Operations")
+						 :login-email   +name-user-email+
 						 :login-name +name-user-name+
 						 :login-pass +name-user-password+
 						 :data-table all-users)
@@ -183,6 +212,43 @@
 	  (push (format nil (_ "No valid user id (id: ~a)") user-id) errors))
       (values infos errors))))
 
+(defun change-email (new-email)
+  (with-authentication
+    (let ((infos   '())
+	  (errors  '())
+	  (user-id (get-session-user-id)))
+      (if (> user-id 0)
+	  (let* ((user (single 'db:user :id user-id))
+		 (errors-msg-invalid (regexp-validate (list
+						       (list new-email
+							     +email-re+
+							     (_ "Email invalid"))))))
+	    (if (not user)
+		(push (format nil
+			      (_ "User ~a not found")
+			      user-id)
+		      errors)
+		(if errors-msg-invalid
+		    (push errors-msg-invalid errors)
+		    (let ((old-email (db:email user)))
+		      (setf (db:email user) new-email)
+		      (save user)
+		      (send-user-message (make-instance 'db:message)
+					 (db:id user)
+					 (admin-id)
+					 (_ "Email changed")
+					 (format nil
+						 (_ "User ~a changed his/hers email from ~a to ~a.")
+						 (db:username user)
+						 old-email
+						 (db:email user)))
+		      (push (format nil
+				    (_ "Email changed"))
+			    infos)))))
+	  (push (format nil (_ "No valid user id (id: ~a)") user-id) errors))
+      (values infos errors))))
+
+
 (define-lab-route user ("/user/" :method :get)
   (with-authentication
     (with-admin-privileges
@@ -193,6 +259,7 @@
   (with-authentication
     (with-admin-privileges
 	(add-new-user (post-parameter +name-user-name+)
+		      (post-parameter +name-user-email+)
 		      (post-parameter +name-user-password+))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
@@ -201,8 +268,10 @@
       (with-standard-html-frame (stream (_ "Add admin user") :errors nil :infos  nil)
 	(html-template:fill-and-print-template #p"add-admin.tpl"
 					       (with-path-prefix
-						   :password     +name-user-password+
-						   :password-2   +name-user-password-2+)
+						   :email       +name-user-email+
+						   :user-name   +name-user-name+
+						   :password    +name-user-password+
+						   :password-2  +name-user-password-2+)
 					       :stream stream))
       (progn
 	(log-message* +security-warning-log-level+
@@ -221,7 +290,9 @@
 		     (post-parameter +name-user-password-2+))))
 
 (define-lab-route actual-admin-change-pass ("/actual-admin-change-pass/" :method :post)
-  (add-admin-password (post-parameter +name-user-password+)
+  (add-admin-password (post-parameter +name-user-name+)
+                      (post-parameter +name-user-email+)
+                      (post-parameter +name-user-password+)
 		      (post-parameter +name-user-password-2+)))
 
 (define-lab-route delete-user ("/delete-user/:id" :method :get)
@@ -235,25 +306,51 @@
 	  (restas:redirect 'user))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
+(defun %set-user-account-status (id new-status)
+  (with-authentication
+    (with-admin-privileges
+	(progn
+	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+	    (let ((user (single 'db:user :id id)))
+	      (when user
+		(setf (db:account-enabled user) new-status)
+		(save user))))
+	  (restas:redirect 'user))
+      (manage-address nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route disable-user ("/disable-user-account/:id" :method :get)
+  (%set-user-account-status id (lognot +user-account-enabled+)))
+
+(define-lab-route enable-user ("/enable-user-account/:id" :method :get)
+  (%set-user-account-status id +user-account-enabled+))
+
+(defun print-preferences-forms (infos errors)
+  (with-standard-html-frame (stream
+			     (_ "Manage preferences")
+			     :infos  infos
+			     :errors errors)
+    (html-template:fill-and-print-template #p"user-preferences.tpl"
+					   (with-path-prefix
+					       :choose-lang-lb    (_ "Change language")
+					       :change-email-hd   (_ "Change email")
+					       :email-lb          (_ "Email")
+					       :login-email       +name-pref-email+
+					       :available-locales (i18n:translation-select-options))
+					   :stream stream)))
+
 (define-lab-route user-change-locale ("/user-change-locale/" :method :post)
   (with-authentication
     (multiple-value-bind (infos errors)
 	(change-locale (tbnl:post-parameter +name-pref-locale+))
-      (with-standard-html-frame (stream
-				 (_ "Manage preferences")
-				 :infos  infos
-				 :errors errors)
-	(html-template:fill-and-print-template #p"user-preferences.tpl"
-					       (with-path-prefix
-						   :choose-lang-lb    (_ "Change language")
-						   :available-locales (i18n:translation-select-options))
-					       :stream stream)))))
+      (print-preferences-forms infos errors))))
+
+(define-lab-route user-change-email ("/user-change-email/" :method :post)
+  (with-authentication
+    (multiple-value-bind (infos errors)
+	(change-email (tbnl:post-parameter +name-pref-email+))
+      (print-preferences-forms infos errors))))
+
 
 (define-lab-route user-preferences ("/user-preferences/" :method :get)
   (with-authentication
-    (with-standard-html-frame (stream (_ "Manage preferences"))
-      (html-template:fill-and-print-template #p"user-preferences.tpl"
-					     (with-path-prefix
-						 :choose-lang-lb    (_ "Change language")
-						 :available-locales (i18n:translation-select-options))
-					     :stream stream))))
+    (print-preferences-forms nil nil)))

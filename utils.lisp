@@ -43,8 +43,7 @@
     (cl-json:encode-json object stream)))
 
 (defun plist->json (obj)
-  (with-output-to-string (stream)
-    (cl-json:encode-json-plist obj stream)))
+  (cl-json:encode-json-plist-to-string obj))
 
 (defmacro gen-autocomplete-functions (class data-fn)
   (let* ((class-string (string-upcase (symbol-name class)))
@@ -217,6 +216,8 @@
 
 (defun fetch-raw-template-list (what template-keyword &key
 							(delete-link nil)
+							(disable-link nil)
+							(enable-link  nil)
 							(additional-tpl nil))
   (let ((raw (filter what)))
     (loop for data in raw collect
@@ -228,12 +229,25 @@
 	   (when delete-link
 	     (push (restas:genurl delete-link :id (db:id data)) plist)
 	     (push :delete-link plist))
+	   (when disable-link
+	     (push (restas:genurl disable-link :id (db:id data)) plist)
+	     (push :disable-link plist))
+	   (when enable-link
+	     (push (restas:genurl enable-link :id (db:id data)) plist)
+	     (push :enable-link plist))
 	   (when additional-tpl
 	     (if (functionp additional-tpl)
 		 (setf plist (nconc plist (funcall additional-tpl data)))
 		 (setf plist (nconc plist additional-tpl))))
 	   plist))))
 
+(defun template->string (file template &optional (escaping-fn  #'(lambda (s) s)))
+  "Note: by default no escaping is applied!"
+  (let ((html-template:*string-modifier* escaping-fn))
+    (with-output-to-string (stream)
+      (html-template:fill-and-print-template file
+					     template
+					     :stream stream))))
 
 ;; date/time
 
@@ -244,8 +258,42 @@
 	    (elt decoded 4) ; month
 	    (elt decoded 3)))) ; day
 
+(defun local-time-obj-now ()
+  (local-time:now))
+
 (defun encode-datetime-string (d)
   (local-time:parse-timestring d))
 
-(defun decode-datetime-string (obj)
-  (local-time:format-timestring nil obj :format '(:year "-" :month "-" :day)))
+(defgeneric decode-datetime-string (object))
+
+(defmethod decode-datetime-string ((object local-time:timestamp))
+  (local-time:format-timestring nil object :format '(:year "-" :month "-" :day)))
+
+(defmethod decode-datetime-string ((object string))
+  (decode-datetime-string (encode-datetime-string object)))
+
+(defun next-expiration-date ()
+  (local-time:timestamp+ (local-time:now) 7 :day))
+
+(defun waste-message-expired-p (message)
+  (local-time:timestamp< (db:sent-time message)
+			 (local-time:timestamp- (local-time:now) 1 :year)))
+
+(defun timestamp-compare-desc (a b)
+  (local-time:timestamp> a b))
+
+(defun timestamp-compare-asc (a b)
+  (local-time:timestamp< a b))
+
+;; mail
+
+(defun send-email (subject to message)
+  (when +use-smtp+
+    (cl-smtp:send-email +smtp-host+
+			+smtp-from-address+
+			to
+			(concatenate 'string +smtp-subject-mail-prefix+ subject)
+			(validation:strip-tags message)
+			:ssl  +smtp-ssl+
+			:port +smtp-port-address+
+			:authentication +smtp-autentication+)))

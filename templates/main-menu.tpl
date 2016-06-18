@@ -55,6 +55,12 @@
 	    <!-- TMPL_VAR waste-letter-lbl -->
 	  </a>
 	</li>
+	<li class="menu-level-2">
+	  <a href="<!-- TMPL_VAR waste-stats -->">
+	    <!-- TMPL_VAR waste-stats-lbl -->
+	  </a>
+	</li>
+
 	<li>
 	  <a href="<!-- TMPL_VAR l-factor-calculator -->">
 	    <!-- TMPL_VAR l-factor-calculator-lbl -->
@@ -122,6 +128,12 @@
     <li class="menu-level-1"><!-- TMPL_VAR users-lbl --></li>
     <li class="menu-level-2">
       <ul>
+	<li>
+	  <a href="<!-- TMPL_VAR user-messages -->">
+	    <!-- TMPL_VAR user-messages-lb -->
+	  </a>
+	</li>
+
 	<li>
 	  <a href="<!-- TMPL_VAR manage-user -->">
 	    <!-- TMPL_VAR manage-user-lbl -->

@@ -23,6 +23,9 @@
  --eval "(ql:quickload \"dbi\")" \
  --eval "(ql:quickload \"envy\")" \
  --eval "(ql:quickload \"crane\")" \
+ --eval "(ql:quickload \"local-time\")" \
+ --eval "(ql:quickload \"cl-smtp\")"    \
+ --eval "(ql:quickload \"sanitize\")"   \
  --eval "(ql:quickload \"parse-number\")" \
  --eval "(ql:quickload \"xmls\")" \
  --eval "(ql:quickload \"html-template\")" \

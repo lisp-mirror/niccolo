@@ -14,6 +14,8 @@ disposing.
   - alexandria;
   - cl-ppcre-unicode;
   - dbi;
+  - cl-smtp;
+  - cl-sanitize;
   - envy;
   - parse-number;
   - xmls;
@@ -95,7 +97,34 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 (define-constant +ssl-pass+   "xxxxxx" :test #'string=)
 
    #+END_SRC
-17. Optional (but *strongly* recommended), use CAS autentication
+
+17.
+    Optional: configure this section for email notifications.
+
+   #+BEGIN_SRC lisp
+  ;; smtp config
+
+  ;; you want  actually to use mail  notification? Set this value  to a
+  ;; non nil value ('t' for example).
+  (define-constant +use-smtp+            nil                 :test #'eq)
+
+  (define-constant +smtp-host+           "localhost"         :test #'string=)
+
+  (define-constant +smtp-from-address+   "noreply@localhost" :test #'string=)
+
+  (define-constant +smtp-port-address+   465                 :test #'=)
+
+  ;; '() for no authentication
+  (define-constant +smtp-autentication+  '("username" "password") :test #'equalp)
+
+  ;; use nil for no ssl
+  (define-constant +smtp-ssl+             t                       :test #'string=)
+
+  (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
+
+   #+END_SRC
+
+18. Optional (but *strongly* recommended), use CAS autentication
 
    #+BEGIN_SRC lisp
 ;; cas config
@@ -107,7 +136,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
-18. Optional (but *strongly* recommended)
+19. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
@@ -116,8 +145,8 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
-19. sh start_server.sh
-20. point your browser to
+20. sh start_server.sh
+21. point your browser to
     https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
     where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the

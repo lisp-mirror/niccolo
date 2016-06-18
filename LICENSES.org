@@ -87,9 +87,19 @@
   according to https://openclipart.org/detail/132709/qrcode-reader
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
-- www/ghs-pictograms/none.png
+- www/images/ghs-pictograms/none.png
   © uroesch
   according to https://openclipart.org/detail/185355/happy-cloud
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/prohibition.png
+  © yves_guillou
+  according to https://openclipart.org/detail/10982/prohibition7
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/activate.png
+  © TzeenieWheenie
+  according to https://openclipart.org/detail/10940/red-+-green-ok-not-ok-icons
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
 - data/font.afm
@@ -101,6 +111,14 @@
   http://jqueryui.com
 
   Copyright 2015 jQuery Foundation and other contributors; Licensed MIT
+
+- www/css/font-awesome-*/fonts/*
+
+  according to http://fontawesome.io/license/
+
+  © 2016 Dave Gandy
+  released under SIL Open Font License (OFL)
+  http://scripts.sil.org/OFL
 
 * Code
   - conditions.lisp
@@ -199,6 +217,17 @@
   Copyright (c) 2009 Kazuhiko Arase
 
   URL: http://www.d-project.com/
+
+  Licensed under the MIT license:
+  http://www.opensource.org/licenses/mit-license.php
+
+- www/css/font-awesome-*/css/*
+  www/css/font-awesome-*/scss/*
+  www/css/font-awesome-*/less/*
+
+  © 2016 Dave Gandy
+
+  according to http://fontawesome.io/license/
 
   Licensed under the MIT license:
   http://www.opensource.org/licenses/mit-license.php

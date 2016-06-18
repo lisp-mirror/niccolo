@@ -40,6 +40,13 @@
    :*ssl-certfile*
    :*ssl-key*
    :+ssl-pass+
+   :+use-smtp+
+   :+smtp-host+
+   :+smtp-from-address+
+   :+smtp-port-address+
+   :+smtp-autentication+
+   :+smtp-ssl+
+   :+smtp-subject-mail-prefix+
    :*default-www-root*
    :*images-dir*
    :*jquery-ui-images-dir*
@@ -76,6 +83,7 @@
    :+admin-name+
    :+admin-acl-level+
    :+user-acl-level+
+   :+user-account-enabled+
    :+user-session+
    :+auth-name-login-name+
    :+auth-name-login-password+
@@ -100,7 +108,10 @@
    :+search-chem-building+
    :+search-chem-floor+
    :+search-chem-storage+
-   :+search-chem-shelf+))
+   :+search-chem-shelf+
+   :+name-validity-date+
+   :+name-expire-date+
+   :+no-html-tags-at-all+))
 
 (defpackage :conditions
   (:use :cl)
@@ -175,7 +186,9 @@
    :uncode
    :code-class
    :user
+   :email
    :username
+   :account-enabled
    :password
    :salt
    :level
@@ -190,6 +203,8 @@
    :ghs-p
    :ghs-h
    :chemical-product
+   :validity-date
+   :expire-date
    :owner
    :compound
    :storage
@@ -201,7 +216,28 @@
    :loans
    :user-from
    :user-to
-   :product))
+   :product
+   :message
+   :sender
+   :recipient
+   :echo-to
+   :sent-time
+   :subject
+   :status
+   :text
+   :message-relation
+   :parent
+   :child
+   :expiration-message
+   :validity-expired-message
+   :waste-message
+   :message
+   :cer-code-id
+   :building-id
+   :weight
+   :waste-message-adr
+   :waste-message
+   :adr-code-id))
 
 (defpackage :validation
   (:use
@@ -223,6 +259,7 @@
    :magic-validate-p
    :png-validate-p
    :pdf-validate-p
+   :strip-tags
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+
    :+integer-re+
@@ -284,7 +321,8 @@
      :keywordize-query-results
      :get-max-id
      :object-exists-in-db-p
-     :query-low-level))
+     :query-low-level
+     :if-db-nil-else))
 
 (defpackage :db-config
   (:use
@@ -321,13 +359,20 @@
    :prepare-for-update
    :with-standard-html-frame
    :fetch-raw-template-list
+   :template->string
    :pictograms-alist
    :pictograms-template-struct
    :pictogram->preview-path
    :pictogram-preview-url
    :now-date-for-label
    :encode-datetime-string
-   :decode-datetime-string))
+   :decode-datetime-string
+   :local-time-obj-now
+   :next-expiration-date
+   :waste-message-expired-p
+   :timestamp-compare-desc
+   :timestamp-compare-asc
+   :send-email))
 
 (defpackage :i18n
   (:use

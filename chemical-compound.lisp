@@ -1,5 +1,5 @@
 ;; niccolo': a chemicals inventory
-;; Copyright (C) 2016  Univesrita' degli Studi di Palermo
+;; Copyright (C) 2016  Universita' degli Studi di Palermo
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

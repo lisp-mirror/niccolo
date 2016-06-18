@@ -232,8 +232,8 @@
     $(function() {
 	var cid = <!-- TMPL_VAR chem-cid -->;
 	var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
-	var pubchemLink = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/<!-- TMPL_VAR chem-cid -->/property/MolecularFormula,MolecularWeight,IUPACName,ExactMass,Charge/JSON";
-	var pubchemRNSection = 'https://pubchem.ncbi.nlm.nih.gov/compound/' +
+	var pubchemLink = "https://<!-- TMPL_VAR pubchem-host -->/rest/pug/compound/cid/<!-- TMPL_VAR chem-cid -->/property/MolecularFormula,MolecularWeight,IUPACName,ExactMass,Charge/JSON";
+	var pubchemRNSection = 'https://<!-- TMPL_VAR pubchem-host -->/compound/' +
 	                       '<!-- TMPL_VAR chem-cid -->'                 +
                                '#section=Names-and-Identifiers';
 
@@ -344,6 +344,10 @@
 	    <div class="tag-with-string-button">
 	      &nbsp;
 	    </div>
+	  </a>
+	  <!-- edit chemical-product -->
+	  <a href="<!-- TMPL_VAR update-link -->">
+	    <div class="edit-button">&nbsp;</div>
 	  </a>
 
 	</td>

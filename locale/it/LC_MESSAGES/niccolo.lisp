@@ -1990,4 +1990,334 @@ translation "Presta"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
+
+ id "Owner: ~a. Printing date ~a Validity: ~a Expire: ~a"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Expire date not valid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Validity date not valid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Validity date"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Expire date"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Messages"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Validity expired products"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Message"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Recipient"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sender"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sent at"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Subject"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product ID"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Expired products"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product validity expired"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product ~a from building ~a (storage name ~a) has expired validity date."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product expired"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product ~a from building ~a (storage name ~a) has expired."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Message not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Id message invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "You are not the owner of this product"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update Chemical product"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "This product does not exists in database."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product updated"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical product: ~s updated"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Expire date not properly formatted."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Validity date not properly formatted."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Product ~a updated"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Waste report"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Message ~a closed and rejected"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Message ~a closed with success"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Closed and rejected"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Closed with success"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Updated status"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "No message with ID ~a found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Invalid message ID provided"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Your request:~2%----~2%~a~2%----~2%has been rejected."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Your request:~2%----~2%~a~2%----~2%has been approved."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Accepted waste messages"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Rejected waste messages"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Opened Waste messages"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Change email"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User ~a changed his/hers email from ~a to ~a."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Email changed"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User ~a not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Email"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Email invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Waste production"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Weight (Kg)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Rejected"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Closed"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Grouped by CER code"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Grouped by building"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Nothing found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Opened"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
 )

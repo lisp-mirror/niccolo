@@ -1,5 +1,5 @@
 ;; niccolo': a chemicals inventory
-;; Copyright (C) 2016  Univesrita' degli Studi di Palermo
+;; Copyright (C) 2016  Universita' degli Studi di Palermo
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,10 +24,6 @@
 (define-constant +name-quantity+            "qty"              :test #'string=)
 
 (define-constant +name-units+               "units"            :test #'string=)
-
-(define-constant +name-validity-date+       "validity-date"    :test #'string=)
-
-(define-constant +name-expire-date+         "expire-date"      :test #'string=)
 
 (define-constant +name-count+               "count"            :test #'string=)
 
@@ -86,7 +82,10 @@
 (defun actual-image-unknown-struct-path ()
   (concatenate 'string +path-prefix+ +image-unknown-struct-path+))
 
-(defun build-template-list-chemical-prod (raw &optional (delete-link nil))
+(defun build-template-list-chemical-prod (raw
+					  &optional
+					    (delete-link nil)
+					    (update-link nil))
   (setf raw (map 'list #'(lambda (row)
 			   (map 'list
 				#'(lambda (cell)
@@ -143,6 +142,11 @@
 		       (list :delete-link (restas:genurl delete-link
 							 :id    (getf row :chemp-id)
 							 :owner (getf row :owner-id)))
+		       nil)
+		   (if update-link
+		       (list :update-link (restas:genurl update-link
+							 :id    (getf row :chemp-id)
+							 :owner (getf row :owner-id)))
 		       nil)))))
   raw)
 
@@ -153,12 +157,35 @@
 		      (where (:= :loans.product product-id))))))
     (cadar raw)))
 
-(defun fetch-product-by-id (id &optional (delete-link nil))
-  (build-template-list-chemical-prod (query (gen-all-prod-select (where (:= :chemp-id id))))
-				     delete-link))
+(defun fetch-expired-products ()
+  (with-session-user (user)
+    (let* ((expiration-date (next-expiration-date))
+	   (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
+									(where
+									 (:and
+									  (:= :owner (db:id user))
+									  (:< :expire-date expiration-date))))))))
+      expired)))
 
-(defun fetch-product (owner chem-name building-name floor storage-name shelf &optional
-									       (delete-link nil))
+(defun fetch-validity-expired-products ()
+  (with-session-user (user)
+    (let* ((expiration-date (next-expiration-date))
+	   (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
+									(where
+									 (:and
+									  (:= :owner (db:id user))
+									  (:< :validity-date expiration-date))))))))
+      expired)))
+
+(defun fetch-product-by-id (id &optional (delete-link nil) (update-link nil))
+  (build-template-list-chemical-prod (query (gen-all-prod-select (where (:= :chemp-id id))))
+				     delete-link
+				     update-link))
+
+(defun fetch-product (owner chem-name building-name floor storage-name shelf
+		      &optional
+			(delete-link nil)
+			(update-link nil))
   (let ((raw (query (gen-all-prod-select (where
 					  (:and (:like :owner-name
 						       (prepare-for-sql-like owner))
@@ -174,18 +201,19 @@
 						(if shelf
 						    (list := :shelf shelf)
 						    (list := 1 1))))))))
-    (build-template-list-chemical-prod raw delete-link)))
+    (build-template-list-chemical-prod raw delete-link update-link)))
 
-(defun fetch-product-min-id (id &optional (delete-link nil))
+(defun fetch-product-min-id (id &optional (delete-link nil) (update-link nil))
   (let ((raw (query (gen-all-prod-select (where
 					  (:> :chemp-id id))))))
-    (build-template-list-chemical-prod raw delete-link)))
+    (build-template-list-chemical-prod raw delete-link update-link)))
 
-(defun fetch-all-product (&optional (delete-link nil))
+(defun fetch-all-product (&optional (delete-link nil) (update-link nil))
   (let ((raw (query (gen-all-prod-select))))
-    (build-template-list-chemical-prod raw delete-link)))
+    (build-template-list-chemical-prod raw delete-link update-link)))
 
-(defun manage-chem-prod (infos errors &key (data (fetch-all-product 'delete-chem-prod)))
+(defun manage-chem-prod (infos errors &key (data (fetch-all-product 'delete-chem-prod
+								    'update-chemical-product)))
   (with-standard-html-frame (stream
 			     (_ "Manage Chemical Products")
 			     :errors errors
@@ -245,6 +273,7 @@
 						   :value-owner       (get-session-username)
 						   :chemp-id          +search-chem-id+
 						   :chem-cid-exists  +name-chem-cid-exists+
+						   :pubchem-host +pubchem-host+
 						   :owner +search-chem-owner+
 						   :name  +search-chem-name+
 						   :building +search-chem-building+
@@ -273,14 +302,16 @@
 (defun search-products (id owner chem-name building-name floor storage-name shelf)
   (if (not (string-empty-p id))
       (manage-chem-prod nil nil :data (fetch-product-by-id (%match-or-null id +barcode-id-re+)
-							   'delete-chem-prod))
+							   'delete-chem-prod
+							   'update-chemical-product))
       (manage-chem-prod nil nil	:data (fetch-product (%match-or-null owner +free-text-re+)
 						     (%match-or-null chem-name +free-text-re+)
 						     (%match-or-null building-name +free-text-re+)
 						     (%match-or-null floor +integer-re+)
 						     (%match-or-null storage-name +free-text-re+)
 						     (%match-or-null shelf +pos-integer-re+)
-						     'delete-chem-prod))))
+						     'delete-chem-prod
+						     'update-chemical-product))))
 
 (defun add-single-chem-prod (chemical-id storage-id shelf quantity
 			     units notes validity-date expire-date)

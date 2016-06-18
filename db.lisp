@@ -168,11 +168,18 @@
   (username
    :type text
    :nullp nil)
+  (email
+   :type text
+   :nullp nil)
   (salt
    :type text
    :nullp nil)
   (password
    :type text
+   :nullp nil)
+  (account-enabled
+   :type integer
+   :default 1
    :nullp nil)
   (level
    :type integer
@@ -248,3 +255,83 @@
   (user-to
    :type integer
    :foreign (user :restrict :cascade)))
+
+(deftable message ()
+  (sender
+   :type integer
+   :foreign (user :restrict :cascade)
+   :nullp nil)
+  (recipient
+   :type integer
+   :foreign (user :restrict :cascade)
+   :nullp nil)
+  (echo-to
+   :type integer
+   :foreign (message :restrict :cascade)
+   :nullp t)
+  (status
+   :type text
+   :nullp nil)
+  (sent-time
+   :type timestamp
+   :nullp nil)
+  (subject
+   :type text
+   :nullp nil)
+  (text
+   :type text))
+
+(deftable message-relation ()
+  (node
+   :type integer
+   :foreign (message :restrict :cascade)
+   :nullp nil)
+  (parent
+   :type integer
+   :foreign (message :restrict :cascade)
+   :nullp t)
+  (child
+   :type integer
+   :foreign (message :restrict :cascade)
+   :nullp t))
+
+(deftable expiration-message ()
+  (message
+   :type integer
+   :foreign (message :cascade :cascade)
+   :nullp nil)
+  (product
+   :type integer
+   :foreign (chemical-product :set-null :cascade)))
+
+(deftable validity-expired-message ()
+  (message
+   :type integer
+   :foreign (message :cascade :cascade)
+   :nullp nil)
+  (product
+   :type integer
+   :foreign (chemical-product :set-null :cascade)))
+
+(deftable waste-message ()
+  (message
+   :type integer
+   :foreign (message :cascade :cascade))
+  (cer-code-id
+   :type integer
+   :foreign (cer-code :restrict :cascade))
+  (building-id
+   :type integer
+   :foreign (building :restrict :cascade))
+  (weight
+   :type integer
+   :nullp nil))
+
+(deftable waste-message-adr ()
+  (waste-message
+   :type integer
+   :foreign (waste-message :cascade :cascade))
+  (adr-code-id
+   :type integer
+   :foreign (adr-code :restrict :cascade)
+   :nullp nil))
