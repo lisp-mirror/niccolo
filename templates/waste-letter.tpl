@@ -79,7 +79,7 @@
   </fieldset>
 
   <div>
-    <div><label for="textarea-note-waste"><!-- TMPL_VAR description-lb --></label>
+    <div><label for="textarea-note-waste"><!-- TMPL_VAR description-lb --></label></div>
     <textarea id="textarea-note-waste" name="<!-- TMPL_VAR description -->"></textarea>
     <input type="submit" />
   </div>
