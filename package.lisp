@@ -47,6 +47,8 @@
    :+smtp-autentication+
    :+smtp-ssl+
    :+smtp-subject-mail-prefix+
+   :+federated-query-key+
+   :+federated-query-nodes-file+
    :*default-www-root*
    :*images-dir*
    :*jquery-ui-images-dir*
@@ -458,3 +460,19 @@
    :+search-chem-floor+
    :+search-chem-storage+
    :+search-chem-shelf+))
+
+(defpackage federated-query
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :hunchentoot
+   :crane
+   :config
+   :constants
+   :validation
+   :ps-utils
+   :string-utils
+   :db-utils
+   :utils
+   :views))

@@ -116,6 +116,10 @@
 
 (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
 
+;; key for federated query
+
+(define-constant +federated-query-key+       "1234"             :test #'string=)
+
 ;; templates config
 
 (setf html-template:*default-template-pathname*

@@ -13,6 +13,7 @@ disposing.
 
   - alexandria;
   - cl-ppcre-unicode;
+  - bordeaux-threads;
   - dbi;
   - cl-smtp;
   - cl-sanitize;
@@ -29,6 +30,7 @@ disposing.
   - flexi-streams;
   - cl-gd;
   - hunchentoot;
+  - drakma;
   - restas;
   - restas-directory-publisher;
   - cl-pslib;

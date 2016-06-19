@@ -20,6 +20,7 @@
  --eval "(quicklisp-quickstart:install)" \
  --eval "(ql:quickload \"alexandria\")" \
  --eval "(ql:quickload \"cl-ppcre-unicode\")" \
+ --eval "(ql:quickload \"bordeaux-threads\")" \
  --eval "(ql:quickload \"dbi\")" \
  --eval "(ql:quickload \"envy\")" \
  --eval "(ql:quickload \"crane\")" \
@@ -37,6 +38,7 @@
  --eval "(ql:quickload \"cl-json\")" \
  --eval "(ql:quickload \"flexi-streams\")" \
  --eval "(ql:quickload \"cl-gd\")" \
+ --eval "(ql:quickload \"drakma\")" \
  --eval "(ql:quickload \"hunchentoot\")" \
  --eval "(ql:quickload \"restas\")" \
  --eval "(ql:quickload \"restas-directory-publisher\")" \

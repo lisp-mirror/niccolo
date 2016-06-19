@@ -21,6 +21,7 @@
   :depends-on (#-asdf3 :uiop
 	       :alexandria
 	       :cl-ppcre-unicode
+	       :bordeaux-threads
 	       :dbi
 	       :envy
                :crane
@@ -41,6 +42,7 @@
 	       :cl-gd
 	       :cl-pslib
 	       :cl-pslib-barcode
+	       :drakma
 	       :puri
 	       :hunchentoot
 	       :restas
@@ -91,5 +93,10 @@
 	       (:file "waste-letter")
 	       (:file "waste-stats")
 	       (:file "l-factor")
+	       (:module federated-query
+			:components ((:file "query-id")
+				     (:file "query-object")
+				     (:file "status")
+				     (:file "names")))
 	       (:file "services")
 	       (:file "lab")))

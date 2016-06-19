@@ -115,7 +115,7 @@
       (utils:plist->json (list :res results :err risk-calculator:*errors*)))))
 
 (define-lab-route ws-get-user-message ("/ws/user-messages/:id" :method :get)
-;  (with-authentication
+  (with-authentication
     (let* ((error-msg-no-int (regexp-validate (list (list id
 							  +pos-integer-re+
 							  (_ "Id message invalid")))))
@@ -126,4 +126,4 @@
       (if (not all-errors)
 	  (let ((template (fetch-template-message-by-id id)))
 	    (plist->json template))
-	  +http-not-found+)));)
+	  +http-not-found+))))
