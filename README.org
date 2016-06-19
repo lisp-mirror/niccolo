@@ -98,8 +98,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    #+END_SRC
 
-17.
-    Optional: configure this section for email notifications.
+17. Optional, configure this section for email notifications.
 
    #+BEGIN_SRC lisp
   ;; smtp config
