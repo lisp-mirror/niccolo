@@ -199,6 +199,11 @@ table.expiration-messages .message {
     text-align: justify;
 }
 
+table.user-messages {
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+}
+
 td.user-message-reply-row {
     background: white;
     border: 0;
@@ -330,8 +335,18 @@ td {
     text-align: center;
 }
 
+#main-wrapper {
+    display: table-row;
+}
+
+#main-content-wrapper {
+    width: 85%;
+    display: table-cell;
+    vertical-align: top;
+}
+
 .left-menu {
-    float: left;
+    display: table-cell;
     width: 15%;
     padding-left: 0;
     padding-top: 0;
@@ -339,6 +354,7 @@ td {
     padding-right:  2pt;
     margin: 0;
     min-height: 1200px;
+
 }
 
 .left-menu ul{
@@ -353,8 +369,8 @@ td {
     min-height:      10pt;
     margin:          0;
     padding-left:    2pt;
-    padding-top:     5pt;
-    padding-bottom:  5pt;
+    padding-top:     8pt;
+    padding-bottom:  8pt;
     text-align:      center;
     font-size:       120%;
 }
@@ -389,16 +405,16 @@ td {
     padding-left: 5pt;
     display: block;
     padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top:   3pt;
+    padding-bottom: 3pt;
     margin: 0;
 }
 
 .menu-level-2 ul li a:hover{
     background: #FFDD8C;
     padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top:   3pt;
+    padding-bottom: 3pt;
 
 }
 

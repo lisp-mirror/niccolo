@@ -184,7 +184,12 @@
 									:path "sugar-1.4.1.js")
 						  :title    ,title)
 					      :stream ,stream)
-       (restas.lab::render-main-menu stream)
+       (restas.lab:render-logout-control stream)
+       (html-template:fill-and-print-template #p"main-wrapper-header.tpl"
+					      nil
+					      :stream ,stream)
+
+       (restas.lab:render-main-menu      stream)
        (html-template:fill-and-print-template #p"main-content-wrapper-header.tpl"
 					      nil
 					      :stream ,stream)
@@ -206,6 +211,9 @@
 					      :stream ,stream)
        ,@body
        (html-template:fill-and-print-template #p"main-content-wrapper-footer.tpl"
+					      nil
+					      :stream ,stream)
+       (html-template:fill-and-print-template #p"main-wrapper-footer.tpl"
 					      nil
 					      :stream ,stream)
        (html-template:fill-and-print-template #p"footer.tpl"

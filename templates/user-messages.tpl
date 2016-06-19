@@ -5,7 +5,7 @@
 // Shorthand for $( document ).ready()
 $(function() {
     function buildMessageTable (data) {
-	var res = "<table>";
+	var res = "<table class='user-messages'>";
 
 	function addChildren(child){
 	    var urlIdx     = 1;
@@ -14,7 +14,7 @@ $(function() {
 
             res+= "<tr>"                                                               +
                   "<span class='fa fa-reply fa-rotate-180' aria-hidden='true'></span>" +
-                  "<td colspan='8'>"                                                   +
+                  "<td class='user-message-reply-row' colspan='8'>"                    +
 	          "<a class='open-response-link' href='"+  child[urlIdx]  + "'>"       +
 	          child[subjectIdx] + child[timeIdx]                                   +
 	          "</a>"                                                               +
@@ -62,12 +62,11 @@ $(function() {
 	$.ajax({
 	    url: href
 	}).done(function( data ) {
-
 	    var info=JSON.parse(data);
 	    var table = buildMessageTable(info);
 	    $(that).parent().children('table').remove();
 	    $(that).parent().append(table);
-
+	    placeFooter();
 	});
     })
 });

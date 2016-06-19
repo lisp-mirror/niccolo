@@ -448,6 +448,8 @@
    :utils
    :views)
   (:export
+   :render-logout-control
+   :render-main-menu
    :search-chem-prod
    :+search-chem-id+
    :+search-chem-owner+

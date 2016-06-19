@@ -68,20 +68,26 @@
     (and (= (elt decoded 4) 4)
 	 (= (elt decoded 3) 1))))
 
+(defun render-logout-control (stream)
+  (let ((template (with-path-prefix
+  		      :session-username (format nil "(~a)"
+						(get-session-username))
+		      :logout-link      (with-session-user (user)
+					  (if user
+					      (restas:genurl 'logout)
+					      nil))
+		      :login-link       (with-session-user (user)
+					  (if (not user)
+					      #+mini-cas (cas-login-uri)
+					      #-mini-cas (restas:genurl 'logout)
+					      nil)))))
+    (html-template:fill-and-print-template #p"logout-control.tpl"
+					   template
+					   :stream stream)))
+
 (defun render-main-menu (stream)
   (let ((template (with-path-prefix
 		      :has-nyan              (time-to-nyan) ;-)
-		      :session-username      (format nil "(~a)"
-						     (get-session-username))
-		      :logout-link           (with-session-user (user)
-					       (if user
-						   (restas:genurl 'logout)
-						   nil))
-		      :login-link           (with-session-user (user)
-					      (if (not user)
-						  #+mini-cas (cas-login-uri)
-						  #-mini-cas (restas:genurl 'logout)
-						  nil))
 		      :safety-lbl            (_ "Safety")
 		      :manage-ghs-hazard     (restas:genurl 'ghs-hazard)
 		      :manage-ghs-hazard-lbl (_ "GHS Hazard Codes")
