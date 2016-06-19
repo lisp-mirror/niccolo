@@ -39,7 +39,7 @@
     plural-function)
   (defparameter *empty-translation*
       (make-translation :description     "Default"
-			:table           (make-hash-table)
+			:table           cl-i18n::*translation-table*
 			:plural-function #'cl-i18n:n/=1-plural-form))
   (setf (gethash "" (translation-table *empty-translation*)) ""))
 

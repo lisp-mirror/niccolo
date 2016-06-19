@@ -651,6 +651,7 @@
 	  +non-volatile-liquid-cristals+)
     (setf (gethash (_ "+fluid-powder-volatile-liquid+") *traslation-keys-table*)
 	  +fluid-powder-volatile-liquid+))
+
   (let ((cl-i18n:*translation-file-root* ""))
     (cl-i18n:load-language (local-system-path #p"locale/italian.lisp"))
     (populate-translation-table)))
