@@ -29,6 +29,16 @@
     </tr>
     <!-- /TMPL_LOOP -->
   </table>
+
+  <table class="waste-stats">
+    <caption><!-- TMPL_VAR user-group-caption-lb --></caption>
+    <tr><th><!-- TMPL_VAR username-lb --></th><th><!-- TMPL_VAR weight-lb --></th></tr>
+    <!-- TMPL_LOOP user-group -->
+    <tr><td><!-- TMPL_VAR username --></td><td><!-- TMPL_VAR sum-weight --></td></tr>
+    <!-- /TMPL_LOOP -->
+  </table>
+
+
   <!-- /TMPL_IF -->
 
   <!-- TMPL_UNLESS cer-group -->

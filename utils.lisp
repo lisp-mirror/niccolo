@@ -293,6 +293,15 @@
 (defun timestamp-compare-asc (a b)
   (local-time:timestamp< a b))
 
+(defun remove-old-waste-stats ()
+  (let ((jan (local-time:adjust-timestamp (local-time:today)
+	       (set :month 1)
+	       (set :day-of-month 1))))
+    #'(lambda (a)
+	(local-time:timestamp< (encode-datetime-string (getf a
+							     :sent-time))
+			       jan))))
+
 ;; mail
 
 (defun send-email (subject to message)
