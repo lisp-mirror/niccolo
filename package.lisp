@@ -113,7 +113,11 @@
    :+search-chem-shelf+
    :+name-validity-date+
    :+name-expire-date+
-   :+no-html-tags-at-all+))
+   :+no-html-tags-at-all+
+   :+query-product-path+
+   :+post-query-product-results+
+   :+query-visited+
+   :+query-http-parameter-key+))
 
 (defpackage :conditions
   (:use :cl)
@@ -351,12 +355,14 @@
    :encode-pass
    :generate-salt
    :obj->json-string
+   :json-string->obj
    :plist->json
    :path-prefix-tpl
    :with-path-prefix
    :alist->query-uri
    :local-uri
    :local-uri-noport
+   :remote-uri
    :gen-autocomplete-functions
    :prepare-for-update
    :with-standard-html-frame
@@ -475,4 +481,15 @@
    :string-utils
    :db-utils
    :utils
-   :views))
+   :views)
+  (:nicknames :fq)
+  (:export
+   :node
+   :check-credentials
+   :with-credentials
+   :id
+   :key
+   :query-visited-p
+   :set-visited
+   :clear-visited
+   :make-visited-response))

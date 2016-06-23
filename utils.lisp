@@ -18,7 +18,9 @@
 (defmacro define-lab-route (name params &body body)
   `(restas:define-route ,name ,(append (list (concatenate 'string
 							  +path-prefix+
-							  (first params)))
+							  (if (symbolp (first params))
+							      (symbol-value (first params))
+							      (first params))))
 				       (rest params))
      ,@body))
 
@@ -41,6 +43,10 @@
 (defun obj->json-string (object)
   (with-output-to-string (stream)
     (cl-json:encode-json object stream)))
+
+(defun json-string->obj (serialized)
+  (cl-json:with-decoder-simple-clos-semantics
+    (cl-json:decode-json-from-string serialized)))
 
 (defun plist->json (obj)
   (cl-json:encode-json-plist-to-string obj))
@@ -102,6 +108,15 @@
     (puri:render-uri (make-instance 'puri:uri
 				    :scheme :https
 				    :host +hostname+
+				    :path path)
+		     stream)))
+
+(defun remote-uri (host port path)
+  (with-output-to-string (stream)
+    (puri:render-uri (make-instance 'puri:uri
+				    :scheme :https
+				    :host host
+				    :port port
 				    :path path)
 		     stream)))
 

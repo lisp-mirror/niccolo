@@ -127,3 +127,26 @@
 	  (let ((template (fetch-template-message-by-id id)))
 	    (plist->json template))
 	  +http-not-found+))))
+
+(define-lab-route ws-query-product (+query-product-path+ :method :post)
+  (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+    (if query
+	(fq:with-credentials ((host) (fq:key query))
+	  nil)
+	;; se si fare la query sql sempre ripulendo l'input anche se e' inutile
+	;; se ci sono risultati mandarli all'host origine tramite ws-query-product-results
+      +http-not-found+)))
+
+(define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
+  (break))
+
+(define-lab-route ws-query-visited (+query-visited+ :method :post)
+  (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+    (if query
+	(fq:with-credentials ((host) (fq:key query))
+	  (let* ((query-id  (and query (fq:id query)))
+		 (visited-p (and query-id (fq:query-visited-p query-id))))
+	    (when query-id
+	      (fq:set-visited query-id))
+	    (obj->json-string (fq:make-visited-response visited-p query-id))))
+	+http-not-found+)))

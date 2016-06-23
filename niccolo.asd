@@ -95,8 +95,8 @@
 	       (:file "l-factor")
 	       (:module federated-query
 			:components ((:file "query-id")
-				     (:file "query-object")
-				     (:file "status")
-				     (:file "names")))
+				     (:file "nodes")
+				     (:file "status-visited")
+				     (:file "query-object")))
 	       (:file "services")
 	       (:file "lab")))
