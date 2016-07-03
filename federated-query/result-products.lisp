@@ -15,19 +15,23 @@
 
 (in-package :federated-query)
 
-(let ((checklist (init-hashtable-equalp))
-      (lock  (bt:make-lock)))
+(let ((db (init-hashtable-equalp))
+      (lock  (bt:make-recursive-lock)))
 
-  (defun query-visited-p (query-id)
-    (bt:with-lock-held (lock)
-      (gethash query-id checklist)))
+  (defun get-raw-results (query-id)
+    (bt:with-recursive-lock-held (lock)
+      (gethash query-id db)))
 
-  (defun set-visited (query-id)
-    (bt:with-lock-held (lock)
-      (prog1
-	  (gethash query-id checklist)
-	(setf (gethash query-id checklist) t))))
+  (defun enqueue-results (query-id res-object)
+    (bt:with-recursive-lock-held (lock)
+      (if (get-raw-results query-id)
+	  (setf (gethash query-id db)
+		(concatenate 'list
+			     (get-raw-results query-id)
+			     (list res-object)))
+	  (setf (gethash query-id db)
+		(list res-object)))))
 
-  (defun clear-visited ()
-    (bt:with-lock-held (lock)
-      (setf checklist (init-hashtable-equalp)))))
+  (defun clear-db ()
+    (bt:with-recursive-lock-held (lock)
+      (setf db (init-hashtable-equalp)))))

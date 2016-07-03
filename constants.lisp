@@ -94,3 +94,5 @@
 (define-constant +query-visited+                   "/fq-query-visited"           :test #'string=)
 
 (define-constant +query-http-parameter-key+        "q"                           :test #'string=)
+
+(define-constant +query-http-response-key+         "r"                           :test #'string=)

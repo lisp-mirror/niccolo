@@ -117,7 +117,8 @@
    :+query-product-path+
    :+post-query-product-results+
    :+query-visited+
-   :+query-http-parameter-key+))
+   :+query-http-parameter-key+
+   :+query-http-response-key+))
 
 (defpackage :conditions
   (:use :cl)
@@ -357,6 +358,8 @@
    :obj->json-string
    :json-string->obj
    :plist->json
+   :json->list
+   :chemical-products-template->json-string
    :path-prefix-tpl
    :with-path-prefix
    :alist->query-uri
@@ -380,7 +383,8 @@
    :waste-message-expired-p
    :timestamp-compare-desc
    :timestamp-compare-asc
-   :send-email))
+   :send-email
+   :init-hashtable-equalp))
 
 (defpackage :i18n
   (:use
@@ -467,7 +471,7 @@
    :+search-chem-storage+
    :+search-chem-shelf+))
 
-(defpackage federated-query
+(defpackage :federated-query
   (:use
    :cl
    :alexandria
@@ -484,12 +488,25 @@
    :views)
   (:nicknames :fq)
   (:export
+   :all-nodes
    :node
+   :init-nodes
+   :find-node
    :check-credentials
    :with-credentials
+   :request
+   :origin-host
+   :origin-host-port
    :id
    :key
+   :send-query
+   :send-response
    :query-visited-p
    :set-visited
    :clear-visited
-   :make-visited-response))
+   :response
+   :make-query-product-response
+   :make-visited-response
+   :get-raw-results
+   :enqueue-results
+   :clear-db))

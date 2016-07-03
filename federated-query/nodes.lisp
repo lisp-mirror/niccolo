@@ -17,6 +17,9 @@
 
 (defparameter *nodes* '())
 
+(defun all-nodes ()
+  *nodes*)
+
 (defstruct node
   (name  "localhost" :type string)
   (port  43          :type fixnum)

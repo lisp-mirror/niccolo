@@ -97,6 +97,7 @@
 			:components ((:file "query-id")
 				     (:file "nodes")
 				     (:file "status-visited")
-				     (:file "query-object")))
+				     (:file "query-object")
+				     (:file "result-products")))
 	       (:file "services")
 	       (:file "lab")))

@@ -132,21 +132,58 @@
   (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
     (if query
 	(fq:with-credentials ((host) (fq:key query))
-	  nil)
-	;; se si fare la query sql sempre ripulendo l'input anche se e' inutile
-	;; se ci sono risultati mandarli all'host origine tramite ws-query-product-results
-      +http-not-found+)))
+	  (let* ((products-query (gen-all-prod-select (where
+						 (:like :chem-name
+							(prepare-for-sql-like (fq:request query))))))
+		 (products-plists (build-template-list-chemical-prod (query products-query)))
+		 (products-serialized (chemical-products-template->json-string products-plists
+									       :other-pairs
+									       (cons :host +hostname+)))
+		 (response (fq:make-query-product-response products-serialized
+							   (fq:id query)))
+		 (origin-host                (fq:origin-host query))
+		 (origin-host-port           (fq:origin-host-port query)))
+	    (if (and origin-host
+		     origin-host-port
+		     (fq:find-node origin-host))
+		(progn
+		  ;; spawn request
+		  (let ((req (fq::make-query-product (fq:request query)
+						     :id          (fq:id query)
+						     :origin-host origin-host
+						     :port        origin-host-port)))
+		    (fq::federated-query-product req))
+		  (when products-plists
+		    (fq:send-response response origin-host origin-host-port
+				      :path +post-query-product-results+))
+		  +http-ok+)
+		+http-not-found+)))
+	+http-not-found+)))
 
 (define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
-  (break))
+  (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
+    (if response
+	(fq:with-credentials ((host) (fq:key response))
+	  (when (fq:id response)
+	    (fq:enqueue-results (fq:id response) response)
+	    (tbnl:log-message* :info
+			     "received product-query ~a from ~a. -> ~a"
+			     (fq:id response)
+			     (host)
+			     (tbnl:post-parameter +query-http-response-key+)))
+
+	    +http-ok+)
+	+http-not-found+)))
 
 (define-lab-route ws-query-visited (+query-visited+ :method :post)
   (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
     (if query
 	(fq:with-credentials ((host) (fq:key query))
-	  (let* ((query-id  (and query (fq:id query)))
-		 (visited-p (and query-id (fq:query-visited-p query-id))))
-	    (when query-id
-	      (fq:set-visited query-id))
+	  (tbnl:log-message* :info
+			     "received visited query ~a from ~a."
+			     (fq:id query)
+			     (host))
+	  (let* ((query-id  (and query    (fq:id query)))
+		 (visited-p (and query-id (fq:set-visited query-id))))
 	    (obj->json-string (fq:make-visited-response visited-p query-id))))
 	+http-not-found+)))

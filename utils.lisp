@@ -45,11 +45,29 @@
     (cl-json:encode-json object stream)))
 
 (defun json-string->obj (serialized)
-  (cl-json:with-decoder-simple-clos-semantics
-    (cl-json:decode-json-from-string serialized)))
+   (handler-case
+       (cl-json:with-decoder-simple-clos-semantics
+	 (cl-json:decode-json-from-string serialized))
+     (json:json-syntax-error () nil)
+     (end-of-file            () nil)))
 
 (defun plist->json (obj)
   (cl-json:encode-json-plist-to-string obj))
+
+(defun json->list (serialized)
+   (handler-case
+       (cl-json:decode-json-from-string serialized)
+     (json:json-syntax-error () nil)
+     (end-of-file            () nil)))
+
+(defun chemical-products-template->json-string (products &key (other-pairs nil))
+  (with-output-to-string (stream)
+    (cl-json:with-array (stream)
+      (loop for i in products do
+	   (when other-pairs
+	     (setf (getf i (car other-pairs)) (cdr other-pairs)))
+	   (cl-json:as-array-member (stream)
+	       (cl-json:encode-json-plist i stream))))))
 
 (defmacro gen-autocomplete-functions (class data-fn)
   (let* ((class-string (string-upcase (symbol-name class)))
@@ -320,3 +338,8 @@
 			:ssl  +smtp-ssl+
 			:port +smtp-port-address+
 			:authentication +smtp-autentication+)))
+
+;; hashtables
+
+(defun init-hashtable-equalp ()
+  (make-hash-table :test 'equalp))

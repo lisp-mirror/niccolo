@@ -15,9 +15,11 @@
 
 (in-package :federated-query)
 
-(define-constant +query-chemical-product+ "chemical-product" :test #'string=)
+(define-constant +query-chemical-product+    "chemical-product"      :test #'string=)
 
-(define-constant +query-node-visited+     "visited"          :test #'string=)
+(define-constant +chemical-product-response+ "chemical-product-resp" :test #'string=)
+
+(define-constant +query-node-visited+        "visited"               :test #'string=)
 
 (defclass prototype ()
   ((lisp-package
@@ -41,7 +43,13 @@
 				  :lisp-class   (class-name (class-of object)))))
     (setf (prototype object) prototype)))
 
-(defclass query (json-deserializable)
+(defclass identified-by-key ()
+  ((key
+    :initform +federated-query-key+
+    :initarg  :key
+    :accessor key)))
+
+(defclass query (json-deserializable identified-by-key)
   ((request-type
     :initform +query-chemical-product+
     :initarg  :request-type
@@ -59,15 +67,11 @@
     :initarg  :origin-host-port
     :accessor origin-host-port)
    (id
-    :initform (next-query-id)
+    :initform nil
     :initarg  :id
-    :accessor id)
-   (key
-    :initform ""
-    :initarg  :key
-    :accessor key)))
+    :accessor id)))
 
-(defclass query-response (json-deserializable)
+(defclass query-response (json-deserializable identified-by-key)
   ((request-type
     :initform +query-chemical-product+
     :initarg  :request-type
@@ -83,18 +87,6 @@
 
 (defclass query-product (query) ())
 
-(defclass product-response (json-deserializable)
-  ((name
-    :initform ""
-    :initarg  :name
-    :accessor name)
-   (place
-    :initform ""
-    :initarg  :place
-    :accessor place)))
-
-(defclass query-product-response (query-response) ())
-
 (defun make-query-product (name &key (id nil) (origin-host nil) (port nil))
   (make-instance 'query-product
 		 :id               (or id (next-query-id))
@@ -105,8 +97,18 @@
 		 :request-type +query-chemical-product+
 		 :request      name))
 
+(defclass query-product-response (query-response) ())
+
+(defun make-query-product-response (serialized-products query-id)
+  (make-instance 'query-response
+		 :key              +federated-query-key+
+		 :id               query-id
+		 :response         serialized-products))
 
 (defclass query-visited (query) ())
+
+(defun make-query-visited (id)
+  (make-instance 'query-visited :id id))
 
 (defclass visited-response (query-response) ())
 
@@ -118,21 +120,46 @@
 
 (defgeneric send-query (object node &key path))
 
-(defmethod  send-query ((object query) node &key (path nil))
+(defmethod send-query ((object query) node &key (path nil))
   (let ((uri (remote-uri (node-name node) (node-port node)
 			 (concatenate 'string +path-prefix+ path))))
-    (setf (key object) (node-key node))
+    (setf (key object) +federated-query-key+)
     (drakma:http-request uri
 			 :method :post
 			 :verify :required
 			 :parameters (list (cons +query-http-parameter-key+
 						 (obj->json-string object))))))
 
-(defmethod  send-query ((object query-product) node &key (path +query-product-path+))
-  ;; TODO per prima cosa vedere se l'host e' stato visitato, solo se non lo e' stato mandare la richiesta
+(defmethod send-query ((object query-product) node &key (path +query-product-path+))
   (call-next-method object node :path path))
 
-(defun test-query-product (name)
-  (init-nodes)
-  (let ((req (make-query-product name)))
-    (send-query req (find-node "localhost"))))
+(defmethod send-query ((object query-visited) node &key (path +query-visited+))
+  (call-next-method object node :path path))
+
+(defgeneric send-response (object destination port &key path))
+
+(defmethod send-response ((object query-response) destination port
+			  &key (path +post-query-product-results+))
+  (let ((node (find-node destination)))
+    (when node
+      (let ((uri (remote-uri (node-name node) port
+			     (concatenate 'string +path-prefix+ path))))
+	(setf (key object) (node-key node))
+	(drakma:http-request uri
+			     :method :post
+			     :verify :required
+			     :parameters (list (cons +query-http-response-key+
+						     (obj->json-string object))))))))
+
+(defun federated-query-product (request)
+  (let* ((req         (if (stringp request)
+			  (make-query-product request)
+			  request)))
+    (loop for node in (all-nodes) do
+	 (query-product-single-node req node))))
+
+(defun query-product-single-node (request node)
+  (let* ((req-visited (make-query-visited (id request)))
+	 (response-visited (json-string->obj (send-query req-visited node))))
+    (when (and response-visited (not (fq:response response-visited)))
+      (send-query request node))))

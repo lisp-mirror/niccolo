@@ -26,16 +26,16 @@
     (restas.directory-publisher:*autoindex* t))
 
   (restas:mount-module -jquery-ui-images- (#:restas.directory-publisher)
-    (:url (cat-prefix"/css/images/"))
+    (:url (cat-prefix "/css/images/"))
     (restas.directory-publisher:*directory* *jquery-ui-images-dir*)
     (restas.directory-publisher:*autoindex* t))
 
   (restas:mount-module -css- (#:restas.directory-publisher)
-    (:url (cat-prefix"/css/"))
+    (:url (cat-prefix "/css/"))
     (restas.directory-publisher:*directory* *css-dir*)
     (restas.directory-publisher:*autoindex* t))
 
   (restas:mount-module -js- (#:restas.directory-publisher)
-    (:url (cat-prefix"/js/"))
+    (:url (cat-prefix "/js/"))
     (restas.directory-publisher:*directory* *js-dir*)
     (restas.directory-publisher:*autoindex* t)))

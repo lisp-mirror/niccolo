@@ -162,6 +162,7 @@
 
 (progn
   (initialize-pictograms-db)
+  (fq:init-nodes)
   (restas:start '#:restas.lab
 		:acceptor-class 'lab-acceptor
 		:hostname config:+hostname+
