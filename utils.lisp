@@ -161,6 +161,9 @@
 
 ;; net dns
 
+(defun address-string->vector (address-string)
+  (map 'vector #'parse-integer (cl-ppcre:split "\\." address-string)))
+
 (defgeneric get-host-by-address (address))
 
 #+sbcl (defmethod get-host-by-address ((address vector))
@@ -170,7 +173,7 @@
 
 #+sbcl (defmethod get-host-by-address ((address string))
 	 (handler-case
-	     (get-host-by-address (map 'vector #'parse-integer (cl-ppcre:split "\\." address)))
+	     (get-host-by-address (address-string->vector address))
 	   (error () nil)))
 
 #-sbcl (defun get-host-by-address (address)

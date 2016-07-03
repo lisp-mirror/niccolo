@@ -366,6 +366,7 @@
    :local-uri
    :local-uri-noport
    :remote-uri
+   :address-string->vector
    :get-host-by-address
    :get-host-by-name
    :gen-autocomplete-functions
