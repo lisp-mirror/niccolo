@@ -157,6 +157,27 @@
 			class id)
 	  +http-not-found+))))
 
+;; net addresses
+
+
+
+;; net dns
+
+(defgeneric get-host-by-address (address))
+
+#+sbcl (defmethod get-host-by-address ((address vector))
+	 (handler-case
+	     (sb-bsd-sockets::host-ent-name (sb-bsd-sockets:get-host-by-address address))
+	   (error () nil)))
+
+#+sbcl (defmethod get-host-by-address ((address string))
+	 (handler-case
+	     (get-host-by-address (map 'vector #'parse-integer (cl-ppcre:split "\\." address)))
+	   (error () nil)))
+
+#-sbcl (defun get-host-by-address (address)
+	 (warn "Sorry, get-host-by-address not implemented for your compiler"))
+
 ;; pictograms
 
 (defun all-pictograms ()

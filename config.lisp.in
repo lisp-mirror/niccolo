@@ -120,6 +120,9 @@
 
 (define-constant +federated-query-key+       "/yGHgfè%a6s!"     :test #'string=)
 
+(define-constant +federated-query-nodes-file+ (local-system-path #p"nodes-list.expr")
+  :test #'uiop:pathname-equal)
+
 ;; templates config
 
 (setf html-template:*default-template-pathname*

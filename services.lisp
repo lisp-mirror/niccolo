@@ -131,7 +131,7 @@
 (define-lab-route ws-query-product (+query-product-path+ :method :post)
   (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
     (if query
-	(fq:with-credentials ((host) (fq:key query))
+	(fq:with-credentials ((get-host-by-address (tbnl:remote-addr*)) (fq:key query))
 	  (let* ((products-query (gen-all-prod-select (where
 						 (:like :chem-name
 							(prepare-for-sql-like (fq:request query))))))
@@ -163,13 +163,13 @@
 (define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
   (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
     (if response
-	(fq:with-credentials ((host) (fq:key response))
+	(fq:with-credentials ((get-host-by-address (tbnl:remote-addr*)) (fq:key response))
 	  (when (fq:id response)
 	    (fq:enqueue-results (fq:id response) response)
 	    (tbnl:log-message* :info
 			     "received product-query ~a from ~a. -> ~a"
 			     (fq:id response)
-			     (host)
+			     (get-host-by-address (tbnl:remote-addr*))
 			     (tbnl:post-parameter +query-http-response-key+)))
 
 	    +http-ok+)
@@ -178,11 +178,11 @@
 (define-lab-route ws-query-visited (+query-visited+ :method :post)
   (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
     (if query
-	(fq:with-credentials ((host) (fq:key query))
+	(fq:with-credentials ((get-host-by-address (tbnl:remote-addr*)) (fq:key query))
 	  (tbnl:log-message* :info
 			     "received visited query ~a from ~a."
 			     (fq:id query)
-			     (host))
+			     (get-host-by-address (tbnl:remote-addr*)))
 	  (let* ((query-id  (and query    (fq:id query)))
 		 (visited-p (and query-id (fq:set-visited query-id))))
 	    (obj->json-string (fq:make-visited-response visited-p query-id))))
