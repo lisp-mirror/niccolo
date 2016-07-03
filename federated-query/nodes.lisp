@@ -37,8 +37,14 @@
   (setf *nodes* '())
   (load +federated-query-nodes-file+ :if-does-not-exist nil))
 
-(defun find-node (name)
+(defgeneric find-node (name))
+
+(defmethod find-node ((name string))
   (find name *nodes* :key #'node-name :test #'string=))
+
+(defmethod find-node ((name vector))
+  (find name *nodes* :key #'node-name
+	:test #'(lambda (a b) (equalp a (utils:get-host-by-name b)))))
 
 (defun check-credentials (node-name key)
   (let ((actual-name (if (cl-ppcre:scan ":" node-name)

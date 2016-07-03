@@ -159,8 +159,6 @@
 
 ;; net addresses
 
-
-
 ;; net dns
 
 (defgeneric get-host-by-address (address))
@@ -176,6 +174,14 @@
 	   (error () nil)))
 
 #-sbcl (defun get-host-by-address (address)
+	 (warn "Sorry, get-host-by-address not implemented for your compiler"))
+
+#+sbcl (defun get-host-by-name (name)
+	 (handler-case
+	     (sb-bsd-sockets::host-ent-address (sb-bsd-sockets:get-host-by-name name))
+	   (error () nil)))
+
+#-sbcl (defun get-host-by-name (address)
 	 (warn "Sorry, get-host-by-address not implemented for your compiler"))
 
 ;; pictograms

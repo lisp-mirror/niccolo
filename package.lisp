@@ -367,6 +367,7 @@
    :local-uri-noport
    :remote-uri
    :get-host-by-address
+   :get-host-by-name
    :gen-autocomplete-functions
    :prepare-for-update
    :with-standard-html-frame
