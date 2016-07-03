@@ -46,12 +46,9 @@
   (find name *nodes* :key #'node-name
 	:test #'(lambda (a b) (equalp a (utils:get-host-by-name b)))))
 
-(defun check-credentials (node-name key)
-  (let ((actual-name (if (cl-ppcre:scan ":" node-name)
-			 (cl-ppcre:scan-to-strings "^[^:]+" node-name)
-			 node-name)))
-  (and (find-node actual-name)
-       (string=   (node-key (find-node actual-name)) key))))
+(defun check-credentials (node-address key)
+  (and (find-node node-address)
+       (string=   (node-key (find-node node-address)) key)))
 
 (defmacro with-credentials ((name key) &body body)
   `(if (check-credentials ,name ,key)
