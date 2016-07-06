@@ -47,6 +47,7 @@
    :+smtp-autentication+
    :+smtp-ssl+
    :+smtp-subject-mail-prefix+
+   :+federated-query-enabled+
    :+federated-query-key+
    :+federated-query-nodes-file+
    :*default-www-root*

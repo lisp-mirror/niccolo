@@ -44,6 +44,7 @@ disposing.
 
   Also be sure to install the following C libraries:
 
+  - libxml2 (needed for cl-sanitize)
   - libgd;
   - libsqlite3;
   - pslib.
@@ -185,6 +186,9 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 * BUGS
 
   Please send bug report to cage at katamail dot com
+
+** Known bugs
+- federated query work only in sbcl.
 
 * License
 

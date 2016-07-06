@@ -116,6 +116,8 @@
 
 (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
 
+(define-constant +federated-query-enabled+     nil              :test #'string=)
+
 ;; key for federated query, change it!
 
 (define-constant +federated-query-key+       "/yGHgfè%a6s!"     :test #'string=)
