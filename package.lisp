@@ -278,7 +278,9 @@
    :+adr-uncode-re+
    :+adr-code-radioactive+
    :+barcode-id-re+
-   :+waste-form-weight-re+))
+   :+waste-form-weight-re+
+   :+federated-query-product-re+
+   :+federated-query-id-re+))
 
 (defpackage :string-utils
   (:use
@@ -504,6 +506,7 @@
    :key
    :send-query
    :send-response
+   :federated-query-product
    :query-visited-p
    :set-visited
    :clear-visited
@@ -511,5 +514,6 @@
    :make-query-product-response
    :make-visited-response
    :get-raw-results
+   :get-serialized-results
    :enqueue-results
    :clear-db))

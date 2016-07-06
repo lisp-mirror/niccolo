@@ -12,6 +12,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/sum-product-quantity-dialog.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/get-get.js"></script>
+
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
@@ -74,6 +76,55 @@
 	    var sum    = arrDgt.reduce(function(a, b){ return parseInt(a) + parseInt(b);}, 0);
 	    var div    = sum / 10.0;
 	    return  ((div - parseInt(div)) * 10) == parseInt(checkDigit);
+	}
+
+	// federated-query
+
+	if(getParameterByName('<!-- TMPL_VAR name -->') != null &&
+	   getParameterByName('<!-- TMPL_VAR name -->') != ""   &&
+	   !mobilep()){
+	    var key = getParameterByName('<!-- TMPL_VAR name -->');
+	    $.ajax({
+		url:    "<!-- TMPL_VAR fq-start-url -->",
+		method: "GET",
+		data: {  "<!-- TMPL_VAR fq-query-key-param -->" : key }
+	    }).success(function( data ) {
+		//alert(data);
+		setInterval(function(){
+		$.ajax({
+		    url:    "<!-- TMPL_VAR fq-results-url -->",
+		    method: "GET",
+		    data: {  "<!-- TMPL_VAR fq-query-key-param -->" : data }
+		}).success(function( data ) {
+		    try{
+			var info = JSON.parse(data);
+
+			info.each(function (a) {
+			    $( "#fq-results tbody" ).append("<tr>"                            +
+		 					    "<td>" + a.host      + "</td>"    +
+							    "<td>" + a.chempId   + "</td>"    +
+							    "<td>" + a.ownerName + "</td>"    +
+							    "<td>" + a.chemName + "</td>"     +
+							    "<td>" + a.buildingName + "</td>" +
+							    "<td>" + a.storageFloor + "</td>" +
+							    "<td>" + a.storageName  + "</td>" +
+							    "<td>" + a.shelf  + "</td>"       +
+							    "<td>" + a.quantity  + "</td>"    +
+							    "<td>" + a.units     + "</td>"    +
+							    "<td>" + a.notes     + "</td>"    +
+		 					    "</tr>");
+			});
+		    }catch (a){};
+		    placeFooter();
+
+		});
+		},10000);
+
+	    }).error(function( data ) {
+		placeFooter();
+	    });
+	}else{
+	    $( "#fq-res-container" ).empty();
 	}
 
 
@@ -355,4 +406,39 @@
       <!-- /TMPL_LOOP  -->
     </tbody>
   </table>
+
+
+  <!-- federated query results -->
+  <div id="fq-res-container">
+    <h3>
+      <i class="fa fa-cloud-download fa-2x" style="color: #83D1E7"aria-hidden="true"></i>
+      <!-- TMPL_VAR fq-table-res-header -->
+    </h3>
+
+    <table class="sortable chemp-list" id="fq-results">
+      <thead>
+	<tr>
+	  <th class="chemp-select-id-hd"><!-- TMPL_VAR origin-lb --></th>
+	  <th class="chemp-id-hd">ID</th>
+	  <th class="chemp-owner-hd"><!-- TMPL_VAR owner-lb --></th>
+	  <th class="chemp-name-hd"><!-- TMPL_VAR  name-lb --></th>
+	  <th class="chemp-building-name-hd"><!-- TMPL_VAR building-lb --></th>
+	  <th class="chemp-floor-hd"><!-- TMPL_VAR floor-lb --></th>
+	  <th class="chemp-storage-hd"><!-- TMPL_VAR storage-lb --></th>
+	  <th class="chemp-shelf-hd"><!-- TMPL_VAR shelf-lb --></th>
+	  <th class="chemp-quantity-hd"><!-- TMPL_VAR quantity-lb --></th>
+	  <th class="chemp-quantity-hd"><!-- TMPL_VAR units-lb --></th>
+	  <th class="chemp-notes-hd"><!-- TMPL_VAR notes-lb --></th>
+	</tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <div class="ajax-loader-federated-query">
+      <img src="<!-- TMPL_VAR path-prefix -->/images/ajax-loader.gif" />
+    </div>
+
+  </div>
+
 </form>

@@ -156,7 +156,8 @@
 			  (make-query-product request)
 			  request)))
     (loop for node in (all-nodes) do
-	 (query-product-single-node req node))))
+	 (query-product-single-node req node))
+    (id req)))
 
 (defun query-product-single-node (request node)
   (let* ((req-visited (make-query-visited (id request)))

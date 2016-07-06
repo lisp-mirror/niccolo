@@ -32,6 +32,24 @@
 	  (setf (gethash query-id db)
 		(list res-object)))))
 
+  (defun get-serialized-results (query-id)
+    (bt:with-recursive-lock-held (lock)
+      (let ((raw (get-raw-results query-id)))
+	(if raw
+	    (with-output-to-string (stream)
+	      ;; remove the entry
+	      (remhash query-id db)
+	      (cl-json:with-array (stream)
+		(loop for i in raw do
+		       (let ((plists (json->list (response i))))
+			 (loop for prod in plists do
+			      (cl-json:as-array-member (stream)
+				(cl-json:encode-json prod stream)))))))
+	    (with-output-to-string (stream)
+	      (cl-json:with-array (stream)
+		(loop for i in raw do
+		     (cl-json:as-array-member (stream)
+		       (cl-json:encode-json-plist raw stream)))))))))
   (defun clear-db ()
     (bt:with-recursive-lock-held (lock)
       (setf db (init-hashtable-equalp)))))

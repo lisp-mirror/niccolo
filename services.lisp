@@ -187,3 +187,22 @@
 		 (visited-p (and query-id (fq:set-visited query-id))))
 	    (obj->json-string (fq:make-visited-response visited-p query-id))))
 	+http-not-found+)))
+
+
+(define-lab-route ws-federated-query-product ("/fq-product" :method :get)
+  (with-authentication
+    (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+					       +federated-query-product-re+
+					       (_ "no"))))))
+      (if (not errors)
+	  (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+))
+	  +http-not-found+))))
+
+(define-lab-route ws-federated-query-product-results ("/fq-product-res" :method :get)
+  (with-authentication
+    (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+					       +federated-query-id-re+
+					       (_ "no"))))))
+      (if (not errors)
+	  (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
+	  +http-not-found+))))

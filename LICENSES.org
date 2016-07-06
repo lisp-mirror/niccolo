@@ -120,6 +120,11 @@
   released under SIL Open Font License (OFL)
   http://scripts.sil.org/OFL
 
+- www/images/ajax-loader.gif
+
+  got       from       http://ajaxload.info/      released       under
+  http://www.wtfpl.net/faq/ license according to the website above
+
 * Code
   - conditions.lisp
   - xml-utils.lisp
@@ -231,3 +236,10 @@
 
   Licensed under the MIT license:
   http://www.opensource.org/licenses/mit-license.php
+
+- www/js/get-get.js
+   got from http://stackoverflow.com/a/901144
+   author jolly.exe https://stackoverflow.com/users/1045296/jolly-exe
+   © jolly.exe released under creative commons
+   Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+   https://creativecommons.org/licenses/by-sa/3.0/
