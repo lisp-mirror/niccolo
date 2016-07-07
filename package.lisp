@@ -47,6 +47,9 @@
    :+smtp-autentication+
    :+smtp-ssl+
    :+smtp-subject-mail-prefix+
+   :+federated-query-enabled+
+   :+federated-query-key+
+   :+federated-query-nodes-file+
    :*default-www-root*
    :*images-dir*
    :*jquery-ui-images-dir*
@@ -111,7 +114,12 @@
    :+search-chem-shelf+
    :+name-validity-date+
    :+name-expire-date+
-   :+no-html-tags-at-all+))
+   :+no-html-tags-at-all+
+   :+query-product-path+
+   :+post-query-product-results+
+   :+query-visited+
+   :+query-http-parameter-key+
+   :+query-http-response-key+))
 
 (defpackage :conditions
   (:use :cl)
@@ -271,7 +279,9 @@
    :+adr-uncode-re+
    :+adr-code-radioactive+
    :+barcode-id-re+
-   :+waste-form-weight-re+))
+   :+waste-form-weight-re+
+   :+federated-query-product-re+
+   :+federated-query-id-re+))
 
 (defpackage :string-utils
   (:use
@@ -349,12 +359,19 @@
    :encode-pass
    :generate-salt
    :obj->json-string
+   :json-string->obj
    :plist->json
+   :json->list
+   :chemical-products-template->json-string
    :path-prefix-tpl
    :with-path-prefix
    :alist->query-uri
    :local-uri
    :local-uri-noport
+   :remote-uri
+   :address-string->vector
+   :get-host-by-address
+   :get-host-by-name
    :gen-autocomplete-functions
    :prepare-for-update
    :with-standard-html-frame
@@ -372,8 +389,8 @@
    :waste-message-expired-p
    :timestamp-compare-desc
    :timestamp-compare-asc
-   :remove-old-waste-stats
-   :send-email))
+   :send-email
+   :init-hashtable-equalp))
 
 (defpackage :i18n
   (:use
@@ -459,3 +476,45 @@
    :+search-chem-floor+
    :+search-chem-storage+
    :+search-chem-shelf+))
+
+(defpackage :federated-query
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :hunchentoot
+   :crane
+   :config
+   :constants
+   :validation
+   :ps-utils
+   :string-utils
+   :db-utils
+   :utils
+   :views)
+  (:nicknames :fq)
+  (:export
+   :all-nodes
+   :node
+   :init-nodes
+   :find-node
+   :check-credentials
+   :with-credentials
+   :request
+   :origin-host
+   :origin-host-port
+   :id
+   :key
+   :send-query
+   :send-response
+   :federated-query-product
+   :query-visited-p
+   :set-visited
+   :clear-visited
+   :response
+   :make-query-product-response
+   :make-visited-response
+   :get-raw-results
+   :get-serialized-results
+   :enqueue-results
+   :clear-db))

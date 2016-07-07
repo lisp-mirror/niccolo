@@ -127,3 +127,94 @@
 	  (let ((template (fetch-template-message-by-id id)))
 	    (plist->json template))
 	  +http-not-found+))))
+
+;;;; federated query
+
+(defmacro with-federated-query-enabled (&body body)
+  `(if +federated-query-enabled+
+       (progn
+	 ,@body)
+       +http-not-found+))
+
+(define-lab-route ws-query-product (+query-product-path+ :method :post)
+  (with-federated-query-enabled
+    (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+      (if query
+	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+	    (let* ((products-query (gen-all-prod-select (where
+							 (:like :chem-name
+								(prepare-for-sql-like (fq:request query))))))
+		   (products-plists (build-template-list-chemical-prod (query products-query)))
+		   (products-serialized (chemical-products-template->json-string products-plists
+										 :other-pairs
+										 (cons :host +hostname+)))
+		   (response (fq:make-query-product-response products-serialized
+							     (fq:id query)))
+		   (origin-host                (fq:origin-host query))
+		   (origin-host-port           (fq:origin-host-port query)))
+	      (if (and origin-host
+		       origin-host-port
+		       (fq:find-node origin-host))
+		  (progn
+		    ;; spawn request
+		    (let ((req (fq::make-query-product (fq:request query)
+						       :id          (fq:id query)
+						       :origin-host origin-host
+						       :port        origin-host-port)))
+		      (fq::federated-query-product req))
+		    (when products-plists
+		      (fq:send-response response origin-host origin-host-port
+					:path +post-query-product-results+))
+		    +http-ok+)
+		  +http-not-found+)))
+	  +http-not-found+))))
+
+(define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
+  (with-federated-query-enabled
+    (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
+      (if response
+	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key response))
+	    (when (fq:id response)
+	      (fq:enqueue-results (fq:id response) response)
+	      (tbnl:log-message* :info
+				 "received product-query ~a from ~a. -> ~a"
+				 (fq:id response)
+				 (get-host-by-address (address-string->vector (tbnl:remote-addr*)))
+				 (tbnl:post-parameter +query-http-response-key+)))
+
+	    +http-ok+)
+	  +http-not-found+))))
+
+(define-lab-route ws-query-visited (+query-visited+ :method :post)
+  (with-federated-query-enabled
+    (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+      (if query
+	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+	    (tbnl:log-message* :info
+			       "received visited query ~a from ~a."
+			       (fq:id query)
+			       (get-host-by-address (address-string->vector (tbnl:remote-addr*))))
+	    (let* ((query-id  (and query    (fq:id query)))
+		   (visited-p (and query-id (fq:set-visited query-id))))
+	      (obj->json-string (fq:make-visited-response visited-p query-id))))
+	  +http-not-found+))))
+
+(define-lab-route ws-federated-query-product ("/fq-product" :method :get)
+  (with-federated-query-enabled
+    (with-authentication
+      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +federated-query-product-re+
+						 (_ "no"))))))
+	(if (not errors)
+	    (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+))
+	    +http-not-found+)))))
+
+(define-lab-route ws-federated-query-product-results ("/fq-product-res" :method :get)
+  (with-federated-query-enabled
+    (with-authentication
+      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +federated-query-id-re+
+						 (_ "no"))))))
+	(if (not errors)
+	    (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
+	    +http-not-found+)))))

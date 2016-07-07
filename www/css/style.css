@@ -754,3 +754,10 @@ table.waste-stats caption {
     font-weight: bold;
     font-size:   110%;
 }
+
+
+.ajax-loader-federated-query img {
+    margin: auto;
+    display: block;
+    margin-top: 10pt;
+}

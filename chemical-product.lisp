@@ -257,6 +257,8 @@
 						   :storage-lb           (_ "Storage")
 						   :notes-lb            (_ "Notes")
 						   :operations-lb        (_ "Operations")
+						   :origin-lb           (_ "Origin")
+						   :fq-table-res-header (_ "Results from federated servers")
 						   :chemical-id +name-chem-id+
 						   :storage-id  +name-chp-storage-id+
 						   :shelf       +name-shelf+
@@ -284,6 +286,10 @@
 						   :submit-massive-delete +op-submit-massive-delete+
 						   :submit-lend-to     +op-submit-lend-to+
 						   :username-lending   +name-username-lending+
+						   ;; federated query
+						   :fq-start-url  (restas:genurl ' ws-federated-query-product)
+						   :fq-results-url (restas:genurl ' ws-federated-query-product-results)
+						   :fq-query-key-param +query-http-parameter-key+
 						   :data-table data)
 					       :stream stream)))))
 

@@ -1,3 +1,11 @@
+<script>
+    $(function() {
+	$( "#validity-date" ).datepicker({dateFormat : "yy-mm-dd"});
+	$( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
+    })
+
+</script>
+
 <form method="GET" ACTION=""/>
   <div>
     <label for="update-chemical-id">ID</label>

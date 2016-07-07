@@ -84,3 +84,15 @@
 (define-constant +name-expire-date+              "expire-date"               :test #'string=)
 
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
+
+;; federated query
+
+(define-constant +query-product-path+              "/fq-query-product"           :test #'string=)
+
+(define-constant +post-query-product-results+      "/fq-post-product-res"        :test #'string=)
+
+(define-constant +query-visited+                   "/fq-query-visited"           :test #'string=)
+
+(define-constant +query-http-parameter-key+        "q"                           :test #'string=)
+
+(define-constant +query-http-response-key+         "r"                           :test #'string=)

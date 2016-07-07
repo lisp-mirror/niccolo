@@ -18,7 +18,9 @@
 (defmacro define-lab-route (name params &body body)
   `(restas:define-route ,name ,(append (list (concatenate 'string
 							  +path-prefix+
-							  (first params)))
+							  (if (symbolp (first params))
+							      (symbol-value (first params))
+							      (first params))))
 				       (rest params))
      ,@body))
 
@@ -42,8 +44,30 @@
   (with-output-to-string (stream)
     (cl-json:encode-json object stream)))
 
+(defun json-string->obj (serialized)
+   (handler-case
+       (cl-json:with-decoder-simple-clos-semantics
+	 (cl-json:decode-json-from-string serialized))
+     (json:json-syntax-error () nil)
+     (end-of-file            () nil)))
+
 (defun plist->json (obj)
   (cl-json:encode-json-plist-to-string obj))
+
+(defun json->list (serialized)
+   (handler-case
+       (cl-json:decode-json-from-string serialized)
+     (json:json-syntax-error () nil)
+     (end-of-file            () nil)))
+
+(defun chemical-products-template->json-string (products &key (other-pairs nil))
+  (with-output-to-string (stream)
+    (cl-json:with-array (stream)
+      (loop for i in products do
+	   (when other-pairs
+	     (setf (getf i (car other-pairs)) (cdr other-pairs)))
+	   (cl-json:as-array-member (stream)
+	       (cl-json:encode-json-plist i stream))))))
 
 (defmacro gen-autocomplete-functions (class data-fn)
   (let* ((class-string (string-upcase (symbol-name class)))
@@ -105,6 +129,15 @@
 				    :path path)
 		     stream)))
 
+(defun remote-uri (host port path)
+  (with-output-to-string (stream)
+    (puri:render-uri (make-instance 'puri:uri
+				    :scheme :https
+				    :host host
+				    :port port
+				    :path path)
+		     stream)))
+
 ;; web, "lab" specific
 
 (defun prepare-for-update (id class error-msg-not-exists success-fn)
@@ -123,6 +156,36 @@
 			"Someone tried to modify a ~s with id ~s but such object does not exists in database!"
 			class id)
 	  +http-not-found+))))
+
+;; net addresses
+
+;; net dns
+
+(defun address-string->vector (address-string)
+  (map 'vector #'parse-integer (cl-ppcre:split "\\." address-string)))
+
+(defgeneric get-host-by-address (address))
+
+#+sbcl (defmethod get-host-by-address ((address vector))
+	 (handler-case
+	     (sb-bsd-sockets::host-ent-name (sb-bsd-sockets:get-host-by-address address))
+	   (error () nil)))
+
+#+sbcl (defmethod get-host-by-address ((address string))
+	 (handler-case
+	     (get-host-by-address (address-string->vector address))
+	   (error () nil)))
+
+#-sbcl (defun get-host-by-address (address)
+	 (warn "Sorry, get-host-by-address not implemented for your compiler"))
+
+#+sbcl (defun get-host-by-name (name)
+	 (handler-case
+	     (sb-bsd-sockets::host-ent-address (sb-bsd-sockets:get-host-by-name name))
+	   (error () nil)))
+
+#-sbcl (defun get-host-by-name (name)
+	 (warn "Sorry, get-host-by-address not implemented for your compiler"))
 
 ;; pictograms
 
@@ -314,3 +377,8 @@
 			:ssl  +smtp-ssl+
 			:port +smtp-port-address+
 			:authentication +smtp-autentication+)))
+
+;; hashtables
+
+(defun init-hashtable-equalp ()
+  (make-hash-table :test 'equalp))
