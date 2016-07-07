@@ -546,7 +546,7 @@ status :TRANSLATED
 plurals NIL
 
  id "No valid user id (id: ~a)"
-translation "Nessu utente con id ~a"
+translation "Nessun utente con id ~a"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -882,7 +882,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Owner: ~a. Printing date ~a"
-translation "Proprietario: ~a. Data di stampa ~a"
+translation "Proprietario: ~a. data di stampa ~a"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1088,7 +1088,7 @@ plurals NIL
  id "Map uploaded"
 translation "Mappa caricata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Map ~s saved"
@@ -1640,7 +1640,7 @@ plurals NIL
  id "Data Sheet"
 translation "Scheda delle specifiche"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "MSDS file"
@@ -1986,338 +1986,338 @@ status :TRANSLATED
 plurals NIL
 
  id "Lend to"
-translation "Presta"
+translation "Presta a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Owner: ~a. Printing date ~a Validity: ~a Expire: ~a"
-translation ""
+translation "Proprietario: ~a. data di stampa ~a validità: ~a scadenza: ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Expire date not valid"
-translation ""
+translation "Data di Scadenza non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Validity date not valid"
-translation ""
+translation "Data di validità non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Validity date"
-translation ""
+translation "Data di Validità"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Expire date"
-translation ""
+translation "Data di Scadenza"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Messages"
-translation ""
+translation "Messaggi"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Validity expired products"
-translation ""
+translation "Prodotto che ha oltrepassato la data di validità"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Message"
-translation ""
+translation "Messaggio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Recipient"
-translation ""
+translation "Destinatario"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sender"
-translation ""
+translation "Mittente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sent at"
-translation ""
+translation "Spedito a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Subject"
-translation ""
+translation "Oggetto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ID"
-translation ""
+translation "ID del prodotto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Expired products"
-translation ""
+translation "Prodotti scaduti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product validity expired"
-translation ""
+translation "Prodotto che ha oltrepassato la data di validità"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ~a from building ~a (storage name ~a) has expired validity date."
-translation ""
+translation "Prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) ha oltrepassato la data di validità"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product expired"
-translation ""
+translation "Prodotto scaduto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ~a from building ~a (storage name ~a) has expired."
-translation ""
+translation "Prodotto ~ dell'edificio ~a (unità di stoccaggio ~a) è scaduto."
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Message not found"
-translation ""
+translation "Messaggio non trovato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Id message invalid"
-translation ""
+translation "ID messaggio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "You are not the owner of this product"
-translation ""
+translation "Non sei il proprietario di questo prodotto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Chemical product"
-translation ""
+translation "Aggiorna prodotto chimico"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "This product does not exists in database."
-translation ""
+translation "Questo prodotto non esiste nel database"
 plurals-form ""
 status :UNTRANSLATED
 plurals NIL
 
  id "Product updated"
-translation ""
+translation "Prodotto aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Chemical product: ~s updated"
-translation ""
+translation "Prodotto chimico: ~s aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Expire date not properly formatted."
-translation ""
+translation "Data di scadenza impropriamente impostata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Validity date not properly formatted."
-translation ""
+translation "Data di validità impropriamente impostata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product ~a updated"
-translation ""
+translation "Prodotto ~a aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Waste report"
-translation ""
+translation "Relazione rifiuti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Message ~a closed and rejected"
-translation ""
+translation "Messaggio ~a elaborato e respinto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Message ~a closed with success"
-translation ""
+translation "Messaggio ~a elaborato con successo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Closed and rejected"
-translation ""
+translation "Elaborato e respinto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Closed with success"
-translation ""
+translation "Elaborato con successo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Updated status"
-translation ""
+translation "Stato aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "No message with ID ~a found"
-translation ""
+translation "Non è stato trovato alcun messaggio con ID ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Invalid message ID provided"
-translation ""
+translation "Fornito ID di messaggio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Your request:~2%----~2%~a~2%----~2%has been rejected."
-translation ""
+translation "La tua richiesta:~2%----~2%~a~2%----~2% è stata respinta "
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Your request:~2%----~2%~a~2%----~2%has been approved."
-translation ""
+translation "La tua richiesta: ~2%----~2%~a~2%----~2% è stata accettata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Accepted waste messages"
-translation ""
+translation "Messaggio rifiuti accettato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Rejected waste messages"
-translation ""
+translation "Messaggio rifiuti respinto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Opened Waste messages"
-translation ""
+translation "Messaggi rifiuti aperti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Change email"
-translation ""
+translation "Cambia email"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User ~a changed his/hers email from ~a to ~a."
-translation ""
+translation "Utente ~a ha cambiato la sua mail da ~a a ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Email changed"
-translation ""
+translation "Email cambiata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User ~a not found"
-translation ""
+translation "Utente ~a non trovato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Email"
-translation ""
+translation "Email"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Email invalid"
-translation ""
+translation "Email non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Waste production"
-translation ""
+translation "Produzione rifiuti"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
- id "Weight (Kg)"
-translation ""
+ id "Weight (kg)"
+translation "Peso (kg)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Rejected"
-translation ""
+translation "Respinto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Closed"
-translation ""
+translation "Chiuso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Grouped by CER code"
-translation ""
+translation "Raggruppati secondo codice CER"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Grouped by building"
-translation ""
+translation "Raggruppati per edificio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Nothing found"
-translation ""
+translation "Non ho trovato nulla"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Opened"
-translation ""
+translation "Aperto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )

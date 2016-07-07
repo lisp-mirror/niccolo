@@ -126,7 +126,40 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    #+END_SRC
 
-18. Optional (but *strongly* recommended), use CAS autentication
+18. Optional (but *strongly not* recommended), use federated-query
+
+    A  niccolo server  can  federate with  other software's  instances
+    (i.e. other servers  running the same software) to  share parts of
+    their database on the net.
+
+    Hopefully there will be some documentation some day in the future,
+    in the meanwhile the only documentation are the sources. :(
+
+    *It is not recommended to  enable federated query except for study
+    or testing purposes*
+
+    #+BEGIN_SRC lisp
+
+    (define-constant +federated-query-enabled+     nil              :test #'string=)
+
+    ;; key for federated query, change it!
+
+    (define-constant +federated-query-key+       "/yGHgfè%a6s!"     :test #'string=)
+
+    #+END_SRC
+
+    furthermore you need to specify a nodes file named 'nodes-lisp.expr'
+
+    #+BEGIN_SRC lisp
+
+    (in-package :federated-query)
+
+    (define-nodes-list
+      (define-node "nome of the federated host" 8443))
+
+    #+END_SRC
+
+19. Optional (but *strongly* recommended), use CAS autentication
 
    #+BEGIN_SRC lisp
 ;; cas config
@@ -138,7 +171,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
-19. Optional (but *strongly* recommended)
+20. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
@@ -147,8 +180,8 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
-20. sh start_server.sh
-21. point your browser to
+21. sh 'start_server.sh' (or sh 'start_server-cas.sh' if you are using  [[CAS authentication]])
+22. point your browser to
     https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
     where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the
