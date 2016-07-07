@@ -17,6 +17,12 @@
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
+
+	$( "#validity-date" ).datepicker({dateFormat : "yy-mm-dd"});
+
+	$( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
+
+
 	var availableStorages = <!-- TMPL_VAR json-storages -->;
 	var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
 	$( "#target-storage" ).autocomplete({
