@@ -18,7 +18,14 @@
 // Shorthand for $( document ).ready()
 $(function() {
     $(".sortable").find("th").attr('title', 'Click to sort');
+
     var order = true;
+
+    function getParentTable(el){
+	return el.parent().parent().parent();
+    }
+
+
     $(".sortable th").click(function (e) {
 	order = ! order;
 	var txt   = $(this).text();
@@ -26,15 +33,15 @@ $(function() {
 	var pos   = allTH.findIndex(function (cell){
 	    return $(cell).text() == txt;
 	});
-	var theTable = $(".sortable tbody tr");
-	var sortedTable=theTable.get().sort(function(a, b) {
+	var theTable         = $(this).parent().parent().parent().find("tbody tr");
+	var sortedTable      = theTable.get().sort(function(a, b) {
 	    var keyChildren1 = $($(a).children().get(pos)).text();
 	    var keyChildren2 = $($(b).children().get(pos)).text();
 	    var res = order ? keyChildren1 > keyChildren2 ? 1 : -1:
 	                      keyChildren1 < keyChildren2 ? 1 : -1;
 	    return res;
 	});
-	$(".sortable tbody").append(sortedTable);
+	getParentTable($(this)).find("tbody").append(sortedTable);
     });
 
 });
