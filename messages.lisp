@@ -507,17 +507,22 @@
 						   :messages (build-general-message-template))
 					       :stream stream)))))
 
-(defun waste-message-deletable-p (message)
-  (let ((waste-msg (single 'db:waste-message :message (db:id message))))
-    (and waste-msg ;; yes, the message is linked to a waste request
-	 (waste-message-expired-p message)))) ;; and yes the message is older than a year
+(defun waste-message-p (message)
+  (single 'db:waste-message :message (db:id message)))
+
+(defun waste-message-deletable-p (user message)
+  (and (waste-message-p message) ;; yes, the message is linked to a waste request
+       (waste-message-expired-p message) ;; and yes the message is older than a year
+       (= (db:id user) (db:recipient message))))
 
 (defun set-delete-message (id &key
 				(deletable-p-fn #'(lambda (user message)
-						    (and (waste-message-deletable-p message)
-							 (or (session-admin-p)
-							     (= (db:id user)
-								(db:recipient message)))))))
+						    (if (waste-message-p message)
+							(waste-message-deletable-p user message)
+							(if (= (db:id user)
+							       (db:recipient message))
+							    t
+							    (session-admin-p))))))
   (with-session-user (user)
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
       (let ((to-trash (single 'db:message :id (parse-integer id))))

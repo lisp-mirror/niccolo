@@ -33,7 +33,7 @@ $(function() {
 	var pos   = allTH.findIndex(function (cell){
 	    return $(cell).text() == txt;
 	});
-	var theTable         = $(this).parent().parent().parent().find("tbody tr");
+	var theTable         = getParentTable($(this)).find("tbody tr");
 	var sortedTable      = theTable.get().sort(function(a, b) {
 	    var keyChildren1 = $($(a).children().get(pos)).text();
 	    var keyChildren2 = $($(b).children().get(pos)).text();

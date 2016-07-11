@@ -389,6 +389,7 @@
    :waste-message-expired-p
    :timestamp-compare-desc
    :timestamp-compare-asc
+   :remove-old-waste-stats
    :send-email
    :init-hashtable-equalp))
 

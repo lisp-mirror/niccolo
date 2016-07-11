@@ -361,8 +361,7 @@
 	       (set :month 1)
 	       (set :day-of-month 1))))
     #'(lambda (a)
-	(local-time:timestamp< (encode-datetime-string (getf a
-							     :sent-time))
+	(local-time:timestamp< (encode-datetime-string (getf a :sent-time))
 			       jan))))
 
 ;; mail
