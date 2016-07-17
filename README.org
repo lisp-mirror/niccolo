@@ -4,7 +4,7 @@ Niccolo' is  a web based software  aimed at safe chemicals  storage, using and
 disposing.
 
 * Building
-  Niccolo' is  written in Common Lisp,  except for a couple  of library
+  Niccolo' is  written in Common Lisp,  except for a few  of libraries
   (written in C) it depends on.
 
 ** Dependency
@@ -221,7 +221,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
   Please send bug report to cage at katamail dot com
 
 ** Known bugs
-- federated query work only in sbcl.
+- federated query works only in sbcl.
 
 * License
 

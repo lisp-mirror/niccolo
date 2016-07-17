@@ -68,7 +68,7 @@ function drawQRcode(text, typeNumber, errorCorrectLevel) {
 };
 
 function createQRcode(text, typeNumber, errorCorrectLevel) {
-    var qr = qrcode(typeNumber || 7, errorCorrectLevel || 'M');
+    var qr = qrcode(typeNumber || 8, errorCorrectLevel || 'M');
     qr.addData(text);
     qr.make();
     return qr.createImgTag(8, 8);
