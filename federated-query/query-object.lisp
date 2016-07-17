@@ -140,16 +140,13 @@
 
 (defmethod send-response ((object query-response) destination port
 			  &key (path +post-query-product-results+))
-  (let ((node (find-node destination)))
-    (when node
-      (let ((uri (remote-uri (node-name node) port
-			     (concatenate 'string +path-prefix+ path))))
-	(setf (key object) (node-key node))
-	(drakma:http-request uri
-			     :method :post
-			     :verify :required
-			     :parameters (list (cons +query-http-response-key+
-						     (obj->json-string object))))))))
+  (let ((uri (remote-uri destination port
+			 (concatenate 'string +path-prefix+ path))))
+    (drakma:http-request uri
+			 :method :post
+			 :verify :required
+			 :parameters (list (cons +query-http-response-key+
+						 (obj->json-string object))))))
 
 (defun federated-query-product (request)
   (let* ((req         (if (stringp request)

@@ -153,8 +153,7 @@
 		   (origin-host                (fq:origin-host query))
 		   (origin-host-port           (fq:origin-host-port query)))
 	      (if (and origin-host
-		       origin-host-port
-		       (fq:find-node origin-host))
+		       origin-host-port)
 		  (progn
 		    ;; spawn request
 		    (let ((req (fq::make-query-product (fq:request query)
@@ -173,7 +172,7 @@
   (with-federated-query-enabled
     (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
       (if response
-	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key response))
+	  (fq:with-valid-key ((fq:key response))
 	    (when (fq:id response)
 	      (fq:enqueue-results (fq:id response) response)
 	      (tbnl:log-message* :info

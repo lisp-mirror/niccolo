@@ -55,3 +55,9 @@
        (progn
 	 ,@body)
        tbnl:+http-not-found+))
+
+(defmacro with-valid-key ((key) &body body)
+  `(if (string= ,key +federated-query-key+)
+       (progn
+	 ,@body)
+       tbnl:+http-not-found+))

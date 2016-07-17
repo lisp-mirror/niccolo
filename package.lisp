@@ -501,6 +501,7 @@
    :find-node
    :check-credentials
    :with-credentials
+   :with-valid-key
    :request
    :origin-host
    :origin-host-port
