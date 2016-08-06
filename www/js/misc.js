@@ -23,3 +23,7 @@ function mobilep () {
     }
 
 }
+
+function cleanIsoDate(s) {
+    return  s.replace( /T/, " ").replace(/\..+/, "");
+}

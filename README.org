@@ -73,18 +73,18 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 3. wget https://beta.quicklisp.org/quicklisp.lisp.asc
 4. wget https://beta.quicklisp.org/release-key.txt
 5. check quicklisp gpg key
-5. clone niccolo repository;
-6. cd niccolo
-7. autoreconf -fiv
-8. ./configure
-9. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
-10. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
-11. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
-12. make
-13. cd ~/lisp/niccolo/
-14. make
-15. put your ssl certificate in ssl/
-16. edit config.lisp
+6. clone niccolo repository;
+7. cd niccolo
+8. autoreconf -fiv
+9. ./configure
+10. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
+11. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
+12. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
+13. make
+14. cd ~/lisp/niccolo/
+15. make
+16. put your ssl certificate in ssl/
+17. edit config.lisp
     #+BEGIN_SRC lisp
 
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
@@ -101,7 +101,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    #+END_SRC
 
-17. Optional, configure this section for email notifications.
+18. Optional, configure this section for email notifications.
 
    #+BEGIN_SRC lisp
   ;; smtp config
@@ -126,7 +126,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    #+END_SRC
 
-18. Optional (but *strongly not* recommended), use federated-query
+19. Optional (but *strongly not* recommended), use federated-query
 
     A  niccolo server  can  federate with  other software's  instances
     (i.e. other servers  running the same software) to  share parts of
@@ -159,7 +159,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
     #+END_SRC
 
-19. Optional (but *strongly* recommended), use CAS autentication
+20. Optional (but *strongly* recommended), use CAS autentication
 
    #+BEGIN_SRC lisp
 ;; cas config
@@ -171,7 +171,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
-20. Optional (but *strongly* recommended)
+21. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
@@ -180,8 +180,24 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
-21. sh 'start_server.sh' (or sh 'start_server-cas.sh' if you are using  [[CAS authentication]])
-22. point your browser to
+22. Sensors and data logger
+
+    The directory sensors/temp contain a sample temperature logger for
+    arduino compatible with the protocol implemented for this software
+    (essentially http with MAC authentication).
+
+    To build the software you will need:
+    - Hardware
+      + an arduino with a ethernet shield;
+      + DS18B20 temperature sensor.
+    - Software
+      + the arduino IDE and these libraries not bundled with the IDE
+        - https://github.com/PaulStoffregen/OneWire
+        - https://github.com/milesburton/Arduino-Temperature-Control-Library
+
+23. sh 'start_server.sh' (or sh 'start_server-cas.sh' if you are using  [[CAS authentication]])
+
+24. point your browser to
     https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
     where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the

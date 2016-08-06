@@ -102,6 +102,11 @@
   according to https://openclipart.org/detail/10940/red-+-green-ok-not-ok-icons
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
+- www/images/icon-sensor.png
+  © sixsixfive
+  according to https://openclipart.org/detail/212119/sensors
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
 - data/font.afm
   Copyright (URW)++,Copyright 1999 by (URW)++ Design & Development
   Released under (GNU General Public License)

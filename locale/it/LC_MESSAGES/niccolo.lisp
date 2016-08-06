@@ -2320,4 +2320,154 @@ translation "Aperto"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Results from federated servers"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Origin"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage sensors"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update Sensor"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sensor does not exists in database."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Updated sensor: ~s"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sensor already in the database with different ID"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sensor not in the database"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sensor id ivalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Saved sensor: ~s"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sensor already in the database"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Script file invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Secret key invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Path invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Last value"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Last access"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Status"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Script"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Secret key"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Path"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Weight (Kg)"
+translation "Peso (kg)"
+plurals-form ""
+status :FUZZY
+plurals NIL
+
+ id "Overall"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Grouped by user"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Username"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Last year"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
 )

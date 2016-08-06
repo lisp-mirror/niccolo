@@ -16,11 +16,12 @@
 (asdf:defsystem #:niccolo
   :description "Chemicals inventory"
   :author "cage <cage@katamail.com>"
-  :version "0.8.0"
+  :version "1.0.0-RC1"
   :license "GPLv3"
   :depends-on (#-asdf3 :uiop
 	       :alexandria
 	       :cl-ppcre-unicode
+	       :trivial-timeout
 	       :bordeaux-threads
 	       :dbi
 	       :envy
@@ -92,6 +93,7 @@
 	       (:file "chemical-product")
 	       (:file "waste-letter")
 	       (:file "waste-stats")
+	       (:file "sensors")
 	       (:file "l-factor")
 	       (:module federated-query
 			:components ((:file "query-id")

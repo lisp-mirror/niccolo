@@ -197,8 +197,7 @@
    :type integer
    :foreign (user :restrict :cascade))
   (language
-   :type text
-   :nullp nil))
+   :type text))
 
 (deftable chemical-product ()
   (compound
@@ -334,4 +333,37 @@
   (adr-code-id
    :type integer
    :foreign (adr-code :restrict :cascade)
+   :nullp nil))
+
+(deftable sensor ()
+  (map-id
+   :type integer
+   :foreign (plant-map :restrict :cascade))
+  (address
+   :type text
+   :nullp nil)
+  (path
+   :type text
+   :nullp nil)
+  (description
+   :type text
+   :nullp nil)
+  (secret
+   :type text
+   :nullp nil)
+  (status
+   :type text
+   :nullp nil)
+  (last-access-time
+   :type timestamp)
+  (last-value
+   :type text)
+  (script-file
+   :type text
+   :nullp nil)
+  (s-coord
+   :type integer
+   :nullp nil)
+  (t-coord
+   :type integer
    :nullp nil))

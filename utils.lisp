@@ -338,7 +338,8 @@
 (defgeneric decode-datetime-string (object))
 
 (defmethod decode-datetime-string ((object local-time:timestamp))
-  (local-time:format-timestring nil object :format '(:year "-" :month "-" :day)))
+  (local-time:format-timestring nil object :format '(:year "-" (:month 2) "-"
+						     (:day 2) " " (:hour 2) ":" (:min 2))))
 
 (defmethod decode-datetime-string ((object string))
   (decode-datetime-string (encode-datetime-string object)))

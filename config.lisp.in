@@ -116,6 +116,8 @@
 
 (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
 
+;; federated query
+
 (define-constant +federated-query-enabled+     nil              :test #'string=)
 
 ;; key for federated query, change it!
@@ -124,6 +126,12 @@
 
 (define-constant +federated-query-nodes-file+ (local-system-path #p"nodes-list.expr")
   :test #'uiop:pathname-equal)
+
+;; sensors
+
+(defparameter *sensors-script-dir*  (local-system-path #p"sensors/script/"))
+
+(defparameter *sensor-log-dir*  (local-system-path #p"log/sensors/"))
 
 ;; templates config
 

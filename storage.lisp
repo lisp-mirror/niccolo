@@ -79,7 +79,7 @@
 		 (storage-link  (gen-map-storage-link (getf row :|map-link-id|)
 						      (getf row :|s-coord|)
 						      (getf row :|t-coord|)))
-		 (location-add-link (restas:genurl 'list-all-maps :storage-id sid))
+		 (location-add-link (restas:genurl 'list-all-storage-maps :storage-id sid))
 		 (floor         (getf row :|floor|)))
      	   (append
      	    (list :storage-id sid :name name :building-link building-link
@@ -232,29 +232,32 @@
 		(restas:redirect 'storage))))
       (manage-storage nil (list *insufficient-privileges-message*)))))
 
-(define-lab-route list-all-maps ("/storage-list-all-maps/:storage-id" :method :get)
-  (with-authentication
-    (with-admin-privileges
-	(progn
-	  (if (not (regexp-validate (list (list storage-id +pos-integer-re+ "no"))))
-	      (let ((all-maps (loop for i in (filter 'db:plant-map) collect
+(defmacro gen-list-all-maps (id route-symbol)
+  `(with-authentication
+     (with-admin-privileges
+	 (progn
+	   (if (not (regexp-validate (list (list ,id +pos-integer-re+ "no"))))
+	       (let ((all-maps (loop for i in (filter 'db:plant-map) collect
 				   (list :map-image-src  (restas:genurl 'get-plant-map
 									:id (db:id i))
 					 :map-image-desc (db:description i)
-					 :action (restas:genurl 'assoc-storage-map
+					 :action (restas:genurl ',route-symbol
 								:mid (db:id i)
-								:sid storage-id)
+								:sid ,id)
 					 :coord-name +map-image-coord-name+
 					 :name-map-image-id +name-map-image-id+
 					 :map-image-id      (db:id i)
 					 :map-image-name-building-id +map-image-name-building-id+
-					 :map-image-building-id      storage-id))))
-	  (with-standard-html-frame (stream
-				     "Add Map"
-				     :errors nil
-				     :infos  nil)
-	    (html-template:fill-and-print-template #p"list-all-maps.tpl"
-						   (list :all-images all-maps)
-						   :stream stream)))
+					 :map-image-building-id      ,id))))
+		(with-standard-html-frame (stream
+					   "Add Map"
+					   :errors nil
+					   :infos  nil)
+		  (html-template:fill-and-print-template #p"list-all-maps.tpl"
+							 (list :all-images all-maps)
+							 :stream stream)))
 	      +http-not-found+))
       (manage-storage nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route list-all-storage-maps ("/storage-list-all-maps/:storage-id" :method :get)
+  (gen-list-all-maps storage-id assoc-storage-map))

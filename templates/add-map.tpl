@@ -72,6 +72,9 @@
       <a href="<!-- TMPL_VAR update-map-link -->">
 	<div class="edit-button">&nbsp;</div>
       </a>
+      <a href="<!-- TMPL_VAR sensors-map-link -->">
+	<div class="sensor-button">&nbsp;</div>
+      </a>
     </td>
   </tr>
   <!-- /TMPL_LOOP  -->

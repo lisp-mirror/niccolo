@@ -115,7 +115,10 @@
       0))
 
 (defun admin-id ()
-  (db:id (single 'db:user :level +admin-acl-level+)))
+  (db:id (admin-user)))
+
+(defun admin-user ()
+  (single 'db:user :level +admin-acl-level+))
 
 (defun get-session-level ()
   (if (and (tbnl:start-session)

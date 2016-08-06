@@ -96,6 +96,11 @@
 
 (define-constant +free-text-re+              "^[^;\\\"'<>&]+$"                   :test #'string=)
 
+(define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
+  :test #'string=)
+
+(define-constant +script-file-re+            "^/[a-z,\-]+.lisp$"                 :test #'string=)
+
 (define-constant +cer-code-re+               "^CER[0-9]+\\*?$"                   :test #'string=)
 
 (define-constant +adr-code-class-re+         "(^[0-9]$)|(^[0-9]\\.[0-9][A-Z]?$)" :test #'string=)

@@ -30,6 +30,11 @@
 	  </a>
 	</li>
 	<li class="menu-level-2">
+	  <a href="<!-- TMPL_VAR manage-sensors -->">
+	    <!-- TMPL_VAR  manage-sensors-lbl -->
+	  </a>
+	</li>
+	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR manage-adr -->">
 	    <!-- TMPL_VAR manage-adr-lbl -->
 	  </a>

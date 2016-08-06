@@ -106,6 +106,9 @@
 						       (list
 							:update-map-link
 							(restas:genurl 'update-map-route
+								       :id (db:id row))
+							:sensors-map-link
+							(restas:genurl 'get-sensors-map
 								       :id (db:id row))))))))
     (with-standard-html-frame (stream
 			       "Manage Map"
@@ -176,3 +179,19 @@
 		      (manage-map nil error-not-found)))
 		(manage-map nil error-general))))
       (manage-map nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route get-sensors-map ("/get-sensors-map/:id")
+  (with-authentication
+    (if (and (integer-validate id)
+	     (single 'db:plant-map :id id))
+	(with-standard-html-frame (stream
+			       "Monitor Sensors"
+			       :errors nil
+			       :infos  nil)
+	  (html-template:fill-and-print-template #p"monitor-sensors.tpl"
+					     (with-path-prefix
+						 :map-id id
+						 :sensors-data-url
+						 (restas:genurl 'ws-sensors-associated-w-map
+								:id id))
+					     :stream stream)))))

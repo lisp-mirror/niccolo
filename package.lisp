@@ -50,6 +50,8 @@
    :+federated-query-enabled+
    :+federated-query-key+
    :+federated-query-nodes-file+
+   :*sensors-script-dir*
+   :*sensor-log-dir*
    :*default-www-root*
    :*images-dir*
    :*jquery-ui-images-dir*
@@ -245,7 +247,13 @@
    :weight
    :waste-message-adr
    :waste-message
-   :adr-code-id))
+   :adr-code-id
+   :sensor
+   :path
+   :secret
+   :last-access-time
+   :last-value
+   :script-file))
 
 (defpackage :validation
   (:use
@@ -274,6 +282,8 @@
    :+pos-integer-re+
    :+email-re+
    :+free-text-re+
+   :+internet-address-re+
+   :+script-file-re+
    :+cer-code-re+
    :+adr-code-class-re+
    :+adr-uncode-re+

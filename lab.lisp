@@ -95,6 +95,8 @@
 		      :manage-ghs-precaution-lbl (_ "GHS precautionary statements")
 		      :manage-cer            (restas:genurl 'cer)
 		      :manage-cer-lbl        (_ "CER codes")
+		      :manage-sensors        (restas:genurl 'sensor)
+		      :manage-sensors-lbl    (_ "Manage sensors")
 		      :manage-adr            (restas:genurl 'adr)
 		      :manage-adr-lbl        (_ "ADR codes")
 		      :places-lbl            (_ "Places")
@@ -163,6 +165,7 @@
 (progn
   (initialize-pictograms-db)
   (fq:init-nodes)
+  (init-sensors-thread)
   (restas:start '#:restas.lab
 		:acceptor-class 'lab-acceptor
 		:hostname config:+hostname+
