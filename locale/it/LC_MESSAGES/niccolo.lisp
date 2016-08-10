@@ -890,7 +890,7 @@ plurals NIL
  id "Failure"
 translation "Fallito"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Success"
@@ -2126,7 +2126,7 @@ plurals NIL
  id "This product does not exists in database."
 translation "Questo prodotto non esiste nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Product updated"
@@ -2166,25 +2166,25 @@ status :TRANSLATED
 plurals NIL
 
  id "Message ~a closed and rejected"
-translation "Messaggio ~a elaborato e respinto"
+translation "Messaggio ~a chiuso e respinto"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Message ~a closed with success"
-translation "Messaggio ~a elaborato con successo"
+translation "Messaggio ~a chiuso con successo"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Closed and rejected"
-translation "Elaborato e respinto"
+translation "Chiuso e respinto"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Closed with success"
-translation "Elaborato con successo"
+translation "Chiuso con successo"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2220,13 +2220,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Accepted waste messages"
-translation "Messaggio rifiuti accettato"
+translation "Messaggi rifiuti accettati"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Rejected waste messages"
-translation "Messaggio rifiuti respinto"
+translation "Messaggi rifiuti respinti"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2322,152 +2322,152 @@ status :TRANSLATED
 plurals NIL
 
  id "Results from federated servers"
-translation ""
+translation "Risultati da server federati"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Origin"
-translation ""
+translation "Origine"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage sensors"
-translation ""
+translation "Gestione sensori"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Sensor"
-translation ""
+translation "Aggiorna sensore"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sensor does not exists in database."
-translation ""
+translation "Nel database questo sensore non esiste"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Updated sensor: ~s"
-translation ""
+translation "Aggiornato il sensore: ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sensor already in the database with different ID"
-translation ""
+translation "Sensore già presente nel database ma con un differente ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sensor not in the database"
-translation ""
+translation "Sensore non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sensor id ivalid"
-translation ""
+translation "ID del sensore non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved sensor: ~s"
-translation ""
+translation "Salvato il sensore ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sensor already in the database"
-translation ""
+translation "Sensore già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Script file invalid"
-translation ""
+translation "Script non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Secret key invalid"
-translation ""
+translation "Chiave segreta non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Path invalid"
-translation ""
+translation "Percorso non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Last value"
-translation ""
+translation "Ultimo valore"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Last access"
-translation ""
+translation "Ultimo accesso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Status"
-translation ""
+translation "Stato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Script"
-translation ""
+translation "Script"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Secret key"
-translation ""
+translation "Chiave segreta"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Path"
-translation ""
+translation "Percorso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Weight (Kg)"
 translation "Peso (kg)"
 plurals-form ""
-status :FUZZY
+status :TRANSLATED
 plurals NIL
 
  id "Overall"
-translation ""
+translation "Complessivamente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Grouped by user"
-translation ""
+translation "Raggruppato per utente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Username"
-translation ""
+translation "Nome utente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Last year"
-translation ""
+translation "Ultimo anno"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )
