@@ -108,6 +108,19 @@
 	      :message (db:id msg)
 	      :product product-id))))
 
+(defmethod send-user-message  ((object db:compound-shortage-message) sender-id rcpt-id subject text
+			       &key
+				 (compound-id nil))
+  (when compound-id
+    (let ((msg (send-user-message (make-instance 'db:message)
+				  sender-id
+				  rcpt-id
+				  subject
+				  text)))
+      (create 'db:compound-shortage-message
+	      :message (db:id msg)
+	      :compound compound-id))))
+
 (defmethod send-user-message  ((object db:waste-message) sender-id rcpt-id subject text
 			       &key
 				 (echo-message nil)
@@ -348,6 +361,115 @@
 			 (list :admin-p (session-admin-p))
 			 (children-template (getf row :msg-id))))))
 	raw))))
+
+(defun %build-shortage-template (user-id &optional (other-status nil))
+  (let* ((the-query (select ((:as :message.id        :msg-id)
+			     (:as :message.status    :status)
+			     (:as :message.sent-time :sent-time)
+			     (:as :message.subject   :subject)
+			     (:as :message.text      :text)
+			     (:as :sender.username   :sender-username)
+			     (:as :rcpt.username     :rcpt-username)
+			     (:as :rcpt.id           :rcpt-id)
+			     (:as :sh-msg.compound   :compound-id))
+		      (from :message)
+		      (left-join (:as :user :sender) :on (:= :message.sender :sender.id))
+		      (left-join (:as :user :rcpt)   :on (:= :message.recipient :rcpt.id))
+		      (inner-join (:as :compound-shortage-message :sh-msg) :on
+				  (:= :message.id :sh-msg.message))
+		      (where (:and
+			      (if other-status
+				  `(:= :message.status ,other-status)
+				  `(:= 1 1))
+			      (:not (:= :message.status +msg-status-deleted+))
+			      (:= :message.recipient user-id)))
+		      (order-by :message.sent-time :desc)))
+	 (raw (keywordize-query-results (query the-query))))
+    raw))
+
+(defun build-shortage-template (&optional (other-status nil))
+  (with-authentication
+    (with-session-user (user)
+      (let* ((raw (%build-shortage-template (db:id user) other-status)))
+	(do-rows (rown res) raw
+	  (let* ((row (elt raw rown))
+		 (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+		 (close-w-success-link  (restas:genurl 'close-w-success-message
+						       :id (getf row :msg-id)))
+		 (close-w-failure-link  (restas:genurl 'close-w-failure-message
+						       :id (getf row :msg-id))))
+	    (setf (elt raw rown)
+		  (nconc row
+			 (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
+			 (list :delete-link delete-link)
+			 (list :close-w-success-link close-w-success-link)
+			 (list :close-w-failure-link close-w-failure-link)
+			 (list :admin-p (session-admin-p))
+			 (children-template (getf row :msg-id))))))
+	raw))))
+
+
+(defun fetch-all-chemicals-by-users (id)
+  (keywordize-query-results
+   (query (select ((:as :chemp.compound :id)
+		   (:as :chemp.compound :id))
+	    (from (:as :chemical-product :chemp))
+	    (where (:= :chemp.owner id))
+	    (group-by :chemp.compound)))))
+
+(defun chemical-quantities-total (id)
+  (let ((compound-ids (map 'vector #'last-elt (fetch-all-chemicals-by-users id))))
+    (loop for compound-id across compound-ids collect
+	 (let ((all-products (filter 'db:chemical-product :owner id :compound compound-id)))
+	   (let ((sum (reduce #'(lambda (a b)
+				  (let ((qty   (db:quantity b))
+					(units (db:units    b)))
+				    (if (scan "^m" units)
+					(+ a (/ qty 1000))
+					(+ a qty))))
+			      all-products
+			      :initial-value 0.0))
+		 (threshold (single 'db:chemical-compound-preferences
+				    :owner id :compound compound-id)))
+	     (list :owner id
+		   :id compound-id
+		   :quantity sum
+		   :threshold (and threshold (db:shortage threshold))))))))
+
+(defun shortage-products-list (user-id)
+  (remove-if #'(lambda (a)
+		 (or (not (getf a :threshold))
+		     (>=   (getf a :quantity)
+			   (getf a :threshold))))
+	     (chemical-quantities-total user-id)))
+
+(defun create-shortage-messages (shortage-products-list)
+  "Shortage-products-list comes from evaluation of (shortage-products-list id)"
+  (with-session-user (user)
+    (let ((admin (single 'db:user :level +admin-acl-level+)))
+      (when admin
+	(dolist (shortage shortage-products-list)
+	  (let ((chem-id  (getf shortage :id))
+		(owner    (getf shortage :owner))
+		(template (build-shortage-template)))
+	    (when (null (find-if #'(lambda (a)
+				       (and (= (getf a :rcpt-id)
+					       owner)
+					    (= (getf a :compound-id)
+					       chem-id)))
+				 template))
+	      (let* ((chem (single 'db:chemical-compound :id chem-id))
+		     (msg-text (format nil
+				       (_ "Product ~a quantity (~a) below threshold: ~a.")
+				       (db:name chem)
+				       (getf shortage :quantity)
+				       (getf shortage :threshold))))
+		(send-user-message (make-instance 'db:compound-shortage-message)
+				   (db:id admin)
+				   (db:id user)
+				   (_ "Product shortage")
+				   msg-text
+				   :compound-id chem-id)))))))))
 
 (defun build-all-specialized-messages ()
   (values (build-expiration-template)

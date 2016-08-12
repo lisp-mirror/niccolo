@@ -767,6 +767,9 @@ table.waste-stats caption {
     font-size:   110%;
 }
 
+table.waste-stats th {
+    width: 50%;
+}
 
 .ajax-loader-federated-query img {
     margin: auto;

@@ -329,14 +329,19 @@
 			     (_ "Manage preferences")
 			     :infos  infos
 			     :errors errors)
-    (html-template:fill-and-print-template #p"user-preferences.tpl"
-					   (with-path-prefix
-					       :choose-lang-lb    (_ "Change language")
-					       :change-email-hd   (_ "Change email")
-					       :email-lb          (_ "Email")
-					       :login-email       +name-pref-email+
-					       :available-locales (i18n:translation-select-options))
-					   :stream stream)))
+    (with-session-user (session-user)
+      (let ((user (single 'db:user :id (db:id session-user))))
+	(if session-user
+	    (html-template:fill-and-print-template #p"user-preferences.tpl"
+						   (with-path-prefix
+						       :choose-lang-lb    (_ "Change language")
+						       :change-email-hd   (_ "Change email")
+						       :email-lb          (_ "Email")
+						       :login-email       +name-pref-email+
+						       :login-email-value (db:email user)
+						       :available-locales (i18n:translation-select-options))
+						   :stream stream)
+	    (logout-user))))))
 
 (define-lab-route user-change-locale ("/user-change-locale/" :method :post)
   (with-authentication

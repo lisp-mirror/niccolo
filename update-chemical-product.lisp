@@ -28,7 +28,7 @@
 			    :new-validity-date (decode-datetime-string (db:validity-date product))
 			    :new-expire-date   (decode-datetime-string (db:expire-date product)))))
 
-(defun update-chem-prod (id new-validity-date new-expire-date)
+(defun update-chem-prod (id quantity units new-validity-date new-expire-date)
   (with-session-user (user)
     (let* ((errors-validity  (if (date-validate-p new-validity-date)
 				 nil
@@ -37,6 +37,9 @@
 			       nil
 			       (list (_ "Expire date not properly formatted."))))
 	   (errors-msg-id  (regexp-validate (list (list id +pos-integer-re+ (_ "Id invalid")))))
+	   (errors-msg-generic (regexp-validate (list
+						 (list quantity +pos-integer-re+  (_ "Quantity invalid"))
+						 (list units    +free-text-re+ (_ "Units invalid")))))
 	   (errors-msg-exists  (when (and
 				      (not errors-msg-id)
 				      (not (object-exists-in-db-p 'db:chemical-product id)))
@@ -45,6 +48,7 @@
 				    errors-validity
 				    errors-expire
 				    errors-msg-id
+				    errors-msg-generic
 				    errors-msg-exists))
 	   (success-msg (and (not errors-msg)
 			     (list (format nil (_ "Chemical product: ~s updated") id)))))
@@ -53,7 +57,9 @@
 		 (old-exp-date      (db:expire-date new-chem))
 		 (old-validity-date (db:validity-date new-chem)))
 	    (setf (db:validity-date new-chem) (encode-datetime-string new-validity-date)
-		  (db:expire-date new-chem)   (encode-datetime-string new-expire-date))
+		  (db:expire-date   new-chem) (encode-datetime-string new-expire-date)
+		  (db:quantity      new-chem) (parse-integer quantity)
+		  (db:units         new-chem) units)
 	    (save new-chem)
 	    (let ((parent-messages (concatenate 'list
 						(fetch-expired-messages-linked-to-product (db:id new-chem))
@@ -95,18 +101,25 @@
 					     (with-path-prefix
 						 :expire-date-lb    (_ "Expire date")
 						 :validity-date-lb  (_ "Validity date")
+						 :quantity-lb      (_ "Quantity (Mass or Volume)")
+						 :units-lb          (_ "Unit of measure")
 						 :id   (and id
 							    (db:id new-chem-prod))
 						 :validity-date +name-validity-date+
 						 :expire-date   +name-expire-date+
+						 :quantity    +name-quantity+
+						 :units       +name-units+
+						 :quantity-value  (and id
+								       (db:quantity new-chem-prod))
+						 :units-value     (and id
+								       (db:units new-chem-prod))
 						 :validity-date-value
-						 (decode-datetime-string
+						 (decode-date-string
 						  (db:validity-date new-chem-prod))
 						 :expire-date-value
-						 (decode-datetime-string
+						 (decode-date-string
 						  (db:expire-date new-chem-prod)))
 					     :stream stream))))
-
 
 (define-lab-route update-chemical-product ("/update-chemical-product/:id/:owner" :method :get)
   (with-authentication
@@ -118,10 +131,12 @@
 		   (or (session-admin-p)
 		       (= (db:id user) (parse-integer owner))))
 	      (let ((new-expire   (get-parameter +name-expire-date+))
-		    (new-validity (get-parameter +name-validity-date+)))
+		    (new-validity (get-parameter +name-validity-date+))
+		    (new-quantity (get-parameter +name-quantity+))
+		    (new-units    (get-parameter +name-units+)))
 		(if (and new-expire
 			 new-validity)
-		    (update-chem-prod id new-validity new-expire)
+		    (update-chem-prod id new-quantity new-units new-validity new-expire)
 		    (prepare-for-update-chem-product id)))
 	      (manage-update-chem-prod id
 				       nil

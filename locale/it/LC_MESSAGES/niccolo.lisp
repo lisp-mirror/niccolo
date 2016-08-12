@@ -2470,4 +2470,46 @@ translation "Ultimo anno"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Updated chemical shortage threshold."
+translation "Aggiornato minima disponibilità prodotto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Shortage threshold non valid (must be a positive integer"
+translation "Minima disponibilità del prodotto: valore non valido (deve essere un intero positivo)."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Change threshold"
+translation "Cambia limite"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Threshold"
+translation "Limite"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Shortage threshold"
+translation "Limite minimo di disponibilità"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Product shortage"
+translation "Disponibilità del prodotto bassa"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Product ~a quantity (~a) below threshold: ~a."
+translation "La quantità disponibile del prodotto ~a (~a) al di sotto della soglia: ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

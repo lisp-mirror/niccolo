@@ -42,6 +42,14 @@
 	    }
 	});
 
+	$( "#target-chemical-shortage" ).autocomplete({
+	    source: availableChemicals ,
+	    select: function( event, ui ) {
+		var idx = $.inArray(ui.item.label, availableChemicals);
+		$("#target-chemical-shortage-id").val(availableChemicalsId[idx]);
+	    }
+	});
+
 	// let's try to align button
 	var addPos= $( "#submit-add" ).position();
 	$( "#submit-search").css("position", "absolute");
@@ -69,12 +77,16 @@
 	    $("fieldset").remove();
 	    $(".logout-link").css("float", "none")
                              .css("font-size","200%");
-	    $(".left-menu").css("float"     , "none")
-                           .css("min-height", "100px")
-                           .css("width"     , "80%");
-	    $(".left-menu ul").remove();
+	    $(".left-menu").remove();
 	    $("th,td").not("*[class^='chemp-name'],*[class^='chemp-shelf']").remove();
             $(".section-title").css("font-size", "6pt");
+	    $("#main-wrapper").css("display", "block");
+	    $("#main-wrapper").css("width", "100%");
+	    $("#main-content-wrapper").css("display", "block");
+	    $("#main-content-wrapper").css("width", "100%");
+
+	    $("table").css("width", "100%");
+
 	} // end if (mobilep)
 
 	function verifyRegistryNumbers(numberString, checkDigit){
@@ -163,8 +175,10 @@
 
     <label for="shelf"><!-- TMPL_VAR shelf-lb --></label>
     <input id="shelf" type="text" name="<!-- TMPL_VAR shelf -->" />
+
     <label for="quantity"><!-- TMPL_VAR quantity-lb --></label>
     <input id="quantity" type="text" name="<!-- TMPL_VAR quantity -->" />
+
     <label for="units"><!-- TMPL_VAR units-lb --></label>
     <input id="units" type="text" name="<!-- TMPL_VAR units -->" />
 
@@ -173,7 +187,6 @@
 
     <label for="expire-date"><!-- TMPL_VAR expire-date-lb --></label>
     <input id="expire-date" type="text" name="<!-- TMPL_VAR expire-date -->" />
-
 
     <label for="count"><!-- TMPL_VAR item-count-lb --></label>
     <input id="count" type="text" name="<!-- TMPL_VAR count -->" />
@@ -238,6 +251,22 @@
 	     value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
     </fieldset>
 
+    <fieldset class="chem-shortage">
+      <legend><!-- TMPL_VAR  shortage-threshold-lb --></legend>
+      <label for="target-chemical-shortage-id"><!-- TMPL_VAR compound-name-lb --></label>
+      <input id="target-chemical-shortage-id" type="hidden" name="<!-- TMPL_VAR chemical-id -->" />
+      <span class="ui-widget">
+	<input type="text" id="target-chemical-shortage"/>
+      </span>
+      <label for="shortage-threshold"><!-- TMPL_VAR threshold-lb --></label>
+      <input id="count" type="text"
+	     value="<!-- TMPL_VAR shortage-threshold-value -->"
+	     name="<!-- TMPL_VAR shortage-threshold -->" />
+      <input id="submit-chem-shortage" type="submit"
+	     name="<!-- TMPL_VAR submit-change-shortage -->"
+	     value="<!-- TMPL_VAR submit-shortage-lb -->"/>
+    </fieldset>
+
   </fieldset>
 
   <table class="sortable chemp-list">
@@ -256,6 +285,7 @@
 	<th class="chemp-quantity-hd"><!-- TMPL_VAR units-lb --></th>
 	<th class="chemp-validity-date-hd"><!-- TMPL_VAR validity-date-lb --></th>
 	<th class="chemp-expire-date-hd"><!-- TMPL_VAR expire-date-lb --></th>
+	<th class="chemp-shortage-threshold-hd"><!-- TMPL_VAR shortage-threshold-lb --></th>
 	<th class="chemp-notes-hd"><!-- TMPL_VAR notes-lb --></th>
 	<th class="chemp-operations"><!-- TMPL_VAR operations-lb --></th>
       </tr>
@@ -381,6 +411,9 @@
 	<td class="expire-date">
 	  <!-- TMPL_VAR expire-date-decoded -->
 	</td>
+	<td class="shortage-threshold">
+	  <!-- TMPL_VAR shortage-threshold -->
+	</td>
 	<td class="chemp-notes">
 	  <!-- TMPL_VAR notes -->
 	</td>
@@ -412,7 +445,6 @@
       <!-- /TMPL_LOOP  -->
     </tbody>
   </table>
-
 
   <!-- federated query results -->
   <div id="fq-res-container">

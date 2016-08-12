@@ -15,29 +15,35 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-chem-id+             "id"               :test #'string=)
+(define-constant +name-chem-id+                        "id"                        :test #'string=)
 
-(define-constant +name-chp-storage-id+      "sid"              :test #'string=)
+(define-constant +name-chp-storage-id+                 "sid"                       :test #'string=)
 
-(define-constant +name-shelf+               "shelf"            :test #'string=)
+(define-constant +name-shelf+                          "shelf"                     :test #'string=)
 
-(define-constant +name-quantity+            "qty"              :test #'string=)
+(define-constant +name-quantity+                       "qty"                       :test #'string=)
 
-(define-constant +name-units+               "units"            :test #'string=)
+(define-constant +name-units+                          "units"                     :test #'string=)
 
-(define-constant +name-count+               "count"            :test #'string=)
+(define-constant +name-count+                          "count"                     :test #'string=)
 
-(define-constant +name-notes+               "notes"            :test #'string=)
+(define-constant +name-shortage-threshold+             "shortage-thrs"             :test #'string=)
 
-(define-constant +op-submit-gen-barcode+    "Generate barcode" :test #'string=)
+(define-constant +name-notes+                          "notes"                     :test #'string=)
 
-(define-constant +op-submit-lend-to+        "Lend to"          :test #'string=)
+(define-constant +op-submit-gen-barcode+               "Generate barcode"          :test #'string=)
 
-(define-constant +op-submit-massive-delete+ "Delete selected"  :test #'string=)
+(define-constant +op-submit-lend-to+                   "Lend to"                   :test #'string=)
 
-(define-constant +name-username-lending+    "username-lending" :test #'string=)
+(define-constant +op-submit-massive-delete+            "Delete selected"           :test #'string=)
 
-(define-constant +name-chem-cid-exists+     "chem-cid-exists"  :test #'string=)
+(define-constant +op-submit-change-shortage-threshold+ "Change shortage threshold" :test #'string=)
+
+(define-constant +name-username-lending+               "username-lending"          :test #'string=)
+
+(define-constant +name-chem-cid-exists+                "chem-cid-exists"           :test #'string=)
+
+(define-constant +default-shortage-threshold+          5                  :test #'=)
 
 (gen-autocomplete-functions db:chemical-compound db:name)
 
@@ -69,6 +75,7 @@
 	    (:as :storage.map-id       :storage-map-id)
 	    (:as :storage.s-coord      :storage-s-coord)
 	    (:as :storage.t-coord      :storage-t-coord)
+	    (:as :chemp-prefs.shortage :shortage-threshold)
 	    (:as :bui.id               :building-id)
 	    (:as :bui.name             :building-name))
      (from (:as :chemical-product      :chemp))
@@ -77,6 +84,10 @@
      (left-join (:as :address   :addr)         :on (:= :bui.address-id      :addr.id))
      (left-join (:as :chemical-compound :chem) :on (:= :chemp.compound      :chem.id))
      (left-join :user                          :on (:= :chemp.owner         :user.id))
+     (left-join (:as :chemical-compound-preferences :chemp-prefs)
+		:on
+		(:and (:= :chemp-prefs.owner    :user.id)
+		      (:= :chemp-prefs.compound :chem.id)))
      ,@where))
 
 (defun actual-image-unknown-struct-path ()
@@ -163,7 +174,7 @@
 	   (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
 									(where
 									 (:and
-									  (:= :owner (db:id user))
+									  (:= :chemp.owner (db:id user))
 									  (:< :expire-date expiration-date))))))))
       expired)))
 
@@ -173,7 +184,7 @@
 	   (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
 									(where
 									 (:and
-									  (:= :owner (db:id user))
+									  (:= :chemp.owner (db:id user))
 									  (:< :validity-date expiration-date))))))))
       expired)))
 
@@ -247,16 +258,19 @@
 						   :submit-massive-delete-lb  (_ "Delete")
 						   :lending-lb          (_ "Lending")
 						   :submit-lend-to-lb   (_ "Lend to")
+						   :shortage-threshold-lb (_ "Shortage threshold")
+						   :threshold-lb          (_ "Threshold")
+						   :submit-shortage-lb    (_ "Change threshold")
 						   :user-lb             (_ "User")
-						   :sum-quantities-lb     (_ "Sum quantities")
+						   :sum-quantities-lb   (_ "Sum quantities")
 						   :select-all-lb       (_ "Select all")
-						   :deselect-all-lb       (_ "Deselect all")
+						   :deselect-all-lb     (_ "Deselect all")
 						   :select-lb           (_ "Select")
 						   :owner-lb            (_ "Owner")
 						   :structure-lb        (_ "Structure")
-						   :storage-lb           (_ "Storage")
+						   :storage-lb          (_ "Storage")
 						   :notes-lb            (_ "Notes")
-						   :operations-lb        (_ "Operations")
+						   :operations-lb       (_ "Operations")
 						   :origin-lb           (_ "Origin")
 						   :fq-table-res-header (_ "Results from federated servers")
 						   :chemical-id +name-chem-id+
@@ -267,6 +281,11 @@
 						   :validity-date  +name-validity-date+
 						   :expire-date +name-expire-date+
  						   :count       +name-count+
+						   :shortage-threshold +name-shortage-threshold+
+						   :shortage-threshold-value
+						   +default-shortage-threshold+
+						   :submit-change-shortage
+						   +op-submit-change-shortage-threshold+
 						   :notes       +name-notes+
 						   :json-storages-id  json-storage-id
 						   :json-storages  json-storage
@@ -319,8 +338,8 @@
 						     'delete-chem-prod
 						     'update-chemical-product))))
 
-(defun add-single-chem-prod (chemical-id storage-id shelf quantity
-			     units notes validity-date expire-date)
+(defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes
+			     validity-date expire-date)
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
 					   (list chemical-id +pos-integer-re+  (_ "Chemical invalid"))
@@ -353,7 +372,7 @@
 			     (list (format nil (_ "Saved chemical product"))))))
       (when (and user
 		 (not errors-msg))
-	(let ((chem (create 'db:chemical-product
+	(let* ((chem (create 'db:chemical-product
 			    :compound      chemical-id
 			    :storage       storage-id
 			    :shelf         shelf
@@ -363,7 +382,7 @@
 			    :expire-date   (encode-datetime-string expire-date)
 			    :owner         (db:id user)
 			    :notes         (clean-string notes))))
-	  (save chem)))
+	  (save chem))) ; useless?
       (values errors-msg success-msg))))
 
 (define-lab-route search-chem-prod ("/search-chem-prod/" :method :get)
@@ -644,6 +663,29 @@
 			  (and (not (string= "" all-errors))
 			       (list all-errors)))))))
 
+(defun manage-threshold (id shortage)
+  (with-authentication
+    (with-session-user (user)
+      (let* ((errors-shortage-not-int  (when (not (integer-positive-validate shortage))
+					 (list (_ "Shortage threshold non valid (must be a positive integer"))))
+	     (errors-msg-chem-not-found (when (and (not errors-shortage-not-int)
+						   (not (single 'db:chemical-compound
+								:id id)))
+					  (list (_ "Chemical compound not in the database"))))
+	     (errors-msg (concatenate 'list
+				      errors-shortage-not-int
+				      errors-msg-chem-not-found))
+	     (success-msg (and (not errors-msg)
+			       (list (format nil (_ "Updated chemical shortage threshold."))))))
+	(when (and user
+		   (not errors-msg))
+	  (let ((threshold (single-or-create 'db:chemical-compound-preferences
+					     :compound id
+					     :owner (db:id user))))
+	    (setf (db:shortage threshold) (parse-integer shortage))
+	    (save threshold)))
+	(manage-chem-prod success-msg errors-msg)))))
+
 (define-lab-route others-op-chem-prod ("/others-op-chem-prod/" :method :post)
   (with-authentication
     (let ((all-ids (remove-if #'(lambda (a) (not (scan +pos-integer-re+ a)))
@@ -657,5 +699,8 @@
 		  (or (first all-ids) "")))
 	((post-parameter +op-submit-massive-delete+)
 	 (massive-delete all-ids))
+	((post-parameter  +op-submit-change-shortage-threshold+)
+	 (manage-threshold  (post-parameter +name-chem-id+)
+			    (post-parameter +name-shortage-threshold+)))
 	(t
 	 (manage-chem-prod nil nil :data nil))))))

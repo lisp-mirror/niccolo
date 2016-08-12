@@ -56,7 +56,16 @@
       (string= var "1")))
 
 (defun integer-validate (i)
-  (parse-integer i :junk-allowed nil))
+  (handler-case
+      (parse-integer i :junk-allowed nil)
+    (error () nil)))
+
+(defun integer-positive-validate (v)
+  (handler-case
+      (let ((parsed (parse-integer v :junk-allowed nil)))
+	(and parsed
+	     (> parsed 0)))
+    (error () nil)))
 
 (defun date-validate-p (d)
   (local-time:parse-timestring d :fail-on-error nil))
@@ -77,6 +86,13 @@
 
 (defun pdf-validate-p (file)
   (magic-validate-p file '(#x25 #x50 #x44 #x46)))
+
+(defun integer-%-validate (v)
+  (let ((parsed (parse-integer v :junk-allowed t)))
+    (and parsed
+	 (>= parsed 0)
+	 (<= parsed 100))))
+
 
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))

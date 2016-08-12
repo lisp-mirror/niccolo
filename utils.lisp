@@ -344,6 +344,15 @@
 (defmethod decode-datetime-string ((object string))
   (decode-datetime-string (encode-datetime-string object)))
 
+(defgeneric decode-date-string (object))
+
+(defmethod decode-date-string ((object local-time:timestamp))
+  (local-time:format-timestring nil object :format '(:year "-" (:month 2) "-"
+						     (:day 2))))
+
+(defmethod decode-date-string ((object string))
+  (decode-datetime-string (encode-datetime-string object)))
+
 (defun next-expiration-date ()
   (local-time:timestamp+ (local-time:now) 7 :day))
 

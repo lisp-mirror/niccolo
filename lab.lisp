@@ -39,9 +39,11 @@
 
 (define-lab-route user-messages ("/messages" :method :get)
   (with-authentication
-    (create-expiration-messages (fetch-expired-products))
-    (create-validity-expired-messages (fetch-validity-expired-products))
-    (print-messages nil nil)))
+    (with-session-user (user)
+      (create-expiration-messages (fetch-expired-products))
+      (create-validity-expired-messages (fetch-validity-expired-products))
+      (create-shortage-messages (shortage-products-list (db:id user)))
+      (print-messages nil nil))))
 
 (define-lab-route storing-classify ("/storage-classify/" :method :get)
   (with-authentication

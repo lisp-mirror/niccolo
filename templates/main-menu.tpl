@@ -3,7 +3,7 @@
     <!-- TMPL_IF has-nyan -->
         <img class="nyan-logo" src="<!-- TMPL_VAR path-prefix -->/images/chem-nyan/chem-nyan.gif">
     <!-- TMPL_ELSE -->
-        <img src="<!-- TMPL_VAR path-prefix -->/images/lab-logo.svg">
+        <img id="software-logo" src="<!-- TMPL_VAR path-prefix -->/images/lab-logo.svg">
     <!-- /TMPL_IF -->
   </a>
   <!-- TMPL_IF has-nyan -->

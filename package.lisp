@@ -219,7 +219,10 @@
    :compound
    :storage
    :quantity
+   :units
    :shelf
+   :chemical-compound-preferences
+   :shortage
    :plant-map
    :description
    :data
@@ -241,6 +244,7 @@
    :expiration-message
    :validity-expired-message
    :waste-message
+   :compound-shortage-message
    :message
    :cer-code-id
    :building-id
@@ -275,6 +279,8 @@
    :magic-validate-p
    :png-validate-p
    :pdf-validate-p
+   :integer-%-validate
+   :integer-positive-validate
    :strip-tags
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+
@@ -394,6 +400,7 @@
    :now-date-for-label
    :encode-datetime-string
    :decode-datetime-string
+   :decode-date-string
    :local-time-obj-now
    :next-expiration-date
    :waste-message-expired-p

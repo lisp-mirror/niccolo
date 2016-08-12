@@ -228,6 +228,16 @@
    :type text
    :nullp t))
 
+(deftable chemical-compound-preferences ()
+  (owner
+   :type integer
+   :foreign (user :restrict :cascade))
+  (compound
+   :type integer
+   :foreign (chemical-compound :restrict :cascade))
+  (shortage
+   :type integer))
+
 (deftable chemical-hazard ()
   (ghs-h
    :type integer
@@ -311,6 +321,15 @@
   (product
    :type integer
    :foreign (chemical-product :set-null :cascade)))
+
+(deftable compound-shortage-message ()
+  (message
+   :type integer
+   :foreign (message :cascade :cascade)
+   :nullp nil)
+  (compound
+   :type integer
+   :foreign (chemical-compound :set-null :cascade)))
 
 (deftable waste-message ()
   (message
