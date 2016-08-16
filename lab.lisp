@@ -35,7 +35,11 @@
 
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
-    (with-standard-html-frame (stream (_ "Welcome")))))
+      (if (and (tbnl:referer)
+	       (string= +hostname+
+			(puri:uri-host (puri:parse-uri (tbnl:referer)))))
+	  (tbnl:redirect (tbnl:referer))
+	  (with-standard-html-frame (stream (_ "Welcome"))))))
 
 (define-lab-route user-messages ("/messages" :method :get)
   (with-authentication
