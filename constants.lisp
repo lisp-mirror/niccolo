@@ -83,6 +83,8 @@
 
 (define-constant +name-expire-date+              "expire-date"               :test #'string=)
 
+(define-constant +cookie-key-script-visited+     "script-visited"            :test #'string=)
+
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
 
 ;; federated query

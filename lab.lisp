@@ -24,7 +24,9 @@
   (if (hunchentoot:parameter mini-cas:+query-ticket-key+)
       (progn
 	(check-with-cas-authenticate () nil)
-	(restas:redirect 'root))
+	(if (cookie-key-script-visited-validate (tbnl:cookie-in +cookie-key-script-visited+))
+	    (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
+	    (restas:redirect 'root)))
       (authenticate (nil nil)
 	(i18n:with-user-translation ((get-session-user-id))
 	  (with-standard-html-frame (stream (_ "Welcome"))))))
@@ -35,11 +37,9 @@
 
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
-      (if (and (tbnl:referer)
-	       (string= +hostname+
-			(puri:uri-host (puri:parse-uri (tbnl:referer)))))
-	  (tbnl:redirect (tbnl:referer))
-	  (with-standard-html-frame (stream (_ "Welcome"))))))
+    (if (cookie-key-script-visited-validate (tbnl:cookie-in +cookie-key-script-visited+))
+	(tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
+	(with-standard-html-frame (stream (_ "Welcome"))))))
 
 (define-lab-route user-messages ("/messages" :method :get)
   (with-authentication

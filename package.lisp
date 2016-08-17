@@ -31,7 +31,7 @@
    :*error-template-directory*
    :+pubchem-host+
    :+https-port+
-   :+https-poxy-port+
+   :+https-proxy-port+
    :+hostname+
    :+cas-server-host-name+
    :+cas-server-path-prefix+
@@ -117,6 +117,7 @@
    :+name-validity-date+
    :+name-expire-date+
    :+no-html-tags-at-all+
+   :+cookie-key-script-visited+
    :+query-product-path+
    :+post-query-product-results+
    :+query-visited+
@@ -281,6 +282,7 @@
    :pdf-validate-p
    :integer-%-validate
    :integer-positive-validate
+   :cookie-key-script-visited-validate
    :strip-tags
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+
@@ -390,6 +392,7 @@
    :get-host-by-name
    :gen-autocomplete-functions
    :prepare-for-update
+   :set-cookie-script-visited
    :with-standard-html-frame
    :fetch-raw-template-list
    :template->string

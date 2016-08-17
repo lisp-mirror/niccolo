@@ -91,8 +91,8 @@
   (make-instance 'query-product
 		 :id               (or id (next-query-id))
 		 :origin-host      (or origin-host +hostname+)
-		 :origin-host-port (or port (if (> +https-poxy-port+ 0)
-						+https-poxy-port+
+		 :origin-host-port (or port (if (> +https-proxy-port+ 0)
+						+https-proxy-port+
 						+https-port+))
 		 :request-type +query-chemical-product+
 		 :request      name))

@@ -65,7 +65,6 @@
 
 (defparameter *access-log-pathname*  (local-system-path #p"log/access.log"))
 
-
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
 
 ;; ssl
@@ -82,7 +81,7 @@
 
 ;; define this with a positive value only if you are using a reverse proxy
 
-(define-constant +https-poxy-port+ -1 :test #'=)
+(define-constant +https-proxy-port+ -1 :test #'=)
 
 ;; cas config
 
@@ -93,7 +92,8 @@
 (define-constant +cas-service-name+        (concatenate 'string
 							"https://"
 							+hostname+
-							+path-prefix+)
+							+path-prefix+
+							"/")
   :test #'string=)
 
 ;; smtp config

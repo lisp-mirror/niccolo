@@ -133,12 +133,13 @@
 	 (if the-session
 	     (tbnl:remove-session the-session)
 	     (tbnl:log-message* :warning "Logout error, session null."))
-       #+mini-cas
-       (with-cas-parameters
-	 (restas:redirect (with-output-to-string (stream)
-			    (puri:render-uri (mini-cas:make-logout-uri) stream))))
-       #-mini-cas
-       (restas:redirect (restas:genurl 'root)))))
+      (set-cookie-script-visited "")
+      #+mini-cas
+      (with-cas-parameters
+	(restas:redirect (with-output-to-string (stream)
+			   (puri:render-uri (mini-cas:make-logout-uri) stream))))
+      #-mini-cas
+      (restas:redirect (restas:genurl 'root)))))
 
 (defun session-admin-p ()
   (= (db:level (tbnl:session-value +user-session+)) +admin-acl-level+))

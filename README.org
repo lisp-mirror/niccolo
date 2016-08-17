@@ -64,8 +64,8 @@ Note: Assuming directory ~/lisp exists and is writable.
 
 Also     basic     [[https://www.common-lisp.net/project/asdf/][ASDF]] knowledge is mandatory.
 
-Moreover  steps 6-12  should  be  skipped if  you  have quicklisp  already
-installed  and  ASDF  configured  (but  you  should  install  all  the
+Moreover steps  2-5 and  10-11 may  be skipped  if you  have quicklisp
+already installed and ASDF configured  (but you should install all the
 [[Dependency]] anyway, via quicklisp).
 
 1. cd ~/lisp/
@@ -175,7 +175,7 @@ installed  and  ASDF  configured  (but  you  should  install  all  the
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
    #+BEGIN_SRC lisp
-(define-constant +https-poxy-port+ -1 :test #'=)
+(define-constant +https-proxy-port+ -1 :test #'=)
    #+END_SRC
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.

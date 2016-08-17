@@ -22,6 +22,11 @@
 							      (symbol-value (first params))
 							      (first params))))
 				       (rest params))
+     (when (and (not (validation:cookie-key-script-visited-validate
+		      (tbnl:cookie-in +cookie-key-script-visited+)))
+		(string-not-equal (concatenate 'string +path-prefix+ "/")
+				  (tbnl:script-name*)))
+       (set-cookie-script-visited (tbnl:script-name*)))
      ,@body))
 
 ;; credentials
@@ -115,8 +120,8 @@
     (puri:render-uri (make-instance 'puri:uri
 				    :scheme :https
 				    :host +hostname+
-				    :port (if (> +https-poxy-port+ 0)
-					      +https-poxy-port+
+				    :port (if (> +https-proxy-port+ 0)
+					      +https-proxy-port+
 					      +https-port+)
 				    :path path)
 		     stream)))
@@ -156,6 +161,15 @@
 			"Someone tried to modify a ~s with id ~s but such object does not exists in database!"
 			class id)
 	  +http-not-found+))))
+
+
+(defun set-cookie-script-visited (value)
+  (tbnl:set-cookie +cookie-key-script-visited+ :value value
+		   :secure    t
+		   :path      "/"
+		   :http-only t
+		   :max-age   60
+		   :domain    +hostname+))
 
 ;; net addresses
 

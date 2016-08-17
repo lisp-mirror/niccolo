@@ -93,6 +93,10 @@
 	 (>= parsed 0)
 	 (<= parsed 100))))
 
+(defun cookie-key-script-visited-validate (s)
+  (and s
+       (string/= s "")
+       (scan (concatenate 'string "^" +path-prefix+) s)))
 
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))

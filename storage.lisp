@@ -45,8 +45,8 @@
       (puri:render-uri (make-instance 'puri:uri
 				    :scheme :https
 				    :host +hostname+
-				    :port (if (> +https-poxy-port+ 0)
-					      +https-poxy-port+
+				    :port (if (> +https-proxy-port+ 0)
+					      +https-proxy-port+
 					      +https-port+)
 				    :path (restas:genurl'restas.lab:search-chem-prod)
 				    :query (utils:alist->query-uri alist))
