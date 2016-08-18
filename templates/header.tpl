@@ -20,5 +20,8 @@
               at: "left top"
 	  }
       });
+      $("button").button();
+      $("input:submit").button();
+      $("input:button").button();
   });
 </script>

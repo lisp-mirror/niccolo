@@ -58,8 +58,12 @@
 			       :email email
 			       :password (encode-pass salt password)
 			       :salt     salt
+
 			       :account-enabled +user-account-enabled+
 			       :level    +user-acl-level+)))
+	(create 'db:user-preferences
+		:owner (db:id new-user)
+		:language "")
 	(save new-user)))
     (manage-user success-msg errors-msg)))
 

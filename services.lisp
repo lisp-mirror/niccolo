@@ -55,7 +55,7 @@
 				(plist-alist i)))
 	  +http-not-found+))))
 
-(define-lab-route single-barcode ("/gen-barcode/:id" :method :get)
+(define-lab-route single-barcode ("/ws/gen-barcode/:id" :method :get)
   (with-authentication
     (if (and (scan +pos-integer-re+ id)
 	     (single 'db:chemical-product :id (parse-integer id)))
@@ -75,7 +75,7 @@
 (defun %extract-parse (key bag &optional (default "1.0"))
   (parse-number:parse-number (or (cdr (assoc key bag)) default)))
 
-(define-lab-route l-factor-i ("/l-factor/" :method :post)
+(define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
     (if  (tbnl:post-parameter "req")
 	 (progn
@@ -101,7 +101,7 @@
 	     (utils:plist->json (list :res results :err risk-calculator:*errors*))))
 	 (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
 
-(define-lab-route l-factor-carc-i ("/l-factor-carc/" :method :post)
+(define-lab-route l-factor-carc-i ("/ws/l-factor-carc/" :method :post)
   (with-authentication
     (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
 	   (risk-calculator:*errors* '())
@@ -198,22 +198,28 @@
 	      (obj->json-string (fq:make-visited-response visited-p query-id))))
 	  +http-not-found+))))
 
-(define-lab-route ws-federated-query-product ("/fq-product" :method :get)
+(define-lab-route ws-federated-query-product ("/ws/fq-product" :method :get)
   (with-federated-query-enabled
     (with-authentication
       (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
 						 +federated-query-product-re+
-						 (_ "no"))))))
+						 (_ "no"))
+					   (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +free-text-re+
+						 (_ "free text validation failed"))))))
 	(if (not errors)
 	    (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+))
 	    +http-not-found+)))))
 
-(define-lab-route ws-federated-query-product-results ("/fq-product-res" :method :get)
+(define-lab-route ws-federated-query-product-results ("/ws/fq-product-res" :method :get)
   (with-federated-query-enabled
     (with-authentication
       (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
 						 +federated-query-id-re+
-						 (_ "no"))))))
+						 (_ "no"))
+					   (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +free-text-re+
+						 (_ "free text validation failed"))))))
 	(if (not errors)
 	    (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
 	    +http-not-found+)))))

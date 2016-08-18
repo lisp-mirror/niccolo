@@ -19,12 +19,31 @@
 
 (define-constant +name-ghs-precautionary-code+ "code" :test #'string=)
 
+(defmacro gen-admissible-cookie-uri ((path) &body symbols)
+  `(and
+    ,@(loop for symbol in symbols collect
+	   `(not ,(if (stringp symbol)
+		      `(scan ,symbol ,path)
+		      `(scan (restas:genurl ',symbol) ,path))))))
+
+(defun admissible-cookie-redirect-p (path)
+  (and (cookie-key-script-visited-validate path)
+       (gen-admissible-cookie-uri (path)
+	 root-login
+	 logout
+	 "add"
+	 "/ws/"
+	 "assoc"
+	 "subst"
+	 "delete"
+	 "update")))
+
 (define-lab-route root ("/" :method :get)
   #+mini-cas
   (if (hunchentoot:parameter mini-cas:+query-ticket-key+)
       (progn
 	(check-with-cas-authenticate () nil)
-	(if (cookie-key-script-visited-validate (tbnl:cookie-in +cookie-key-script-visited+))
+	(if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
 	    (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
 	    (restas:redirect 'root)))
       (authenticate (nil nil)
@@ -37,7 +56,7 @@
 
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
-    (if (cookie-key-script-visited-validate (tbnl:cookie-in +cookie-key-script-visited+))
+    (if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
 	(tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
 	(with-standard-html-frame (stream (_ "Welcome"))))))
 

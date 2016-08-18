@@ -47,7 +47,7 @@
 	    obj.safetyThreshold    = $( "#safety-threshold" ).val().trim();
 	    var jj = JSON.stringify(obj);
 	    $.ajax({
-		url:    "<!-- TMPL_VAR path-prefix -->/l-factor/",
+		url:    "<!-- TMPL_VAR service-link -->",
 		method: "POST",
 		data: { req: jj }
 	    }).success(function( data ) {

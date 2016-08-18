@@ -26,7 +26,7 @@
 		      (tbnl:cookie-in +cookie-key-script-visited+)))
 		(string-not-equal (concatenate 'string +path-prefix+ "/")
 				  (tbnl:script-name*)))
-       (set-cookie-script-visited (tbnl:script-name*)))
+       (set-cookie-script-visited (tbnl:request-uri*)))
      ,@body))
 
 ;; credentials

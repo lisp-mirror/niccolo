@@ -67,8 +67,8 @@ input[type=file] {
 
 
 input[type=text] {
-    border: thin inset #047595;
-    background: #83D1E7;
+/*     border: thin inset #047595; */
+/*     background: #83D1E7; */
     width:  150pt;
 }
 
@@ -79,21 +79,21 @@ input[disabled] {
 }
 
 input[type=submit] {
-    background: #FFCF5E;
-    height: 21pt;
-    width:  110pt;
+    /* background: #FFCF5E;*/
+    /* height: 21pt; */
+    /* width:  110pt; */
 }
 
 input[type=password] {
-    background: #FFCF5E;
+/*    background: #FFCF5E; */
     width:  150pt;
 }
 
 textarea {
-    background: #83D1E7;
-    border: thin inset #047595;
+    /* background: #83D1E7; */
+    /* border: thin inset #047595; */
     resize: none;
-    font-size: 100%;
+    /* font-size: 100%; */
 }
 
 .textarea-add-chem-prod {
@@ -136,7 +136,7 @@ textarea {
 }
 
 .nyan-caption {
-    text-size:   200%;
+    font-size:   200%;
     font-weight: bold;
     text-align:  center;
 }
@@ -247,9 +247,31 @@ table {
     border-collapse: collapse;
 }
 
-tr:nth-child(odd) {
-    background: #FFDD8C;
+tr:nth-child(even) {
+    background: #ffebef;
 }
+
+tr:nth-child(even) a{
+
+
+}
+
+tr:nth-child(odd) a{
+
+
+}
+
+tr:nth-child(even) a:visited{
+
+    text-decoration: none;
+
+}
+
+tr:nth-child(odd) a:visited{
+
+    text-decoration: none;
+}
+
 
 fieldset {
     border:     1pt solid #047595;
@@ -265,7 +287,7 @@ fieldset.add-new-chem-prod  {
     width: 200pt;
     float: left;
     margin: 5pt;
-    height: pt;
+    height: 370pt;
 }
 
 fieldset.search-chem-prod  {
@@ -312,7 +334,7 @@ fieldset.lending  legend {
 
 legend {
     border:     1pt solid #047595;
-    background: #32ABCD;
+    background: #83D1E7;
     font-weight: bold;
     padding-left: 2pt;
     padding-right: 2pt;
@@ -661,8 +683,13 @@ td.select-id-id input {
 
 .parent-subscript {
     color: #504343;
+    font-weight: bolder;
+}
+
+sub a{
     font-weight: bold;
 }
+
 
 .lend-hand {
     vertical-align: bottom;
@@ -685,7 +712,7 @@ div.biblio-ref{
 }
 
 .biblio-ref .title {
-    font-style: bold;
+    font-weight: bold;
 }
 
 .biblio-ref .publication {

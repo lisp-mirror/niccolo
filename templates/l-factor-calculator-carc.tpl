@@ -30,7 +30,7 @@ $(function() {
 	obj.usagePerYear       = $( "#usage-per-year" ).val().trim();
 	var jj = JSON.stringify(obj);
 	$.ajax({
-	    url:    "<!-- TMPL_VAR path-prefix -->/l-factor-carc/",
+	    url:    "<!-- TMPL_VAR service-link -->",
 	    method: "POST",
 	    data: { req: jj }
 	}).success(function( data ) {

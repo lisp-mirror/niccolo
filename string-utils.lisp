@@ -16,7 +16,7 @@
 (in-package :string-utils)
 
 (defun clean-string (s)
-  (regex-replace-all "[;\\\"'=<>]" s ""))
+  (regex-replace-all "[;\\\"'=<>&]" s ""))
 
 (defun string-empty-p (s)
     (or (null s)

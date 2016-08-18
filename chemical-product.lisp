@@ -306,8 +306,8 @@
 						   :submit-lend-to     +op-submit-lend-to+
 						   :username-lending   +name-username-lending+
 						   ;; federated query
-						   :fq-start-url  (restas:genurl ' ws-federated-query-product)
-						   :fq-results-url (restas:genurl ' ws-federated-query-product-results)
+						   :fq-start-url  (restas:genurl 'ws-federated-query-product)
+						   :fq-results-url (restas:genurl 'ws-federated-query-product-results)
 						   :fq-query-key-param +query-http-parameter-key+
 						   :data-table data)
 					       :stream stream)))))

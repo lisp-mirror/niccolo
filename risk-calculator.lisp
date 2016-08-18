@@ -66,7 +66,7 @@
 		   (t-factor-extract b)))
 	      keys :initial-value 0)
       (progn
-	(push (_ "Exposition type not specidied") *errors*)
+	(push (_ "Exposition type not specified") *errors*)
 	10.0)))
 
 (alexandria:define-constant +physical-state-el-root+ "physical_state"  :test #'equal)

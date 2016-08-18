@@ -1511,12 +1511,6 @@ plurals-form ""
 status :TRANSLATED
 plurals NIL
 
- id "Exposition type not specidied"
-translation "Tipo di esposizione non specificata"
-plurals-form ""
-status NTRANSLATED
-plurals NIL
-
  id "\\\"H phrases\\\" not found"
 translation "Nessuna frase \\\"H prases\\\" trovata"
 plurals-form ""
@@ -2509,6 +2503,18 @@ plurals NIL
 
  id "Product ~a quantity (~a) below threshold: ~a."
 translation "La quantità disponibile del prodotto ~a (~a) al di sotto della soglia: ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Exposition type not specified"
+translation "Tipo di esposizione non specificata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "free text validation failed"
+translation "testo libero non valido"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
