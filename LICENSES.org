@@ -141,7 +141,6 @@
 
 - jquery-ui.min.js
   jquery-ui.js
-  jQuery UI - v1.11.4 - 2015-07-19
   http://jqueryui.com
 
   Includes: core.js,  widget.js, mouse.js,  position.js, draggable.js,
@@ -157,7 +156,6 @@
   Copyright 2015 jQuery Foundation and other contributors; Licensed MIT
 
 - jquery.js
-  jQuery JavaScript Library v1.10.2
   http://jquery.com/
 
   Includes Sizzle.js
@@ -167,7 +165,7 @@
   Released under the MIT license
   http://jquery.org/license
 
-- sugar--1.4.1.js
+- sugar.js
 
   Sugar Library v1.4.1
 
@@ -196,7 +194,7 @@
 
 - jquery-ui.css
   jquery-ui.min.css
-  jQuery UI - v1.11.4 - 2015-07-21
+
   http://jqueryui.com
 
   Includes:  core.css,  draggable.css,  resizable.css,  selectable.css,
@@ -208,8 +206,6 @@
   Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 - jquery-ui.theme.css
-
-  jQuery UI CSS Framework 1.11.4
   http://jqueryui.com
 
   Copyright jQuery Foundation and other contributors
@@ -218,7 +214,6 @@
 
 - jquery-ui.theme.min.css
 
-  jQuery UI - v1.11.4 - 2015-07-21
   http://jqueryui.com
   Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 

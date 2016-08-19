@@ -258,7 +258,7 @@
 							      'restas.lab::-js-.route
 							      :path "jquery-ui.js")
 						  :sugar (restas:genurl 'restas.lab::-js-.route
-									:path "sugar-1.4.1.js")
+									:path "sugar.js")
 						  :title    ,title)
 					      :stream ,stream)
        (restas.lab:render-logout-control stream)

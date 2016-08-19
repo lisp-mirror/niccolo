@@ -35,7 +35,7 @@
 	$("option").click(function (){
 	    $("#adr-selected").children().remove();
 	    var sel=$(this).parent().find("option").filter(":selected").toArray();
-	    sel.each(function (a) {
+	    sel.map(function (a) {
 		$("#adr-selected").append("<li>" + $(a).text() + "</li>");
 	    });
 	});

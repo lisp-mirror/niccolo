@@ -225,6 +225,13 @@
 <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/others-op-chem-prod/">
   <fieldset class="other-ops-chem-prod">
     <legend><!-- TMPL_VAR  other-operations-lb --></legend>
+
+    <input id="select-all" type="submit"
+	   name=""
+	   value="<!-- TMPL_VAR select-all-lb -->"/>
+    <input id="deselect-all" type="submit"
+	   name=""
+	   value="<!-- TMPL_VAR deselect-all-lb -->"/>
     <input id="submit-gen-barcode" type="submit"
 	   name="<!-- TMPL_VAR submit-gen-barcode -->"
 	   value="<!-- TMPL_VAR submit-gen-barcode-lb -->"/>
@@ -234,13 +241,6 @@
     <input id="sum-selected" type="submit"
 	   name=""
 	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
-
-    <input id="select-all" type="submit"
-	   name=""
-	   value="<!-- TMPL_VAR select-all-lb -->"/>
-    <input id="deselect-all" type="submit"
-	   name=""
-	   value="<!-- TMPL_VAR deselect-all-lb -->"/>
     <fieldset class="lending">
       <legend><!-- TMPL_VAR lending-lb --></legend>
       <label for="username-lending"><!-- TMPL_VAR user-lb --></label>

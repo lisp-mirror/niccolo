@@ -84,7 +84,7 @@
 
 (define-lab-route legal ("/legal" :method :get)
   (with-authentication
-    (with-standard-html-frame (stream (_ "Acknowledgment"))
+    (with-standard-html-frame (stream (_ "Legal"))
       (html-template:fill-and-print-template #p"legal.tpl"
 					     nil
 					     :stream stream))))

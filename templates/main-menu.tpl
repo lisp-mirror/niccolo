@@ -10,7 +10,7 @@
     <p class="nyan-caption">Let's chem-nyan!</p>
   <!-- /TMPL_IF -->
 
-  <ul>
+  <ul id="accordion-menu">
     <li class="menu-level-1"><!-- TMPL_VAR safety-lbl --></li>
     <li class="menu-level-2">
       <ul>

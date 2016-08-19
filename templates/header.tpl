@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <title><!-- TMPL_VAR title --></title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="<!-- TMPL_VAR path-prefix -->/images/favicon.ico" />
-  <link rel="stylesheet" type="text/css" href="<!-- TMPL_VAR css-file -->" />
   <link rel="stylesheet" href="<!-- TMPL_VAR jquery-ui-css -->" />
+  <link rel="stylesheet" type="text/css" href="<!-- TMPL_VAR css-file -->" />
   <script src="<!-- TMPL_VAR jquery -->"></script>
   <script src="<!-- TMPL_VAR jquery-ui -->"></script>
   <script src="<!-- TMPL_VAR sugar -->"></script>
@@ -23,5 +23,14 @@
       $("button").button();
       $("input:submit").button();
       $("input:button").button();
+      $("select").not('#waste-form-adr-select').selectmenu();
+      $("#accordion-menu").accordion({
+	  header     : "li.menu-level-1",
+	  heightStyle: "content",
+	  collapsible: true,
+	  autoHeight: true,
+          active: false
+
+      });
   });
 </script>

@@ -33,6 +33,7 @@ a:visited {
 
 label {
     font-weight: bold;
+    display: block;
 }
 
 sub {
@@ -43,7 +44,6 @@ select {
     display: block;
     margin-top: 5pt;
     margin-bottom: 5pt;
-
 }
 
 input {
@@ -65,11 +65,16 @@ input[type=file] {
     min-width:  150pt;
 }
 
-
 input[type=text] {
-/*     border: thin inset #047595; */
-/*     background: #83D1E7; */
     width:  150pt;
+}
+
+.other-ops-chem-prod > input[type=submit] {
+    min-width:  150pt;
+}
+
+input[type=submit] {
+    display: block;
 }
 
 input[disabled] {
@@ -78,22 +83,8 @@ input[disabled] {
     width:  150pt;
 }
 
-input[type=submit] {
-    /* background: #FFCF5E;*/
-    /* height: 21pt; */
-    /* width:  110pt; */
-}
-
-input[type=password] {
-/*    background: #FFCF5E; */
-    width:  150pt;
-}
-
 textarea {
-    /* background: #83D1E7; */
-    /* border: thin inset #047595; */
     resize: none;
-    /* font-size: 100%; */
 }
 
 .textarea-add-chem-prod {
@@ -109,12 +100,10 @@ textarea {
     width: 50%;
     height: 300pt;
     display: block;
-
 }
 
 #waste-form-adr-select {
     width: 100%;
-
 }
 
 #adr-list {
@@ -122,7 +111,6 @@ textarea {
     float:right;
     position: relative;
     top: 0;
-
 }
 
 #footer {
@@ -219,7 +207,6 @@ td.user-message-reply-row a{
     font-weight:     bold;
     font-style:      italic;
     font-size:       80%;
-
 }
 
 td.name-disabled {
@@ -253,25 +240,19 @@ tr:nth-child(even) {
 
 tr:nth-child(even) a{
 
-
 }
 
 tr:nth-child(odd) a{
 
-
 }
 
 tr:nth-child(even) a:visited{
-
     text-decoration: none;
-
 }
 
 tr:nth-child(odd) a:visited{
-
     text-decoration: none;
 }
-
 
 fieldset {
     border:     1pt solid #047595;
@@ -308,14 +289,12 @@ fieldset.lending  {
 }
 
 fieldset.lending  legend {
-
     padding-top: 1.0pt;
     padding-bottom: 1.0pt;
     padding-left: 10pt;
     padding-right: 10pt;
     margin: 0;
     border: .1pt solid #047595;
-
 }
 
 #submit-lend-to {
@@ -330,7 +309,6 @@ fieldset.lending  legend {
     margin-bottom: 10pt;
     margin-top: 10pt;
 }
-
 
 legend {
     border:     1pt solid #047595;
@@ -362,21 +340,19 @@ td {
 }
 
 #main-content-wrapper {
-    width: 85%;
+    min-width: 1000pt;
     display: table-cell;
     vertical-align: top;
 }
 
 .left-menu {
     display: table-cell;
-    width: 15%;
+    width: 200pt;
     padding-left: 0;
     padding-top: 0;
     padding-bottom: 0;
     padding-right:  2pt;
     margin: 0;
-    min-height: 1200px;
-
 }
 
 .left-menu ul{
@@ -384,29 +360,9 @@ td {
     margin: 0;
 }
 
-.menu-level-1 {
-    list-style-type: none;
-    display:         block;
-    background:      #32ABCD;
-    min-height:      10pt;
-    margin:          0;
-    padding-left:    2pt;
-    padding-top:     8pt;
-    padding-bottom:  8pt;
-    text-align:      center;
-    font-size:       120%;
-}
-
-.menu-level-2 {
-    list-style-type: none;
-    display: block;
-    min-height: 20pt;
-}
-
 .menu-level-2 ul{
     display: block;
     padding-left: 0;
-
 }
 
 .menu-level-2 ul li {
@@ -415,7 +371,6 @@ td {
     float: none;
     clear: both;
     min-height: 20pt;
-    background: #BBEBF2;
     vertical-align: middle;
     padding:      0;
     margin:       0;
@@ -437,7 +392,6 @@ td {
     padding-right: 0;
     padding-top:   3pt;
     padding-bottom: 3pt;
-
 }
 
 .close-w-success-button {
@@ -461,7 +415,6 @@ td {
     background-position: 0% 0%;
     text-decoration:     none;
 }
-
 
 .link-button {
     margin:              auto;
@@ -645,12 +598,10 @@ div[class*=button] a {
     display: block;
 }
 
-
 .pict-preview {
     display:             inline;
     vertical-align:      middle;
     height:              32px;
-
 }
 
 .chemical-data-sheet {
@@ -674,7 +625,6 @@ div[class*=button] a {
     display: none;
     width: 25%;
     margin:    auto;
-
 }
 
 td.select-id-id input {
@@ -723,8 +673,6 @@ div.biblio-ref{
 .biblio-ref .biblio-id {
 
 }
-
-
 
 /* ghs hazard dialog list*/
 
@@ -802,4 +750,14 @@ table.waste-stats th {
     margin: auto;
     display: block;
     margin-top: 10pt;
+}
+
+
+/* jquery ui extension */
+
+.ui-accordion .ui-accordion-content {
+    padding-top:    0;
+    padding-bottom: 0;
+    padding-left:   1pt;
+    padding-right:  1pt;
 }
