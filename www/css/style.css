@@ -69,6 +69,10 @@ input[type=text] {
     width:  150pt;
 }
 
+input[type=password] {
+    width:  150pt;
+}
+
 .other-ops-chem-prod > input[type=submit] {
     min-width:  150pt;
 }
@@ -340,19 +344,19 @@ td {
 }
 
 #main-content-wrapper {
-    min-width: 1000pt;
+    width: 1000pt;
     display: table-cell;
     vertical-align: top;
 }
 
 .left-menu {
     display: table-cell;
-    width: 200pt;
+    min-width: 205pt;
     padding-left: 0;
     padding-top: 0;
     padding-bottom: 0;
-    padding-right:  2pt;
-    margin: 0;
+    padding-right:  1pt;
+
 }
 
 .left-menu ul{

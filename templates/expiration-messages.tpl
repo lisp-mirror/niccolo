@@ -94,7 +94,13 @@ $(function() {
   <tbody>
     <tr>
       <td class="sender-name"><!-- TMPL_VAR msg-id --></td>
-      <td class="id-product"><!-- TMPL_VAR chemp-id-string --></td>
+      <td class="id-product">
+	<!-- TMPL_IF search-link -->
+	<a href="<!-- TMPL_VAR search-link -->"><!-- TMPL_VAR chemp-id-string --></a>
+	<!-- TMPL_ELSE -->
+	<!-- TMPL_VAR chemp-id-string -->
+	<!-- /TMPL_IF -->
+      </td>
       <td class="sent-time"><!-- TMPL_VAR decoded-sent-time --></td>
       <td class="sender-name"><!-- TMPL_VAR sender-username --></td>
       <td class="rcpt-name"><!-- TMPL_VAR rcpt-username --></td>

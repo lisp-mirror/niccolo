@@ -31,6 +31,6 @@
 	  autoHeight: true,
           active: false
 
-      });
+      }).css('width', '200pt');
   });
 </script>

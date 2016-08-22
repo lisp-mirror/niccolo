@@ -229,9 +229,9 @@
 					     (list
 					      :child-id a
 					      :url     (restas:genurl 'ws-get-user-message
-									   :id a)
+								      :id a)
 					      :subject (db:subject msg)
-					      :time    (decode-datetime-string (db:sent-time msg))))))
+					      :time (decode-datetime-string (db:sent-time msg))))))
 				     (fetch-children-messages msg-id)))))
 
 (defun fetch-template-message-by-id (id)
@@ -277,14 +277,18 @@
 	   (raw (keywordize-query-results (query the-query))))
       (do-rows (rown res) raw
 	(let* ((row (elt raw rown))
-	       (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id))))
+	       (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+	       (search-link  (if (getf row :chemp-id)
+				 (gen-id-product-search-query (getf row :chemp-id))
+				 nil)))
 	  (setf (elt raw rown)
 		(nconc row
 		       (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
 		       (list :delete-link delete-link)
 		       (children-template (getf row :msg-id))
-		       (list :chemp-id-string (if-db-nil-else (getf row :chemp-id)
-							      (_ "Product deleted")))))))
+		       (list :search-link search-link)
+		       (list :chemp-id-string (or (getf row :chemp-id)
+						  (_ "Product deleted")))))))
       raw)))
 
 (defun build-validity-expired-template ()
@@ -308,14 +312,18 @@
 	   (raw (keywordize-query-results (query the-query))))
       (do-rows (rown res) raw
 	(let* ((row (elt raw rown))
-	       (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id))))
+	       (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+	       (search-link  (if (getf row :chemp-id)
+				 (gen-id-product-search-query (getf row :chemp-id))
+				 nil)))
 	  (setf (elt raw rown)
 		(nconc row
 		       (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
 		       (list :delete-link delete-link)
 		       (children-template (getf row :msg-id))
-		       (list :chemp-id-string (if-db-nil-else (getf row :chemp-id)
-							      (_ "Product deleted")))))))
+		       (list :search-link search-link)
+		       (list :chemp-id-string (or (getf row :chemp-id)
+						  (_ "Product deleted")))))))
       raw)))
 
 (defun %build-waste-template (user-id &optional (other-status nil))

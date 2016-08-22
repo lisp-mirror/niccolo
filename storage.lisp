@@ -33,9 +33,12 @@
 
 (define-constant +map-image-coord-name+       "coord"                      :test #'string=)
 
-(defun gen-qr-code-search-query (building storage)
+(defun gen-uri-search-query (&key
+			       (id-product "")
+			       (building   "")
+			       (storage    ""))
   (with-output-to-string (stream)
-    (let ((alist (list (cons +search-chem-id+       "")
+    (let ((alist (list (cons +search-chem-id+       id-product)
 		       (cons +search-chem-owner+    "")
 		       (cons +search-chem-name+     "")
 		       (cons +search-chem-building+ building)
@@ -51,6 +54,13 @@
 				    :path (restas:genurl'restas.lab:search-chem-prod)
 				    :query (utils:alist->query-uri alist))
 		       stream))))
+
+
+(defun gen-qr-code-search-query (building storage)
+  (gen-uri-search-query :building building :storage storage))
+
+(defun gen-id-product-search-query (id)
+  (gen-uri-search-query :id-product id))
 
 (defun gen-map-storage-link (id sc tc)
   (restas:genurl 'display-map
