@@ -38,6 +38,17 @@
 	 "delete"
 	 "update")))
 
+(defun manage-welcome ()
+  (with-standard-html-frame (stream (_ "Welcome"))
+    (html-template:fill-and-print-template #p"welcome.tpl"
+					   (with-path-prefix
+					       :num-msg
+					     (format nil (n_ "You have ~a message"
+							     "You have ~a message"
+							     (number-of-msg-sent-to-me))
+						     (number-of-msg-sent-to-me)))
+					   :stream stream)))
+
 (define-lab-route root ("/" :method :get)
   #+mini-cas
   (if (hunchentoot:parameter mini-cas:+query-ticket-key+)
@@ -48,17 +59,17 @@
 	    (restas:redirect 'root)))
       (authenticate (nil nil)
 	(i18n:with-user-translation ((get-session-user-id))
-	  (with-standard-html-frame (stream (_ "Welcome"))))))
+	  (manage-welcome))))
   #-mini-cas
   (authenticate (nil nil)
     (i18n:with-user-translation ((get-session-user-id))
-      (with-standard-html-frame (stream (_ "Welcome"))))))
+      (manage-welcome))))
 
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
     (if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
 	(tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
-	(with-standard-html-frame (stream (_ "Welcome"))))))
+	(manage-welcome))))
 
 (define-lab-route user-messages ("/messages" :method :get)
   (with-authentication
@@ -144,6 +155,8 @@
 		      :manage-user-lbl       (_ "Manage users")
 		      :user-messages-lb      (_ "Messages")
 		      :user-messages         (restas:genurl 'user-messages)
+		      :broadcast-messages-lb (_ "Broadcast messages")
+		      :broadcast-messages    (restas:genurl 'broadcast-message)
 		      :user-preferences      (restas:genurl 'user-preferences)
 		      :user-preferences-lbl  (_ "User preferences")
 		      :change-password       (restas:genurl 'change-pass)

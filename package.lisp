@@ -75,7 +75,8 @@
    :*quantity-carc*
    :*exposition-time-carc*
    :*frequency-carc*
-   :_))
+   :_
+   :n_))
 
 (defpackage :constants
   (:use
@@ -240,6 +241,7 @@
    :status
    :text
    :message-relation
+   :node
    :parent
    :child
    :expiration-message

@@ -2518,4 +2518,40 @@ translation "testo libero non valido"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Broadcast messages"
+translation "Messaggi a tutti gli utenti"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Body"
+translation "Messaggio"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Broadcast message"
+translation "Messaggio a tutti gli utenti"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Body invalid"
+translation "Corpo del messaggio non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Subject invalid"
+translation "Oggetto del messaggio non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "You have ~a message"
+translation "Hai ~a messaggio"
+plurals-form "Hai ~a messaggi"
+status :TRANSLATED
+plurals ("Hai ~a messaggi")
 )

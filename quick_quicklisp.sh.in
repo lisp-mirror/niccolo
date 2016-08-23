@@ -20,6 +20,7 @@
  --eval "(quicklisp-quickstart:install)" \
  --eval "(ql:quickload \"alexandria\")" \
  --eval "(ql:quickload \"cl-ppcre-unicode\")" \
+ --eval "(ql:quickload \"trivial-timeout\")"  \
  --eval "(ql:quickload \"bordeaux-threads\")" \
  --eval "(ql:quickload \"dbi\")" \
  --eval "(ql:quickload \"envy\")" \

@@ -15,6 +15,10 @@
 
 (in-package :restas.lab)
 
+(define-constant +name-broadcast-msg-body+    "body" :test #'string=)
+
+(define-constant +name-broadcast-msg-subject+ "subj" :test #'string=)
+
 (defmacro define-status-codes (&rest codes)
   `(progn
      ,@(loop for code in codes collect
@@ -128,12 +132,6 @@
 				 (building-id  nil)
 				 (weight       nil)
 				 (adr-ids      '()))
-  (format t "validation -> ~a ~a ~a ~a"
-	  (regexp-validate (list (list cer-code-id +integer-re+ "ok")))
-	  (regexp-validate (list (list building-id +integer-re+ "ok")))
-	  (regexp-validate (list (list weight +integer-re+ "ok")))
-	  (every #'(lambda (a) (regexp-validate (list (list a +integer-re+ "ok"))))
-		 adr-ids))
   (when (and (not (regexp-validate (list (list cer-code-id +integer-re+ "ok"))))
 	     (not (regexp-validate (list (list building-id +integer-re+ "ok"))))
 	     (not (regexp-validate (list (list weight +integer-re+ "ok"))))
@@ -155,6 +153,13 @@
 		:waste-message (db:id waste-msg)
 		:adr-code-id   adr-id))
       msg)))
+
+(defun number-of-msg-sent-to-me ()
+  "Only non-deleted"
+  (with-session-user (user)
+    (length (filter 'db:message
+		    :recipient (db:id user)
+		    (:!= :status +msg-status-deleted+)))))
 
 (defun create-expiration-messages (expired-product-list)
   "Expired-Product-List comes from evaluation of (fetch-expired-products)"
@@ -659,7 +664,12 @@
 	(when (and to-trash
 		   (funcall deletable-p-fn user to-trash))
 	  (setf (db:status to-trash) +msg-status-deleted+)
-	  (save to-trash)))))) ; TODO recursively delete (set status) all children!
+	  (save to-trash)
+	  ;; recursive delete
+	  (let ((children (mapcar #'(lambda (u) (format nil "~a" (db:child u)))
+				  (filter 'db:message-relation :node (db:id to-trash)))))
+	    (dolist (child-id children)
+	      (set-delete-message child-id :deletable-p-fn deletable-p-fn))))))))
 
 (define-lab-route delete-expire-message ("/delete-expire-message-prod/:id" :method :get)
   (with-authentication
@@ -735,3 +745,50 @@
 
 (define-lab-route close-w-failure-message ("/close-failure-message/:id" :method :get)
   (close-w-status-message id +msg-status-closed-unsuccess+))
+
+(defun send-broadcast-message (subject body)
+  (let* ((actual-subject (strip-tags subject))
+	 (actual-body    (strip-tags body))
+	 (errors (regexp-validate (list (list actual-subject
+					      +free-text-re+
+					      (_ "Subject invalid"))
+					(list actual-body
+					      +free-text-re+
+					      (_ "Body invalid"))))))
+    (if (not errors)
+	(progn
+	  (dolist (user (filter 'db:user))
+	    (send-user-message (make-instance 'db:message)
+			       (admin-id)
+			       (db:id user)
+			       actual-subject
+			       actual-body))
+	  (manage-broadcast-message (list (format nil
+						  "Message ~s successfully sent"
+						  actual-subject))
+				    nil))
+	 (manage-broadcast-message  nil errors))))
+
+
+(defun manage-broadcast-message (infos errors)
+  (with-standard-html-frame (stream
+			     (_ "Broadcast message")
+			     :errors errors
+			     :infos  infos)
+    (html-template:fill-and-print-template #p"broadcast-message.tpl"
+					     (with-path-prefix
+						 :subject-lb (_ "Subject")
+						 :body-lb    (_ "Body")
+						 :subject    +name-broadcast-msg-subject+
+						 :body       +name-broadcast-msg-body+)
+					     :stream stream)))
+
+(define-lab-route broadcast-message ("/broadcast-message/" :method :get)
+  (with-authentication
+    (with-admin-privileges
+	(if (and (get-parameter +name-broadcast-msg-subject+)
+		 (get-parameter +name-broadcast-msg-body+))
+	    (send-broadcast-message (get-parameter +name-broadcast-msg-subject+)
+				    (get-parameter +name-broadcast-msg-body+))
+	    (manage-broadcast-message nil nil))
+      (manage-broadcast-message nil (list *insufficient-privileges-message*)))))

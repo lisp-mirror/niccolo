@@ -13,6 +13,7 @@ disposing.
 
   - alexandria;
   - cl-ppcre-unicode;
+  - trivial-timeout;
   - bordeaux-threads;
   - dbi;
   - cl-smtp;

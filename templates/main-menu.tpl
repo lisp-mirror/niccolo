@@ -124,6 +124,12 @@
 	</li>
 
 	<li>
+	  <a href="<!-- TMPL_VAR broadcast-messages -->">
+	    <!-- TMPL_VAR broadcast-messages-lb -->
+	  </a>
+	</li>
+
+	<li>
 	  <a href="<!-- TMPL_VAR manage-user -->">
 	    <!-- TMPL_VAR manage-user-lbl -->
 	  </a>

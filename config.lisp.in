@@ -161,6 +161,8 @@
 
 (defun _ (a) (cl-i18n:translate a))
 
+(defun n_ (s f n) (cl-i18n:ntranslate s f n))
+
 (defparameter *letter-header-text* "header")
 
 ;;;;; no need to modify below this line
