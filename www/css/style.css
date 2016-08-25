@@ -756,6 +756,10 @@ table.waste-stats th {
     margin-top: 10pt;
 }
 
+.more-info-link {
+    font-size: 60%;
+}
+
 
 /* jquery ui extension */
 

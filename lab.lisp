@@ -46,7 +46,8 @@
 					     (format nil (n_ "You have ~a message"
 							     "You have ~a message"
 							     (number-of-msg-sent-to-me))
-						     (number-of-msg-sent-to-me)))
+						     (number-of-msg-sent-to-me))
+					     :messages-url (restas:genurl 'user-messages))
 					   :stream stream)))
 
 (define-lab-route root ("/" :method :get)

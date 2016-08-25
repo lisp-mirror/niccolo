@@ -40,7 +40,8 @@
 	       :adr-expl       (db:explanation i)))))
 
 (defun collect-all-adr (parameters)
-  (loop for i in parameters when (string= +name-select-adr+ (car i)) collect (cdr i)))
+  (loop for i in parameters when (string= +name-select-adr+ (car i)) collect
+       (strip-tags (cdr i))))
 
 (defun manage-waste-letter (infos errors)
   (with-standard-html-frame (stream
@@ -226,10 +227,10 @@
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication
     (setf (header-out :content-type) +mime-postscript+)
-    (generate-letter (get-parameter +name-waste-user-name+)
-		     (get-parameter +name-waste-lab-num+)
-		     (get-parameter +name-waste-building-id+)
-		     (get-parameter +name-waste-weight+)
-		     (get-parameter +name-waste-cer-id+)
-		     (get-parameter +name-waste-description+)
+    (generate-letter (strip-tags (get-parameter +name-waste-user-name+))
+		     (strip-tags (get-parameter +name-waste-lab-num+))
+		     (strip-tags (get-parameter +name-waste-building-id+))
+		     (strip-tags (get-parameter +name-waste-weight+))
+		     (strip-tags (get-parameter +name-waste-cer-id+))
+		     (strip-tags (get-parameter +name-waste-description+))
 		     (collect-all-adr (get-parameters*)))))

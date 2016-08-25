@@ -1,3 +1,5 @@
 <h3>
-   <!-- TMPL_VAR num-msg -->
+  <a href="<!-- TMPL_VAR messages-url -->">
+     <!-- TMPL_VAR num-msg -->
+  </a>
 </h3>

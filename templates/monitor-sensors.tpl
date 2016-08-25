@@ -3,6 +3,20 @@
 <script>
     // Shorthand for $( document ).ready()
     $(function () {
+	function sum2DVec (a, b){
+	    return new Array(a[0] + b[0],
+			     a[1] + b [1]);
+	}
+
+	function vecLength (a){
+	    return Math.sqrt(a[0] * a[0] + a[1] * a[1]);
+	}
+
+	function vecDiff (a, b){
+	    return new Array(a[0] - b[0],
+			     a[1] - b [1]);
+
+	}
 
 	function AABB() {
 	    this.id = -1;
@@ -37,12 +51,37 @@
 		    y >= this.ul[1];
 	    };
 
+	    this.width = function(){
+		return this.lr[0] - this.ul[0];
+	    }
+
+	    this.height = function(){
+		return this.lr[1] - this.ul[1];
+	    }
+
 	    this.center = function(x, y){
-		var w = this.lr[0] - this.ul[0];
-		var h = this.lr[1] - this.ul[1];
+		let w = this.width(),
+		    h = this.height();
 		return new Array(this.ul[0] + w / 2,
 				 this.ul[1] + h / 2);
 
+	    };
+
+	    this.translate = function(dx, dy){
+		this.ul[0] += dx;
+		this.lr[0] += dx;
+		this.ul[1] += dy;
+		this.lr[1] += dy;
+	    };
+
+	    this.scale = function(sx, sy){
+		let center = this.center();
+		this.translate(-center[0], -center[1]);
+		this.ul[0] *= sx;
+		this.lr[0] *= sx;
+		this.ul[1] *= sy;
+		this.lr[1] *= sy;
+		this.translate(center[0], center[1]);
 	    };
 
 
@@ -55,9 +94,18 @@
 	var statusOkRe            = new RegExp("ok");
 	var statusOkColorInner    = "#00ff00";
 	var statusOkColorOuter    = "#003300";
-	var statusErrorColorInner = "#ff0000";
+	var statusErrorColorInner = "#dd0900";
 	var statusErrorColorOuter = "#660000";
+	var statusErrorColorText  = "#ffffff";
+	var statusOkColorText     = "#000000";
 	var fontBalloon           = "18px Mono";
+
+	var dpThreshold = 1e-3;
+	var frictionK   = 0.7;
+	var balloonMass = 1.0;
+	var balloonAcel = new Array(0.0, 0.0);
+	var balloonV    = new Array(0.0, 0.0);
+	var balloonPos  = new Array(0.0, 0.0);
 
 	var allAABB = [];
 
@@ -69,27 +117,68 @@
 	var mapBg          = new Image();
 
 	var canvas         = $("#map").get(0);
+	var context = canvas.getContext('2d');
 
-	function  makeBalloon(canvas, context, h,
+	function resetIntegrationParams(){
+	    balloonAcel = new Array(0.0, 0.0),
+	    balloonV    = new Array(0.0, 0.0),
+	    balloonPos  = new Array(0.0, 0.0);
+	}
+
+	function integration(f, m, v, dt){
+	    let reduceFn    = function (a, b) {
+                               let bF = b(balloonPos, balloonAcel, balloonV, dt);
+		                 return sum2DVec(a, bF);
+	                     },
+                totalForce  = f.reduce(reduceFn, new Array (0.0, 0.0));
+	        a           = new Array(totalForce[0] / m, totalForce[1] / m),
+                dv          = sum2DVec(balloonV, new Array(a[0] * dt, a[1] * dt)),
+                dp          = new Array(dv[0] * dt, dv[1] * dt);
+	        balloonAcel = a;
+	        balloonV    = dv.slice();
+	        balloonPos  = sum2DVec(balloonPos, dp);
+	    return dp;
+	}
+
+	function  makeBalloon(canvas, context,
 			      xSensor, ySensor,
 			      desc, status, value, date){
 	    context.font         = fontBalloon;
 	    context.textBaseline = 'top';
 
-	    var descMetrics   = context.measureText(desc);
-	    var statusMetrics = context.measureText(status);
-	    var valueMetrics  = context.measureText(value);
-	    var dateMetrics   = context.measureText(date);
+	    let descMetrics    = context.measureText(desc),
+	        statusMetrics  = context.measureText(status),
+	        valueMetrics   = context.measureText(value),
+	        dateMetrics    = context.measureText(date),
+	        w              = Math.max(Math.max(statusMetrics.width,
+						  valueMetrics.width),
+					 Math.max(dateMetrics.width,
+						  descMetrics.width)) + 10,
+	        h              = 18 * 6;
+	        balloonPos     = [xSensor - (w / 2), ySensor + 0.12 * h],
+	        allSensorsData = null,
+	        forces         = new Array(function (p, a, v, dt) {
+		                            return new Array( Math.max(0.0, - 0.99 * p[0]),
+							      Math.max(0.0, - 1.1 * p[1]));
+	                                   },
 
-	    var w = Math.max(Math.max(statusMetrics.width,
-				      valueMetrics.width),
-			     Math.max(dateMetrics.width,
-				      descMetrics.width)) + 10;
-	    var h  = 18 * 6;
-	    var ul = [(canvasW / 2) - (w / 2), (canvasH / 2) - (h / 2)];
-	    var lr = [(canvasW / 2) + (w / 2), (canvasH / 2) + (h / 2)];
-	    var a  = [lr[0], ul[1]];
-	    var allSensorsData = null;
+				           function (p, a, v, dt) {
+		                               return new Array( Math.min(0.0, -((0.99 * p[0] + w) -
+										 canvasW)),
+								 Math.min(0.0, -((p[1] + h) -
+										 canvasH)));
+	                                   },
+
+				           function (p, a, v, dt) {
+		                               return new Array( - v[0] * frictionK,
+								 - v[1] * frictionK);
+					   }),
+	       dp               = integration(forces, balloonMass, balloonV, 0.5);
+
+
+	    while (vecLength(dp) > dpThreshold){
+		dp = integration(forces, balloonMass, balloonV, 0.5);
+	    }
 
 	    context.fillStyle   = '#ffffff';
 	    context.strokeStyle = '#000000';
@@ -99,35 +188,51 @@
 		context.strokeStyle = statusErrorColorOuter;
 	    }
 
+	    let lr         = [ balloonPos[0] + w, balloonPos[1] + h ],
+		arrowEnds  = [lr[0], balloonPos[1]],
+	        aabbArrow  = new AABB();
 
-	    context.lineWidth   = 2;
+	    aabbArrow.expand(balloonPos[0], balloonPos[1]);
+	    aabbArrow.expand(lr[0], lr[1]);
+	    aabbArrow.scale(0.3, 0.8);
+            context.lineWidth   = 2;
 
 	    context.beginPath();
 	    context.moveTo(xSensor, ySensor);
-	    context.lineTo(lr[0], lr[1]);
-	    context.lineTo(a[0], a[1]);
+	    context.lineTo(aabbArrow.ul[0], aabbArrow.ul[1]);
+	    context.lineTo(aabbArrow.ul[0], aabbArrow.lr[1]);
+	    context.lineTo(aabbArrow.lr[0], aabbArrow.lr[1]);
+	    context.lineTo(aabbArrow.lr[0], aabbArrow.ul[1]);
 	    context.closePath();
-
 	    context.fill();
-	    context.fillRect(ul[0], ul[1], w, h);
+
+
+	    context.beginPath();
+	    context.rect(balloonPos[0], balloonPos[1], w, h);
+	    context.closePath();
+	    context.fill();
 
 	    // draw text
-	    context.fillStyle    = '#000000';
-	    context.fillText(desc,   ul[0] + 5, ul[1] + 5);
-	    context.fillText(status, ul[0] + 5, ul[1] + 5 + 25);
-	    context.fillText(value,  ul[0] + 5, ul[1] + 5 + 50);
-	    context.fillText(date,   ul[0] + 5, ul[1] + 5 + 75);
+	    context.fillStyle    = statusOkColorText;
+	    if(statusErrorRe.test(status)){
+		context.fillStyle    = statusErrorColorText;
+
+	    }
+	    context.fillText(desc,   balloonPos[0] + 5, balloonPos[1] + 5);
+	    context.fillText(status, balloonPos[0] + 5, balloonPos[1] + 5 + 25);
+	    context.fillText(value,  balloonPos[0] + 5, balloonPos[1] + 5 + 50);
+	    context.fillText(date,   balloonPos[0] + 5, balloonPos[1] + 5 + 75);
 	}
 
 	canvas.addEventListener('click', function(event) {
-	    var x = event.offsetX;
-	    var	y = event.offsetY;
+	    resetIntegrationParams();
+	    let x = event.offsetX,
+		y = event.offsetY;
 	    redrawLoop();
 	    for (var i = 0; i < allAABB.length; i++) {
 		if(allAABB[i].inside(x, y)){
-//		    alert(allAABB[i].id);
-		    var center = allAABB[i].center();
-		    makeBalloon(this, context, 200, center[0], center[1],
+		    let center = allAABB[i].center();
+		    makeBalloon(this, context, center[0], center[1],
 				allSensorsData[i].description,
 			        "Status: "      + allSensorsData[i].status,
 				"Last value: "  + allSensorsData[i].lastValue,
@@ -137,18 +242,13 @@
 	    }
 	});
 
-
-	var context        = canvas.getContext('2d');
-
-
-
 	function loadSensorsData() {
 	    $.ajax({
-		url: sensorsDataURL
+		url:        sensorsDataURL,
 	    }).done(function( data ) {
 		var processSensorFn = function (sensor, index, array) {
-		    var centerX = sensor["sCoord"] * canvasW;
-		    var centerY = sensor["tCoord"] * canvasH;
+		    let centerX = sensor["sCoord"] * canvasW,
+		        centerY = sensor["tCoord"] * canvasH;
 		    // draw
 		    context.beginPath();
 		    context.arc(centerX, centerY, radius,
@@ -167,7 +267,7 @@
 		    context.stroke();
 
 		    // calculate aabb
-		    var aabbSensor = new AABB();
+		    let aabbSensor = new AABB();
 		    aabbSensor.expand(centerX - radius, centerY - radius);
 		    aabbSensor.expand(centerX + radius, centerY + radius);
 		    aabbSensor.id = sensor["sensorId"];
@@ -175,6 +275,7 @@
 		}
 		allAABB = [];
 		allSensorsData = JSON.parse(data);
+
 		allSensorsData.forEach(processSensorFn);
 	    });
 	}
@@ -190,7 +291,7 @@
 
 	mapBg.src = mapBgURL;
 
-	window.setInterval(redrawLoop, 30000);
+	window.setInterval(redrawLoop, 60000);
     })
 </script>
 
