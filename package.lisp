@@ -317,7 +317,8 @@
    :base64-decode
    :sha-encode->string
    :encode-barcode
-   :find-filename-from-path))
+   :find-filename-from-path
+   :random-password))
 
 (defpackage :ps-utils
   (:use

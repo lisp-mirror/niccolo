@@ -65,7 +65,8 @@
 	   (mini-cas:service-validate (parameter mini-cas:+query-ticket-key+))
 	 (when ,response
 	   (let ((,user (single 'db:user :username ,username)))
-	     (if ,user
+	     (if (and ,user
+		      (account-enabled-p ,user))
 		 (progn
 		   (setf (tbnl:session-value +user-session+)
 			 (user->user-session ,user :auth t))
@@ -167,10 +168,15 @@
     (logout-user)
     (restas:redirect 'root)))
 
-(defun account-enabled-p (user)
-  (let ((db-user (user-session->user user)))
-    (and db-user
-	 (= (db:account-enabled db-user) +user-account-enabled+))))
+(defgeneric account-enabled-p (user))
+
+(defmethod account-enabled-p ((object db:user))
+  (and object
+       (= (db:account-enabled object) +user-account-enabled+)))
+
+(defmethod account-enabled-p ((object user-session))
+  (let ((db-user (user-session->user object)))
+    (account-enabled-p db-user)))
 
 (defmacro with-authentication (&body body)
   "Check if user is authenticated, if true try to set the translation table"

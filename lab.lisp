@@ -31,6 +31,11 @@
        (gen-admissible-cookie-uri (path)
 	 root-login
 	 logout
+	 change-pass
+	 actual-user-change-pass
+	 actual-admin-change-pass
+	 "user"
+	 "admin"
 	 "add"
 	 "/ws/"
 	 "assoc"

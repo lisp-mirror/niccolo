@@ -173,7 +173,7 @@
 		                               return new Array( - v[0] * frictionK,
 								 - v[1] * frictionK);
 					   }),
-	       dp               = integration(forces, balloonMass, balloonV, 0.5);
+	        dp               = integration(forces, balloonMass, balloonV, 0.5);
 
 
 	    while (vecLength(dp) > dpThreshold){

@@ -8,7 +8,9 @@
   <input id="login-email" type="text" name="<!-- TMPL_VAR login-email -->">
 
   <label for="login-name"><!-- TMPL_VAR password-lb --></label>
-  <input id="login-password" type="password" name="<!-- TMPL_VAR login-pass -->">
+  <input id="login-password" type="password"
+	 name="<!-- TMPL_VAR login-pass -->"
+	 value="<!-- TMPL_VAR password-value -->">
 
   <input id="login-submit" type="submit" value="Add user">
 </form>

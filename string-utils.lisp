@@ -50,3 +50,7 @@
 			"."
 			(or extension
 			    (elt registers 1)))))))
+
+(defun random-password (&optional (length 12))
+  (coerce (loop repeat length collect (code-char (+ 33 (random 93))))
+	  'string))

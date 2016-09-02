@@ -184,6 +184,9 @@
 						 :password-lb   (_ "Password")
 						 :email-lb      (_ "Email")
 						 :operations-lb (_ "Operations")
+						 :password-value
+						 #+mini-cas (string-utils::random-password)
+						 #-mini-cas ""
 						 :login-email   +name-user-email+
 						 :login-name +name-user-name+
 						 :login-pass +name-user-password+
