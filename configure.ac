@@ -23,10 +23,12 @@ AC_SUBST([TARNAME],AC_PACKAGE_TARNAME)
 AC_SUBST([PACKAGE_NAME],AC_PACKAGE_NAME)
 
 AC_PROG_INSTALL
-AC_PATH_PROG([BASH],[bash],[no])
-AC_PATH_PROG([WGET],[wget],[no])
-AC_PATH_PROG([SBCL],[sbcl],[no])
+AC_PATH_PROG([BASH],  [bash],  [no])
+AC_PATH_PROG([WGET],  [wget],  [no])
+AC_PATH_PROG([SBCL],  [sbcl],  [no])
 AC_PATH_PROG([SCREEN],[screen],[no])
+AC_PATH_PROG([UNZIP], [unzip],[no])
+AC_PATH_PROG([MKTEMP],[mktemp],[no])
 
 if test $BASH = "no"; then
    AC_MSG_WARN("bash not found: quick_quicklisp.sh will not works")
@@ -44,5 +46,13 @@ if test $SCREEN = "no"; then
    AC_MSG_ERROR("screen not found")
 fi
 
-AC_CONFIG_FILES([Makefile config.lisp start_server.sh start_server-cas.sh quick_quicklisp.sh])
+if test $UNZIP = "no"; then
+   AC_MSG_ERROR("unzip not found")
+fi
+
+if test $MKTEMP = "no"; then
+   AC_MSG_ERROR("mktemp not found")
+fi
+
+AC_CONFIG_FILES([Makefile config.lisp start_server.sh start_server-cas.sh quick_quicklisp.sh script/download-js-lib.sh])
 AC_OUTPUT

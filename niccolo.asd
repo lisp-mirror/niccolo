@@ -67,6 +67,7 @@
 	       (:file "db")
 	       (:file "utils")
 	       (:file "i18n")
+	       (:file "images-utils")
 	       (:file "authentication")
 	       (:file "views")
 	       (:file "messages")

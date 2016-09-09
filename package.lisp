@@ -407,6 +407,7 @@
    :encode-datetime-string
    :decode-datetime-string
    :decode-date-string
+   :decode-time-string
    :local-time-obj-now
    :next-expiration-date
    :waste-message-expired-p
@@ -414,7 +415,8 @@
    :timestamp-compare-asc
    :remove-old-waste-stats
    :send-email
-   :init-hashtable-equalp))
+   :init-hashtable-equalp
+   :temp-filename))
 
 (defpackage :i18n
   (:use
@@ -431,6 +433,20 @@
    :translation-select-options
    :find-translation
    :with-user-translation))
+
+(defpackage :images-utils
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :config
+   :constants)
+  (:export
+   :fill-bg
+   :draw-graph-x-axe
+   :draw-graph-point-norm
+   :draw-graph
+   :with-http-png-reply))
 
 (defpackage :views
   (:use

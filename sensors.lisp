@@ -43,8 +43,13 @@
 (defun build-script-path (script)
   (uiop:merge-pathnames* *sensors-script-dir* script))
 
-(defun build-log-path (sensor)
-  (uiop:merge-pathnames* *sensor-log-dir* (format nil "~a.log" (db:id sensor))))
+(defgeneric build-log-path (sensor))
+
+(defmethod build-log-path ((sensor db:sensor))
+  (build-log-path (db:id sensor)))
+
+(defmethod build-log-path ((sensor number))
+  (uiop:merge-pathnames* *sensor-log-dir* (format nil "~a.log" sensor)))
 
 (defun dump-sensor-log-line (sensor)
   (let ((log-file (build-log-path sensor)))
@@ -147,9 +152,13 @@
 		    :path              path
 		    :sensor-link       sensor-link
 		    :location-add-link location-add-link
+		    :graph-sensor-link (restas:genurl 'display-sensor-log-graph :id sid)
 		    :map-id            (getf row :|map-link-id|)
 		    :s-coord           (float (/ s-coord +relative-coord-scaling+))
 		    :t-coord           (float (/ t-coord +relative-coord-scaling+))
+		    :has-sensor-log    (if (uiop:file-exists-p (build-log-path sid))
+					   t
+					   nil)
 		    :has-sensor-link   (getf row :|map-link-id|))
 	      (if delete-link
 		  (list :delete-link (restas:genurl delete-link :id sid)))

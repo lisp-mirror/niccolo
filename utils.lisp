@@ -365,7 +365,15 @@
 						     (:day 2))))
 
 (defmethod decode-date-string ((object string))
-  (decode-datetime-string (encode-datetime-string object)))
+  (decode-date-string (encode-datetime-string object)))
+
+(defgeneric decode-time-string (object))
+
+(defmethod decode-time-string ((object local-time:timestamp))
+  (local-time:format-timestring nil object :format '((:hour 2) ":" (:min 2))))
+
+(defmethod decode-time-string ((object string))
+  (decode-time-string (encode-datetime-string object)))
 
 (defun next-expiration-date ()
   (local-time:timestamp+ (local-time:now) 7 :day))
@@ -405,3 +413,8 @@
 
 (defun init-hashtable-equalp ()
   (make-hash-table :test 'equalp))
+
+;; filesystem
+
+(defun temp-filename ()
+  (nix:mktemp (namestring (uiop/stream:temporary-directory))))

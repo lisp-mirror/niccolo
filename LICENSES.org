@@ -107,6 +107,12 @@
   according to https://openclipart.org/detail/212119/sensors
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
+- www/images/icon-graph.png
+  derived from
+  © rg1024
+  according to https://openclipart.org/detail/19980/graphs
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
 - data/font.afm
   Copyright (URW)++,Copyright 1999 by (URW)++ Design & Development
   Released under (GNU General Public License)

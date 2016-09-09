@@ -223,3 +223,38 @@
 	(if (not errors)
 	    (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
 	    +http-not-found+)))))
+;;;; graph
+
+(define-lab-route display-sensor-log-graph ("/ws/sensor-log-graph/:id")
+  (with-authentication
+    (with-admin-privileges
+	(let* ((error-valid-id (regexp-validate (list
+						   (list id +pos-integer-re+ (_ "Error")))))
+	       (error-not-exists (if (and (null error-valid-id)
+					  (object-exists-in-db-p 'db:sensor id))
+				     nil
+				     t)))
+	  (if (or error-valid-id
+		  error-not-exists)
+	      +http-not-found+
+	      (let* ((sensor        (single 'db:sensor :id id))
+		     (log-file-path (build-log-path sensor)))
+		(when (uiop:file-exists-p log-file-path)
+		  (let ((xs '())
+			(ys '()))
+		    (with-open-file (stream log-file-path :direction :input)
+		      (do ((line (read-line stream nil nil)
+				 (read-line stream nil nil)))
+			  ((not line))
+			(when line
+			  (let ((fields (cl-ppcre:split " " line)))
+			    (when (= (length fields) 2)
+			      (handler-case
+				  (let ((time  (decode-time-string (elt fields 0)))
+					(value (and (parse-number:parse-number (elt fields 1))
+						    (elt fields 1))))
+				    (push time  xs)
+				    (push value ys))
+				(error () nil)))))))
+		    (images-utils:draw-graph (reverse xs) (reverse ys)))))))
+	 (manage-address nil (list *insufficient-privileges-message*)))))

@@ -96,6 +96,11 @@
       <a href="<!-- TMPL_VAR update-sensor-link -->">
 	<div class="edit-button">&nbsp;</div>
       </a>
+      <!-- TMPL_IF has-sensor-log -->
+      <a href="<!-- TMPL_VAR graph-sensor-link -->">
+	<div class="graph-button">&nbsp;</div>
+      </a>
+      <!-- /TMPL_IF -->
     </td>
   </tr>
   <!-- /TMPL_LOOP  -->

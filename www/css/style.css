@@ -598,6 +598,17 @@ td {
     cursor:              pointer;
 }
 
+.graph-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-graph.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
 div[class*=button] a {
     display: block;
 }

@@ -24,7 +24,7 @@
 (define-constant +name-map-link+        "link"  :test #'string=)
 
 (defun dump-map (id)
-  (let ((tmp-file (nix:mktemp (namestring (uiop/stream:temporary-directory))))
+  (let ((tmp-file (utils:temp-filename))
 	(map      (single 'db:plant-map :id id)))
     (if map
 	(with-open-file (stream tmp-file :direction :output :if-exists :error
