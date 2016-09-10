@@ -137,11 +137,16 @@
 				      :color color))))))))
 
 (defun scale-y-axe (labels-axe tics)
-  (let* ((num-axe (mapcar   #'parse-number:parse-number labels-axe))
-	 (max-axe (reduce   #'max num-axe))
-	 (magn    (expt 10  (truncate (log max-axe 10))))
-	 (max     (* magn (+ 1 (truncate (/ max-axe magn)))))
-	 (all     (loop for i from (/ max tics) to max by (/ max tics) collect i)))
+  (let* ((num-axe  (mapcar #'parse-number:parse-number labels-axe))
+	 (max-axe  (reduce #'max num-axe))
+	 (min-axe  (reduce #'min num-axe))
+	 (magn-max (expt 10  (truncate (log max-axe 10))))
+	 (magn-min (expt 10  (truncate (log (max 1e-10 (abs min-axe)) ; dealing with 0 someway...
+					    10))))
+	 (max      (* magn-max (+ 1 (truncate (/ max-axe magn-max)))))
+	 (min      (- (* magn-min (+ 1 (truncate (/ (abs min-axe) magn-min))))))
+	 (step     (/ (max max min) tics))
+	 (all      (loop for i from min to max by step collect i)))
     all))
 
 (defun draw-graph-y-axe (&key
@@ -152,14 +157,14 @@
     (let* ((untransformed-w (cl-gd:image-width))
 	   (untransformed-h (cl-gd:image-height))
 	   (actual-y-label  (scale-y-axe tics-label tics-number))
-	   (tic-step        (/ 1.0 (length actual-y-label))))
+	   (tic-step        (/ 1.0 (1- (length actual-y-label)))))
       (with-normalized-draw (0.0 0.0)
-	(cl-gd:draw-line 0 0 ; x y
+	(cl-gd:draw-line 0 0                                                          ; x1 y1
 			 0 (- (cl-gd:image-height)                                    ;
-			      (* 2.0 (norm->coord +graph-y-offset+ untransformed-h))) ;x2 y2
+			      (* 2.0 (norm->coord +graph-y-offset+ untransformed-h))) ; x2 y2
 			 :color color)
 	(loop
-	   for i     from tic-step to 1.01 by tic-step
+	   for i     from 0.0 to 1.01 by tic-step
 	   for m     from 0
 	   for label in actual-y-label
 	   do
@@ -183,30 +188,42 @@
 			   (y-tics-number 10)
 			   (major-tic 2))
   (images-utils:with-http-png-reply (+default-graph-w+ +default-graph-h+)
-    (when (and (> (length xs) 1)
-	       (> (length ys) 1)
-	       (= (length xs)
-		  (length ys)))
-      (let* ((actual-y-range (scale-y-axe ys y-tics-number))
-	     (max-y          (reduce #'max actual-y-range))
-	     (x-step   (/ 1.0 (length xs)))
-	     (norm-y   (map 'vector
-			    #'(lambda (a) (/ (parse-number:parse-number a)
-					     max-y))
-			    ys))
-	     (norm-x   xs))
-	(fill-bg 255 255 255)
+    (if (and (> (length xs) 1)
+	     (> (length ys) 1)
+	     (= (length xs)
+		(length ys)))
+	(let* ((actual-y-range (scale-y-axe ys y-tics-number))
+	       (max-y          (reduce #'max actual-y-range))
+	       (min-y          (reduce #'min actual-y-range))
+	       (x-step   (/ 1.0 (length xs)))
+	       (slope    (/ 1.0 (- max-y min-y)))
+	       (q        (- (* slope min-y)))
+	       (norm-y   (map 'vector
+			      #'(lambda (a) (+ (* slope
+						  (parse-number:parse-number a))
+					       q))
+			      ys))
+	       (norm-x   xs))
+	  (fill-bg 255 255 255)
+	  (draw-graph-x-axe :tics-number (length xs)
+			    :major       (max 1 (truncate (/ (length xs) 10)))
+			    :tics-label  norm-x)
+	  (draw-graph-y-axe :tics-number y-tics-number
+			    :major       major-tic
+			    :tics-label  ys)
+	  (loop
+	     for i from 0
+	     for x from 0.0 by x-step
+	     for y across norm-y      do
+	       (draw-graph-point-norm x
+				      y
+				      255 0 0)))
 
-	(draw-graph-x-axe :tics-number (length xs)
-			  :major       (max 1 (truncate (/ (length xs) 10)))
-			  :tics-label  norm-x)
-	(draw-graph-y-axe :tics-number y-tics-number
-			  :major       major-tic
-			  :tics-label  ys)
-	(loop
-	   for i from 0
-	   for x from 0.0 by x-step
-	   for y across norm-y      do
-	     (draw-graph-point-norm x
-				    y
-				    255 0 0))))))
+	(with-allocated-color (fg 255 255 0)
+	  (fill-bg 0 0 0)
+	  (cl-gd:draw-string (truncate (* 0.1 (cl-gd:image-width)))
+			     (truncate (* 0.1 (cl-gd:image-height)))
+			     (_ "Error occurred while processing data")
+			     :font :giant
+			     :up nil
+			     :color fg)))))

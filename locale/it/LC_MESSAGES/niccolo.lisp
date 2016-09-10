@@ -2554,4 +2554,10 @@ translation "Hai ~a messaggio"
 plurals-form "Hai ~a messaggi"
 status :TRANSLATED
 plurals ("Hai ~a messaggi")
+
+ id "Error occurred while processing data"
+translation "Errore nell'elaborazione dei dati"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

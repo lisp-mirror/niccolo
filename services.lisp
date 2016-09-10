@@ -229,7 +229,7 @@
   (with-authentication
     (with-admin-privileges
 	(let* ((error-valid-id (regexp-validate (list
-						   (list id +pos-integer-re+ (_ "Error")))))
+						   (list id +pos-integer-re+ "Errors"))))
 	       (error-not-exists (if (and (null error-valid-id)
 					  (object-exists-in-db-p 'db:sensor id))
 				     nil
