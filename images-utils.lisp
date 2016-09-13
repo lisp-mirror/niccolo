@@ -144,7 +144,9 @@
 	 (magn-min (expt 10  (truncate (log (max 1e-10 (abs min-axe)) ; dealing with 0 someway...
 					    10))))
 	 (max      (* magn-max (+ 1 (truncate (/ max-axe magn-max)))))
-	 (min      (- (* magn-min (+ 1 (truncate (/ (abs min-axe) magn-min))))))
+	 (min      (if (<= min-axe 0.0)
+		       (- (* magn-min (+ 1 (truncate (/ (abs min-axe) magn-min)))))
+		       (* magn-min (truncate (/ min-axe magn-min)))))
 	 (step     (/ (max max min) tics))
 	 (all      (loop for i from min to max by step collect i)))
     all))
