@@ -9,7 +9,7 @@ disposing.
 
 ** Dependency
 *** Library
-  Niccolo' depend on the following common lisp libraries:
+  Niccolo' depends on the following common lisp libraries:
 
   - alexandria;
   - cl-ppcre-unicode;
@@ -74,7 +74,7 @@ already installed and ASDF configured  (but you should install all the
 3. wget https://beta.quicklisp.org/quicklisp.lisp.asc
 4. wget https://beta.quicklisp.org/release-key.txt
 5. check quicklisp gpg key
-6. clone niccolo repository;
+6. clone niccolo repository
 7. cd niccolo
 8. autoreconf -fiv
 9. ./configure
@@ -183,18 +183,25 @@ already installed and ASDF configured  (but you should install all the
 
 22. Sensors and data logger
 
-    The directory sensors/temp contain a sample temperature logger for
-    arduino compatible with the protocol implemented for this software
-    (essentially http with MAC authentication).
+    The directory  sensors/temp and  sensors/gas contains  two loggers
+    for  arduino compatible  with  the protocol  implemented for  this
+    software (essentially http with MAC authentication).
 
     To build the software you will need:
-    - Hardware
-      + an arduino with a ethernet shield;
-      + DS18B20 temperature sensor.
-    - Software
-      + the arduino IDE and these libraries not bundled with the IDE
-        - https://github.com/PaulStoffregen/OneWire
-        - https://github.com/milesburton/Arduino-Temperature-Control-Library
+    - For temperature monitoring
+      + Hardware
+        - an arduino with a ethernet shield;
+        - DS18B20 temperature sensor.
+      + Software
+        - the arduino IDE and these libraries not bundled with the IDE
+          + https://github.com/PaulStoffregen/OneWire
+          + https://github.com/milesburton/Arduino-Temperature-Control-Library
+    - For gas monitoring
+      + Hardware
+        - an arduino with a ethernet shield;
+        - MQ135 gas sensor.
+      + Software
+        - the arduino IDE
 
 23. sh 'start_server.sh' (or sh 'start_server-cas.sh' if you are using  [[CAS authentication]])
 
@@ -239,6 +246,7 @@ already installed and ASDF configured  (but you should install all the
 
 ** Known bugs
 - federated query works only in sbcl.
+- not strictly a bug maybe, but mq135 is very sensible to humidity and temperature variation.
 
 * License
 

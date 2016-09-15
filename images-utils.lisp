@@ -147,7 +147,7 @@
 	 (min      (if (<= min-axe 0.0)
 		       (- (* magn-min (+ 1 (truncate (/ (abs min-axe) magn-min)))))
 		       (* magn-min (truncate (/ min-axe magn-min)))))
-	 (step     (/ (max max min) tics))
+	 (step     (/ (- max min) tics))
 	 (all      (loop for i from min to max by step collect i)))
     all))
 
