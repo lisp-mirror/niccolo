@@ -27,9 +27,9 @@
 	 (standard-deviation (cdr (assoc +standard-deviation-key+ values)))
 	 (average            (cdr (assoc +average-key+ values)))
 	 (threshold          (* 1.96 standard-deviation)))
-    (when (<= (- average threshold)
-	      resistance
-	      (+ average threshold))
+    (when (not (<= (- average threshold)
+		   resistance
+		   (+ average threshold)))
       (send-email (format nil "ALARM sensor ~a" description)
 		  (db:email (admin-user))
 		  (format nil
