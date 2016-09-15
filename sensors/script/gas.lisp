@@ -26,7 +26,7 @@
 	 (resistance         (cdr (assoc +g-key+ values)))
 	 (standard-deviation (cdr (assoc +standard-deviation-key+ values)))
 	 (average            (cdr (assoc +average-key+ values)))
-	 (threshold          (* 1.96 standard-deviation))
+	 (threshold          (* 1.96 standard-deviation)))
     (when (<= (- average threshold)
 	      resistance
 	      (+ average threshold))

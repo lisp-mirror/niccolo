@@ -46,7 +46,7 @@ EthernetServer server(80);
 
 #define DELAY_CALIBRATION    240000 // 4 minute
 
-#define STARTING_DELAY      3600000 // 1 hour
+#define STARTING_DELAY       360000
 
 float calibration_average = 0.0;
 
@@ -55,14 +55,19 @@ float calibration_std_dev = 0.0;
 float calibration_values[CALIBRATION_MAX_COUNT] = {0.0};
 
 void setup() {
+
   Serial.begin(9600);
 
+  Serial.println(F("STARTING"));
   delay(STARTING_DELAY);
+
+  Serial.println(F("STARTING CALIBRATION"));
 
   for (int i = 0; i < CALIBRATION_MAX_COUNT; i++){
     float r = getResistance();
     calibration_values[i] = r;
     calibration_average += r;
+    Serial.println(r);
     delay(DELAY_CALIBRATION);
   }
 
@@ -76,6 +81,7 @@ void setup() {
   calibration_std_dev = sqrt( (1.0 / (CALIBRATION_MAX_COUNT - 1)) * calibration_std_dev);
 
   Serial.println(calibration_std_dev,2);
+  Serial.println(calibration_average,2);
 
   Ethernet.begin(mac, ip);
   server.begin();
