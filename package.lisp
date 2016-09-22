@@ -60,6 +60,7 @@
    :+images-url-path+
    :*insufficient-privileges-message*
    :*letter-header-text*
+   :*waste-letter-body*
    :*risk_phrases*
    :*exposition-type*
    :*physical-state*

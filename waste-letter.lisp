@@ -93,7 +93,8 @@
 			   (format nil "la ~a" address))
 			  (t
 			   (format nil "il ~a" address)))))
-    (format nil "Il sottoscritto ~a responsabile del laboratorio \"~a\" ubicato presso ~a xxxxx dichiara di aver prodotto i seguenti rifiuti (peso indicativo: ~a): ~a.~%Il sottoscritto dichiara altresi' che il corretto codice CER da assegnare ai summenzionati rifiuti e' ~a e infine di aver attribuito ai medesimi ~a.~%luogo li,"
+    (format nil
+	    *waste-letter-body*
 	    user lab-num actual-address weight body cer
 	    (letter-adr-codes adrs))))
 

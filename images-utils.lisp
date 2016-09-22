@@ -28,15 +28,13 @@
 
 (define-constant +graph-y-offset+         0.1  :test #'=)
 
-(define-constant +graph-point-radius+     0.01 :test #'=)
-
 (define-constant +tic-h+                 -5    :test #'=)
 
 (define-constant +big-tic-h+             -8    :test #'=)
 
 (define-constant +graph-point-radius+     0.01 :test #'=)
 
-(define-constant +default-graph-w+     1024    :test #'=)
+(define-constant +default-graph-w+     1366    :test #'=)
 
 (define-constant +default-graph-h+      768    :test #'=)
 
@@ -102,7 +100,7 @@
 			:filled nil
 			:color contour))))))
 
-(defun draw-graph-x-axe (&key (tics-number 10) (major 2) (tics-label '("12:00" "01:00" "02:00")))
+(defun draw-graph-x-axis (&key (tics-number 10) (major 2) (tics-label '("12:00" "01:00" "02:00")))
   (with-allocated-color (color 0 0 0)
     (let ((untransformed-w (cl-gd:image-width))
 	  (untransformed-h (cl-gd:image-height)))
@@ -136,29 +134,56 @@
 				      :up t
 				      :color color))))))))
 
-(defun scale-y-axe (labels-axe tics)
-  (let* ((num-axe  (mapcar #'parse-number:parse-number labels-axe))
-	 (max-axe  (reduce #'max num-axe))
-	 (min-axe  (reduce #'min num-axe))
-	 (magn-max (expt 10  (truncate (log max-axe 10))))
-	 (magn-min (expt 10  (truncate (log (max 1e-10 (abs min-axe)) ; dealing with 0 someway...
-					    10))))
-	 (max      (* magn-max (+ 1 (truncate (/ max-axe magn-max)))))
-	 (min      (if (<= min-axe 0.0)
-		       (- (* magn-min (+ 1 (truncate (/ (abs min-axe) magn-min)))))
-		       (* magn-min (truncate (/ min-axe magn-min)))))
-	 (step     (/ (- max min) tics))
-	 (all      (loop for i from min to max by step collect i)))
-    all))
+(defun %fractional-part (a magn)
+  (multiple-value-bind (i f)
+      (round (/ a magn))
+    (declare (ignore i))
+    f))
 
-(defun draw-graph-y-axe (&key
+(defun %sign (a)
+  (if (< a 0)
+      -1
+      +1))
+
+(defun prune-tics-y-axis (min max min-value max-value tics-suggested step)
+  (let* ((all-positive (loop for i from 0.0 below  (+ max step) by step collect i))
+	 (all-negative (loop for i from (- step) downto (- min step) by step collect i))
+	 (all          (remove-if #'(lambda (a)
+				      (or (< a (- min-value step))
+					  (> a (+ max-value step))))
+				  (nconc (reverse all-negative) all-positive))))
+    (if (<= (length all) tics-suggested)
+	all
+	(prune-tics-y-axis min max min-value max-value tics-suggested (* 2 step)))))
+
+(defun scale-y-axis (labels-axis tics-number)
+  (let* ((num-axis  (mapcar #'parse-number:parse-number labels-axis))
+	 (max-axis  (reduce #'max num-axis))
+	 (min-axis  (reduce #'min num-axis))
+	 (magn-max (expt 10  (truncate (log (max 1e-10 (abs max-axis)) 10))))
+	 (magn-min (expt 10  (truncate (log (max 1e-10 (abs min-axis)) 10)))) ; dealing with 0...
+	 (max      (* (%sign max-axis)
+		      (+ (abs max-axis)
+			 (- magn-max (abs (* magn-max
+					     (%fractional-part max-axis
+							       magn-max)))))))
+	 (min      (* (%sign min-axis)
+		      (+ (abs min-axis)
+			 (- magn-min (abs (* magn-min
+					     (%fractional-part min-axis
+							       magn-min)))))))
+	 (all      (prune-tics-y-axis min max min-axis max-axis tics-number (max (/ magn-max 10)
+										 (/ magn-min 10)))))
+     all))
+
+(defun draw-graph-y-axis (&key
 			   (tics-number 10)
 			   (major 2)
 			   (tics-label '("0.00" "2.00" "4.00" "6.00" "8.00" "10.00")))
   (with-allocated-color (color 0 0 0)
     (let* ((untransformed-w (cl-gd:image-width))
 	   (untransformed-h (cl-gd:image-height))
-	   (actual-y-label  (scale-y-axe tics-label tics-number))
+	   (actual-y-label  (scale-y-axis tics-label tics-number))
 	   (tic-step        (/ 1.0 (1- (length actual-y-label)))))
       (with-normalized-draw (0.0 0.0)
 	(cl-gd:draw-line 0 0                                                          ; x1 y1
@@ -187,14 +212,14 @@
 				      :color color))))))))
 
 (defun draw-graph (xs ys &optional
-			   (y-tics-number 10)
+			   (y-tics-number 20)
 			   (major-tic 2))
   (images-utils:with-http-png-reply (+default-graph-w+ +default-graph-h+)
     (if (and (> (length xs) 1)
 	     (> (length ys) 1)
 	     (= (length xs)
 		(length ys)))
-	(let* ((actual-y-range (scale-y-axe ys y-tics-number))
+	(let* ((actual-y-range (scale-y-axis ys y-tics-number))
 	       (max-y          (reduce #'max actual-y-range))
 	       (min-y          (reduce #'min actual-y-range))
 	       (x-step   (/ 1.0 (length xs)))
@@ -207,12 +232,12 @@
 			      ys))
 	       (norm-x   xs))
 	  (fill-bg 255 255 255)
-	  (draw-graph-x-axe :tics-number (length xs)
-			    :major       (max 1 (truncate (/ (length xs) 10)))
-			    :tics-label  norm-x)
-	  (draw-graph-y-axe :tics-number y-tics-number
-			    :major       major-tic
-			    :tics-label  ys)
+	  (draw-graph-x-axis :tics-number (length xs)
+			     :major       (max 1 (truncate (/ (length xs) 10)))
+			     :tics-label  norm-x)
+	  (draw-graph-y-axis :tics-number y-tics-number
+			     :major       major-tic
+			     :tics-label  ys)
 	  (loop
 	     for i from 0
 	     for x from 0.0 by x-step

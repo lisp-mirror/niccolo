@@ -73,8 +73,10 @@ input[type=password] {
     width:  150pt;
 }
 
-.other-ops-chem-prod > input[type=submit] {
-    min-width:  150pt;
+.other-ops-chem-prod  input[type=submit] {
+    min-width:   150pt;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 input[type=submit] {
