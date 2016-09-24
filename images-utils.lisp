@@ -32,7 +32,7 @@
 
 (define-constant +big-tic-h+             -8    :test #'=)
 
-(define-constant +graph-point-radius+     0.01 :test #'=)
+(define-constant +graph-point-radius+     0.007 :test #'=)
 
 (define-constant +default-graph-w+     1366    :test #'=)
 

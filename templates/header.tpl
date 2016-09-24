@@ -20,17 +20,41 @@
               at: "left top"
 	  }
       });
+
+      let activeAccordionIndexKey = 'activeAccordionIndex';
+
+      function setAccordionActiveIndex (v){
+	  sessionStorage.setItem(activeAccordionIndexKey, v);
+      }
+
+      function getAccordionActiveIndex (){
+	  let parsed = parseInt(sessionStorage.getItem(activeAccordionIndexKey));
+	  if (!isNaN(sessionStorage.getItem(activeAccordionIndexKey))){
+	      return parsed;
+	  } else {
+	      return null;
+	  }
+      }
+
+
       $("button").button();
       $("input:submit").button();
       $("input:button").button();
       $("select").not('#waste-form-adr-select').selectmenu();
       $("#accordion-menu").accordion({
+	  activate   : function( event, ui ) {
+	      var index = jQuery("#accordion-menu").find(".ui-accordion-header-active").index() / 2;
+	      setAccordionActiveIndex (index);
+	  },
 	  header     : "li.menu-level-1",
 	  heightStyle: "content",
 	  collapsible: true,
-	  autoHeight: true,
-          active: false
+	  autoHeight : true,
+          active     : getAccordionActiveIndex() != null ? getAccordionActiveIndex() : false
 
       }).css('width', '200pt');
+
+
+
   });
 </script>

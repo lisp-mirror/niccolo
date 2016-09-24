@@ -1,4 +1,4 @@
-<script src="../js/place-footer.js"></script>
+<script src="<!-- TMPL_VAR path-prefix -->/js/place-footer.js"></script>
 
 <script>
     // Shorthand for $( document ).ready()

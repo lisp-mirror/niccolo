@@ -1,9 +1,20 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <style>
+      ${css-file}
+    </style>
     <title>Not found</title>
   </head>
   <body>
-    <img src="/images/sorry.png" alt="404">
-    <h2>Resource ${script-name} not found.</h2>
+    <img class="center" src="${path-prefix}/images/sorry.png" alt="${error-code}" />
+    <h2>${error-code} - Resource ${script-name} not found.</h2>
+    <div>
+      <small>
+	<a href="http://weitz.de/hunchentoot">Hunchentoot</a>
+	${hunchentoot-version} running on ${lisp-implementation-type} ${lisp-implementation-version}
+      </small>
+    </div>
   </body>
 </html>

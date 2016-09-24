@@ -25,7 +25,8 @@
    :+program-name+
    :local-system-path
    :+openstreetmap-query-url+
-   :*default-css*
+   :*default-css-abs-path*
+   :*default-css-filename*
    :*message-log-pathname*
    :*access-log-pathname*
    :*error-template-directory*

@@ -187,8 +187,18 @@
   (:default-initargs
    :error-template-directory *error-template-directory*
    :message-log-destination  *message-log-pathname*
-   :access-log-destination  *access-log-pathname*
-   :document-root          config:*default-www-root*))
+   :access-log-destination   *access-log-pathname*
+   :document-root            config:*default-www-root*))
+
+(defmethod tbnl:acceptor-status-message :around ((object lab-acceptor) http-status-code
+						 &key &allow-other-keys)
+  (if (= +http-not-found+ http-status-code)
+      (call-next-method object
+			http-status-code
+			:error-code  http-status-code
+			:css-file    (read-file-into-string *default-css-abs-path*)
+			:path-prefix +path-prefix+)
+      (call-next-method)))
 
 (defun initialize-pictogram (name)
   (unless (crane:single 'db:ghs-pictogram :pictogram-file (namestring name))

@@ -351,6 +351,11 @@ td {
     vertical-align: top;
 }
 
+.center {
+    display: block;
+    margin: auto;
+}
+
 .left-menu {
     display: table-cell;
     min-width: 205pt;

@@ -1,17 +1,20 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>Internal Server Error</title>
+    <meta charset="utf-8">
   </head>
   <body>
     <h1>Internal Server Error</h1>
     An error occurred while processing your ${script-name} request.
-    <hr/>
     <h1>Error Message</h1>
-<pre>${error}</pre>
+    <pre>${error}</pre>
     <h1>Backtrace</h1>
-<pre>${backtrace}</pre>
-    <hr/>
-<a href="http://weitz.de/hunchentoot">Hunchentoot</a> ${hunchentoot-version} running on ${lisp-implementation-type} ${lisp-implementation-version}
-    <hr/>
+    <pre>${backtrace}</pre>
+    <div>
+      <small>
+	<a href="http://weitz.de/hunchentoot">Hunchentoot</a>
+	${hunchentoot-version} running on ${lisp-implementation-type} ${lisp-implementation-version}
+      </small>
+    </div>
   </body>
 </html>

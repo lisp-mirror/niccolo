@@ -240,7 +240,7 @@
 (defmacro with-standard-html-frame ((stream title &key
 					    (infos nil)
 					    (errors nil)
-					    (css-file "style.css"))
+					    (css-file *default-css-filename*))
 				    &body body)
 
     `(with-output-to-string (,stream)

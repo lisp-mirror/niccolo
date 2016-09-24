@@ -39,11 +39,15 @@
 
 ;;;; production config
 
-(setf TBNL:*log-lisp-backtraces-p* t)
+(setf tbnl:*log-lisp-errors-p*      t)
 
-(setf TBNL:*show-lisp-errors-p*    nil)
+(setf TBNL:*log-lisp-backtraces-p*  t)
 
-(setf TBNL:*catch-errors-p*        t)
+(setf TBNL:*show-lisp-errors-p*     t)
+
+(setf tbnl:*show-lisp-backtraces-p* nil)
+
+(setf TBNL:*catch-errors-p*         t)
 
 ;;;; debug config
 
@@ -138,7 +142,9 @@
 (setf html-template:*default-template-pathname*
       (local-system-path #p"templates/"))
 
-(defparameter *default-css*          (local-system-path #p"www/css/style.css"))
+(defparameter *default-css-abs-path* (local-system-path #p"www/css/style.css"))
+
+(defparameter *default-css-filename* "style.css")
 
 (defparameter *default-www-root*     (local-system-path #p"www/"))
 
