@@ -231,7 +231,8 @@
 			     :infos  infos)
     (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
 	  (json-chemical    (array-autocomplete-chemical-compound))
-	  (json-chemical-id (array-autocomplete-chemical-compound-id)))
+	  (json-chemical-id (array-autocomplete-chemical-compound-id))
+	  (has-local-results-p (> (length data) 0)))
       (multiple-value-bind (json-storage-id json-storage)
 	  (json-all-storage-long-desc)
 	(html-template:fill-and-print-template #p"add-chemical-product.tpl"
@@ -309,6 +310,7 @@
 						   :fq-start-url  (restas:genurl 'ws-federated-query-product)
 						   :fq-results-url (restas:genurl 'ws-federated-query-product-results)
 						   :fq-query-key-param +query-http-parameter-key+
+						   :render-local-results-p has-local-results-p
 						   :data-table data)
 					       :stream stream)))))
 
@@ -325,18 +327,22 @@
 	    ""))))
 
 (defun search-products (id owner chem-name building-name floor storage-name shelf)
-  (if (not (string-empty-p id))
-      (manage-chem-prod nil nil :data (fetch-product-by-id (%match-or-null id +barcode-id-re+)
-							   'delete-chem-prod
-							   'update-chemical-product))
-      (manage-chem-prod nil nil	:data (fetch-product (%match-or-null owner +free-text-re+)
-						     (%match-or-null chem-name +free-text-re+)
-						     (%match-or-null building-name +free-text-re+)
-						     (%match-or-null floor +integer-re+)
-						     (%match-or-null storage-name +free-text-re+)
-						     (%match-or-null shelf +pos-integer-re+)
-						     'delete-chem-prod
-						     'update-chemical-product))))
+  (let* ((data (if (not (string-empty-p id))
+		   (fetch-product-by-id (%match-or-null id +barcode-id-re+)
+					'delete-chem-prod
+					'update-chemical-product)
+		   (fetch-product (%match-or-null owner +free-text-re+)
+				  (%match-or-null chem-name +free-text-re+)
+				  (%match-or-null building-name +free-text-re+)
+				  (%match-or-null floor +integer-re+)
+				  (%match-or-null storage-name +free-text-re+)
+				  (%match-or-null shelf +pos-integer-re+)
+				  'delete-chem-prod
+				  'update-chemical-product)))
+	 (info-message (if data
+			   nil
+			   (list (_ "Your query returned no results")))))
+      (manage-chem-prod info-message nil :data data)))
 
 (defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes
 			     validity-date expire-date)

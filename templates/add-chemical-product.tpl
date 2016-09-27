@@ -225,7 +225,6 @@
 <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/others-op-chem-prod/">
   <fieldset class="other-ops-chem-prod">
     <legend><!-- TMPL_VAR  other-operations-lb --></legend>
-
     <input id="select-all" type="submit"
 	   name=""
 	   value="<!-- TMPL_VAR select-all-lb -->"/>
@@ -269,6 +268,7 @@
 
   </fieldset>
 
+  <!-- TMPL_IF render-local-results-p -->
   <table class="sortable chemp-list">
     <thead>
       <tr>
@@ -348,7 +348,7 @@
 	  </a>
 	  <!-- TMPL_ELSE -->
           <!-- TMPL_VAR chem-name -->
-	  <!-- /TMPL_IF -->
+	  <!-- /TMPL_IF --><!-- if chem-cid-exists ends here-->
 	  <div>
 	    <sub>
 	      <span class="parent-subscript">[</span>
@@ -445,11 +445,12 @@
       <!-- /TMPL_LOOP  -->
     </tbody>
   </table>
+  <!-- /TMPL_IF  --> <!-- if render-local-results-p ends here-->
 
   <!-- federated query results -->
   <div id="fq-res-container">
     <h3>
-      <i class="fa fa-cloud-download fa-2x" style="color: #83D1E7"aria-hidden="true"></i>
+      <i class="fa fa-cloud-download fa-2x" style="color: #83D1E7" aria-hidden="true"></i>
       <!-- TMPL_VAR fq-table-res-header -->
     </h3>
 

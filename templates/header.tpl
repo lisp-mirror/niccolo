@@ -21,6 +21,15 @@
 	  }
       });
 
+      function setClassesUi (){
+	  $("legend").addClass("ui-widget-header ui-state-default ui-corner-all");
+	  $("th").addClass("ui-widget-header ui-state-active");
+	  $("fieldset").addClass("ui-corner-all");
+	  $(".info-message").addClass("ui-state-highlight ui-corner-all");
+	  $(".error-message").addClass("ui-state-error ui-corner-all");
+      }
+
+
       let activeAccordionIndexKey = 'activeAccordionIndex';
 
       function setAccordionActiveIndex (v){
@@ -54,7 +63,7 @@
 
       }).css('width', '200pt');
 
-
+      setClassesUi();
 
   });
 </script>

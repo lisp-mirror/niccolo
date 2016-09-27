@@ -162,26 +162,30 @@ textarea {
 .messages {
     display: table-cell;
     float: none;
-    border: thin solid #0F99C0;
+    border: 0;
     min-width: 20%;
 }
 
 .info-message {
     list-style-image: url("../images/info-bullet.png");
     margin: 10pt;
+    padding-top: 5pt;
+    padding-bottom: 5pt;
 }
 
 .info-message li{
-    font-style: italic;
+
 }
 
 .error-message {
     list-style-image: url("../images/error-bullet.png");
+    margin: 10pt;
+    padding-top: 5pt;
+    padding-bottom: 5pt;
 }
 
 .error-message li{
-    color:            #FF2D0C;
-    font-weight:      bolder;
+
 }
 
 table.expiration-messages {
@@ -294,15 +298,6 @@ fieldset.lending  {
     padding: 10pt;
 }
 
-fieldset.lending  legend {
-    padding-top: 1.0pt;
-    padding-bottom: 1.0pt;
-    padding-left: 10pt;
-    padding-right: 10pt;
-    margin: 0;
-    border: .1pt solid #047595;
-}
-
 #submit-lend-to {
     display: block;
     margin: auto;
@@ -317,13 +312,10 @@ fieldset.lending  legend {
 }
 
 legend {
-    border:     1pt solid #047595;
-    background: #83D1E7;
-    font-weight: bold;
-    padding-left: 2pt;
-    padding-right: 2pt;
-    padding-top:   1pt;
-    padding-bottom:   1pt;
+    padding-left:   5pt;
+    padding-right:  5pt;
+    padding-top:    2pt;
+    padding-bottom: 2pt;
 }
 
 th {

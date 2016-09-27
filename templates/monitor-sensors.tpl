@@ -94,7 +94,7 @@
 	var statusOkRe            = new RegExp("ok");
 	var statusOkColorInner    = "#00ff00";
 	var statusOkColorOuter    = "#003300";
-	var statusErrorColorInner = "#dd0900";
+	var statusErrorColorInner = "#CD0A0A";
 	var statusErrorColorOuter = "#660000";
 	var statusErrorColorText  = "#ffffff";
 	var statusOkColorText     = "#000000";

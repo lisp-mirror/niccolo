@@ -8,7 +8,7 @@
 	var reError = new RegExp("error");
 	$('td').each(function( index ) {
 	    if(reError.test($( this ).text())){
-		$( this ).css('background', '#ff0000');
+		$( this ).addClass("ui-state-error");
 	    }
 	});
     })
