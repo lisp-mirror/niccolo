@@ -124,15 +124,20 @@ void loop() {
 		client.print(response);
 		free(resp_calc_mac_req);
 		stop_read_line = 1;
-	      }else{
+	      }else{ // mac not valid
 		build_not_found_response();
 		client.print(response);
+                stop_read_line = 1;
 	      }
 	      free(calculated_mac_req);
 	    }
 	    free(req_mac_line);
-
 	  }
+          if(!stop_read_line && read_line_is_empty(req_mac_line)){
+           free(req_mac_line);
+           build_not_found_response();
+	   client.print(response);
+          }
 	}
 	free(command);
 	delay(1);
