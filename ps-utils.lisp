@@ -63,9 +63,7 @@
        (begin-page ,doc)
        (set-parameter ,doc +parameter-key-searchpath+
 			 (namestring (local-system-path +data-path+)))
-       (place-image ,doc img-header 0.0 (millimiter->point (- 210
-								    +header-image-export-height+))
-		       1.0)
+       (place-image ,doc img-header 0.0 (- 210 +header-image-export-height+) 1.0)
        ,@body
        (end-page ,doc)
        (close-doc ,doc)
@@ -82,7 +80,7 @@
        (begin-page ,doc)
        (set-parameter ,doc +parameter-key-searchpath+
 			 (namestring (local-system-path +data-path+)))
-       (place-image ,doc img-header 0.0 740.0 1.0))
+       (place-image ,doc img-header 0.0 (- 297 +header-image-export-height+) 1.0))
        ,@body
        (end-page ,doc)
        (close-doc ,doc)

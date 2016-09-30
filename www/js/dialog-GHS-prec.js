@@ -33,7 +33,7 @@ $(function() {
 	}).done(function( data ) {
 	    var info=JSON.parse(data);
 	    $( "#dialog-GHS-prec" ).children("div").remove();
-	    info.each(function(a){
+	    info.forEach(function(a){
 		$( "#dialog-GHS-prec" ).append("<div>" + a.desc + "<div>");
 	    });
 

@@ -1,4 +1,5 @@
 * Data
+
 - www/images/chem-nyan/chem-nyan.gif
   this works derived from:
   © 2015 /g/
@@ -19,6 +20,10 @@
   data/ghs-pictograms/*.eps
   Got from http://www.unece.org/trans/danger/publi/ghs/pictograms.html
   The United Nations Economic Commission for Europe (UNECE)
+
+- data/letter-header.png
+  © 2016 Universita' degli Studi di Palermo
+  Released under GPL version 3
 
 - www/images/lab-logo.svg
   © 2016 Universita' degli Studi di Palermo

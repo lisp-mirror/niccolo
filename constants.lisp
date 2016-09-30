@@ -51,7 +51,7 @@
 
 (define-constant +image-unknown-struct-path+     "/images/no-struct.png"     :test #'string=)
 
-(define-constant +header-image-export-height+    25.0                        :test #'=)
+(define-constant +header-image-export-height+    42.68611                    :test #'=)
 
 (define-constant +default-font-name+             "font"                      :test #'string=)
 

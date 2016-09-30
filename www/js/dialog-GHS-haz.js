@@ -34,7 +34,7 @@ $(function() {
 	    var info=JSON.parse(data);
 	    $( "#dialog-GHS-haz" ).children("ul").remove();
 	    $( "#dialog-GHS-haz" ).append("<ul></ul>");
-	    info.each(function(a){
+	    info.forEach(function(a){
 		var img="<img  src=\"" + a.pictogramUri +"\">";
 		$( "#dialog-GHS-haz" ).children("ul").append("<li>" +
 							     img         +
