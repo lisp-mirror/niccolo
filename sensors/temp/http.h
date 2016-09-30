@@ -29,7 +29,7 @@
 
 #define LENGTH_HEADER  "Content-Length:"
 
-#define HTTP_PROT           "http/1.0"
+#define HTTP_PROT           "HTTP/1.0"
 
 #define HTTP_OK             200
 
