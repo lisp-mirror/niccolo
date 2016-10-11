@@ -133,7 +133,7 @@
     (unwind-protect
 	 (if the-session
 	     (tbnl:remove-session the-session)
-	     (tbnl:log-message* :warning "Logout error, session null."))
+	     (to-log :warning "Logout error, session null."))
       (set-cookie-script-visited "")
       #+mini-cas
       (with-cas-parameters

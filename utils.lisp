@@ -157,9 +157,9 @@
     (if (not errors-msg)
 	(funcall success-fn (and success-msg id) nil errors-msg)
 	(progn
-	  (log-message* +security-warning-log-level+
-			"Someone tried to modify a ~s with id ~s but such object does not exists in database!"
-			class id)
+	  (to-log +security-warning-log-level+
+		  "Someone tried to modify a ~s with id ~s but such object does not exists in database!"
+		  class id)
 	  +http-not-found+))))
 
 
@@ -418,3 +418,15 @@
 
 (defun temp-filename ()
   (nix:mktemp (namestring (uiop/stream:temporary-directory))))
+
+;; log facility
+
+(defun open-log ()
+  (nix:openlog (symbol-name +program-name+) 0))
+
+(defun to-log (priority format &rest args)
+  (apply #'nix:syslog priority format args))
+
+(defun log-and-mail (to subject message &key (level :warning))
+  (to-log level message)
+  (send-email subject to message))

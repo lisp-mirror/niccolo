@@ -281,9 +281,9 @@
 						   :password-2  +name-user-password-2+)
 					       :stream stream))
       (progn
-	(log-message* +security-warning-log-level+
-		      "Someone requested ~a page but admin user exists!"
-		      (restas:genurl 'add-admin-user))
+	(to-log +security-warning-log-level+
+		"Someone requested ~a page but admin user exists!"
+		(restas:genurl 'add-admin-user))
 	(restas:redirect 'root))))
 
 (define-lab-route change-pass ("/change-user-pass/" :method :get)

@@ -419,7 +419,10 @@
    :remove-old-waste-stats
    :send-email
    :init-hashtable-equalp
-   :temp-filename))
+   :temp-filename
+   :open-log
+   :to-log
+   :log-and-mail))
 
 (defpackage :i18n
   (:use

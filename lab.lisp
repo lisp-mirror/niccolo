@@ -217,13 +217,16 @@
   (initialize-pictogram #p"data/ghs-pictograms/none.eps"))
 
 (progn
+  (open-log)
   (initialize-pictograms-db)
   (fq:init-nodes)
   (init-sensors-thread)
+  (to-log :info "Server starting")
   (restas:start '#:restas.lab
 		:acceptor-class 'lab-acceptor
 		:hostname config:+hostname+
 		:port config:+https-port+
 		:ssl-certificate-file config:*ssl-certfile*
 		:ssl-privatekey-file config:*ssl-key*
-		:ssl-privatekey-password config:+ssl-pass+))
+		:ssl-privatekey-password config:+ssl-pass+)
+  (to-log :info "Server started"))

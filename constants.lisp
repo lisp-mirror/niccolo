@@ -63,7 +63,7 @@
 
 (define-constant +mime-postscript+               "application/postscript"    :test #'string=)
 
-(define-constant +security-warning-log-level+    "SECURITY WARNING"          :test #'string=)
+(define-constant +security-warning-log-level+    :warning                    :test #'string=)
 
 (define-constant +search-chem-id+                "s-id"                      :test #'string=)
 

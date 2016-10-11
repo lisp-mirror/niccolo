@@ -175,11 +175,11 @@
 	  (fq:with-valid-key ((fq:key response))
 	    (when (fq:id response)
 	      (fq:enqueue-results (fq:id response) response)
-	      (tbnl:log-message* :info
-				 "received product-query ~a from ~a. -> ~a"
-				 (fq:id response)
-				 (get-host-by-address (address-string->vector (tbnl:remote-addr*)))
-				 (tbnl:post-parameter +query-http-response-key+)))
+	      (to-log :info
+		      "received product-query ~a from ~a. -> ~a"
+		      (fq:id response)
+		      (get-host-by-address (address-string->vector (tbnl:remote-addr*)))
+		      (tbnl:post-parameter +query-http-response-key+)))
 
 	    +http-ok+)
 	  +http-not-found+))))
@@ -189,10 +189,10 @@
     (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
       (if query
 	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
-	    (tbnl:log-message* :info
-			       "received visited query ~a from ~a."
-			       (fq:id query)
-			       (get-host-by-address (address-string->vector (tbnl:remote-addr*))))
+	    (to-log :info
+		    "received visited query ~a from ~a."
+		    (fq:id query)
+		    (get-host-by-address (address-string->vector (tbnl:remote-addr*))))
 	    (let* ((query-id  (and query    (fq:id query)))
 		   (visited-p (and query-id (fq:set-visited query-id))))
 	      (obj->json-string (fq:make-visited-response visited-p query-id))))

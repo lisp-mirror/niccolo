@@ -88,15 +88,23 @@
 		(when (uiop:probe-file* script)
 		  (load script))
 		(values (process-sensor-output description res) t))
-	      (progn
-		(send-email (_ "Security alert")
-			    (db:email (admin-user))
-			    (format nil
-				    (_ "Sensor ~a (~a) failed MAC authentication, an attack?")
-				    description
-				    address))
+	      (let ((msg (format nil
+				 (_ "Sensor ~a (~a) failed MAC authentication, an attack?")
+				 description
+				 address)))
+		(log-and-mail (db:email (admin-user))
+			      (_ "Security alert")
+			      msg)
 		(values nil nil))))
-	(values nil nil))))
+	(let ((msg (format nil
+			   "Sensor ~a (~a) returned error code ~a"
+			   description
+			   address
+			   status-code)))
+	  (log-and-mail (db:email (admin-user))
+			(_ "Sensors comunication failure")
+			msg)
+	  (values nil nil)))))
 
 (defmacro defun-w-lock (name parameters &body body)
   `(defun ,name ,parameters
