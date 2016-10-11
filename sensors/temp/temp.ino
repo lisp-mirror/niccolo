@@ -88,6 +88,21 @@ char read_line_is_empty (char* l){
   return strcmp(l, "") == 0;
 }
 
+void send_response (EthernetClient client, char* nonce){
+  String body = "{ \"t\" : $t }";
+  sensors.requestTemperatures();
+  float temp_celsius = sensors.getTempCByIndex(0);
+  char str_temp[6];
+  dtostrf(temp_celsius, 4, 2, str_temp);
+  body.replace("$t", str_temp);
+  char* resp_calc_mac_req = make_mac_auth((char*)body.c_str(),
+					  secret_key,
+					  nonce);
+  build_ok_response((char*)body.c_str(), resp_calc_mac_req);
+  client.print(response);
+  free(resp_calc_mac_req);
+
+}
 
 void loop() {
   // listen for incoming clients
@@ -97,48 +112,63 @@ void loop() {
       if (client.available()) {
 	// heap;
 	char* command        = read_line(client);
+	// stack
 	char* path           = http_path(command);
-	char  stop_read_line = 0;
+	// heap
+	char*  mac_line   = NULL;
+	char*  nonce_line = NULL;
+
 	if(path != NULL){
 	  // heap
-	  char* req_mac_line;
-	  while (!stop_read_line &&
-		 !read_line_is_empty((req_mac_line = read_line(client)))){
-	    char* mac_req = http_mac_header(req_mac_line);
+	  char* req_line   = NULL;
+	  while (!read_line_is_empty((req_line = read_line(client)))){
+	    // heap
+	    char* copy_req   = copy_string(req_line);
+	    // heap
+	    char* copy_req2  = copy_string(req_line);
+	    // no more need for raw request
+	    free(req_line);
+	    // stack
+	    char* mac_req   = http_mac_header(copy_req);
+	    char* nonce_req = http_nonce_header(copy_req2);
 	    if(mac_req != NULL){ // MAC header found
-	      Serial.print("Mac: ");
+	      Serial.print(F("mac: "));
 	      Serial.println(mac_req);
-	      // heap
-	      char* calculated_mac_req = make_mac_auth(path, secret_key);
-	      if (strcasecmp(calculated_mac_req,
-			     mac_req) == 0){ // authenticated
-		String body = "{ \"t\" : $t }";
-		sensors.requestTemperatures();
-		float temp_celsius = sensors.getTempCByIndex(0);
-		char str_temp[6];
-		dtostrf(temp_celsius, 4, 2, str_temp);
-		body.replace("$t", str_temp);
-		char* resp_calc_mac_req = make_mac_auth((char*)body.c_str(),
-							secret_key);
-		build_ok_response((char*)body.c_str(), resp_calc_mac_req);
-		client.print(response);
-		free(resp_calc_mac_req);
-		stop_read_line = 1;
-	      }else{ // mac not valid
-		build_not_found_response();
-		client.print(response);
-                stop_read_line = 1;
-	      }
-	      free(calculated_mac_req);
+	      mac_line    = copy_string(mac_req);
+	    }else if(nonce_req != NULL){ // nonce header found
+	      Serial.print(F("nonce: "));
+	      Serial.println(nonce_req);
+	      nonce_line    = copy_string(nonce_req);
 	    }
-	    free(req_mac_line);
+
+	    free(copy_req);
+	    free(copy_req2);
+
 	  }
-          if(!stop_read_line && read_line_is_empty(req_mac_line)){
-           free(req_mac_line);
-           build_not_found_response();
-	   client.print(response);
-          }
+	  free(req_line);
 	}
+	Serial.println(F("end req"));
+
+	if (mac_line && nonce_line) {
+	  // heap
+	  char* calculated_mac_req = make_mac_auth(path, secret_key, nonce_line);
+	  if (strcasecmp(calculated_mac_req, mac_line) == 0){ // authenticated
+	    Serial.print(F("OK "));
+	    Serial.println(calculated_mac_req);
+	    send_response(client, nonce_line);
+	  }else{
+	    build_not_found_response();
+	    client.print(response);
+	  }
+	  free(calculated_mac_req);
+	  free(mac_line);
+	  free(nonce_line);
+	}else{
+	  Serial.println(F("NO"));
+	  build_not_found_response();
+	  client.print(response);
+	}
+
 	free(command);
 	delay(1);
 	client.stop();

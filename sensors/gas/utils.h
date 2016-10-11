@@ -33,10 +33,12 @@ char* concat_string (char* a, char* b){
 }
 
 /** Return a heap-allocated string, remember to free the memory */
-char* make_mac_auth (char* message, char* secret){
+char* make_mac_auth (char* message, char* secret, char* nonce ){
   char* hash = (char*)malloc(65);
-  char* decoded = concat_string(message, secret);
+  char* tmp    = concat_string(nonce, message);
+  char* decoded = concat_string(tmp, secret);
   sha256_encode(decoded, hash);
+  free(tmp);
   free(decoded);
   return hash;
 }

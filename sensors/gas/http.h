@@ -25,9 +25,11 @@
 
 #define HTTP_MAC_HEADER     "MAC:"
 
+#define HTTP_NONCE_HEADER   "NONCE:"
+
 #define MIME_TYPE_HEADER    "Content-Type: text/plain"
 
-#define LENGTH_HEADER  "Content-Length:"
+#define LENGTH_HEADER       "Content-Length:"
 
 #define HTTP_PROT           "HTTP/1.0"
 
@@ -62,6 +64,17 @@ char* http_mac_header (char* line){
   char* MAC    = strtok(NULL, HTTP_FIELDS_DELIM);
   if( strcasecmp(header, HTTP_MAC_HEADER) == 0 ){ // note: ignoring case
     return MAC;
+  } else {
+    return NULL;
+  }
+
+}
+
+char* http_nonce_header (char* line){
+  char* header = strtok(line, HTTP_FIELDS_DELIM);
+  char* nonce  = strtok(NULL, HTTP_FIELDS_DELIM);
+  if( strcasecmp(header, HTTP_NONCE_HEADER) == 0 ){ // note: ignoring case
+    return nonce;
   } else {
     return NULL;
   }

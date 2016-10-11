@@ -355,6 +355,8 @@
    :nullp nil))
 
 (deftable sensor ()
+  (session-nonce
+   :type text)
   (map-id
    :type integer
    :foreign (plant-map :restrict :cascade))

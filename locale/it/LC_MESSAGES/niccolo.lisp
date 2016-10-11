@@ -2560,4 +2560,22 @@ translation "Errore nell'elaborazione dei dati"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Your query returned no results"
+translation "La tua interrogazione non ha prodotto risultati"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Sensor ~a (~a) failed MAC authentication, an attack?"
+translation "L'autenticazione per il sensore ~a (~a) basata su MAC e' fallita: un possibile attacco?"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Security alert"
+translation "Allarme di sicurezza"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

@@ -258,6 +258,7 @@
    :waste-message
    :adr-code-id
    :sensor
+   :session-nonce
    :path
    :secret
    :last-access-time

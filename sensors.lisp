@@ -17,6 +17,8 @@
 
 (define-constant +mac-header+                :mac          :test #'eq)
 
+(define-constant +nonce-header+              :nonce        :test #'eq)
+
 (define-constant +sensor-http-timeout+       5             :test #'=)
 
 (define-constant +sensor-read-delay+         60            :test #'=)
@@ -37,8 +39,11 @@
 
 (define-constant +name-sensor-script+        "script"      :test #'string=)
 
-(defun build-mac (clear secret)
-  (sha-encode->string (concatenate 'string clear secret)))
+(defun sensor-nonce ()
+  (format nil "~{~:@(~x~)~}" (map 'list #'char-code (random-password 8))))
+
+(defun build-mac (clear secret nonce)
+  (sha-encode->string (concatenate 'string nonce clear secret)))
 
 (defun build-script-path (script)
   (uiop:merge-pathnames* *sensors-script-dir* script))
@@ -63,21 +68,34 @@
   (declare (ignore description))
   results)
 
-(defun %ask-sensors (description address path secret script)
-  (multiple-value-bind (res status-code)
+(defun %ask-sensors (description address path secret nonce script)
+  (multiple-value-bind (res status-code headers)
       (handler-case
 	  (trivial-timeout:with-timeout (+sensor-http-timeout+)
 	    (drakma:http-request (concatenate 'string "http://" address path)
 				 :method :get
 				 :additional-headers (list (cons +mac-header+
-								 (build-mac path secret)))))
+								 (build-mac path secret nonce))
+							   (cons +nonce-header+
+								 nonce))))
 	(error () nil))
     (if (and res
 	     (= status-code +http-ok+))
-	(progn
-	  (when (uiop:probe-file* script)
-	    (load script))
-	  (values (process-sensor-output description res) t))
+	(let ((mac-sensor   (cdr (assoc +mac-header+ headers)))
+	      (mac-expected (build-mac res secret nonce)))
+	  (if (string-equal mac-sensor mac-expected)
+	      (progn
+		(when (uiop:probe-file* script)
+		  (load script))
+		(values (process-sensor-output description res) t))
+	      (progn
+		(send-email (_ "Security alert")
+			    (db:email (admin-user))
+			    (format nil
+				    (_ "Sensor ~a (~a) failed MAC authentication, an attack?")
+				    description
+				    address))
+		(values nil nil))))
 	(values nil nil))))
 
 (defmacro defun-w-lock (name parameters &body body)
@@ -92,11 +110,14 @@
   (defmethod ask-sensors ((object db:sensor))
     (bt:with-recursive-lock-held (lock)
       (let ((now (local-time-obj-now)))
+	(setf (db:session-nonce object) (sensor-nonce))
+	(save object)
 	(multiple-value-bind (res successp)
-	    (%ask-sensors (db:description object)
-	                  (db:address     object)
-			  (db:path        object)
-			  (db:secret      object)
+	    (%ask-sensors (db:description   object)
+	                  (db:address       object)
+			  (db:path          object)
+			  (db:secret        object)
+			  (db:session-nonce object)
 			  (build-script-path (db:script-file object)))
 	  (setf (db:last-access-time object) now)
 	  (if successp
