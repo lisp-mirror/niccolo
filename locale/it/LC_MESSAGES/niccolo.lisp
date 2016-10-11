@@ -2578,4 +2578,10 @@ translation "Allarme di sicurezza"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Sensors comunication failure"
+translation "Comunicazione con i sensori fallita"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )
