@@ -197,14 +197,14 @@ void loop() {
 	    client.print(response);
 	  }
 	  free(calculated_mac_req);
-	  free(mac_line);
-	  free(nonce_line);
 	}else{
 	  Serial.println(F("NO"));
 	  build_not_found_response();
 	  client.print(response);
 	}
 
+	free(mac_line);
+	free(nonce_line);
 	free(command);
 	delay(1);
 	client.stop();
