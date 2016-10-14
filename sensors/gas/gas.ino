@@ -44,9 +44,11 @@ EthernetServer server(80);
 
 #define CALIBRATION_MAX_COUNT    10
 
-#define DELAY_CALIBRATION    240000 // 4 minute
+#define DELAY_CALIBRATION     240000 // 4 minute
 
-#define STARTING_DELAY       360000
+#define STARTING_DELAY        360000
+
+#define MAX_RESISTANCE_VALUE  9999.0
 
 float calibration_average = 0.0;
 
@@ -67,7 +69,7 @@ void setup() {
     float r = getResistance();
     calibration_values[i] = r;
     calibration_average += r;
-    Serial.println(r);
+    //Serial.println(r);
     delay(DELAY_CALIBRATION);
   }
 
@@ -75,13 +77,13 @@ void setup() {
 
   for (int i = 0; i < CALIBRATION_MAX_COUNT; i++){
     calibration_std_dev += pow((calibration_values[i] - calibration_average),2);
-    Serial.println(calibration_values[i]);
+    //Serial.println(calibration_values[i]);
   }
 
   calibration_std_dev = sqrt( (1.0 / (CALIBRATION_MAX_COUNT - 1)) * calibration_std_dev);
 
-  Serial.println(calibration_std_dev,2);
-  Serial.println(calibration_average,2);
+  //Serial.println(calibration_std_dev,2);
+  //Serial.println(calibration_average,2);
 
   Ethernet.begin(mac, ip);
   server.begin();
@@ -119,24 +121,31 @@ char read_line_is_empty (char* l){
 }
 
 void send_response (EthernetClient client, char* nonce){
-  String body = "{ \"g\":$g,\"a\":$a,\"s\":$s}";
-  float res = getResistance();
-  char str_gas[6];
-  dtostrf(res, 4, 2, str_gas);
-  body.replace("$g", str_gas);
-  char str_avg[6];
-  dtostrf(calibration_average, 4, 2, str_avg);
-  body.replace("$a", str_avg);
-  char str_stddev[6];
-  dtostrf(calibration_std_dev, 4, 2, str_stddev);
-  body.replace("$s", str_stddev);
+ float res = getResistance();
+  if (res > 0 && res <= MAX_RESISTANCE_VALUE){
+    String body = "{\"g\":$g,\"a\":$a,\"s\":$s}";
+    char str_gas[6] = "";
+    itoa(floor(res), str_gas,10);
+    body.replace("$g", str_gas);
+    char str_avg[6] = "";
+    itoa(floor(calibration_average), str_avg, 10);
+    body.replace("$a", str_avg);
+    char str_stddev[6] = "";
+    itoa(floor(calibration_std_dev), str_stddev, 10);
+    body.replace("$s", str_stddev);
 
-  char* resp_calc_mac_req = make_mac_auth((char*)body.c_str(),
-					  secret_key,
-					  nonce);
-  build_ok_response((char*)body.c_str(), resp_calc_mac_req);
-  client.print(response);
-  free(resp_calc_mac_req);
+    char* resp_calc_mac_req = make_mac_auth((char*)body.c_str(),
+					    secret_key,
+					    nonce);
+    build_ok_response((char*)body.c_str(), resp_calc_mac_req);
+    client.print(response);
+    //Serial.println(body);
+    free(resp_calc_mac_req);
+  } else { // an overflow occurred
+    build_error_response();
+    client.print(response);
+
+  }
 }
 
 
@@ -168,12 +177,12 @@ void loop() {
 	    char* mac_req   = http_mac_header(copy_req);
 	    char* nonce_req = http_nonce_header(copy_req2);
 	    if(mac_req != NULL){ // MAC header found
-	      Serial.print(F("mac: "));
-	      Serial.println(mac_req);
+	      // Serial.print(F("mac: "));
+	      // Serial.println(mac_req);
 	      mac_line    = copy_string(mac_req);
 	    }else if(nonce_req != NULL){ // nonce header found
-	      Serial.print(F("nonce: "));
-	      Serial.println(nonce_req);
+	      // Serial.print(F("nonce: "));
+	      // Serial.println(nonce_req);
 	      nonce_line    = copy_string(nonce_req);
 	    }
 
@@ -190,7 +199,7 @@ void loop() {
 	  char* calculated_mac_req = make_mac_auth(path, secret_key, nonce_line);
 	  if (strcasecmp(calculated_mac_req, mac_line) == 0){ // authenticated
 	    Serial.print(F("OK "));
-	    Serial.println(calculated_mac_req);
+	    // Serial.println(calculated_mac_req);
 	    send_response(client, nonce_line);
 	  }else{
 	    build_not_found_response();

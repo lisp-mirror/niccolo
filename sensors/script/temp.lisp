@@ -22,9 +22,9 @@
 (defun process-sensor-output (description results)
   (let ((temperature (cdr (assoc +t-key+ (json->list results)))))
     (when (> temperature +alarm-threshold+)
-      (send-email (format nil "ALARM sensor ~a" description)
-		  (db:email (admin-user))
-		  (format nil
+      (log-and-mail (db:email (admin-user))
+		    (format nil "ALARM sensor ~a" description)
+		    (format nil
 			  "Current temperature:  ~a, threshold: ~a"
 			  temperature +alarm-threshold+)))
     temperature))

@@ -37,6 +37,8 @@
 
 #define HTTP_NOT_FOUND      404
 
+#define HTTP_ERROR          500
+
 #define RESPONSE_MAX_LENGTH 244
 
 #define MAX_BODY_LENGTH     100
@@ -46,6 +48,8 @@
 static const PROGMEM char resp_ok_fmt[] = "%s %i OK\r\n%s\r\n%s %i\r\n%s %s\r\n\r\n%s";
 
 static const PROGMEM char resp_notfound_fmt[] = "%s %i Not Found\r\n%s %i\r\n\r\n";
+
+static const PROGMEM char resp_error_fmt[] = "%s %i internal error\r\n%s %i\r\n\r\n";
 
 char response[RESPONSE_MAX_LENGTH]= {0};
 
@@ -104,5 +108,13 @@ void build_not_found_response (){
 	     RESPONSE_MAX_LENGTH,
 	     (const char*)resp_notfound_fmt,
 	     HTTP_PROT, HTTP_NOT_FOUND,
+	     LENGTH_HEADER,0);
+}
+
+void build_error_response (){
+  snprintf_P(response,
+	     RESPONSE_MAX_LENGTH,
+	     (const char*)resp_error_fmt,
+	     HTTP_PROT, HTTP_ERROR,
 	     LENGTH_HEADER,0);
 }

@@ -428,5 +428,5 @@
   (apply #'nix:syslog priority format args))
 
 (defun log-and-mail (to subject message &key (level :warning))
-  (to-log level message)
+  (to-log level (concatenate 'string subject " " message))
   (send-email subject to message))

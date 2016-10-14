@@ -30,9 +30,9 @@
     (when (not (<= (- average threshold)
 		   resistance
 		   (+ average threshold)))
-      (send-email (format nil "ALARM sensor ~a" description)
-		  (db:email (admin-user))
-		  (format nil
-			  "Current values:  ~a"
-			  values)))
+      (log-and-mail (db:email (admin-user))
+		    (format nil "ALARM sensor ~a" description)
+		    (format nil
+			    "Current values:  ~a"
+			    values)))
     resistance))
