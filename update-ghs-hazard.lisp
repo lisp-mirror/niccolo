@@ -54,22 +54,23 @@
     (with-standard-html-frame (stream (_ "Update GHS hazard statement")
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-hazard.tpl"
-					     (with-path-prefix
-						 :code-lb (_ "Code")
-						 :statement-lb (_ "Statement")
-						 :carcinogenic-p-lb (_ "Carcinogenic?")
-						 :id         (and id
-								  (db:id new-haz))
-						 :code-value (and id
-								  (db:code new-haz))
-						 :expl-value (and id
-								  (db:explanation new-haz))
-						 :carcinogenic-value
-						 (and id
-						      (db:carcinogenic new-haz))
-						 :code         +name-ghs-hazard-code+
-						 :expl         +name-ghs-hazard-expl+
-						 :carcinogenic +name-ghs-hazard-carcinogenic+)
+					     (with-back-uri (ghs-hazard)
+					       (with-path-prefix
+						   :code-lb (_ "Code")
+						   :statement-lb (_ "Statement")
+						   :carcinogenic-p-lb (_ "Carcinogenic?")
+						   :id         (and id
+								    (db:id new-haz))
+						   :code-value (and id
+								    (db:code new-haz))
+						   :expl-value (and id
+								    (db:explanation new-haz))
+						   :carcinogenic-value
+						   (and id
+							(db:carcinogenic new-haz))
+						   :code         +name-ghs-hazard-code+
+						   :expl         +name-ghs-hazard-expl+
+						   :carcinogenic +name-ghs-hazard-carcinogenic+))
 					     :stream stream))))
 
 (define-lab-route update-hazard ("/update-h/:id" :method :get)

@@ -16,3 +16,5 @@
 	 value="<!-- TMPL_VAR link-value -->" />
   <input type="submit" />
 </form>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

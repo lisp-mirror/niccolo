@@ -65,25 +65,26 @@
 			  (object-exists-in-db-p 'db:address id))))
     (with-standard-html-frame (stream (_ "Update Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-address.tpl"
-					     (with-path-prefix
-						 :address-lb (_ "Address")
-						 :city-lb    (_ "City")
-						 :zipcode-lb (_ "Zipcode")
-						 :weblink-lb (_ "Weblink")
-						 :id         (and id
-								  (db:id new-address))
-						 :line-1-value (and id
-								    (db:line-1 new-address))
-						 :city-value (and id
-								  (db:city new-address))
-						 :link-value (and id
-								  (db:link new-address))
-						 :zipcode-value  (and id
-								      (db:zipcode new-address))
-						 :line-1      +name-address-line-1+
-						 :city        +name-address-city+
-						 :zipcode     +name-address-zipcode+
-						 :link        +name-address-link+)
+					     (with-back-uri (address)
+					       (with-path-prefix
+						   :address-lb (_ "Address")
+						   :city-lb    (_ "City")
+						   :zipcode-lb (_ "Zipcode")
+						   :weblink-lb (_ "Weblink")
+						   :id         (and id
+								    (db:id new-address))
+						   :line-1-value (and id
+								      (db:line-1 new-address))
+						   :city-value (and id
+								    (db:city new-address))
+						   :link-value (and id
+								    (db:link new-address))
+						   :zipcode-value  (and id
+									(db:zipcode new-address))
+						   :line-1      +name-address-line-1+
+						   :city        +name-address-city+
+						   :zipcode     +name-address-zipcode+
+						   :link        +name-address-link+))
 					     :stream stream))))
 
 (define-lab-route update-address ("/update-address/:id" :method :get)

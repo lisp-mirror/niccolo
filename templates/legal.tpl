@@ -9,3 +9,5 @@ availability nor  for the  content of these  external sites,  nor does
 endorse, warrant, or guarantee  the products, services, or information
 described or offered from these other Internet sites.
 </p>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

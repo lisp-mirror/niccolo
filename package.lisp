@@ -389,6 +389,8 @@
    :chemical-products-template->json-string
    :path-prefix-tpl
    :with-path-prefix
+   :with-back-uri
+   :with-back-to-root
    :alist->query-uri
    :local-uri
    :local-uri-noport

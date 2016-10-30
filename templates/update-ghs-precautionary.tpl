@@ -12,3 +12,5 @@
     <input type="submit" />
   </div>
 </form>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

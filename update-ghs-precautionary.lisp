@@ -55,17 +55,18 @@
     (with-standard-html-frame (stream (_ "Update GHS precautionary statement")
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-precautionary.tpl"
-					     (with-path-prefix
-						 :code-lb (_ "Code")
-						 :statement-lb (_ "Statement")
-						 :id         (and id
-								  (db:id new-prec))
-						 :code-value (and id
-								  (db:code new-prec))
-						 :expl-value (and id
-								  (db:explanation new-prec))
-						 :code         +name-ghs-precautionary-code+
-						 :expl         +name-ghs-precautionary-expl+)
+					     (with-back-uri (ghs-precautionary)
+					       (with-path-prefix
+						   :code-lb (_ "Code")
+						   :statement-lb (_ "Statement")
+						   :id         (and id
+								    (db:id new-prec))
+						   :code-value (and id
+								    (db:code new-prec))
+						   :expl-value (and id
+								    (db:explanation new-prec))
+						   :code         +name-ghs-precautionary-code+
+						   :expl         +name-ghs-precautionary-expl+))
 					     :stream stream))))
 
 (define-lab-route update-precautionary ("/update-p/:id" :method :get)

@@ -96,14 +96,14 @@
   (with-authentication
     (with-standard-html-frame (stream (_ "Acknowledgment"))
       (html-template:fill-and-print-template #p"acknowledgment.tpl"
-					     nil
+					     (with-back-to-root '())
 					     :stream stream))))
 
 (define-lab-route legal ("/legal" :method :get)
   (with-authentication
     (with-standard-html-frame (stream (_ "Legal"))
       (html-template:fill-and-print-template #p"legal.tpl"
-					     nil
+					     (with-back-to-root '())
 					     :stream stream))))
 (defun time-to-nyan ()
   (let ((decoded (multiple-value-list (get-decoded-time))))

@@ -75,16 +75,17 @@
 								    :id (db:id row)))))))
     (with-standard-html-frame (stream (_ "Manage Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-address.tpl"
-					     (with-path-prefix
-						 :address-lb (_ "Address")
-						 :link-lb    (_ "Link")
-						 :operation-lb (_ "Operation")
-						 :zipcode-lb   (_ "Zipcode")
-						 :line-1 +name-address-line-1+
-						 :city +name-address-city+
-						 :zipcode +name-address-zipcode+
-						 :link    +name-address-link+
-						 :data-table all-addresses)
+					     (with-back-to-root
+					       (with-path-prefix
+						   :address-lb (_ "Address")
+						   :link-lb    (_ "Link")
+						   :operation-lb (_ "Operation")
+						   :zipcode-lb   (_ "Zipcode")
+						   :line-1 +name-address-line-1+
+						   :city +name-address-city+
+						   :zipcode +name-address-zipcode+
+						   :link    +name-address-link+
+						   :data-table all-addresses))
 					     :stream stream))))
 
 (define-lab-route address ("/address/" :method :get)

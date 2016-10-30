@@ -106,6 +106,19 @@
 (defun path-prefix-tpl ()
   (list :path-prefix +path-prefix+))
 
+(defun back-button-tpl (route)
+  (list :back-button     (restas:genurl route)
+	:back-button-lbl (_ "Back")))
+
+(defmacro with-back-uri ((route) tpl)
+  `(nconc
+    (back-button-tpl ',route)
+    ,tpl))
+
+(defmacro with-back-to-root (tpl)
+  `(with-back-uri (restas.lab::root)
+     ,tpl))
+
 (defmacro with-path-prefix (&rest tpls)
   `(nconc
     (path-prefix-tpl)

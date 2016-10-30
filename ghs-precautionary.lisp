@@ -58,15 +58,15 @@
     (with-standard-html-frame (stream (_ "Manage GHS Precautionary Statements")
 				      :infos  infos
 				      :errors errors)
-
       (html-template:fill-and-print-template #p"add-precautionary.tpl"
-					     (with-path-prefix
-						 :code-lb (_ "Code")
-						 :statement-lb (_ "Statement")
-						 :operations-lb   (_ "Operations")
-						 :code +name-ghs-precautionary-code+
-						 :expl +name-ghs-precautionary-expl+
-						 :data-table all-ghss)
+					     (with-back-to-root
+						 (with-path-prefix
+						     :code-lb         (_ "Code")
+						     :statement-lb    (_ "Statement")
+						     :operations-lb   (_ "Operations")
+						     :code            +name-ghs-precautionary-code+
+						     :expl            +name-ghs-precautionary-expl+
+						     :data-table      all-ghss))
 					     :stream stream))))
 
 (define-lab-route ghs-precautionary ("/ghs-precautionary/" :method :get)

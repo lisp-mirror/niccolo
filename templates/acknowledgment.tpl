@@ -10,3 +10,5 @@
     </a>
   </small>
 </p>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

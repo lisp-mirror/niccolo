@@ -16,9 +16,9 @@
 */
 
 body {
-    background: white;
+    background:  white;
     font-family: sans;
-    font-size: 12pt;
+    font-size:   12pt;
 }
 
 a {
@@ -33,7 +33,7 @@ a:visited {
 
 label {
     font-weight: bold;
-    display: block;
+    display:     block;
 }
 
 sub {
@@ -41,27 +41,27 @@ sub {
 }
 
 select {
-    display: block;
-    margin-top: 5pt;
+    display:       block;
+    margin-top:    5pt;
     margin-bottom: 5pt;
 }
 
 input {
-    display: block;
-    margin-top: 5pt;
+    display:       block;
+    margin-top:    5pt;
     margin-bottom: 5pt;
-    font-size: 100%;
+    font-size:     100%;
 }
 
 input[type=image] {
-    display: block;
-    margin-top: 5pt;
+    display:       block;
+    margin-top:    5pt;
     margin-bottom: 5pt;
 }
 
 input[type=file] {
-    border: 0;
-    height: 24pt;
+    border:       0;
+    height:      24pt;
     min-width:  150pt;
 }
 
@@ -74,19 +74,20 @@ input[type=password] {
 }
 
 .other-ops-chem-prod  input[type=submit] {
-    min-width:   150pt;
-    margin-left: auto;
+    min-width:    150pt;
+    margin-left:  auto;
     margin-right: auto;
 }
 
 input[type=submit] {
-    display: block;
+    display:   block;
+    min-width: 150pt;
 }
 
 input[disabled] {
-    border: thin solid #047595;
+    border:     thin solid #047595;
     background: #ffffff;
-    width:  150pt;
+    width:      150pt;
 }
 
 textarea {
@@ -103,8 +104,8 @@ textarea {
 }
 
 #textarea-note-waste {
-    width: 50%;
-    height: 300pt;
+    width:    50%;
+    height:  300pt;
     display: block;
 }
 
@@ -113,16 +114,16 @@ textarea {
 }
 
 #adr-list {
-    width: 30%;
-    float:right;
+    width:    30%;
+    float:    right;
     position: relative;
-    top: 0;
+    top:       0;
 }
 
 #footer {
     text-align: center;
-    font-size: 80%;
-    width: 90%;
+    font-size:  80%;
+    width:      90%;
 }
 
 .nyan-logo {
@@ -143,34 +144,38 @@ textarea {
     background: #FFCF5E;
 }
 
+.button-back-navigation {
+    min-width:   150pt;
+}
+
 .logout-link {
-    float: right;
+    float:     right;
     font-size: 80%;
 }
 
 .logout-username {
-    font-size: 75%;
+    font-size:   75%;
     font-family: serif;
 }
 
 .section-title {
-    color: #047595;
-    font-size: 20pt;
+    color:        #047595;
+    font-size:    20pt;
     font-variant: small-caps;
 }
 
 .messages {
-    display: table-cell;
-    float: none;
-    border: 0;
+    display:   table-cell;
+    float:     none;
+    border:     0;
     min-width: 20%;
 }
 
 .info-message {
     list-style-image: url("../images/info-bullet.png");
-    margin: 10pt;
-    padding-top: 5pt;
-    padding-bottom: 5pt;
+    margin:           10pt;
+    padding-top:       5pt;
+    padding-bottom:    5pt;
 }
 
 .info-message li{
@@ -179,9 +184,9 @@ textarea {
 
 .error-message {
     list-style-image: url("../images/error-bullet.png");
-    margin: 10pt;
-    padding-top: 5pt;
-    padding-bottom: 5pt;
+    margin:           10pt;
+    padding-top:       5pt;
+    padding-bottom:    5pt;
 }
 
 .error-message li{
@@ -189,7 +194,7 @@ textarea {
 }
 
 table.expiration-messages {
-    margin-top: 5pt;
+    margin-top:    5pt;
     margin-bottom: 5pt;
 }
 
@@ -198,13 +203,13 @@ table.expiration-messages .message {
 }
 
 table.user-messages {
-    margin-top: 5pt;
+    margin-top:    5pt;
     margin-bottom: 5pt;
 }
 
 td.user-message-reply-row {
     background: white;
-    border: 0;
+    border:     0;
     text-align: left;
 }
 
@@ -240,7 +245,7 @@ table.product-diff .old-date{
 }
 
 table {
-    width: 80%;
+    width:           80%;
     border-collapse: collapse;
 }
 
@@ -265,32 +270,32 @@ tr:nth-child(odd) a:visited{
 }
 
 fieldset {
-    border:     1pt solid #047595;
+    border: 1pt solid #047595;
     margin: 5pt;
 }
 
 fieldset.map-image-fieldset  {
     background: #dfdfdf;
-    margin: 0;
+    margin:     0;
 }
 
 fieldset.add-new-chem-prod  {
-    width: 200pt;
-    float: left;
-    margin: 5pt;
+    width:  200pt;
+    float:  left;
+    margin:   5pt;
     height: 370pt;
 }
 
 fieldset.search-chem-prod  {
-    width: 200pt;
-    margin: 5pt;
+    width:  200pt;
+    margin:   5pt;
     height: 370pt;
-    float: left;
+    float:  left;
 }
 
 fieldset.other-ops-chem-prod  {
-    width: 200pt;
-    margin: 5pt;
+    width:  200pt;
+    margin:   5pt;
     height: 370pt;
 }
 
@@ -300,15 +305,15 @@ fieldset.lending  {
 
 #submit-lend-to {
     display: block;
-    margin: auto;
+    margin:  auto;
 }
 
 #username-lending {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display:       block;
+    margin-left:   auto;
+    margin-right:  auto;
     margin-bottom: 10pt;
-    margin-top: 10pt;
+    margin-top:    10pt;
 }
 
 legend {
@@ -319,17 +324,17 @@ legend {
 }
 
 th {
-    font-weight: bolder;
+    font-weight:bolder;
     background: #83D1E7;
-    padding: 5pt;
+    padding:    5pt;
     text-align: center;
-    border: 1pt solid #EFA700;
-    margin: 0;
+    border:     1pt solid #EFA700;
+    margin:     0;
 }
 
 td {
-    border: 1pt solid #83D1E7;
-    padding: 5pt;
+    border:     1pt solid #83D1E7;
+    padding:    5pt;
     text-align: center;
 }
 
@@ -338,62 +343,62 @@ td {
 }
 
 #main-content-wrapper {
-    width: 1000pt;
-    display: table-cell;
+    width:          1000pt;
+    display:        table-cell;
     vertical-align: top;
 }
 
 .center {
     display: block;
-    margin: auto;
+    margin:  auto;
 }
 
 .left-menu {
-    display: table-cell;
-    min-width: 205pt;
-    padding-left: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-right:  1pt;
+    display:        table-cell;
+    min-width:      205pt;
+    padding-left:     0;
+    padding-top:      0;
+    padding-bottom:   0;
+    padding-right:    1pt;
 
 }
 
 .left-menu ul{
     padding: 0;
-    margin: 0;
+    margin:  0;
 }
 
 .menu-level-2 ul{
-    display: block;
+    display:      block;
     padding-left: 0;
 }
 
 .menu-level-2 ul li {
     list-style-type: none;
-    display: block;
-    float: none;
-    clear: both;
-    min-height: 20pt;
-    vertical-align: middle;
-    padding:      0;
-    margin:       0;
+    display:         block;
+    float:           none;
+    clear:           both;
+    min-height:      20pt;
+    vertical-align:  middle;
+    padding:          0;
+    margin:           0;
 }
 
 .menu-level-2 ul li a{
     text-decoration: none;
     color:           #000000;
-    padding-left: 5pt;
-    display: block;
-    padding-right: 0;
-    padding-top:   3pt;
-    padding-bottom: 3pt;
-    margin: 0;
+    padding-left:    5pt;
+    display:         block;
+    padding-right:   0;
+    padding-top:     3pt;
+    padding-bottom:  3pt;
+    margin:          0;
 }
 
 .menu-level-2 ul li a:hover{
-    background: #FFDD8C;
-    padding-right: 0;
-    padding-top:   3pt;
+    background:     #FFDD8C;
+    padding-right:  0;
+    padding-top:    3pt;
     padding-bottom: 3pt;
 }
 
@@ -554,8 +559,8 @@ td {
 .tag-with-string-button {
    margin:              auto;
    display:             inline-block;
-   width:	         32px;
-   min-height:	         32px;
+   width:	        32px;
+   min-height:	        32px;
    background-image:    url("../images/tag-w-string.png");
    background-repeat:   no-repeat;
    background-position: 0% 0%;
@@ -627,18 +632,18 @@ div[class*=button] a {
     display: table-cell;
     width:   32px;
     height:  32px;
-    margin:auto;
+    margin:  auto;
 }
 
 .map-coord-submit {
     display: block;
-    margin: auto;
+    margin:  auto;
 }
 
 .fieldset-subst-msds {
     display: none;
-    width: 25%;
-    margin:    auto;
+    width:   25%;
+    margin:  auto;
 }
 
 td.select-id-id input {
@@ -646,7 +651,7 @@ td.select-id-id input {
 }
 
 .parent-subscript {
-    color: #504343;
+    color:       #504343;
     font-weight: bolder;
 }
 
@@ -661,14 +666,14 @@ sub a{
 
 
 #update-chemical-id-box {
-    font-size: 200%;
+    font-size:  200%;
     text-align: right;
-    width: 30%;
+    width:      30%;
 }
 
 div.biblio-ref{
     margin-top: 10pt;
-    font-size: 80%;
+    font-size:  80%;
 }
 
 .biblio-ref .authors {
@@ -683,7 +688,6 @@ div.biblio-ref{
     font-style: italic;
 }
 
-
 .biblio-ref .biblio-id {
 
 }
@@ -691,7 +695,7 @@ div.biblio-ref{
 /* ghs hazard dialog list*/
 
 #dialog-GHS-haz ul img {
-    display: block;
+    display:        block;
     vertical-align: middle;
 }
 
@@ -704,37 +708,37 @@ div.biblio-ref{
 
 #tree-container {
     display: table;
-    width: 70%;
+    width:   70%;
 }
 
 .description {
-    border: thin solid #047595;
-    background: #83D1E7;
-    font-size: 200%;
-    display: block;
-    margin-top: 10pt;
-    margin-bottom: 10pt;
-    min-width: 50%;
-    text-align: center;
+    border:        thin solid #047595;
+    background:    #83D1E7;
+    font-size:     200%;
+    display:       block;
+    margin-top:     10pt;
+    margin-bottom:  10pt;
+    min-width:      50%;
+    text-align:    center;
 }
 
 a.back {
-    width: 20%;
-    display: block;
-    font-weight: bolder;
+    width:           20%;
+    display:         block;
+    font-weight:     bolder;
     text-decoration: underline;
-    margin-top: 10pt;
-    cursor: pointer;
+    margin-top:      10pt;
+    cursor:          pointer;
 }
 
 a.decision {
-    border: thin solid #047595;
-    display: table-cell;
-    font-size: 120%;
-    padding-top: 5pt;
-    padding-left: 10pt;
-    padding-right: 10pt;
-    cursor: pointer;
+    border:        thin solid #047595;
+    display:       table-cell;
+    font-size:     120%;
+    padding-top:   5pt;
+    padding-left:   10pt;
+    padding-right:  10pt;
+    cursor:        pointer;
 }
 
 a.breadcrumb-link {
@@ -751,7 +755,7 @@ table.waste-stats {
 }
 
 table.waste-stats caption {
-    text-align: left;
+    text-align:  left;
     font-weight: bold;
     font-size:   110%;
 }
@@ -761,8 +765,8 @@ table.waste-stats th {
 }
 
 .ajax-loader-federated-query img {
-    margin: auto;
-    display: block;
+    margin:     auto;
+    display:    block;
     margin-top: 10pt;
 }
 
