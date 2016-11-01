@@ -2568,7 +2568,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Sensor ~a (~a) failed MAC authentication, an attack?"
-translation "L'autenticazione per il sensore ~a (~a) basata su MAC e' fallita: un possibile attacco?"
+translation "L'autenticazione per il sensore ~a (~a) basata sul MAC e' fallita: un possibile attacco?"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2581,6 +2581,12 @@ plurals NIL
 
  id "Sensors comunication failure"
 translation "Comunicazione con i sensori fallita"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Back"
+translation "Indietro"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

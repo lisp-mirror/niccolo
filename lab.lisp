@@ -89,7 +89,7 @@
   (with-authentication
     (with-standard-html-frame (stream (_ "Classify"))
       (html-template:fill-and-print-template #p"classification-tree.tpl"
-					     nil
+					     (with-back-to-root '())
 					     :stream stream))))
 
 (define-lab-route acknowledgment ("/acknowledgment" :method :get)

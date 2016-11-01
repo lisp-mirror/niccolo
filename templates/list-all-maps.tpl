@@ -1,4 +1,5 @@
 <!-- TMPL_LOOP all-images -->
+
 <fieldset class="map-image-fieldset">
   <legend><!-- TMPL_VAR map-image-desc --></legend>
   <form action="<!-- TMPL_VAR action -->" method="GET">
@@ -11,7 +12,8 @@
     <input type="hidden"
 	   name="<!-- TMPL_VAR   map-image-name-building-id -->"
 	   value="<!-- TMPL_VAR  map-image-building-id -->" />
-
   </form>
+  <!-- TMPL_INCLUDE 'back-button.tpl' -->
 </fieldset>
+
 <!-- /TMPL_LOOP  -->

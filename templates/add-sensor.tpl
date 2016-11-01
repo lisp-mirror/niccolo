@@ -29,6 +29,7 @@
   <input type="submit" />
 </form>
 
+<!-- TMPL_INCLUDE 'back-button.tpl' -->
 
 <table class="sortable storage-list">
   <thead>

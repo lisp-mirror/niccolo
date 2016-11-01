@@ -7,3 +7,5 @@
 	 name="<!-- TMPL_VAR desc -->" />
   <input type="submit" />
 </form>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

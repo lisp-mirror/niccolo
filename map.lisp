@@ -115,11 +115,12 @@
 			       :errors errors
 			       :infos  infos)
       (html-template:fill-and-print-template #p"add-map.tpl"
-					     (with-path-prefix
-						 :data +name-map-data+
-						 :desc +name-map-description+
-						 :file +name-map-data+
-						 :data-table all-maps)
+					     (with-back-to-root
+						 (with-path-prefix
+						     :data +name-map-data+
+						     :desc +name-map-description+
+						     :file +name-map-data+
+						     :data-table all-maps))
 					     :stream stream))))
 
 (define-lab-route delete-plant-map ("/delete-map/:id" :method :get)
@@ -189,9 +190,10 @@
 			       :errors nil
 			       :infos  nil)
 	  (html-template:fill-and-print-template #p"monitor-sensors.tpl"
-					     (with-path-prefix
-						 :map-id id
-						 :sensors-data-url
-						 (restas:genurl 'ws-sensors-associated-w-map
-								:id id))
-					     :stream stream)))))
+						 (with-back-uri (plant-map)
+						   (with-path-prefix
+						       :map-id id
+						       :sensors-data-url
+						       (restas:genurl 'ws-sensors-associated-w-map
+								      :id id)))
+						 :stream stream)))))

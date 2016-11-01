@@ -63,16 +63,17 @@
 				      :infos infos
 				      :errors errors)
       (html-template:fill-and-print-template #p"update-chemical.tpl"
-					     (with-path-prefix
-						 :name-lb (_ "Name")
-						 :id   (and id
-							    (db:id new-chem))
-						 :name-value (and id
-								  (db:name new-chem))
-						 :cid-value  (and id
-								  (db:pubchem-cid new-chem))
-						 :name        +name-chem-proper-name+
-						 :cid       +name-chem-cid+)
+					     (with-back-to-root
+						 (with-path-prefix
+						     :name-lb    (_ "Name")
+						     :id         (and id
+								      (db:id new-chem))
+						     :name-value (and id
+								      (db:name new-chem))
+						     :cid-value  (and id
+								      (db:pubchem-cid new-chem))
+						     :name       +name-chem-proper-name+
+						     :cid        +name-chem-cid+))
 					     :stream stream))))
 
 (define-lab-route update-chemical ("/update-chemical/:id" :method :get)

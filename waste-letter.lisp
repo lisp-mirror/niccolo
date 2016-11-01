@@ -53,24 +53,25 @@
 	  (json-cer-id (array-autocomplete-cer-code-id))
 	  (json-building    (array-autocomplete-building))
 	  (json-building-id (array-autocomplete-building-id)))
-	(html-template:fill-and-print-template #p"waste-letter.tpl"
-					       (with-path-prefix
-						   :name-lb          (_ "Name")
-						   :building-lb      (_ "Building")
-						   :laboratory-lb    (_ "Laboratory")
-						   :weight-lb        (_ "Weight (Kg)")
-						   :description-lb   (_ "Description")
-						   :name             +name-waste-user-name+
-						   :cer-id           +name-waste-cer-id+
-						   :building-id      +name-waste-building-id+
-						   :lab-num          +name-waste-lab-num+
-						   :weight           +name-waste-weight+
-						   :description      +name-waste-description+
-						   :json-cer         json-cer
-						   :json-cer-id      json-cer-id
-						   :json-building    json-building
-						   :json-building-id json-building-id
-						   :adr-list         (adr-list))
+      (html-template:fill-and-print-template #p"waste-letter.tpl"
+					     (with-back-to-root
+						 (with-path-prefix
+						     :name-lb          (_ "Name")
+						     :building-lb      (_ "Building")
+						     :laboratory-lb    (_ "Laboratory")
+						     :weight-lb        (_ "Weight (Kg)")
+						     :description-lb   (_ "Description")
+						     :name             +name-waste-user-name+
+						     :cer-id           +name-waste-cer-id+
+						     :building-id      +name-waste-building-id+
+						     :lab-num          +name-waste-lab-num+
+						     :weight           +name-waste-weight+
+						     :description      +name-waste-description+
+						     :json-cer         json-cer
+						     :json-cer-id      json-cer-id
+						     :json-building    json-building
+						     :json-building-id json-building-id
+						     :adr-list         (adr-list)))
 					       :stream stream))))
 
 (define-lab-route waste-letter ("/waste-letter/" :method :get)

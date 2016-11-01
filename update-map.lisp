@@ -56,13 +56,14 @@
   (let ((new-map (and id (single 'db:plant-map :id id))))
     (with-standard-html-frame (stream (_ "Update Map") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-map.tpl"
-					     (with-path-prefix
-						 :description-lb (_ "Description")
-						 :id         (and id
-								  (db:id new-map))
-						 :desc-value (and id
-								  (db:description new-map))
-						 :desc        +name-map-description+)
+					     (with-back-uri (plant-map)
+					       (with-path-prefix
+						   :description-lb (_ "Description")
+						   :id         (and id
+								    (db:id new-map))
+						   :desc-value (and id
+								    (db:description new-map))
+						   :desc        +name-map-description+))
 					     :stream stream))))
 
 (define-lab-route update-map-route ("/update-map/:id" :method :get)

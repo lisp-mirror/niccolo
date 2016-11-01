@@ -286,6 +286,8 @@
 
 </div>
 
+<!-- TMPL_INCLUDE 'back-button.tpl' -->
+
 <div class="biblio-ref">
   <div class="authors">
     John J. M. Wiener and Cheryl A. Grice

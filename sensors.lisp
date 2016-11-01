@@ -202,23 +202,24 @@
 				 :infos  infos)
 	(let ((html-template:*string-modifier* #'html-template:escape-string-minimal))
 	  (html-template:fill-and-print-template #p"add-sensor.tpl"
-						 (with-path-prefix
-						     :map-lb              (_ "Map")
-						     :description-lb      (_ "Description")
-						     :address-lb          (_ "Address")
-						     :path-lb             (_ "Path")
-						     :secret-lb           (_ "Secret key")
-						     :script-lb           (_ "Script")
-						     :status-lb           (_ "Status")
-						     :last-access-time-lb (_ "Last access")
-						     :last-value-lb       (_ "Last value")
-						     :operations-lb       (_ "Operations")
-						     :description   +name-sensor-description+
-						     :address       +name-sensor-address+
-						     :path          +name-sensor-path+
-						     :secret        +name-sensor-secret-name+
-						     :script        +name-sensor-script+
-						     :data-table all-sensors)
+						 (with-back-to-root
+						     (with-path-prefix
+							 :map-lb              (_ "Map")
+							 :description-lb      (_ "Description")
+							 :address-lb          (_ "Address")
+							 :path-lb             (_ "Path")
+							 :secret-lb           (_ "Secret key")
+							 :script-lb           (_ "Script")
+							 :status-lb           (_ "Status")
+							 :last-access-time-lb (_ "Last access")
+							 :last-value-lb       (_ "Last value")
+							 :operations-lb       (_ "Operations")
+							 :description   +name-sensor-description+
+							 :address       +name-sensor-address+
+							 :path          +name-sensor-path+
+							 :secret        +name-sensor-secret-name+
+							 :script        +name-sensor-script+
+							 :data-table all-sensors))
 						 :stream stream)))))
 
   (defun-w-lock add-new-sensor (description address path secret script)
@@ -394,29 +395,30 @@
     (let* ((html-template:*string-modifier* #'identity)
 	   (new-sensor (and id
 			    (object-exists-in-db-p 'db:sensor id)))
-	   (template    (with-path-prefix
-			    :description-lb    (_ "Description")
-			    :address-lb        (_ "Address")
-			    :path-lb           (_ "Path")
-			    :secret-lb         (_ "Secret key")
-			    :script-lb         (_ "Script")
-			    :id                (and id
-						    (db:id new-sensor))
-			    :description-value (and id
-						    (db:description new-sensor))
-			    :address-value     (and id
-						    (db:address new-sensor))
-			    :path-value        (and id
-						    (db:path new-sensor))
-			    :secret-value     (and id
-						   (db:secret new-sensor))
-			    :script-value     (and id
-						   (db:script-file new-sensor))
-			    :description      +name-sensor-description+
-			    :address          +name-sensor-address+
-			    :path             +name-sensor-path+
-			    :secret           +name-sensor-secret-name+
-			    :script           +name-sensor-script+)))
+	   (template   (with-back-uri (sensor)
+			 (with-path-prefix
+			     :description-lb    (_ "Description")
+			     :address-lb        (_ "Address")
+			     :path-lb           (_ "Path")
+			     :secret-lb         (_ "Secret key")
+			     :script-lb         (_ "Script")
+			     :id                (and id
+						     (db:id new-sensor))
+			     :description-value (and id
+						     (db:description new-sensor))
+			     :address-value     (and id
+						     (db:address new-sensor))
+			     :path-value        (and id
+						     (db:path new-sensor))
+			     :secret-value     (and id
+						    (db:secret new-sensor))
+			     :script-value     (and id
+						    (db:script-file new-sensor))
+			     :description      +name-sensor-description+
+			     :address          +name-sensor-address+
+			     :path             +name-sensor-path+
+			     :secret           +name-sensor-secret-name+
+			     :script           +name-sensor-script+))))
       (with-standard-html-frame (stream (_ "Update Sensor")
 					:infos infos :errors errors)
 	(html-template:fill-and-print-template #p"update-sensor.tpl"
@@ -442,7 +444,7 @@
 	(manage-update-sensor nil nil (list *insufficient-privileges-message*)))))
 
   (define-lab-route list-all-sensors-maps ("/sensors-list-all-maps/:sensor-id" :method :get)
-    (gen-list-all-maps sensor-id assoc-sensor-map))
+    (gen-list-all-maps sensor-id assoc-sensor-map :back-route sensor))
 
 
   (define-lab-route ws-sensors-associated-w-map ("/ws/sensors/maps/:id" :method :get)

@@ -84,19 +84,20 @@
 	    (json-addresses    (array-autocomplete-address))
 	    (json-addresses-id (array-autocomplete-address-id)))
 	(html-template:fill-and-print-template #p"add-building.tpl"
-					       (with-path-prefix
-						   :name-lb       (_ "Name")
-						   :address-lb    (_ "Address")
-						   :link-lb       (_ "Link")
-						   :operations-lb (_ "Operations")
-						   :id         +name-building-id+
-						   :name       +name-building-proper-name+
-						   :address    +name-building-address+
-						   :address-id +name-building-address-id+
-						   :link       +name-building-address-link+
-						   :json-addresses json-addresses
-						   :json-addresses-id json-addresses-id
-						   :data-table all-buildings)
+					       (with-back-to-root
+						   (with-path-prefix
+						       :name-lb       (_ "Name")
+						       :address-lb    (_ "Address")
+						       :link-lb       (_ "Link")
+						       :operations-lb (_ "Operations")
+						       :id         +name-building-id+
+						       :name       +name-building-proper-name+
+						       :address    +name-building-address+
+						       :address-id +name-building-address-id+
+						       :link       +name-building-address-link+
+						       :json-addresses json-addresses
+						       :json-addresses-id json-addresses-id
+						       :data-table all-buildings))
 					       :stream stream)))))
 
 (defun add-new-building (name address-id)

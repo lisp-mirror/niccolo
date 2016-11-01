@@ -295,7 +295,6 @@
     })
 </script>
 
+<!-- TMPL_INCLUDE 'back-button.tpl' -->
 
-<canvas id="map">
-
-</canvas>
+<canvas id="map"></canvas>

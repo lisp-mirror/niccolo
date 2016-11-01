@@ -76,18 +76,19 @@
  	    (json-addresses    (array-autocomplete-ghs-hazard-statement))
  	    (json-addresses-id (array-autocomplete-ghs-hazard-statement-id)))
  	(html-template:fill-and-print-template #p"assoc-chem-haz.tpl"
-					       (with-path-prefix
-						   :name-lb       (_ "Name")
-						   :description-lb (_ "Description")
-						   :operations-lb (_ "Operations")
-						   :compound-name (db:name compound)
-						   :haz-desc      +name-haz-desc+
-						   :haz-code-id   +name-hazcode-id+
-						   :haz-compound-id +name-haz-compound-id+
-						   :value-haz-compound-id (db:id compound)
-						   :json-haz-code json-addresses
-						   :json-haz-id json-addresses-id
-						   :data-table hazcodes-owned)
+					       (with-back-uri (chemical)
+						 (with-path-prefix
+						     :name-lb       (_ "Name")
+						     :description-lb (_ "Description")
+						     :operations-lb (_ "Operations")
+						     :compound-name (db:name compound)
+						     :haz-desc      +name-haz-desc+
+						     :haz-code-id   +name-hazcode-id+
+						     :haz-compound-id +name-haz-compound-id+
+						     :value-haz-compound-id (db:id compound)
+						     :json-haz-code json-addresses
+						     :json-haz-id json-addresses-id
+						     :data-table hazcodes-owned))
  					       :stream stream)))))
 
 (defun add-new-assoc-chem-haz (haz-id chem-id)

@@ -66,18 +66,19 @@
  	    (json-addresses    (array-autocomplete-ghs-precautionary-statement))
  	    (json-addresses-id (array-autocomplete-ghs-precautionary-statement-id)))
  	(html-template:fill-and-print-template #p"assoc-chem-prec.tpl"
-					       (with-path-prefix
-						   :name-lb       (_ "Name")
-						   :description-lb (_ "Description")
-						   :operations-lb (_ "Operations")
-						   :compound-name (db:name compound)
-						   :prec-desc      +name-prec-desc+
-						   :prec-code-id   +name-preccode-id+
-						   :prec-compound-id +name-prec-compound-id+
-						   :value-prec-compound-id (db:id compound)
-						   :json-prec-code json-addresses
-						   :json-prec-id json-addresses-id
-						   :data-table preccodes-owned)
+					       (with-back-uri (chemical)
+						 (with-path-prefix
+						     :name-lb                (_ "Name")
+						     :description-lb         (_ "Description")
+						     :operations-lb          (_ "Operations")
+						     :compound-name          (db:name compound)
+						     :prec-desc              +name-prec-desc+
+						     :prec-code-id           +name-preccode-id+
+						     :prec-compound-id       +name-prec-compound-id+
+						     :value-prec-compound-id (db:id compound)
+						     :json-prec-code         json-addresses
+						     :json-prec-id           json-addresses-id
+						     :data-table             preccodes-owned))
  					       :stream stream)))))
 
 (defun add-new-assoc-chem-prec (prec-id chem-id)

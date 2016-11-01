@@ -65,7 +65,8 @@
 	 (json-addresses-id (array-autocomplete-address-id))
 	 (new-building (and id
 			    (object-exists-in-db-p 'db:building id)))
-	 (template      (with-path-prefix
+	 (template     (with-back-uri (building)
+			 (with-path-prefix
 			    :name-lb          (_ "Name")
 			    :address-lb       (_ "Address")
 			    :id               (and id
@@ -83,7 +84,7 @@
 			    :name        +name-building-proper-name+
 			    :address-id  +name-building-address-id+
 			    :json-addresses json-addresses
-			    :json-addresses-id json-addresses-id)))
+			    :json-addresses-id json-addresses-id))))
     (with-standard-html-frame (stream (_ "Update Building") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-building.tpl"
 					     template

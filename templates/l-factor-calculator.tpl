@@ -136,6 +136,9 @@
     </label>
     <input type="text" id="safety-threshold" value="0.1" />
     <input id="start" type="submit" value="Calculate" />
+
+    <!-- TMPL_INCLUDE 'back-button.tpl' -->
+
     <table id="results">
       <tr>
 	<th>

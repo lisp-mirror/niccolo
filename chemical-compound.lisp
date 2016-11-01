@@ -74,16 +74,17 @@
 				      :infos infos
 				      :errors errors)
       (html-template:fill-and-print-template #p"add-chemical.tpl"
-					     (with-path-prefix
-						 :name-lb       (_ "Name")
-						 :msds-file-lb  (_ "MSDS file")
-						 :data-sheet-lb (_ "Data Sheet")
-						 :operations-lb (_ "Operations")
-						 :id +name-chem-id+
-						 :name +name-chem-proper-name+
-						 :msds-pdf +name-chem-msds-data+
-						 :pubchem-cid +name-chem-cid+
-						 :data-table all-chem)
+					     (with-back-to-root
+						 (with-path-prefix
+						     :name-lb       (_ "Name")
+						     :msds-file-lb  (_ "MSDS file")
+						     :data-sheet-lb (_ "Data Sheet")
+						     :operations-lb (_ "Operations")
+						     :id +name-chem-id+
+						     :name +name-chem-proper-name+
+						     :msds-pdf +name-chem-msds-data+
+						     :pubchem-cid +name-chem-cid+
+						     :data-table all-chem))
 					     :stream stream))))
 
 (define-lab-route chemical-get-msds ("/chemical-msds/:id" :method :get)

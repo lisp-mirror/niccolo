@@ -34,3 +34,5 @@
   </span>
   <input type="submit" />
 </form>
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->

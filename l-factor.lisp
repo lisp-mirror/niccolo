@@ -81,53 +81,57 @@
 
 (define-lab-route l-factor ("/l-factor-calculator/" :method :get)
   (with-authentication
-    (let ((service-link (restas:genurl 'l-factor-i)))
+    (let* ((service-link (restas:genurl 'l-factor-i))
+	   (template     (with-back-to-root
+			     (with-path-prefix
+				 :service-link         service-link
+				 :h-phrase-lb          (_ "H phrase")
+				 :exposition-types-lb  (_ "Exposition types")
+				 :physical-state-lb    (_ "Physical state")
+				 :working-temp-lb   (_ "Working temperature (°C)")
+				 :boiling-point-lb     (_ "Boiling point (°C)")
+				 :exposition-time-type-lb
+				 (_ "Exposition time type")
+				 :exposition-time-lb   (_ "Exposition time (min)")
+				 :usage-lb             (_ "Usage")
+				 :quantity-used-lb     (_ "Quantity used (g)")
+				 :quantity-stocked-lb  (_ "Quantity stocked (g)")
+				 :work-type-lb         (_ "Work type")
+				 :protection-factors-lb (_ "Protection factors")
+				 :safety-threshold-lb   (_ "Safety threshold")
+				 :results-lb            (_ "Results")
+				 :errors-lb             (_ "Errors")
+				 :option-h-codes       (fetch-all-ghs)
+				 :option-exp-types     (select-exp-types)
+				 :option-phys-states   (select-phys-state)
+				 :option-exp-time-type (select-exp-time-type)
+				 :option-usages        (select-usage)
+				 :option-work-types    (select-work-type)
+				 :option-protection-factors
+				 (select-protection-factors)))))
       (with-standard-html-frame (stream "Risk Calculator" :errors nil :infos nil)
 	(html-template:fill-and-print-template #p"l-factor-calculator.tpl"
-					       (with-path-prefix
-						   :service-link         service-link
-						   :h-phrase-lb          (_ "H phrase")
-						   :exposition-types-lb  (_ "Exposition types")
-						   :physical-state-lb    (_ "Physical state")
-						   :working-temp-lb   (_ "Working temperature (°C)")
-						   :boiling-point-lb     (_ "Boiling point (°C)")
-						   :exposition-time-type-lb
-						   (_ "Exposition time type")
-						   :exposition-time-lb   (_ "Exposition time (min)")
-						   :usage-lb             (_ "Usage")
-						   :quantity-used-lb     (_ "Quantity used (g)")
-						   :quantity-stocked-lb  (_ "Quantity stocked (g)")
-						   :work-type-lb         (_ "Work type")
-						   :protection-factors-lb (_ "Protection factors")
-						   :safety-threshold-lb   (_ "Safety threshold")
-						   :results-lb            (_ "Results")
-						   :errors-lb             (_ "Errors")
-						   :option-h-codes       (fetch-all-ghs)
-						   :option-exp-types     (select-exp-types)
-						   :option-phys-states   (select-phys-state)
-						   :option-exp-time-type (select-exp-time-type)
-						   :option-usages        (select-usage)
-						   :option-work-types    (select-work-type)
-						   :option-protection-factors
-						   (select-protection-factors))
+					       template
 					       :stream stream)))))
 
 (define-lab-route l-factor-carc ("/l-factor-carc-calculator/" :method :get)
   (with-authentication
-    (let ((service-link (restas:genurl 'l-factor-carc-i)))
+    (let* ((service-link (restas:genurl 'l-factor-carc-i))
+	   (template     (with-back-to-root
+			     (with-path-prefix
+				 :service-link              service-link
+				 :protective-devices-lb     (_ "Protective devices")
+				 :physical-states-lb        (_ "Physical state")
+				 :working-temp-lb           (_ "Working temperature (°C)")
+				 :boiling-point-lb          (_ "Boiling point (°C)")
+				 :quantity-used-lb          (_ "Quantity used (g)")
+				 :usage-per-day-lb          (_ "Usage per day (min.)")
+				 :usage-per-year-lb         (_ "Usage per year (days)")
+				 :results-lb                (_ "Results")
+				 :errors-lb                 (_ "Errors")
+				 :option-protective-devices (select-prot-devices)
+				 :option-phys-states        (select-phys-state-carc)))))
       (with-standard-html-frame (stream "Risk Calculator, carcinogenic" :errors nil :infos nil)
 	(html-template:fill-and-print-template #p"l-factor-calculator-carc.tpl"
-					       (with-path-prefix
-						   :service-link         service-link
-						   :protective-devices-lb (_ "Protective devices")
-						   :physical-states-lb    (_ "Physical state")
-						   :working-temp-lb  (_ "Working temperature (°C)")
-						   :boiling-point-lb    (_ "Boiling point (°C)")
-						   :quantity-used-lb     (_ "Quantity used (g)")
-						   :usage-per-day-lb    (_ "Usage per day (min.)")
-						   :usage-per-year-lb (_ "Usage per year (days)")
-						   :results-lb            (_ "Results")
-						   :errors-lb             (_ "Errors")
-						   :option-protective-devices (select-prot-devices)
-						   :option-phys-states   (select-phys-state-carc))
+					       template
 					       :stream stream)))))

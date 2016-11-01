@@ -86,6 +86,9 @@ $(function() {
 <label for="usage-per-year"><!-- TMPL_VAR usage-per-year-lb --></label>
 <input type="text" id="usage-per-year" value="100"/xk>
 <input id="start" type="submit" value="Calculate" />
+
+<!-- TMPL_INCLUDE 'back-button.tpl' -->
+
 <table id="results">
   <tr>
     <th>

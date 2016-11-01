@@ -116,18 +116,19 @@
 	    (json-building    (array-autocomplete-building))
 	    (json-building-id (array-autocomplete-building-id)))
 	(html-template:fill-and-print-template #p"add-storage.tpl"
-					       (with-path-prefix
-						   :name-lb       (_ "Name")
-						   :building-lb   (_ "Building")
-						   :floor-lb      (_ "Floor")
-						   :map-lb        (_ "Map")
-						   :operations-lb (_ "Operations")
-						   :name        +name-storage-proper-name+
-						   :building-id +name-storage-building-id+
-						   :floor       +name-storage-floor+
-						   :json-buildings    json-building
-						   :json-buildings-id json-building-id
-						   :data-table all-storages)
+					       (with-back-to-root
+						   (with-path-prefix
+						       :name-lb       (_ "Name")
+						       :building-lb   (_ "Building")
+						       :floor-lb      (_ "Floor")
+						       :map-lb        (_ "Map")
+						       :operations-lb (_ "Operations")
+						       :name        +name-storage-proper-name+
+						       :building-id +name-storage-building-id+
+						       :floor       +name-storage-floor+
+						       :json-buildings    json-building
+						       :json-buildings-id json-building-id
+						       :data-table all-storages))
 					       :stream stream)))))
 
 (defun add-new-storage (name building-id floor)
@@ -242,32 +243,37 @@
 		(restas:redirect 'storage))))
       (manage-storage nil (list *insufficient-privileges-message*)))))
 
-(defmacro gen-list-all-maps (id route-symbol)
-  `(with-authentication
-     (with-admin-privileges
-	 (progn
-	   (if (not (regexp-validate (list (list ,id +pos-integer-re+ "no"))))
-	       (let ((all-maps (loop for i in (filter 'db:plant-map) collect
-				   (list :map-image-src  (restas:genurl 'get-plant-map
-									:id (db:id i))
-					 :map-image-desc (db:description i)
-					 :action (restas:genurl ',route-symbol
-								:mid (db:id i)
-								:sid ,id)
-					 :coord-name +map-image-coord-name+
-					 :name-map-image-id +name-map-image-id+
-					 :map-image-id      (db:id i)
-					 :map-image-name-building-id +map-image-name-building-id+
-					 :map-image-building-id      ,id))))
-		(with-standard-html-frame (stream
-					   "Add Map"
-					   :errors nil
-					   :infos  nil)
-		  (html-template:fill-and-print-template #p"list-all-maps.tpl"
-							 (list :all-images all-maps)
-							 :stream stream)))
-	      +http-not-found+))
-      (manage-storage nil (list *insufficient-privileges-message*)))))
+(defmacro gen-list-all-maps (id route-symbol &key (back-route nil))
+  (with-gensyms (all-maps)
+    `(with-authentication
+       (with-admin-privileges
+	   (progn
+	     (if (not (regexp-validate (list (list ,id +pos-integer-re+ "no"))))
+		 (let ((,all-maps (loop for i in (filter 'db:plant-map) collect
+				       (list :map-image-src     (restas:genurl 'get-plant-map
+									       :id (db:id i))
+					     :map-image-desc    (db:description i)
+					     :action            (restas:genurl ',route-symbol
+									       :mid (db:id i)
+									       :sid ,id)
+					     :coord-name        +map-image-coord-name+
+					     :name-map-image-id +name-map-image-id+
+					     :map-image-id      (db:id i)
+					     :map-image-name-building-id
+					     +map-image-name-building-id+
+					     :map-image-building-id      ,id))))
+		   (with-standard-html-frame (stream
+					      "Add Map"
+					      :errors nil
+					      :infos  nil)
+		     (html-template:fill-and-print-template #p"list-all-maps.tpl"
+							    ,(if back-route
+								 `(with-back-uri (,back-route)
+								    (list :all-images ,all-maps))
+								 `(list :all-images ,all-maps))
+							    :stream stream)))
+		 +http-not-found+))
+	 (manage-storage nil (list *insufficient-privileges-message*))))))
 
 (define-lab-route list-all-storage-maps ("/storage-list-all-maps/:storage-id" :method :get)
-  (gen-list-all-maps storage-id assoc-storage-map))
+  (gen-list-all-maps storage-id assoc-storage-map :back-route storage))

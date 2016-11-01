@@ -67,31 +67,32 @@
   (let* ((html-template:*string-modifier* #'identity)
 	 (json-buildings    (array-autocomplete-building))
 	 (json-buildings-id (array-autocomplete-building-id))
-	 (new-storage (and id
-			   (object-exists-in-db-p 'db:storage id)))
-	 (template    (with-path-prefix
-			  :name-lb     (_ "Name")
-			  :building-lb (_ "Building")
-			  :floor-lb    (_ "Floor")
-			  :id               (and id
-						 (db:id new-storage))
-			  :name-value       (and id
-						 (db:name new-storage))
-			  :building-id-value (and id
-						  (db:building-id new-storage))
-			  :building-value    (and id
-						  (single 'db:building
-							  :id (db:building-id new-storage))
-						  (db:build-description
-						   (single 'db:building
-							   :id (db:building-id new-storage))))
-			  :floor-value       (and id
-						  (db:floor-number new-storage))
-			  :name              +name-storage-proper-name+
-			  :building-id       +name-storage-building-id+
-			  :floor             +name-storage-floor+
-			  :json-buildings    json-buildings
-			  :json-buildings-id json-buildings-id)))
+	 (new-storage       (and id
+				 (object-exists-in-db-p 'db:storage id)))
+	 (template          (with-back-uri (storage)
+			      (with-path-prefix
+				  :name-lb          (_ "Name")
+				  :building-lb      (_ "Building")
+				  :floor-lb         (_ "Floor")
+				  :id               (and id
+							 (db:id new-storage))
+				  :name-value       (and id
+							 (db:name new-storage))
+				  :building-id-value (and id
+							  (db:building-id new-storage))
+				  :building-value  (and id
+							(single 'db:building
+								:id (db:building-id new-storage))
+							(db:build-description
+							 (single 'db:building
+								 :id (db:building-id new-storage))))
+				  :floor-value     (and id
+							(db:floor-number new-storage))
+				  :name              +name-storage-proper-name+
+				  :building-id       +name-storage-building-id+
+				  :floor             +name-storage-floor+
+				  :json-buildings    json-buildings
+				  :json-buildings-id json-buildings-id))))
     (with-standard-html-frame (stream (_ "Update Storage")
 				      :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-storage.tpl"
