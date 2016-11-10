@@ -174,7 +174,7 @@
 
 (define-lab-route add-storage ("/add-storage/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (add-new-storage (get-parameter +name-storage-proper-name+)
 			   (get-parameter +name-storage-building-id+)
@@ -183,7 +183,7 @@
 
 (define-lab-route delete-storage ("/delete-storage/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:storage :id id)))
@@ -194,7 +194,7 @@
 
 (define-lab-route assoc-storage-map ("/assoc-storage-map/:mid/:sid" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
 		 (y (get-parameter (format nil "~a.y" +map-image-coord-name+)))
@@ -246,7 +246,7 @@
 (defmacro gen-list-all-maps (id route-symbol &key (back-route nil))
   (with-gensyms (all-maps)
     `(with-authentication
-       (with-admin-privileges
+       (with-editor-or-above-privileges
 	   (progn
 	     (if (not (regexp-validate (list (list ,id +pos-integer-re+ "no"))))
 		 (let ((,all-maps (loop for i in (filter 'db:plant-map) collect

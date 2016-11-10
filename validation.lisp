@@ -98,6 +98,14 @@
        (string/= s "")
        (scan (concatenate 'string "^" +path-prefix+ "/") s)))
 
+(defun user-level-validate-p (level &key (permit-admin nil))
+  (and (integer-positive-validate level)
+       (or permit-admin
+	   (> (parse-integer level) +admin-acl-level+))
+       (or (= (parse-integer level) +admin-acl-level+)
+	   (= (parse-integer level) +editor-acl-level+)
+	   (= (parse-integer level) +user-acl-level+))))
+
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))
 

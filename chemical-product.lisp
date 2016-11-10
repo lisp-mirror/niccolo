@@ -439,7 +439,8 @@
 	    (if errors
 		(manage-chem-prod nil errors)
 		(manage-chem-prod (list (_ "Successfully added products")) nil
-				  :data (fetch-product-min-id max-id 'delete-chem-prod))))
+				  :data (fetch-product-min-id max-id 'delete-chem-prod
+							             'update-chemical-product))))
 	  (manage-chem-prod nil (list (_ "Item count must be a positive integer")))))))
 
 (define-lab-route delete-chem-prod ("/delete-chem-prod/:id/:owner" :method :get)

@@ -68,7 +68,7 @@
 
 (define-lab-route update-map-route ("/update-map/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(let ((new-description (get-parameter +name-map-description+)))
 	  (if new-description
 	      (update-map id new-description)

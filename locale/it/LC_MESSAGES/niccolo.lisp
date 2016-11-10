@@ -2590,4 +2590,16 @@ translation "Indietro"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Level"
+translation "Livello"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "User level not allowed"
+translation "Livello non ammesso"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

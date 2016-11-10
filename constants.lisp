@@ -27,7 +27,9 @@
 
 (define-constant +admin-acl-level+               0                           :test #'=)
 
-(define-constant +user-acl-level+                10                          :test #'=)
+(define-constant +editor-acl-level+              5                           :test #'=)
+
+(define-constant +user-acl-level+               10                           :test #'=)
 
 (define-constant +user-account-enabled+          1                           :test #'=)
 
@@ -41,9 +43,9 @@
 
 (define-constant +ghs-carcinogenic-code+         "1"                         :test #'string=)
 
-(define-constant +page-margin-top+               20                          :test #'=)
+(define-constant +page-margin-top+              20                           :test #'=)
 
-(define-constant +page-margin-left+              20                          :test #'=)
+(define-constant +page-margin-left+             20                           :test #'=)
 
 (define-constant +data-path+                     #p "data/"                  :test #'equal)
 

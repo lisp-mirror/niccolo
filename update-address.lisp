@@ -89,7 +89,7 @@
 
 (define-lab-route update-address ("/update-address/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((new-line-1   (get-parameter +name-address-line-1+))
 		(new-city     (get-parameter +name-address-city+))

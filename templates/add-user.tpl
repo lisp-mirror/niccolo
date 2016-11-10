@@ -11,16 +11,22 @@
   <input id="login-password" type="password"
 	 name="<!-- TMPL_VAR login-pass -->"
 	 value="<!-- TMPL_VAR password-value -->">
-
+  <label for="levels-select"><!-- TMPL_VAR levels-options-lb --></label>
+  <select id="levels-select" name="<!-- TMPL_VAR levels-select -->">
+    <option value="-1"></option>
+    <!-- TMPL_LOOP level-options -->
+    <option value="<!-- TMPL_VAR level -->"><!-- TMPL_VAR expl --></option>
+    <!-- /TMPL_LOOP  -->
+  </select>
   <input id="login-submit" type="submit" value="Add user">
 </form>
-
 
 <table class="sortable user-list">
   <thead>
     <tr>
       <th class="name-hd"><!-- TMPL_VAR name-lb --></th>
       <th class="name-hd"><!-- TMPL_VAR email-lb --></th>
+      <th class="level-hd"><!-- TMPL_VAR level-lb --></th>
       <th class="user-op-hd"><!-- TMPL_VAR operations-lb --></th>
     </tr>
   </thead>
@@ -42,6 +48,10 @@
 
     <td class="email">
       <!-- TMPL_VAR email -->
+    </td>
+
+    <td class="level">
+      <!-- TMPL_VAR level-expl -->
     </td>
 
     <td class="delete-link">

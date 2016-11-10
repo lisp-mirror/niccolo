@@ -98,27 +98,28 @@
 				      :infos infos
 				      :errors errors)
       (html-template:fill-and-print-template #p"update-chemical-product.tpl"
-					     (with-path-prefix
-						 :expire-date-lb    (_ "Expire date")
-						 :validity-date-lb  (_ "Validity date")
-						 :quantity-lb      (_ "Quantity (Mass or Volume)")
-						 :units-lb          (_ "Unit of measure")
-						 :id   (and id
-							    (db:id new-chem-prod))
-						 :validity-date +name-validity-date+
-						 :expire-date   +name-expire-date+
-						 :quantity    +name-quantity+
-						 :units       +name-units+
-						 :quantity-value  (and id
-								       (db:quantity new-chem-prod))
-						 :units-value     (and id
-								       (db:units new-chem-prod))
-						 :validity-date-value
-						 (decode-date-string
-						  (db:validity-date new-chem-prod))
-						 :expire-date-value
-						 (decode-date-string
-						  (db:expire-date new-chem-prod)))
+					     (with-back-uri (chem-prod)
+					       (with-path-prefix
+						   :expire-date-lb    (_ "Expire date")
+						   :validity-date-lb  (_ "Validity date")
+						   :quantity-lb      (_ "Quantity (Mass or Volume)")
+						   :units-lb          (_ "Unit of measure")
+						   :id   (and id
+							      (db:id new-chem-prod))
+						   :validity-date +name-validity-date+
+						   :expire-date   +name-expire-date+
+						   :quantity    +name-quantity+
+						   :units       +name-units+
+						   :quantity-value  (and id
+									 (db:quantity new-chem-prod))
+						   :units-value     (and id
+									 (db:units new-chem-prod))
+						   :validity-date-value
+						   (decode-date-string
+						    (db:validity-date new-chem-prod))
+						   :expire-date-value
+						   (decode-date-string
+						    (db:expire-date new-chem-prod))))
 					     :stream stream))))
 
 (define-lab-route update-chemical-product ("/update-chemical-product/:id/:owner" :method :get)

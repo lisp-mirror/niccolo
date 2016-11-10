@@ -91,6 +91,7 @@
    :+admin-name+
    :+admin-acl-level+
    :+user-acl-level+
+   :+editor-acl-level+
    :+user-account-enabled+
    :+user-session+
    :+auth-name-login-name+
@@ -288,6 +289,7 @@
    :integer-%-validate
    :integer-positive-validate
    :cookie-key-script-visited-validate
+   :user-level-validate-p
    :strip-tags
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+

@@ -63,7 +63,7 @@
 				      :infos infos
 				      :errors errors)
       (html-template:fill-and-print-template #p"update-chemical.tpl"
-					     (with-back-to-root
+					     (with-back-uri (chemical)
 						 (with-path-prefix
 						     :name-lb    (_ "Name")
 						     :id         (and id
@@ -78,7 +78,7 @@
 
 (define-lab-route update-chemical ("/update-chemical/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((new-name     (get-parameter +name-chem-proper-name+))
 		(new-cid      (get-parameter +name-chem-cid+)))

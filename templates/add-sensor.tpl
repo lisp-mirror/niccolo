@@ -14,7 +14,6 @@
     })
 </script>
 
-
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-sensor/">
   <label for="description-text"><!-- TMPL_VAR description-lb --></label>
   <input id="description-text" type="text" name="<!-- TMPL_VAR description -->" />
@@ -98,7 +97,7 @@
 	<div class="edit-button">&nbsp;</div>
       </a>
       <!-- TMPL_IF has-sensor-log -->
-      <a href="<!-- TMPL_VAR graph-sensor-link -->">
+      <a target="_blank" href="<!-- TMPL_VAR graph-sensor-link -->">
 	<div class="graph-button">&nbsp;</div>
       </a>
       <!-- /TMPL_IF -->

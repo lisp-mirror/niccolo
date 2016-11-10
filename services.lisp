@@ -137,6 +137,8 @@
        +http-not-found+))
 
 (define-lab-route ws-query-product (+query-product-path+ :method :post)
+  "This service is reponsible for accepting a federated query.
+   The client is another federated node."
   (with-federated-query-enabled
     (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
       (if query
@@ -169,6 +171,8 @@
 	  +http-not-found+))))
 
 (define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
+  "This service accepts and save the results of a query product from remote node.
+   The local node is the one that has has started the query."
   (with-federated-query-enabled
     (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
       (if response
@@ -185,6 +189,7 @@
 	  +http-not-found+))))
 
 (define-lab-route ws-query-visited (+query-visited+ :method :post)
+  "This service return true if this node has been visited before for this query-id"
   (with-federated-query-enabled
     (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
       (if query
@@ -199,6 +204,8 @@
 	  +http-not-found+))))
 
 (define-lab-route ws-federated-query-product ("/ws/fq-product" :method :get)
+  "This service starts the federated query for products return to client (browser) the query-id.
+   Usually this is used from ajax calls"
   (with-federated-query-enabled
     (with-authentication
       (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
@@ -212,6 +219,10 @@
 	    +http-not-found+)))))
 
 (define-lab-route ws-federated-query-product-results ("/ws/fq-product-res" :method :get)
+  "This  service  return  to  client  (browser)  the  results  of  the
+   federated query collected so far, if any.
+
+   Usually this is used from ajax calls"
   (with-federated-query-enabled
     (with-authentication
       (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)

@@ -128,7 +128,7 @@
 
 (define-lab-route add-assoc-chem-prec ("/add-assoc-chem-prec/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (add-new-assoc-chem-prec (get-parameter +name-preccode-id+)
 				   (get-parameter +name-prec-compound-id+)))
@@ -136,7 +136,7 @@
 
 (define-lab-route delete-assoc-chem-prec ("/delete-assoc-chem-prec/:id/:id-chem" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))

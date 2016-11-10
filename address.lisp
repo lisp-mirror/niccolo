@@ -94,7 +94,7 @@
 
 (define-lab-route add-address ("/add-address/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (add-new-address (get-parameter +name-address-line-1+)
 			   (get-parameter +name-address-city+)
@@ -104,7 +104,7 @@
 
 (define-lab-route delete-address ("/delete-address/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:address :id id)))

@@ -104,7 +104,7 @@
 
 (define-lab-route add-chemical ("/add-chemical/" :method :post)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((name     (tbnl:post-parameter +name-chem-proper-name+))
 		(cid      (tbnl:post-parameter +name-chem-cid+))
@@ -125,7 +125,7 @@
 
 (define-lab-route subst-msds ("/subst-msds/:id" :method :post)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((has-not-errors  (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 				      (get-post-filename +name-chem-msds-data+)

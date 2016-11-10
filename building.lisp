@@ -141,7 +141,7 @@
 
 (define-lab-route add-building ("/add-building/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (add-new-building (get-parameter +name-building-proper-name+)
 			    (get-parameter +name-building-address-id+)))
@@ -149,7 +149,7 @@
 
 (define-lab-route delete-building ("/delete-building/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:building :id id)))

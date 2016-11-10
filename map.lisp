@@ -149,7 +149,7 @@
 
 (define-lab-route add-map ("/add-map/" :method :post)
   (with-authentication
-      (with-admin-privileges
+      (with-editor-or-above-privileges
 	  (progn
 	    (let ((description (tbnl:post-parameter +name-map-description+))
 		  (filename    (get-post-filename +name-map-data+)))
@@ -158,7 +158,7 @@
 
 (define-lab-route subst-map-file ("/subst-map-file/:id" :method :post)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((has-not-errors  (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 				      (get-post-filename +name-map-data+)

@@ -194,3 +194,15 @@
   `(if (session-admin-p)
        ,if-admin
        ,if-not))
+
+(defmacro with-minimum-level ((level) passed not-passed)
+  (with-gensyms (user)
+    `(with-session-user (,user)
+       (if (<= (db:level ,user) ,level)
+	   ,passed
+	   ,not-passed))))
+
+(defmacro with-editor-or-above-privileges (passed not-passed)
+  `(with-minimum-level (+editor-acl-level+)
+     ,passed
+     ,not-passed))

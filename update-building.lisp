@@ -92,7 +92,7 @@
 
 (define-lab-route update-building-route ("/update-building/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-editor-or-above-privileges
 	(progn
 	  (let ((new-name       (get-parameter +name-building-proper-name+))
 		(new-address-id (get-parameter +name-building-address-id+)))

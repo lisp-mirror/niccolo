@@ -31,9 +31,26 @@
 
 (define-constant +name-pref-locale+       "locale"       :test #'string=)
 
-(define-constant +name-pref-email+        "email"       :test #'string=)
+(define-constant +name-pref-email+        "email"        :test #'string=)
 
-(defun add-new-user (name email password)
+(define-constant +name-user-level+        "level"        :test #'string=)
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defparameter *admin-acl-level-expl*  "Administrator")
+
+  (defparameter *editor-acl-level-expl* "Editor")
+
+  (defparameter *user-acl-level-expl*   "User")
+
+  (define-constant +template-decode-acl+ (list (list :level +admin-acl-level+
+						     :expl  *admin-acl-level-expl*)
+					       (list :level +editor-acl-level+
+						     :expl  *editor-acl-level-expl*)
+					       (list :level +user-acl-level+
+						     :expl  *user-acl-level-expl*))
+    :test #'equalp))
+
+(defun add-new-user (name email password level)
   (let* ((errors-msg-invalid (regexp-validate (list
 					       (list name
 						     +free-text-re+
@@ -48,19 +65,24 @@
 					       (single 'db:user
 						       :username name))
 				      (list (_ "Username already in the database"))))
-	 (errors-msg (concatenate 'list errors-msg-invalid errors-msg-already-in-db))
+	 (errors-level-invalid      (if (not (user-level-validate-p level))
+					(list (_ "User level not allowed"))
+					nil))
+	 (errors-msg (concatenate 'list
+				  errors-msg-invalid
+				  errors-msg-already-in-db
+				  errors-level-invalid))
 	 (success-msg (and (not errors-msg)
 			   (list (format nil (_ "Saved username: ~s") name)))))
     (when (not errors-msg)
       (let* ((salt (generate-salt))
 	     (new-user (create 'db:user
-			       :username name
-			       :email email
-			       :password (encode-pass salt password)
-			       :salt     salt
-
+			       :username        name
+			       :email           email
+			       :password        (encode-pass salt password)
+			       :salt            salt
 			       :account-enabled +user-account-enabled+
-			       :level    +user-acl-level+)))
+			       :level           (parse-integer level))))
 	(create 'db:user-preferences
 		:owner (db:id new-user)
 		:language "")
@@ -166,31 +188,41 @@
 					   :stream stream)))
 
 (defun manage-user (infos errors)
-  (let ((all-users (mapcar #'(lambda (a)
-			       (append a
-				       (list :active-p (if (= (getf a :account-enabled)
-							      +user-account-enabled+)
-							   t
-							   nil))))
-			   (fetch-raw-template-list 'db:user
-						    '(:username :email :account-enabled)
-						    :delete-link 'delete-user
-						    :disable-link 'disable-user
-						    :enable-link  'enable-user))))
+  (let* ((all-users (mapcar #'(lambda (a)
+				(append a
+					(list :active-p (if (= (getf a :account-enabled)
+							       +user-account-enabled+)
+							    t
+							    nil))
+					(list :level-expl
+					      (fourth
+					       (find-if #'(lambda (tpl)
+							    (= (second tpl) (getf a :level)))
+							+template-decode-acl+)))))
+			    (fetch-raw-template-list 'db:user
+						     '(:username :email :account-enabled :level)
+						     :delete-link 'delete-user
+						     :disable-link 'disable-user
+						     :enable-link  'enable-user)))
+	 (template  (with-path-prefix
+			:name-lb           (_ "Name")
+			:password-lb       (_ "Password")
+			:email-lb          (_ "Email")
+			:level-lb          (_ "Level")
+			:levels-options-lb (_ "Level")
+			:operations-lb     (_ "Operations")
+			:password-value
+			#+mini-cas (string-utils::random-password)
+			#-mini-cas ""
+			:login-email       +name-user-email+
+			:login-name        +name-user-name+
+			:login-pass        +name-user-password+
+			:levels-select     +name-user-level+
+			:data-table        all-users
+			:level-options     +template-decode-acl+)))
     (with-standard-html-frame (stream (_ "Manage user") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-user.tpl"
-					     (with-path-prefix
-						 :name-lb       (_ "Name")
-						 :password-lb   (_ "Password")
-						 :email-lb      (_ "Email")
-						 :operations-lb (_ "Operations")
-						 :password-value
-						 #+mini-cas (string-utils::random-password)
-						 #-mini-cas ""
-						 :login-email   +name-user-email+
-						 :login-name +name-user-name+
-						 :login-pass +name-user-password+
-						 :data-table all-users)
+					     template
 					     :stream stream))))
 
 (defun change-locale (new-locale-key)
@@ -255,7 +287,6 @@
 	  (push (format nil (_ "No valid user id (id: ~a)") user-id) errors))
       (values infos errors))))
 
-
 (define-lab-route user ("/user/" :method :get)
   (with-authentication
     (with-admin-privileges
@@ -267,7 +298,8 @@
     (with-admin-privileges
 	(add-new-user (post-parameter +name-user-name+)
 		      (post-parameter +name-user-email+)
-		      (post-parameter +name-user-password+))
+		      (post-parameter +name-user-password+)
+		      (post-parameter +name-user-level+))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route add-admin-user ("/add-admin/" :method :get)
