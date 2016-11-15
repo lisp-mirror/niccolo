@@ -21,6 +21,8 @@
 
 (define-constant +name-prec-compound-id+ "prec-compound-id" :test #'string=)
 
+(define-constant +name-prec-code+        "code"             :test #'string=)
+
 (defun fetch-prec-from-compound-id (id &optional (delete-link nil))
   (let ((raw (query
 	      (select ((:as :chem.id               :chem-id)
@@ -39,7 +41,9 @@
 	       (code (getf row :|code|))
 	       (expl (getf row :|expl|)))
 	   (append
-	    (list :id id :desc (concatenate 'string code " " expl))
+	    (list :id   id
+		  :code code
+		  :desc (concatenate 'string code " " expl))
 	    (if delete-link
 		(list :delete-link (restas:genurl delete-link :id id :id-chem chem-id))))))))
 
@@ -143,5 +147,21 @@
 	    (let ((to-trash (single 'db:chemical-precautionary :id id)))
 	      (when to-trash
 		(del (single 'db:chemical-precautionary :id id))))
+	    (restas:redirect 'assoc-chem-prec :id id-chem)))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+
+(define-lab-route remove-prec-code-from-chem ("/remove-prec-code-from-chem/:id-prec/:id-chem"
+					      :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (when (and (not (regexp-validate (list (list id-prec  +pos-integer-re+ ""))))
+		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
+	    (let ((to-trash (single 'db:chemical-precautionary
+				    :ghs-p id-prec
+				    :compound-id id-chem)))
+	      (when to-trash
+		(del to-trash)))
 	    (restas:redirect 'assoc-chem-prec :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))

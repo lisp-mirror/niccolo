@@ -55,6 +55,29 @@
 				(plist-alist i)))
 	  +http-not-found+))))
 
+(define-lab-route ws-ghs-h-reverse-lookup ("/ws/GHS-h-reverse-lookup/" :method :get)
+  (with-authentication
+    (let* ((error-msg (regexp-validate (list (list (get-parameter +name-haz-code+)
+						   +ghs-hazard-code-re+
+						   (_ "Chemical compound id invalid")))))
+	   (code      (single 'db:ghs-hazard-statement :code (get-parameter +name-haz-code+))))
+      (if (and (not error-msg)
+	       code)
+	  (obj->json-string (db:id code))
+	  +http-not-found+))))
+
+(define-lab-route ws-ghs-p-reverse-lookup ("/ws/GHS-p-reverse-lookup/" :method :get)
+  (with-authentication
+    (let* ((error-msg (regexp-validate (list (list (get-parameter +name-prec-code+)
+						   +ghs-precautionary-code-re+
+						   (_ "Chemical compound id invalid")))))
+	   (code      (single 'db:ghs-precautionary-statement
+			      :code (get-parameter +name-prec-code+))))
+      (if (and (not error-msg)
+	       code)
+	  (obj->json-string (db:id code))
+	  +http-not-found+))))
+
 (define-lab-route single-barcode ("/ws/gen-barcode/:id" :method :get)
   (with-authentication
     (if (and (scan +pos-integer-re+ id)
@@ -149,7 +172,8 @@
 		   (products-plists (build-template-list-chemical-prod (query products-query)))
 		   (products-serialized (chemical-products-template->json-string products-plists
 										 :other-pairs
-										 (cons :host +hostname+)))
+										 (cons :host
+										       +hostname+)))
 		   (response (fq:make-query-product-response products-serialized
 							     (fq:id query)))
 		   (origin-host                (fq:origin-host query))
@@ -162,15 +186,45 @@
 						       :id          (fq:id query)
 						       :origin-host origin-host
 						       :port        origin-host-port)))
-		      (fq::federated-query-product req))
+		      (fq:federated-query-product req))
 		    (when products-plists
 		      (fq:send-response response origin-host origin-host-port
-					:path +post-query-product-results+))
+					:path +post-federated-query-results+))
 		    +http-ok+)
 		  +http-not-found+)))
 	  +http-not-found+))))
 
-(define-lab-route ws-query-product-results (+post-query-product-results+ :method :post)
+(define-lab-route ws-query-compound-hazard (+query-compound-hazard-path+ :method :post)
+  "This service is reponsible for accepting a federated query.
+   The client is another federated node."
+  (with-federated-query-enabled
+    (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+      (if query
+	  (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+	    (let* ((serialized-results (hazard-compound-summary-json (fq:request query)
+								     :other-pairs
+								     (list :host +hostname+)))
+		   (response           (fq:make-query-chem-compound-response serialized-results
+									     (fq:id query)))
+		   (origin-host        (fq:origin-host query))
+		   (origin-host-port   (fq:origin-host-port query)))
+	      (if (and origin-host
+		       origin-host-port)
+		  (progn
+		    ;; spawn request
+		    (let ((req (fq:make-query-chem-compound (fq:request query)
+							    :id          (fq:id query)
+							    :origin-host origin-host
+							    :port        origin-host-port)))
+		      (fq:federated-query req))
+		    (when serialized-results
+		      (fq:send-response response origin-host origin-host-port
+					:path +post-federated-query-results+))
+		    +http-ok+)
+		  +http-not-found+)))
+	  +http-not-found+))))
+
+(define-lab-route ws-query-product-results (+post-federated-query-results+ :method :post)
   "This service accepts and save the results of a query product from remote node.
    The local node is the one that has has started the query."
   (with-federated-query-enabled
@@ -215,10 +269,11 @@
 						 +free-text-re+
 						 (_ "free text validation failed"))))))
 	(if (not errors)
-	    (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+))
+	    (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+)
+					:set-me-visited t)
 	    +http-not-found+)))))
 
-(define-lab-route ws-federated-query-product-results ("/ws/fq-product-res" :method :get)
+(define-lab-route ws-federated-query-results ("/ws/fq-client-res" :method :get)
   "This  service  return  to  client  (browser)  the  results  of  the
    federated query collected so far, if any.
 
@@ -234,6 +289,22 @@
 	(if (not errors)
 	    (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
 	    +http-not-found+)))))
+
+(define-lab-route ws-federated-query-compound-hazard ("/ws/fq-chem-haz" :method :get)
+  "This service starts the federated query for products return to client (browser) the query-id.
+   Usually this is used from ajax calls"
+  (with-federated-query-enabled
+    (with-authentication
+      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +federated-query-product-re+
+						 (_ "no"))
+					   (list (tbnl:get-parameter +query-http-parameter-key+)
+						 +free-text-re+
+						 (_ "free text validation failed"))))))
+	(if (not errors)
+	    (fq:federated-query-chemical-hazard (tbnl:get-parameter +query-http-parameter-key+))
+	    +http-not-found+)))))
+
 ;;;; graph
 
 (define-lab-route display-sensor-log-graph ("/ws/sensor-log-graph/:id")

@@ -48,6 +48,16 @@
 	<a href="<!-- TMPL_VAR assoc-prec-link -->">
 	  <div class="ghs-prec-button">&nbsp;</div>
 	</a>
+	<a href="<!-- TMPL_VAR assoc-sec-fq-link -->">
+	  <div class="assoc-security-fq">
+	    <i
+	       class="fa fa-cloud-download fa-2x"
+	       style="color: #83D1E7"
+	       aria-hidden="true">
+	    </i>
+	</div>
+	</a>
+
         <script>
           $(function() {
 	      // Shorthand for $( document ).ready()

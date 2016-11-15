@@ -15,11 +15,13 @@
 
 (in-package :federated-query)
 
-(define-constant +query-chemical-product+    "chemical-product"      :test #'string=)
+(define-constant +query-chemical-product+             "chemical-product"        :test #'string=)
 
-(define-constant +chemical-product-response+ "chemical-product-resp" :test #'string=)
+(define-constant +query-chemical-compound+            "chemical-compound"       :test #'string=)
 
-(define-constant +query-node-visited+        "visited"               :test #'string=)
+(define-constant +query-node-visited+                 "visited"                 :test #'string=)
+
+(define-constant +query-http-timeout+                 30                        :test #'=)
 
 (defclass prototype ()
   ((lisp-package
@@ -71,6 +73,21 @@
     :initarg  :id
     :accessor id)))
 
+(defun make-query (class request &key
+				   (id nil)
+				   (origin-host nil)
+				   (port nil)
+				   (request-type +query-chemical-product+))
+  (make-instance class
+		 :id               (or id (next-query-id))
+		 :origin-host      (or origin-host +hostname+)
+		 :origin-host-port (or port (if (> +https-proxy-port+ 0)
+						+https-proxy-port+
+						+https-port+))
+		 :request-type (or request-type
+				   +query-chemical-product+)
+		 :request      request))
+
 (defclass query-response (json-deserializable identified-by-key)
   ((request-type
     :initform +query-chemical-product+
@@ -85,25 +102,41 @@
     :initarg  :id
     :accessor id)))
 
+(defun make-query-response (class query-id response &key (key +federated-query-key+))
+  (make-instance class
+		 :key              key
+		 :id               query-id
+		 :response         response))
+
 (defclass query-product (query) ())
 
-(defun make-query-product (name &key (id nil) (origin-host nil) (port nil))
-  (make-instance 'query-product
-		 :id               (or id (next-query-id))
-		 :origin-host      (or origin-host +hostname+)
-		 :origin-host-port (or port (if (> +https-proxy-port+ 0)
-						+https-proxy-port+
-						+https-port+))
-		 :request-type +query-chemical-product+
-		 :request      name))
+(defun make-query-product (request &key (id nil) (origin-host nil) (port nil))
+  (make-query 'query-product
+	      request
+	      :id            id
+	      :origin-host   origin-host
+	      :port          port
+	      :request-type  +query-chemical-product+))
 
 (defclass query-product-response (query-response) ())
 
 (defun make-query-product-response (serialized-products query-id)
-  (make-instance 'query-response
-		 :key              +federated-query-key+
-		 :id               query-id
-		 :response         serialized-products))
+  (make-query-response 'query-response query-id serialized-products))
+
+(defclass query-chem-compound (query) ())
+
+(defun make-query-chem-compound (request &key (id nil) (origin-host nil) (port nil))
+  (make-query 'query-chem-compound
+	      request
+	      :id            id
+	      :origin-host   origin-host
+	      :port          port
+	      :request-type  +query-chemical-compound+))
+
+(defclass query-chem-compound-response (query-response) ())
+
+(defun make-query-chem-compound-response (serialized-chem-compounds query-id)
+  (make-query-response 'query-response query-id serialized-chem-compounds))
 
 (defclass query-visited (query) ())
 
@@ -124,13 +157,17 @@
   (let ((uri (remote-uri (node-name node) (node-port node)
 			 (concatenate 'string +path-prefix+ path))))
     (setf (key object) +federated-query-key+)
-    (drakma:http-request uri
-			 :method :post
-			 :verify :required
-			 :parameters (list (cons +query-http-parameter-key+
-						 (obj->json-string object))))))
+    (with-http-ignored-errors (+query-http-timeout+)
+      (drakma:http-request uri
+			   :method :post
+			   :verify :required
+			   :parameters (list (cons +query-http-parameter-key+
+						   (obj->json-string object)))))))
 
 (defmethod send-query ((object query-product) node &key (path +query-product-path+))
+  (call-next-method object node :path path))
+
+(defmethod send-query ((object query-chem-compound) node &key (path +query-compound-hazard-path+))
   (call-next-method object node :path path))
 
 (defmethod send-query ((object query-visited) node &key (path +query-visited+))
@@ -139,25 +176,39 @@
 (defgeneric send-response (object destination port &key path))
 
 (defmethod send-response ((object query-response) destination port
-			  &key (path +post-query-product-results+))
+			  &key (path +post-federated-query-results+))
   (let ((uri (remote-uri destination port
 			 (concatenate 'string +path-prefix+ path))))
-    (drakma:http-request uri
-			 :method :post
-			 :verify :required
-			 :parameters (list (cons +query-http-response-key+
-						 (obj->json-string object))))))
+    (with-http-ignored-errors (+query-http-timeout+)
+      (drakma:http-request uri
+			   :method :post
+			   :verify :required
+			   :parameters (list (cons +query-http-response-key+
+						   (obj->json-string object)))))))
 
-(defun federated-query-product (request)
-  (let* ((req         (if (stringp request)
-			  (make-query-product request)
-			  request)))
-    (loop for node in (all-nodes) do
-	 (query-product-single-node req node))
-    (id req)))
+(defun federated-query (request)
+  (loop for node in (all-nodes) do
+       (query-single-node request node))
+  (id request))
 
-(defun query-product-single-node (request node)
-  (let* ((req-visited (make-query-visited (id request)))
-	 (response-visited (json-string->obj (send-query req-visited node))))
+(defun federated-query-product (request &key (set-me-visited nil))
+  (let* ((req (if (stringp request)
+		  (make-query-product request)
+		  request)))
+    (when set-me-visited
+      (set-visited (id req)))
+    (federated-query req)))
+
+(defun federated-query-chemical-hazard (request)
+  (let* ((req (if (stringp request)
+		  (make-query-chem-compound request)
+		  request)))
+    (federated-query req)))
+
+(defun query-single-node (request node)
+  (let* ((req-visited      (make-query-visited (id request)))
+	 (response-raw     (send-query req-visited node))
+	 (response-visited (and response-raw
+				(json-string->obj response-raw))))
     (when (and response-visited (not (fq:response response-visited)))
       (send-query request node))))

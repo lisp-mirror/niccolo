@@ -17,6 +17,8 @@
 
 (define-constant +name-haz-desc+        "desc"            :test #'string=)
 
+(define-constant +name-haz-code+        "code"            :test #'string=)
+
 (define-constant +name-hazcode-id+      "haz-code-id"     :test #'string=)
 
 (define-constant +name-haz-compound-id+ "haz-compound-id" :test #'string=)
@@ -45,10 +47,11 @@
 	       (carc          (getf row :|carc|))
 	       (pictogram-uri (pictogram-preview-url (getf row :|pictogram-id|))))
 	   (append
-	    (list :id id
-		  :desc (concatenate 'string code " " expl carc
-				     (and (string= +ghs-carcinogenic-code+ carc)
-					  (_ " Carcinogenic")))
+	    (list :id            id
+		  :code          code
+		  :desc          (concatenate 'string code " " expl carc
+					      (and (string= +ghs-carcinogenic-code+ carc)
+						   (_ " Carcinogenic")))
 		  :pictogram-uri pictogram-uri)
 	    (if delete-link
 		(list :delete-link (restas:genurl delete-link :id id :id-chem chem-id))))))))
@@ -72,23 +75,45 @@
  			       :errors errors
  			       :infos  infos)
 
-      (let ((html-template:*string-modifier* #'identity)
- 	    (json-addresses    (array-autocomplete-ghs-hazard-statement))
- 	    (json-addresses-id (array-autocomplete-ghs-hazard-statement-id)))
+      (let* ((html-template:*string-modifier* #'identity)
+	     (json-addresses    (array-autocomplete-ghs-hazard-statement))
+	     (json-addresses-id (array-autocomplete-ghs-hazard-statement-id))
+	     (template          (with-back-uri (chemical)
+				  (with-path-prefix
+				      :name-lb               (_ "Name")
+				      :description-lb        (_ "Description")
+				      :operations-lb         (_ "Operations")
+				      :origin-lb             (_ "Origin")
+				      :name-lb               (_ "Name")
+				      :hazard-codes-lb       (_ "GHS Hazard Codes")
+				      :prec-codes-lb         (_ "GHS precautionary statements")
+				      :operations-lb         (_ "Operations")
+				      :lookup-haz-code-url
+				      (restas:genurl 'ws-ghs-h-reverse-lookup)
+				      :lookup-prec-code-url
+				      (restas:genurl 'ws-ghs-p-reverse-lookup)
+				      :compound-name         (db:name compound)
+				      :haz-code-assoc-name   +name-haz-code+
+				      :prec-code-assoc-name  +name-prec-code+
+				      :haz-desc              +name-haz-desc+
+				      :haz-code-id           +name-hazcode-id+
+				      :haz-compound-id       +name-haz-compound-id+
+
+				      :prec-code-id          +name-preccode-id+
+				      :prec-compound-id      +name-prec-compound-id+
+
+				      :value-haz-compound-id (db:id compound)
+				      :json-haz-code         json-addresses
+				      :json-haz-id           json-addresses-id
+				      ;; federated query
+				      :fq-start-url
+				      (restas:genurl 'ws-federated-query-compound-hazard)
+				      :fq-results-url
+				      (restas:genurl 'ws-federated-query-results)
+				      :fq-query-key-param    +query-http-parameter-key+
+				      :data-table            hazcodes-owned))))
  	(html-template:fill-and-print-template #p"assoc-chem-haz.tpl"
-					       (with-back-uri (chemical)
-						 (with-path-prefix
-						     :name-lb       (_ "Name")
-						     :description-lb (_ "Description")
-						     :operations-lb (_ "Operations")
-						     :compound-name (db:name compound)
-						     :haz-desc      +name-haz-desc+
-						     :haz-code-id   +name-hazcode-id+
-						     :haz-compound-id +name-haz-compound-id+
-						     :value-haz-compound-id (db:id compound)
-						     :json-haz-code json-addresses
-						     :json-haz-id json-addresses-id
-						     :data-table hazcodes-owned))
+					       template
  					       :stream stream)))))
 
 (defun add-new-assoc-chem-haz (haz-id chem-id)
@@ -144,7 +169,7 @@
 				  (get-parameter +name-haz-compound-id+)))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
-(define-lab-route delete-assoc-chem-haz ("delete-assoc-chem-haz/:id/:id-chem" :method :get)
+(define-lab-route delete-assoc-chem-haz ("/delete-assoc-chem-haz/:id/:id-chem" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
 	(progn
@@ -153,5 +178,19 @@
 	    (let ((to-trash (single 'db:chemical-hazard :id id)))
 	      (when to-trash
 		(del (single 'db:chemical-hazard :id id))))
+	    (restas:redirect 'assoc-chem-haz :id id-chem)))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+
+(define-lab-route remove-haz-code-from-chem ("/remove-haz-code-from-chem/:id-haz/:id-chem"
+					     :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (when (and (not (regexp-validate (list (list id-haz  +pos-integer-re+ ""))))
+		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
+	    (let ((to-trash (single 'db:chemical-hazard :ghs-h id-haz :compound-id id-chem)))
+	      (when to-trash
+		(del to-trash)))
 	    (restas:redirect 'assoc-chem-haz :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))

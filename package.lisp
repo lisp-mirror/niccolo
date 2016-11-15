@@ -123,7 +123,8 @@
    :+no-html-tags-at-all+
    :+cookie-key-script-visited+
    :+query-product-path+
-   :+post-query-product-results+
+   :+query-compound-hazard-path+
+   :+post-federated-query-results+
    :+query-visited+
    :+query-http-parameter-key+
    :+query-http-response-key+))
@@ -358,6 +359,7 @@
      :get-max-id
      :object-exists-in-db-p
      :query-low-level
+     :db-nil-p
      :if-db-nil-else))
 
 (defpackage :db-config
@@ -426,7 +428,8 @@
    :temp-filename
    :open-log
    :to-log
-   :log-and-mail))
+   :log-and-mail
+   :with-http-ignored-errors))
 
 (defpackage :i18n
   (:use
@@ -559,11 +562,16 @@
    :send-query
    :send-response
    :federated-query-product
+   :federated-query-chemical-hazard
+   :federated-query
    :query-visited-p
    :set-visited
    :clear-visited
    :response
    :make-query-product-response
+   :make-query-product
+   :make-query-chem-compound
+   :make-query-chem-compound-response
    :make-visited-response
    :get-raw-results
    :get-serialized-results

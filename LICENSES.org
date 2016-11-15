@@ -118,6 +118,18 @@
   according to https://openclipart.org/detail/19980/graphs
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
+- www/images/icon-positive.png
+  derived from
+  © adlerweb
+  according to https://openclipart.org/detail/257086/positive-emblem-icon
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
+- www/images/icon-negative.png
+  derived from
+  © adlerweb
+  according to https://openclipart.org/detail/257087/negative-emblem-icon
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
 - data/font.afm
   Copyright (URW)++,Copyright 1999 by (URW)++ Design & Development
   Released under (GNU General Public License)
@@ -194,6 +206,13 @@
   Freely distributable and licensed under the MIT-style license.
   Copyright (c) 2014 Andrew Plummer
   http://sugarjs.com/
+
+- mustache.js
+
+  Freely distributable and licensed under the MIT-style license.
+  Copyright (c) 2016 Jan Lehnardt
+  https://github.com/janl/mustache.js/
+
 
 - jquery-ui.structure.css
 

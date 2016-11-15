@@ -93,7 +93,9 @@
 
 (define-constant +query-product-path+              "/ws/fq-query-product"        :test #'string=)
 
-(define-constant +post-query-product-results+      "/ws/fq-post-product-res"     :test #'string=)
+(define-constant +query-compound-hazard-path+      "/ws/fq-query-chem-haz"       :test #'string=)
+
+(define-constant +post-federated-query-results+    "/ws/fq-post-res"             :test #'string=)
 
 (define-constant +query-visited+                   "/ws/fq-query-visited"        :test #'string=)
 

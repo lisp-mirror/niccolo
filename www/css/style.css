@@ -402,6 +402,28 @@ td {
     padding-bottom: 3pt;
 }
 
+.positive-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-positive.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.negative-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-negative.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
 .close-w-success-button {
     margin:              auto;
     display:             inline-block;
@@ -466,6 +488,15 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+}
+
+.assoc-security-fq {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    text-decoration:     none;
+    vertical-align:      text-top;
 }
 
 .ghs-prec-button {
@@ -611,6 +642,18 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+}
+
+.add-ajax-button {
+    cursor: pointer;
+}
+
+.remove-ajax-button {
+    cursor: pointer;
+}
+
+.federated-query-button {
+    cursor: pointer;
 }
 
 div[class*=button] a {

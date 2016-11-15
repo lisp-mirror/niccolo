@@ -15,7 +15,7 @@
     });
 </script>
 
-<div class="compound-name"><!-- TMPL_VAR compound-name --></div>
+<h3 class="compound-name"><!-- TMPL_VAR compound-name --></h3>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-prec/">
   <label for="target-prec"><!-- TMPL_VAR name-lb --></label>

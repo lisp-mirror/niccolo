@@ -149,7 +149,7 @@ already installed and ASDF configured  (but you should install all the
 
     #+END_SRC
 
-    furthermore you need to specify a nodes file named 'nodes-lisp.expr'
+    furthermore you need to specify a nodes file named 'nodes-list.expr'
 
     #+BEGIN_SRC lisp
 

@@ -139,6 +139,6 @@
 
 (define-constant +waste-form-weight-re+      "^\\p{N}+\\p{L}{1,2}$"              :test #'string=)
 
-(define-constant +federated-query-product-re+  "(?i)^[a-z]{3,}$"                 :test #'string=)
+(define-constant +federated-query-product-re+  "(?i)^.{3,}$"                     :test #'string=)
 
 (define-constant +federated-query-id-re+       "(?i)^.+-[0-9]+"                  :test #'string=)

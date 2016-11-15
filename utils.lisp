@@ -272,6 +272,8 @@
 							      :path "jquery-ui.js")
 						  :sugar (restas:genurl 'restas.lab::-js-.route
 									:path "sugar.js")
+						  :mustache (restas:genurl 'restas.lab::-js-.route
+									:path "mustache.js")
 						  :title    ,title)
 					      :stream ,stream)
        (restas.lab:render-logout-control stream)
@@ -443,3 +445,12 @@
 (defun log-and-mail (to subject message &key (level :warning))
   (to-log level (concatenate 'string subject " " message))
   (send-email subject to message))
+
+
+;; http error handling
+
+(defmacro with-http-ignored-errors ((timeout) &body body)
+  `(handler-case
+       (trivial-timeout:with-timeout (,timeout)
+	 ,@body)
+     (error () nil)))

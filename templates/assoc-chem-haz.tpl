@@ -1,10 +1,13 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/federated-query.js"></script>
+
+
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
 	var availableCodes = <!-- TMPL_VAR json-haz-code -->;
-	var availableId   = <!-- TMPL_VAR json-haz-id -->;
+	var availableId    = <!-- TMPL_VAR json-haz-id -->;
 	$( "#target-haz" ).autocomplete({
 	    source: availableCodes ,
 	    select: function( event, ui ) {
@@ -15,7 +18,10 @@
     });
 </script>
 
-<div class="compound-name"><!-- TMPL_VAR compound-name --></div>
+<h3>
+    <span id="compound-name"><!-- TMPL_VAR compound-name --></span>
+</h3>
+
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-haz/">
   <label for="target-haz"><!-- TMPL_VAR name-lb --></label>

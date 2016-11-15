@@ -189,9 +189,10 @@
       expired)))
 
 (defun fetch-product-by-id (id &optional (delete-link nil) (update-link nil))
-  (build-template-list-chemical-prod (query (gen-all-prod-select (where (:= :chemp-id id))))
-				     delete-link
-				     update-link))
+  (when id
+    (build-template-list-chemical-prod (query (gen-all-prod-select (where (:= :chemp-id id))))
+				       delete-link
+				       update-link)))
 
 (defun fetch-product (owner chem-name building-name floor storage-name shelf
 		      &optional
@@ -307,8 +308,10 @@
 						   :submit-lend-to     +op-submit-lend-to+
 						   :username-lending   +name-username-lending+
 						   ;; federated query
-						   :fq-start-url  (restas:genurl 'ws-federated-query-product)
-						   :fq-results-url (restas:genurl 'ws-federated-query-product-results)
+						   :fq-start-url
+						   (restas:genurl 'ws-federated-query-product)
+						   :fq-results-url
+						   (restas:genurl 'ws-federated-query-results)
 						   :fq-query-key-param +query-http-parameter-key+
 						   :render-local-results-p has-local-results-p
 						   :data-table data)

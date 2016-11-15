@@ -57,3 +57,7 @@
   `(if (not (eq ,expr :nil))
        ,expr
        ,else))
+
+(defun db-nil-p (a)
+  (or (null a)
+      (eq a :nil)))

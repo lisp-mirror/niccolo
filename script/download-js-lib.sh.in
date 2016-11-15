@@ -28,7 +28,13 @@ JQUERY_UI_URL="https://jqueryui.com/resources/download/jquery-ui-1.12.0.zip"
 
 SUGAR_URL="https://raw.githubusercontent.com/andrewplummer/Sugar/2.0.0/dist/sugar.js"
 
+MUSTACHE_URL="https://raw.githubusercontent.com/janl/mustache.js/master/mustache.js"
+
 #sugar.js
+
+@WGET@ $SUGAR_URL -P $NICCOLO_DIR/www/js/
+
+# mustache
 
 @WGET@ $SUGAR_URL -P $NICCOLO_DIR/www/js/
 

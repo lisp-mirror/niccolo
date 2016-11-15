@@ -2088,7 +2088,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Product ~a from building ~a (storage name ~a) has expired."
-translation "Prodotto ~ dell'edificio ~a (unità di stoccaggio ~a) è scaduto."
+translation "Prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) è scaduto."
 plurals-form ""
 status :TRANSLATED
 plurals NIL

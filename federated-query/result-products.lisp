@@ -41,15 +41,16 @@
 	      (remhash query-id db)
 	      (cl-json:with-array (stream)
 		(loop for i in raw do
-		       (let ((plists (json->list (response i))))
-			 (loop for prod in plists do
-			      (cl-json:as-array-member (stream)
-				(cl-json:encode-json prod stream)))))))
+		     (let ((plists (json->list (response i))))
+		       (loop for prod in plists do
+			    (cl-json:as-array-member (stream)
+			      (cl-json:encode-json prod stream)))))))
 	    (with-output-to-string (stream)
 	      (cl-json:with-array (stream)
 		(loop for i in raw do
 		     (cl-json:as-array-member (stream)
 		       (cl-json:encode-json-plist raw stream)))))))))
+
   (defun clear-db ()
     (bt:with-recursive-lock-held (lock)
       (setf db (init-hashtable-equalp)))))

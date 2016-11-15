@@ -67,6 +67,8 @@
 				    (restas:genurl 'assoc-chem-prec :id (getf row :id))
 				    :assoc-haz-link
 				    (restas:genurl 'assoc-chem-haz :id (getf row :id))
+				    :assoc-sec-fq-link
+				    (restas:genurl 'assoc-chem-haz-prec-fq :id (getf row :id))
 				    :has-msds (if (getf row :msds) t nil)
 				    :msds-pdf-link
 				    (restas:genurl 'chemical-get-msds :id (getf row :id)))))))))

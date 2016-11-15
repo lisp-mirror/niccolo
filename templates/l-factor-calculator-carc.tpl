@@ -1,19 +1,17 @@
 <script>
-    function colorizeRes (val){
-	var bgColor ="#ff0000";
-
-	if (val < 1){
-	    bgColor = "#00ff00";
-	}
-
-
-	return '<td style="background: ' + bgColor + ';' +   ' color: #000000">' +
-	    val                                                               +
-	    '</td>';
-    }
 
 $(function() {
     $( "#start" ).click(function(e){
+	function colorizeRes (val){
+	    var bgColor ="#ff0000";
+
+	    if (val < 1){
+		bgColor = "#00ff00";
+	    }
+
+	    return bgColor;
+	}
+
 	var extractText = function (a) { return $(a).text().trim(); }
 
 	function extractSelected (a) {
@@ -35,17 +33,30 @@ $(function() {
 	    data: { req: jj }
 	}).success(function( data ) {
 	    var info = JSON.parse(data);
-	    $( "#results" ).append("<tr>"                                   +
-				   "<td>" + obj.protectiveDevice  + "</td>" +
-				   "<td>" + obj.physicalState     + "</td>" +
-				   "<td>" + obj.twork             + "</td>" +
-				   "<td>" + obj.teb               + "</td>" +
-				   "<td>" + obj.quantityUsed      + "</td>" +
-				   "<td>" + obj.usagePerDay       + "</td>" +
-				   "<td>" + obj.usagePerYear      + "</td>" +
-				   colorizeRes(info.res)                    +
-				   "<td>" + info.err + "</td>"              +
-				   "</tr>");
+	    var tplView = {};
+	    var tpl     = "<tr>"                +
+		"<td>{{protectiveDevice}}</td>" +
+		"<td>{{physicalState}}</td>"    +
+		"<td>{{twork}}</td>"            +
+		"<td>{{teb}}</td>"              +
+		"<td>{{quantityUsed}}</td>"     +
+		"<td>{{usagePerDay}}</td>"      +
+		"<td>{{usagePerYear}}</td>"     +
+		"<td style=\"background: {{bgRes}}\">{{res}}</td>"              +
+		"<td >{{err}}</td>"             +
+		"</tr>";
+	    tplView.protectiveDevice = obj.protectiveDevice;
+	    tplView.physicalState    = obj.physicalState;
+	    tplView.twork            = obj.twork;
+	    tplView.teb              = obj.teb;
+	    tplView.quantityUsed     = obj.quantityUsed;
+	    tplView.usagePerDay      = obj.usagePerDay;
+	    tplView.usagePerYear     = obj.usagePerYear;
+	    tplView.bgRes            = colorizeRes(info.res);
+	    tplView.res              = info.res;
+	    tplView.err              = info.err;
+
+	    $( "#results" ).append(Mustache.render(tpl, tplView));
 	    placeFooter();
 	}).error(function( data ) {
 	    $( "#results" ).append("<tr><td>" + "ERROR" + "</td></tr>");

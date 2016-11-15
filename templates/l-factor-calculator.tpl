@@ -2,28 +2,26 @@
 
 <script>
     // Shorthand for $( document ).ready()
-    function colorizeRes (val){
-	var bgColor ="#ffffff";
+    $(function() {
+	function colorizeRes (val){
+	    var bgColor ="#ffffff";
 
-	if (val >= 0.001 &&
-	    val < 0.01){
-	    bgColor = "#00ff00";
-	}else if (val >= 0.01 &&
-		  val < 0.1){
-	    bgColor = "#ffff00";
-	}else if (val >= 0.1 &&
-		  val < 1){
-	    bgColor = "#ff7a00";
-	}else if (val >= 1){
-	    bgColor = "#ff0000";
+	    if (val >= 0.001 &&
+		val < 0.01){
+		bgColor = "#00ff00";
+	    }else if (val >= 0.01 &&
+		      val < 0.1){
+		bgColor = "#ffff00";
+	    }else if (val >= 0.1 &&
+		      val < 1){
+		bgColor = "#ff7a00";
+	    }else if (val >= 1){
+		bgColor = "#ff0000";
+	    }
+
+	    return bgColor;
 	}
 
-	return '<td style="background: ' + bgColor + ';' +   ' color: #000000">' +
-	       val                                                               +
-	       '</td>';
-    }
-
-    $(function() {
 	$( "#start" ).on('click', function(e){
 	    var extractText = function (a) { return $(a).text().trim(); }
 
@@ -51,24 +49,42 @@
 		method: "POST",
 		data: { req: jj }
 	    }).success(function( data ) {
-		var info = JSON.parse(data);
-		$( "#results" ).append("<tr>"                                    +
-				       "<td>" + obj.rPhrases + "</td>"           +
-				       "<td>" + obj.expositionTypes + "</td>"    +
-				       "<td>" + obj.physicalState + "</td>"      +
-				       "<td>" + obj.workingTemp + "</td>"        +
-				       "<td>" + obj.boilingPoint + "</td>"       +
-				       "<td>" + obj.expositionTimeType + "</td>" +
-				       "<td>" + obj.expositionTime + "</td>"     +
-				       "<td>" + obj.usage + "</td>"              +
-				       "<td>" + obj.quantityUsed + "</td>"       +
-				       "<td>" + obj.quantityStocked + "</td>"    +
-				       "<td>" + obj.workType + "</td>"           +
-				       "<td>" + obj.protectionsFactor + "</td>"  +
-				       "<td>" + obj.safetyThreshold + "</td>"    +
-		                       colorizeRes(info.res)                     +
-				       "<td>" + info.err + "</td>"               +
-				       "</tr>");
+		let info = JSON.parse(data),
+		    tplView = {},
+		    tpl     = "<tr>"                                   +
+		    "<td>{{rPhrases}}</td>"                            +
+		    "<td>{{expositionTypes}}</td>"                     +
+		    "<td>{{physicalState}}</td>"                       +
+		    "<td>{{workingTemp}}</td>"                         +
+		    "<td>{{boilingPoint}}</td>"                        +
+		    "<td>{{expositionTimeType}}</td>"                  +
+		    "<td>{{expositionTime}}</td>"                      +
+		    "<td>{{usage}}</td>"                               +
+		    "<td>{{quantityUsed}}</td>"                        +
+		    "<td>{{quantityStocked}}</td>"                     +
+		    "<td>{{workType}}</td>"                            +
+		    "<td>{{protectionsFactor}}</td>"                   +
+		    "<td>{{safetyThreshold}}</td>"                     +
+		    "<td style=\"background: {{bgRes}}\">{{res}}</td>" +
+		    "<td >{{err}}</td>"                                +
+		    "</tr>";
+		tplView.rPhrases           = obj.rPhrases;
+		tplView.expositionTypes    = obj.expositionTypes;
+		tplView.physicalState      = obj.physicalState;
+		tplView.workingTemp        = obj.workingTemp;
+		tplView.boilingPoint       = obj.boilingPoint;
+		tplView.expositionTimeType = obj.expositionTimeType;
+		tplView.expositionTime     = obj.expositionTime;
+		tplView.usage              = obj.usage;
+		tplView.quantityUsed       = obj.quantityUsed;
+		tplView.quantityStocked    = obj.quantityStocked;
+		tplView.workType           = obj.workType;
+		tplView.protectionsFactor  = obj.protectionsFactor;
+		tplView.safetyThreshold    = obj.safetyThreshold;
+		tplView.bgRes              = colorizeRes(info.res);
+		tplView.res                = info.res;
+		tplView.err                = info.err;
+		$( "#results" ).append(Mustache.render(tpl,tplView));
 		placeFooter();
 	    }).error(function( data ) {
 		$( "#results" ).append("<tr><td>" + "ERROR" + "</td></tr>");

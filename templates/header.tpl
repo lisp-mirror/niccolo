@@ -9,6 +9,7 @@
   <script src="<!-- TMPL_VAR jquery -->"></script>
   <script src="<!-- TMPL_VAR jquery-ui -->"></script>
   <script src="<!-- TMPL_VAR sugar -->"></script>
+  <script src="<!-- TMPL_VAR mustache -->"></script>
   <link rel="stylesheet" href="<!-- TMPL_VAR path-prefix -->/css/font-awesome-4.6.3/css/font-awesome.min.css">
 </head>
 <body>

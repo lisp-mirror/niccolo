@@ -14,6 +14,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/get-get.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/federated-query.js"></script>
+
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
@@ -21,7 +23,6 @@
 	$( "#validity-date" ).datepicker({dateFormat : "yy-mm-dd"});
 
 	$( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
-
 
 	var availableStorages = <!-- TMPL_VAR json-storages -->;
 	var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
@@ -101,50 +102,52 @@
 	if(getParameterByName('<!-- TMPL_VAR name -->') != null &&
 	   getParameterByName('<!-- TMPL_VAR name -->') != ""   &&
 	   !mobilep()){
-	    var key = getParameterByName('<!-- TMPL_VAR name -->');
-	    $.ajax({
-		url:    "<!-- TMPL_VAR fq-start-url -->",
-		method: "GET",
-		data: {  "<!-- TMPL_VAR fq-query-key-param -->" : key }
-	    }).success(function( data ) {
-		//alert(data);
-		setInterval(function(){
-		$.ajax({
-		    url:    "<!-- TMPL_VAR fq-results-url -->",
-		    method: "GET",
-		    data: {  "<!-- TMPL_VAR fq-query-key-param -->" : data }
-		}).success(function( data ) {
-		    try{
-			var info = JSON.parse(data);
+	    let key        = getParameterByName('<!-- TMPL_VAR name -->'),
+	     urlKey     = "<!-- TMPL_VAR fq-query-key-param -->",
+	     startUrl   = "<!-- TMPL_VAR fq-start-url -->",
+	     resultsUrl = "<!-- TMPL_VAR fq-results-url -->",
+	     successFn  = function (data){
+		try{
+		    var info = JSON.parse(data);
+		    info.forEach(function (a) {
+			let tplView = {},
+                            tpl     = "<tr>"            +
+                            "<td>{{host}}</td>"         +
+                            "<td>{{chempId}}</td>"      +
+                            "<td>{{ownerName}}</td>"    +
+                            "<td>{{chemName}}</td>"     +
+                            "<td>{{buildingName}}</td>" +
+                            "<td>{{storageFloor}}</td>" +
+                            "<td>{{storageName}}</td>"  +
+                            "<td>{{shelf}}</td>"        +
+                            "<td>{{quantity}}</td>"     +
+                            "<td>{{units}}</td>"        +
+                            "<td >{{notes}}</td>"       +
+			    "</tr>";
+			tplView.host         = a.host;
+			tplView.chempId      = a.chempId;
+			tplView.ownerName    = a.ownerName;
+			tplView.chemName     = a.chemName;
+			tplView.buildingName = a.buildingName;
+			tplView.storageFloor = a.storageFloor;
+			tplView.storageName  = a.storageName;
+			tplView.shelf        = a.shelf;
+			tplView.quantity     = a.quantity;
+			tplView.units        = a.units;
+			tplView.notes        = a.notes;
 
-			info.each(function (a) {
-			    $( "#fq-results tbody" ).append("<tr>"                            +
-		 					    "<td>" + a.host      + "</td>"    +
-							    "<td>" + a.chempId   + "</td>"    +
-							    "<td>" + a.ownerName + "</td>"    +
-							    "<td>" + a.chemName + "</td>"     +
-							    "<td>" + a.buildingName + "</td>" +
-							    "<td>" + a.storageFloor + "</td>" +
-							    "<td>" + a.storageName  + "</td>" +
-							    "<td>" + a.shelf  + "</td>"       +
-							    "<td>" + a.quantity  + "</td>"    +
-							    "<td>" + a.units     + "</td>"    +
-							    "<td>" + a.notes     + "</td>"    +
-		 					    "</tr>");
-			});
-		    }catch (a){};
-		    placeFooter();
-
-		});
-		},10000);
-
-	    }).error(function( data ) {
+			$("#fq-results tbody" ).append(Mustache.render(tpl, tplView));
+		    });
+		}catch (a){};
 		placeFooter();
-	    });
+
+	     },
+	     errorFn  = function(a) { placeFooter();};
+
+	    federatedQuery(key, urlKey, startUrl, resultsUrl, successFn, errorFn);
 	}else{
 	    $( "#fq-res-container" ).empty();
 	}
-
 
     });
 </script>
