@@ -20,5 +20,15 @@
   (defun next-query-id ()
     (bt:with-lock-held (lock)
       (prog1
-	  (format nil "~a-~a-~a" +hostname+ +https-port+ count)
+	  (format nil
+		  "~a-~a-~a:~a"
+		  +hostname+
+		  +https-port+
+		  count
+		  (utils:local-time-obj-now))
 	(incf count)))))
+
+(defun query-id-timestamp (query-id)
+  (let ((raw (cl-ppcre:scan-to-strings ":.*$" query-id)))
+    (and raw
+	 (utils:encode-datetime-string (subseq raw 1)))))

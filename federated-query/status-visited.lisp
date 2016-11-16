@@ -23,6 +23,7 @@
       (gethash query-id checklist)))
 
   (defun set-visited (query-id)
+    (clear-expired-visited-query)
     (bt:with-lock-held (lock)
       (prog1
 	  (gethash query-id checklist)
@@ -30,4 +31,17 @@
 
   (defun clear-visited ()
     (bt:with-lock-held (lock)
-      (setf checklist (init-hashtable-equalp)))))
+      (setf checklist (init-hashtable-equalp))))
+
+  (defun clear-expired-visited-query ()
+    (bt:with-lock-held (lock)
+      (maphash #'(lambda (k v)
+		   (declare (ignore v))
+		   (let ((datetime-req (query-id-timestamp k)))
+		     (when (and datetime-req
+				(local-time:timestamp< datetime-req
+						       (local-time:timestamp- (local-time:now)
+									      1 :hour)))
+		       (break)
+		       (remhash k checklist))))
+	       checklist))))

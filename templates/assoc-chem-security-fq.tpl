@@ -147,7 +147,7 @@
 		resultsUrl = "<!-- TMPL_VAR fq-results-url -->",
 		successFn  = function (data){
 		    try{
-			var info = JSON.parse(data);
+			let info = JSON.parse(data);
 			info.forEach(function (a) {
 			    let vTpl  = {};
 			    vTpl.host = a.host;
@@ -169,32 +169,41 @@
 			    $(node).siblings().removeClass("activate-button");
 			}
 
+			function activateEndOperationButton(node){
+			    node.removeClass("fa-refresh");
+			    node.removeClass("fa-spin");
+			    node.removeClass("fa-fw");
+			    node.addClass("activate-button");
+			}
+
+			function startAssociateDeassociate(node, buttonSelector, fnHaz, fnPrec){
+			    refreshPosButton(node);
+			    let that = $(node);
+			    that.addClass("fa-refresh");
+			    that.addClass("fa-spin");
+			    that.addClass("fa-fw");
+
+			    let index   = $( buttonSelector ).index( that ),
+				promise = new Promise(function(resolve, reject) {
+				    fnHaz(hazCodesFetched[index]);
+				    fnPrec(precCodesFetched[index]);
+				    resolve();
+				});
+
+			    promise.then(function(val){
+				activateEndOperationButton(that);
+			    });
+
+			}
+
 			$( ".add-ajax-button" ).click(function(e){
-			    var index = $( ".add-ajax-button" ).index( this );
-			    refreshPosButton(this);
-			    $(this).addClass("fa-refresh");
-			    $(this).addClass("fa-spin");
-			    $(this).addClass("fa-fw");
-			    assocHaz(hazCodesFetched[index]);
-			    assocPrec(precCodesFetched[index]);
-			    $(this).removeClass("fa-refresh");
-			    $(this).removeClass("fa-spin");
-			    $(this).removeClass("fa-fw");
-			    $(this).addClass("activate-button");
+			    startAssociateDeassociate(this, ".add-ajax-button",
+						      assocHaz, assocPrec);
 			});
 
 			$( ".remove-ajax-button" ).click(function(e){
-			    var index = $( ".remove-ajax-button" ).index( this );
-			    refreshNegButton(this);
-			    $(this).addClass("fa-refresh");
-			    $(this).addClass("fa-spin");
-			    $(this).addClass("fa-fw");
-			    deassocHaz(hazCodesFetched[index]);
-			    deassocPrec(precCodesFetched[index]);
-			    $(this).removeClass("fa-refresh");
-			    $(this).removeClass("fa-spin");
-			    $(this).removeClass("fa-fw");
-			    $(this).addClass("activate-button");
+			    startAssociateDeassociate(this, ".remove-ajax-button",
+						      deassocHaz, deassocPrec);
 			});
 
 
