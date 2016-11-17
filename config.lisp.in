@@ -171,7 +171,7 @@
 
 ;; header of the waste letter
 
-(defparameter *letter-header-text* "header")
+(defparameter *letter-header-text* "*letter-header-text* in config.lisp")
 
 ;; template of the waste letter
 

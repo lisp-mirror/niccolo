@@ -2602,4 +2602,28 @@ translation "Livello non ammesso"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Associate security statements to chemical compound"
+translation "Associa frasi di sicurezza al composto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Substitute map file"
+translation "Sostituisci mappa"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Map File (PNG format only)"
+translation "File della mappa (solo formato PNG)"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Not available"
+translation "Non disponibile"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

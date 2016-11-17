@@ -95,32 +95,38 @@
     (manage-map success-msg errors-msg)))
 
 (defun manage-map (infos errors)
-  (let ((all-maps (mapcar #'(lambda (row)
-			      (append row (list :link (restas:genurl 'get-plant-map
-							       :id
-							       (getf row :id)))))
-			  (fetch-raw-template-list 'db:plant-map '(:id :description)
-						   :delete-link 'delete-plant-map
-						   :additional-tpl
-						   #'(lambda (row)
-						       (list
-							:update-map-link
-							(restas:genurl 'update-map-route
-								       :id (db:id row))
-							:sensors-map-link
-							(restas:genurl 'get-sensors-map
-								       :id (db:id row))))))))
+  (let* ((all-maps (mapcar #'(lambda (row)
+			       (append row (list :link (restas:genurl 'get-plant-map
+								      :id
+								      (getf row :id)))))
+			   (fetch-raw-template-list 'db:plant-map '(:id :description)
+						    :delete-link 'delete-plant-map
+						    :additional-tpl
+						    #'(lambda (row)
+							(list
+							 :update-map-link
+							 (restas:genurl 'update-map-route
+									:id (db:id row))
+							 :sensors-map-link
+							 (restas:genurl 'get-sensors-map
+									:id (db:id row)))))))
+	 (template (with-back-to-root
+		       (with-path-prefix
+			   :description-lb    (_ "Description")
+			   :map-file-png-lb   (_ "Map File (PNG format only)")
+			   :link-lb           (_ "Link")
+			   :operations-lb     (_ "Operations")
+			   :substitute-map-lb (_ "Substitute map file")
+			   :data           +name-map-data+
+			   :desc           +name-map-description+
+			   :file           +name-map-data+
+			   :data-table     all-maps))))
     (with-standard-html-frame (stream
 			       "Manage Map"
 			       :errors errors
 			       :infos  infos)
       (html-template:fill-and-print-template #p"add-map.tpl"
-					     (with-back-to-root
-						 (with-path-prefix
-						     :data +name-map-data+
-						     :desc +name-map-description+
-						     :file +name-map-data+
-						     :data-table all-maps))
+					     template
 					     :stream stream))))
 
 (define-lab-route delete-plant-map ("/delete-map/:id" :method :get)

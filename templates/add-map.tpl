@@ -1,9 +1,9 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
 <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/add-map/" enctype="multipart/form-data">
-  <label for="desc-text">Description</label>
+  <label for="desc-text"><!-- TMPL_VAR description-lb --></label>
   <input id="desc-text" type="text" name="<!-- TMPL_VAR desc -->" />
-  <label for="map-file">Map file</label>
+  <label for="map-file"><!-- TMPL_VAR map-file-png-lb --></label>
   <input id="map-file" type="file" name="<!-- TMPL_VAR data -->" />
   <input type="submit" />
 </form>
@@ -13,10 +13,10 @@
 <table class="sortable map-list">
   <thead>
     <tr>
-      <th class="address-id-hd">Id</th>
-      <th class="address-description-hd">Description</th>
-      <th class="address-link-hd">Link</th>
-      <th class="address-op-link-hd">Operation</th>
+      <th class="address-id-hd">ID</th>
+      <th class="address-description-hd"><!-- TMPL_VAR description-lb --></th>
+      <th class="address-link-hd">       <!-- TMPL_VAR link-lb -->       </th>
+      <th class="address-op-link-hd">    <!-- TMPL_VAR operations-lb -->  </th>
     </tr>
   </thead>
   <tbody>
@@ -47,7 +47,7 @@
 	// Shorthand for $( document ).ready()
 	$( "#fieldset-subst-map-file<!-- TMPL_VAR id -->" ).dialog({
 	    show:  { effect: false },
-	    title: "Substitute map file",
+	    title: "<!-- TMPL_VAR substitute-map-lb -->",
 	    autoOpen: false
 	});
 
