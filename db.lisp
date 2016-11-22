@@ -195,7 +195,7 @@
 (deftable user-preferences ()
   (owner
    :type integer
-   :foreign (user :restrict :cascade))
+   :foreign (user :cascade :cascade))
   (language
    :type text))
 

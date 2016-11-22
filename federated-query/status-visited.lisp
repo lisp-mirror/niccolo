@@ -42,6 +42,5 @@
 				(local-time:timestamp< datetime-req
 						       (local-time:timestamp- (local-time:now)
 									      1 :hour)))
-		       (break)
 		       (remhash k checklist))))
 	       checklist))))

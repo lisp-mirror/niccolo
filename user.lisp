@@ -212,7 +212,7 @@
 			:levels-options-lb (_ "Level")
 			:operations-lb     (_ "Operations")
 			:password-value
-			#+mini-cas (string-utils::random-password)
+			#+mini-cas (string-utils:clean-string (string-utils:random-password 20))
 			#-mini-cas ""
 			:login-email       +name-user-email+
 			:login-name        +name-user-name+
