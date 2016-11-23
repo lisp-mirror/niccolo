@@ -116,6 +116,8 @@
 
 (define-constant +ghs-precautionary-code-re+ "^(P[0-9]+)(\\+P[0-9]+){0,2}$"      :test #'string=)
 
+(define-constant +hp-waste-code-re+          "^(HP)[0-9]+$"                      :test #'string=)
+
 (define-constant +integer-re+                "^-?[1-9][0-9]*$"                   :test #'string=)
 
 (define-constant +pos-integer-re+            "^[1-9][0-9]*$"                     :test #'string=)

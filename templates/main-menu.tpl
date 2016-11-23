@@ -40,6 +40,16 @@
 	  </a>
 	</li>
 	<li class="menu-level-2">
+	  <a href="<!-- TMPL_VAR manage-hp-waste -->">
+	    <!-- TMPL_VAR manage-hp-waste-lbl -->
+	  </a>
+	</li>
+	<li class="menu-level-2">
+	  <a href="<!-- TMPL_VAR manage-waste-phys-state -->">
+	    <!-- TMPL_VAR manage-waste-phys-state-lbl -->
+	  </a>
+	</li>
+	<li class="menu-level-2">
 	  <a href="<!-- TMPL_VAR waste-letter -->">
 	    <!-- TMPL_VAR waste-letter-lbl -->
 	  </a>

@@ -201,6 +201,8 @@
    :adr-code
    :uncode
    :code-class
+   :hp-waste-code
+   :waste-physical-state
    :user
    :email
    :username
@@ -294,6 +296,7 @@
    :strip-tags
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+
+   :+hp-waste-code-re+
    :+integer-re+
    :+pos-integer-re+
    :+email-re+

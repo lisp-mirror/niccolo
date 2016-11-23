@@ -140,6 +140,20 @@
    :type text
    :nullp nil))
 
+(deftable hp-waste-code ()
+  (code
+   :type text
+   :nullp nil
+   :uniquep t)
+  (explanation
+   :type text
+   :nullp nil))
+
+(deftable waste-physical-state ()
+  (explanation
+   :type text
+   :nullp nil))
+
 (deftable ghs-precautionary-statement ()
   (code
    :type text

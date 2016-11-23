@@ -2626,4 +2626,136 @@ translation "Non disponibile"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Manage HP Statements"
+translation "Gestisci frasi HP"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Saved new HP hazard statements: ~s - ~s"
+translation "Nuova frase HP: ~s - ~s,  salvata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP code already in the database"
+translation "Codice HP già presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP phrase invalid"
+translation "Frase HP non valida"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP code invalid"
+translation "Codice HP non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Waste physical state"
+translation "Stato fisico rifiuto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP waste codes"
+translation "Codice HP rifiuto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Update HP code statement"
+translation "Aggiorna codice HP"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP code updated."
+translation "Codice HP aggiornato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP code already in the database with different ID"
+translation "Code HP già presente nel database con un differente ID"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP statement does not exists in database."
+translation "Frase HP non presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP id invalid"
+translation "ID HP non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Update waste physical state"
+translation "Aggiorna stato fisico rifiuto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "physical state updated."
+translation "stato fisico aggiornato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Physical state code already in the database with different ID"
+translation "Stato fisico gia' presente nel database con un id differente"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "physical state does not exists in database."
+translation "lo stato fisico non e' presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Physical state invalid"
+translation "Stato fisico non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Physical state id invalid"
+translation "Id dello stato fisico non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Manage waste physical state"
+translation "Gestisci i tipi di stati fisici dei rifiuti"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Saved new physical state: ~s"
+translation "Salvato nuovo stato fisico: ~s"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Physical state already in the database"
+translation "Stato fisico gia' nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Input invalid"
+translation "Input non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )
