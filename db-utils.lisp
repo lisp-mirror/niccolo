@@ -61,3 +61,7 @@
 (defun db-nil-p (a)
   (or (null a)
       (eq a :nil)))
+
+(defun count-all (class)
+  (second (first (crane:query (select ((:as (:count :*) :ct))
+				(from class))))))

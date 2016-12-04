@@ -127,6 +127,12 @@
    :type text
    :nullp nil))
 
+(deftable adr-pictogram ()
+  (pictogram-file
+   :type text
+   :nullp nil
+   :uniquep t))
+
 (deftable adr-code ()
   (uncode
    :type text
@@ -138,7 +144,11 @@
    :uniquep nil)
   (explanation
    :type text
-   :nullp nil))
+   :nullp nil)
+  (pictogram
+   :type integer
+   :nullp t
+   :foreign (adr-pictogram :restrict :cascade)))
 
 (deftable hp-waste-code ()
   (code
@@ -147,7 +157,11 @@
    :uniquep t)
   (explanation
    :type text
-   :nullp nil))
+   :nullp nil)
+  (pictogram
+   :type integer
+   :nullp t
+   :foreign (ghs-pictogram :restrict :cascade)))
 
 (deftable waste-physical-state ()
   (explanation
@@ -352,6 +366,8 @@
   (cer-code-id
    :type integer
    :foreign (cer-code :restrict :cascade))
+  (registration-number
+   :type text)
   (building-id
    :type integer
    :foreign (building :restrict :cascade))
@@ -366,6 +382,15 @@
   (adr-code-id
    :type integer
    :foreign (adr-code :restrict :cascade)
+   :nullp nil))
+
+(deftable waste-message-hp ()
+  (waste-message
+   :type integer
+   :foreign (waste-message :cascade :cascade))
+  (hp-code-id
+   :type integer
+   :foreign (hp-waste-code :restrict :cascade)
    :nullp nil))
 
 (deftable sensor ()

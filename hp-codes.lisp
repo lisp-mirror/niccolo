@@ -20,11 +20,12 @@
 (define-constant +name-hp-waste-code+         "code"         :test #'string=)
 
 (defun all-hp-waste-code-select ()
-;:id :code :explanation :carcinogenic :pictogram)
-  (query (select (( :as :hp.id                         :id)
-		  ( :as :hp.code                       :code)
-		  ( :as :hp.explanation                :explanation))
-	   (from (:as :hp-waste-code :hp)))))
+  (query (select (( :as :hp.id                        :id)
+		  ( :as :hp.code                      :code)
+		  ( :as :hp.explanation               :explanation)
+		  ( :as :ghs-pictogram.pictogram-file :pictogram))
+	   (from (:as :hp-waste-code :hp))
+	   (left-join :ghs-pictogram :on (:= :hp.pictogram :ghs-pictogram.id)))))
 
 (defun build-template-list-hp-waste-code (&key (delete-link nil) (update-link nil))
   (let ((raw (map 'list #'(lambda (row)
@@ -37,8 +38,16 @@
 		  (all-hp-waste-code-select))))
   (do-rows (rown res) raw
     (let* ((row (elt raw rown)))
+      (setf (getf row :pictogram)
+	    (if (stringp (getf row :pictogram))
+		(pictogram->preview-path (getf row :pictogram)
+					 (concatenate 'string +images-url-path+
+						      +ghs-pictogram-web-image-subdir+)
+					 :extension +pictogram-web-image-ext+)
+		nil))
       (setf (elt raw rown)
 	    (nconc row
+		   (pictograms-template-struct)
 		   (if delete-link
 		       (list :delete-link (restas:genurl delete-link :id (getf row :id)))
 		       nil)
@@ -62,7 +71,8 @@
     (when (not errors-msg)
       (let ((ghs (create 'db:hp-waste-code
 			 :code         code
-			 :explanation  expl)))
+			 :explanation  expl
+			 :pictogram    +pictogram-id-none+)))
 	(save ghs)))
     (manage-hp-waste-code success-msg errors-msg)))
 
@@ -105,3 +115,19 @@
 		(del (single 'db:hp-waste-code :id id)))))
 	  (restas:redirect 'hp-waste))
       (manage-hp-waste-code nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route assoc-hp-pictogram ("/assoc-hp-pictogram/:id" :method :get)
+  (with-authentication
+    (with-admin-privileges
+	(progn
+	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+		     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
+						       +pos-integer-re+ "")))))
+	    (let ((h-code (single 'db:hp-waste-code :id id))
+		  (pict   (single 'db:ghs-pictogram :id (get-parameter +pictogram-form-key+))))
+	      (when (and h-code
+			 pict)
+		(setf (db:pictogram h-code) (db:id pict))
+		(save h-code))))
+	  (restas:redirect 'hp-waste))
+      (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))

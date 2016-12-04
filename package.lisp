@@ -104,8 +104,10 @@
    :+letter-header+
    :+default-font-name+
    :+header-image-export-height+
+   :+header-image-export-width+
    :+pictogram-web-image-ext+
-   :+pictogram-web-image-subdir+
+   :+ghs-pictogram-web-image-subdir+
+   :+adr-pictogram-web-image-subdir+
    :+pictogram-id-none+
    :+mime-postscript+
    :+security-warning-log-level+
@@ -120,6 +122,7 @@
    :+search-chem-shelf+
    :+name-validity-date+
    :+name-expire-date+
+   :+name-start-pagination+
    :+no-html-tags-at-all+
    :+cookie-key-script-visited+
    :+query-product-path+
@@ -199,6 +202,7 @@
    :ghs-precautionary-statement
    :cer-code
    :adr-code
+   :adr-pictogram
    :uncode
    :code-class
    :hp-waste-code
@@ -259,6 +263,7 @@
    :building-id
    :weight
    :waste-message-adr
+   :waste-message-hp
    :waste-message
    :adr-code-id
    :sensor
@@ -353,7 +358,8 @@
      :alexandria
      :cl-ppcre
      :config
-     :constants)
+     :constants
+     :crane)
     (:export
      :do-rows
      :fetch-raw-list
@@ -363,7 +369,8 @@
      :object-exists-in-db-p
      :query-low-level
      :db-nil-p
-     :if-db-nil-else))
+     :if-db-nil-else
+     :count-all))
 
 (defpackage :db-config
   (:use
@@ -384,6 +391,7 @@
    :config
    :constants)
   (:export
+   :+uri-query-start+
    :define-lab-route
    :get-post-filename
    :cat-salt-password

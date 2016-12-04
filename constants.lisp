@@ -47,58 +47,64 @@
 
 (define-constant +page-margin-left+             20                           :test #'=)
 
-(define-constant +data-path+                     #p "data/"                  :test #'equal)
+(define-constant +data-path+                     #p"data/"                   :test #'equal)
 
-(define-constant +letter-header+                 #p "data/letter-header.png" :test #'equal)
+(define-constant +letter-header+                 #p"data/letter-header.png"  :test #'equal)
 
 (define-constant +image-unknown-struct-path+     "/images/no-struct.png"     :test #'string=)
 
 (define-constant +header-image-export-height+    42.68611                    :test #'=)
 
-(define-constant +default-font-name+             "font"                      :test #'string=)
+(define-constant +header-image-export-width+     82.90277                    :test #'=)
 
-(define-constant +pictogram-web-image-ext+       "png"                       :test #'string=)
+(define-constant +default-font-name+              "font"                     :test #'string=)
 
-(define-constant +pictogram-web-image-subdir+    "ghs-pictograms/"           :test #'string=)
+(define-constant +pictogram-web-image-ext+        "png"                      :test #'string=)
 
-(define-constant +pictogram-id-none+             10                          :test #'=)
+(define-constant +ghs-pictogram-web-image-subdir+ "ghs-pictograms/"          :test #'string=)
 
-(define-constant +mime-postscript+               "application/postscript"    :test #'string=)
+(define-constant +adr-pictogram-web-image-subdir+ "adr-pictograms/"          :test #'string=)
 
-(define-constant +security-warning-log-level+    :warning                    :test #'string=)
+(define-constant +pictogram-id-none+              10                         :test #'=)
 
-(define-constant +search-chem-id+                "s-id"                      :test #'string=)
+(define-constant +mime-postscript+                "application/postscript"   :test #'string=)
 
-(define-constant +search-chem-owner+             "s-owner"                   :test #'string=)
+(define-constant +security-warning-log-level+     :warning                   :test #'string=)
 
-(define-constant +search-chem-name+              "s-name"                    :test #'string=)
+(define-constant +search-chem-id+                 "s-id"                     :test #'string=)
 
-(define-constant +search-chem-building+          "s-building"                :test #'string=)
+(define-constant +search-chem-owner+              "s-owner"                  :test #'string=)
 
-(define-constant +search-chem-floor+             "s-floor"                   :test #'string=)
+(define-constant +search-chem-name+               "s-name"                   :test #'string=)
 
-(define-constant +search-chem-storage+           "s-storage"                 :test #'string=)
+(define-constant +search-chem-building+           "s-building"               :test #'string=)
 
-(define-constant +search-chem-shelf+             "s-shelf"                   :test #'string=)
+(define-constant +search-chem-floor+              "s-floor"                  :test #'string=)
 
-(define-constant +name-validity-date+            "validity-date"             :test #'string=)
+(define-constant +search-chem-storage+            "s-storage"                :test #'string=)
 
-(define-constant +name-expire-date+              "expire-date"               :test #'string=)
+(define-constant +search-chem-shelf+              "s-shelf"                  :test #'string=)
 
-(define-constant +cookie-key-script-visited+     "script-visited"            :test #'string=)
+(define-constant +name-validity-date+             "validity-date"            :test #'string=)
+
+(define-constant +name-expire-date+               "expire-date"              :test #'string=)
+
+(define-constant +name-start-pagination+          "start-pagination"         :test #'string=)
+
+(define-constant +cookie-key-script-visited+      "script-visited"           :test #'string=)
 
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
 
 ;; federated query
 
-(define-constant +query-product-path+              "/ws/fq-query-product"        :test #'string=)
+(define-constant +query-product-path+              "/ws/fq-query-product"    :test #'string=)
 
-(define-constant +query-compound-hazard-path+      "/ws/fq-query-chem-haz"       :test #'string=)
+(define-constant +query-compound-hazard-path+      "/ws/fq-query-chem-haz"   :test #'string=)
 
-(define-constant +post-federated-query-results+    "/ws/fq-post-res"             :test #'string=)
+(define-constant +post-federated-query-results+    "/ws/fq-post-res"         :test #'string=)
 
-(define-constant +query-visited+                   "/ws/fq-query-visited"        :test #'string=)
+(define-constant +query-visited+                   "/ws/fq-query-visited"    :test #'string=)
 
-(define-constant +query-http-parameter-key+        "q"                           :test #'string=)
+(define-constant +query-http-parameter-key+        "q"                       :test #'string=)
 
-(define-constant +query-http-response-key+         "r"                           :test #'string=)
+(define-constant +query-http-response-key+         "r"                       :test #'string=)

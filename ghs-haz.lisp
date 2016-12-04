@@ -24,7 +24,6 @@
 (define-constant +pictogram-form-key+           "pictogram"    :test #'string=)
 
 (defun all-ghs-hazard-code-select ()
-;:id :code :explanation :carcinogenic :pictogram)
   (query (select (( :as :h.id                         :id)
 		  ( :as :h.code                       :code)
 		  ( :as :h.explanation                :explanation)
@@ -48,7 +47,7 @@
 	    (if (stringp (getf row :pictogram))
 		(pictogram->preview-path (getf row :pictogram)
 					 (concatenate 'string +images-url-path+
-						      +pictogram-web-image-subdir+)
+						      +ghs-pictogram-web-image-subdir+)
 					 :extension +pictogram-web-image-ext+)
 		nil))
       (setf (elt raw rown)

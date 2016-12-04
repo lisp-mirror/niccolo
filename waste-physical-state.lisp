@@ -17,6 +17,10 @@
 
 (define-constant +name-waste-phys-state-expl+         "expl"         :test #'string=)
 
+(gen-autocomplete-functions db:waste-physical-state
+			    db:explanation)
+
+
 (defun all-waste-phys-state-select ()
 ;:id :code :explanation :carcinogenic :pictogram)
   (query (select (( :as :wp.id          :id)

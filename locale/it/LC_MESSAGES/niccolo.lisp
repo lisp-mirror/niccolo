@@ -2758,4 +2758,46 @@ translation "Input non valido"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Weight: ~akg Physical state: ~a"
+translation "Peso: ~akg Stato fisico: ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "ADR codes: ~{~a ~}"
+translation "Codici ADR: ~{~a ~}"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP codes: ~{~a ~}"
+translation "Codici HP: ~{~a ~}"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "*warning: no such building*"
+translation "*Attenzione nessun edificio selezionato*"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "*Warning: no such cer code*"
+translation "*attenzione nessun codice cer selezionato*"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "*warning: no valid physical state*"
+translation "*attenzione nessuno stato fisico selezionato*"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance"
+translation "Attenzione: il codice indicato e' associato alle sostanze radioattive. Contattare i tecnici per assistenza."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

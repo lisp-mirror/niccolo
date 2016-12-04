@@ -18,6 +18,8 @@
 
 - www/images/ghs-pictograms/*.png
   data/ghs-pictograms/*.eps
+  www/images/adr-pictograms/*.png
+  data/adr-pictograms/*.eps
   Got from http://www.unece.org/trans/danger/publi/ghs/pictograms.html
   The United Nations Economic Commission for Europe (UNECE)
 
@@ -162,7 +164,6 @@
     released under
     Attribuzione - Condividi allo stesso modo 3.0 Unported (CC BY-SA 3.0)
     https://creativecommons.org/licenses/by-sa/3.0/deed.it
-
 
 * Code
   - conditions.lisp

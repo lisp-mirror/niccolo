@@ -131,7 +131,8 @@
 				 (cer-code-id  nil)
 				 (building-id  nil)
 				 (weight       nil)
-				 (adr-ids      '()))
+				 (adr-ids      '())
+				 (hp-ids       '()))
   (when (and (not (regexp-validate (list (list cer-code-id +integer-re+ "ok"))))
 	     (not (regexp-validate (list (list building-id +integer-re+ "ok"))))
 	     (not (regexp-validate (list (list weight +integer-re+ "ok"))))
@@ -152,6 +153,10 @@
 	(create 'db:waste-message-adr
 		:waste-message (db:id waste-msg)
 		:adr-code-id   adr-id))
+      (dolist (hp-id hp-ids)
+	(create 'db:waste-message-hp
+		:waste-message (db:id waste-msg)
+		:hp-code-id   hp-id))
       msg)))
 
 (defun number-of-msg-sent-to-me ()

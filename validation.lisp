@@ -55,10 +55,10 @@
   (or (string= var "0")
       (string= var "1")))
 
-(defun integer-validate (i)
+(defun integer-validate (i &key (default nil))
   (handler-case
       (parse-integer i :junk-allowed nil)
-    (error () nil)))
+    (error () default)))
 
 (defun integer-positive-validate (v)
   (handler-case

@@ -15,6 +15,8 @@
 
 (in-package :utils)
 
+(define-constant +uri-query-start+ "?" :test #'string=)
+
 (defmacro define-lab-route (name params &body body)
   `(restas:define-route ,name ,(append (list (concatenate 'string
 							  +path-prefix+
@@ -124,9 +126,14 @@
     (path-prefix-tpl)
     (list ,@tpls)))
 
-(defun alist->query-uri (alist)
-  (reduce #'(lambda (o n) (concatenate 'string o (and o "&") (format nil "~a=~a" (car n) (cdr n))))
-	  alist :initial-value nil))
+(defun alist->query-uri (alist &key (prepend-character ""))
+  (concatenate 'string
+	       prepend-character
+	       (reduce #'(lambda (o n) (concatenate 'string o
+						    (and o "&")
+						    (format nil "~a=~a" (car n) (cdr n))))
+		       alist
+		       :initial-value nil)))
 
 (defun local-uri (path)
   (with-output-to-string (stream)
@@ -216,8 +223,8 @@
 
 ;; pictograms
 
-(defun all-pictograms ()
-  (crane:filter 'db:ghs-pictogram))
+(defun all-pictograms (class)
+  (crane:filter class))
 
 (defun pictogram->preview-path (orig-path prefix-path &key (extension +pictogram-web-image-ext+))
   (concatenate 'string
@@ -225,30 +232,34 @@
 	       (uiop:unix-namestring prefix-path)
 	       (string-utils:find-filename-from-path orig-path :extension extension)))
 
-(defun pictograms-alist (&optional (prefix (concatenate 'string +images-url-path+
-							+pictogram-web-image-subdir+)))
+(defun pictograms-alist (&optional
+			   (class  'db:ghs-pictogram)
+			   (prefix (concatenate 'string +images-url-path+
+							+ghs-pictogram-web-image-subdir+)))
   (mapcar #'(lambda (r)
 	      (cons (db:id r)
 		    (pictogram->preview-path (db:pictogram-file r) (uiop:unix-namestring prefix)
 					     :extension +pictogram-web-image-ext+)))
-	  (all-pictograms)))
+	  (all-pictograms class)))
 
-(defun pictogram-preview-url (id-pictogram)
+(defun pictogram-preview-url (id-pictogram
+			      &optional
+				(prefix (concatenate 'string +images-url-path+
+						     +ghs-pictogram-web-image-subdir+)))
   (and (db-utils:object-exists-in-db-p 'db:ghs-pictogram id-pictogram)
        (local-uri (pictogram->preview-path (db:pictogram-file
 					    (single 'db:ghs-pictogram :id id-pictogram))
-					   (concatenate 'string
-							+images-url-path+
-							+pictogram-web-image-subdir+)
+					   prefix
 					   :extension +pictogram-web-image-ext+))))
 ; rendering
 
 (defun pictograms-template-struct (&optional
+				     (class  'db:ghs-pictogram)
 				     (prefix (concatenate 'string +images-url-path+
-							  +pictogram-web-image-subdir+)))
+							  +ghs-pictogram-web-image-subdir+)))
   (list :pictogram-buttons
 	 (mapcar #'(lambda (a) (list :pict-id (car a) :path (cdr a)))
-		 (pictograms-alist prefix))))
+		 (pictograms-alist class prefix))))
 
 (defmacro with-standard-html-frame ((stream title &key
 					    (infos nil)
