@@ -16,17 +16,18 @@
 (in-package :restas.lab)
 
 (defmacro gen-select-message-statistics (status group-by-column)
-  `(select ((:as (:sum :waste-message.weight) :sum-weight)
-	    (:as :cer-code.id                 :cer-id)
-	    (:as :user.username               :username)
-	    (:as :message.sent-time           :sent-time)
-	    (:as :waste-message.weight :weight)
-	    (:as :building.name        :building-name)
-	    (:as :building.id          :building-id)
-	    (:as :address.line-1       :address-line-1)
-	    (:as :address.city         :city)
-	    (:as :address.zipcode      :zipcode)
-	    (:as :cer-code.code        :cer-code))
+  `(select ((:as (:sum :waste-message.weight)       :sum-weight)
+	    (:as :cer-code.id                       :cer-id)
+	    (:as :user.username                     :username)
+	    (:as :message.sent-time                 :sent-time)
+	    (:as :waste-message.weight              :weight)
+	    (:as :waste-message.registration-number :registration-number)
+	    (:as :building.name                     :building-name)
+	    (:as :building.id                       :building-id)
+	    (:as :address.line-1                    :address-line-1)
+	    (:as :address.city                      :city)
+	    (:as :address.zipcode                   :zipcode)
+	    (:as :cer-code.code                     :cer-code))
      (from :waste-message)
      (inner-join :message :on (:and (:= :message.id :waste-message.message)
 				    (:= :message.status ,status)
@@ -52,6 +53,10 @@
 
 (define-aggregation-waste-query :username)
 
+(defun remove-if-nil-reg-number (rows)
+  (remove-if #'(lambda (a) (db-nil-p (getf a :registration-number)))
+	     rows))
+
 (defun print-waste-statistic (errors infos)
   (with-authentication
     (with-standard-html-frame (stream (_ "Waste report") :infos infos :errors errors)
@@ -61,50 +66,85 @@
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
        					     (with-path-prefix
-						 :legend-group-lb (_ "Opened")
-						 :not-found-lb (_ "Nothing found")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :building-description-lb (_ "Building")
-						 :buildings-group-caption-lb (_ "Grouped by building")
-						 :cer-group-caption-lb (_ "Grouped by CER code")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-open+ t)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-open+ t)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-open+ t))
+						 :legend-group-lb            (_ "Opened")
+						 :not-found-lb               (_ "Nothing found")
+						 :code-lb                    (_ "Code")
+						 :weight-lb                  (_ "Weight (Kg)")
+						 :username-lb                (_ "Username")
+						 :user-group-caption-lb      (_ "Grouped by user")
+						 :building-description-lb    (_ "Building")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb
+						 (_ "Grouped by CER code")
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-open+ t)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-open+ t)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-open+ t))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
 					     (with-path-prefix
-						 :legend-group-lb (_ "Closed")
-						 :not-found-lb (_ "Nothing found")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :buildings-group-caption-lb (_ "Grouped by building")
-						 :cer-group-caption-lb (_ "Grouped by CER code")
-
+						 :legend-group-lb         (_ "Closed")
+						 :not-found-lb            (_ "Nothing found")
+						 :username-lb             (_ "Username")
+						 :user-group-caption-lb   (_ "Grouped by user")
+						 :code-lb                 (_ "Code")
+						 :weight-lb               (_ "Weight (Kg)")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb    (_ "Grouped by CER code")
 						 :building-description-lb (_ "Building")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-closed-success+ t)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-closed-success+ t)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-closed-success+ t))
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-closed-success+ t)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-closed-success+ t)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-closed-success+ t))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
 					     (with-path-prefix
-						 :legend-group-lb (_ "Rejected")
-						 :not-found-lb (_ "Nothing found")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :buildings-group-caption-lb (_ "Grouped by building")
-						 :cer-group-caption-lb (_ "Grouped by CER code")
-
+						 :legend-group-lb         (_ "Closed and registered")
+						 :not-found-lb
+						 (_ "Nothing found")
+						 :username-lb             (_ "Username")
+						 :user-group-caption-lb   (_ "Grouped by user")
+						 :code-lb                 (_ "Code")
+						 :weight-lb               (_ "Weight (Kg)")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb    (_ "Grouped by CER code")
 						 :building-description-lb (_ "Building")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+ t)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-closed-unsuccess+ t)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-closed-unsuccess+ t))
+						 :cer-group
+						 (remove-if-nil-reg-number
+						  (waste-messages-statistics-by-cer-id +msg-status-closed-success+ t))
+						 :buildings-group
+						 (remove-if-nil-reg-number
+						  (waste-messages-statistics-by-building-id +msg-status-closed-success+ t))
+						 :user-group
+						 (remove-if-nil-reg-number
+						  (waste-messages-statistics-by-username +msg-status-closed-success+ t)))
+					     :stream stream)
+      (html-template:fill-and-print-template #p"waste-stats.tpl"
+					     (with-path-prefix
+						 :legend-group-lb            (_ "Rejected")
+						 :not-found-lb               (_ "Nothing found")
+						 :username-lb                (_ "Username")
+						 :user-group-caption-lb      (_ "Grouped by user")
+						 :code-lb                    (_ "Code")
+						 :weight-lb                  (_ "Weight (Kg)")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb
+						 (_ "Grouped by CER code")
+						 :building-description-lb    (_ "Building")
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+ t)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-closed-unsuccess+ t)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-closed-unsuccess+ t))
 					     :stream stream)
 
       (html-template:fill-and-print-template #p"waste-stats-header.tpl"
@@ -113,53 +153,63 @@
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
        					     (with-path-prefix
-						 :legend-group-lb (_ "Opened")
-						 :not-found-lb (_ "Nothing found")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :building-description-lb (_ "Building")
-						 :buildings-group-caption-lb (_ "Grouped by building")
+						 :legend-group-lb            (_ "Opened")
+						 :not-found-lb               (_ "Nothing found")
+						 :code-lb                    (_ "Code")
+						 :weight-lb                  (_ "Weight (Kg)")
+						 :username-lb                (_ "Username")
+						 :user-group-caption-lb      (_ "Grouped by user")
+						 :building-description-lb    (_ "Building")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
 						 :cer-group-caption-lb (_ "Grouped by CER code")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-open+)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-open+)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-open+))
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-open+)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-open+)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-open+))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
 					     (with-path-prefix
-						 :legend-group-lb (_ "Closed")
-						 :not-found-lb (_ "Nothing found")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :buildings-group-caption-lb (_ "Grouped by building")
-						 :cer-group-caption-lb (_ "Grouped by CER code")
-
-						 :building-description-lb (_ "Building")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-closed-success+)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-closed-success+)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-closed-success+))
+						 :legend-group-lb            (_ "Closed")
+						 :not-found-lb               (_ "Nothing found")
+						 :username-lb                (_ "Username")
+						 :user-group-caption-lb      (_ "Grouped by user")
+						 :code-lb                    (_ "Code")
+						 :weight-lb                  (_ "Weight (Kg)")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb
+						 (_ "Grouped by CER code")
+						 :building-description-lb    (_ "Building")
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-closed-success+)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-closed-success+)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-closed-success+))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-stats.tpl"
 					     (with-path-prefix
-						 :legend-group-lb (_ "Rejected")
-						 :not-found-lb (_ "Nothing found")
-						 :username-lb (_ "Username")
-						 :user-group-caption-lb (_ "Grouped by user")
-						 :code-lb   (_ "Code")
-						 :weight-lb (_ "Weight (Kg)")
-						 :buildings-group-caption-lb (_ "Grouped by building")
-						 :cer-group-caption-lb (_ "Grouped by CER code")
-
-						 :building-description-lb (_ "Building")
-						 :cer-group (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+)
-						 :buildings-group (waste-messages-statistics-by-building-id +msg-status-closed-unsuccess+)
-						 :user-group     (waste-messages-statistics-by-username +msg-status-closed-unsuccess+))
+						 :legend-group-lb            (_ "Rejected")
+						 :not-found-lb               (_ "Nothing found")
+						 :username-lb                (_ "Username")
+						 :user-group-caption-lb      (_ "Grouped by user")
+						 :code-lb                    (_ "Code")
+						 :weight-lb                  (_ "Weight (Kg)")
+						 :buildings-group-caption-lb
+						 (_ "Grouped by building")
+						 :cer-group-caption-lb
+						 (_ "Grouped by CER code")
+						 :building-description-lb    (_ "Building")
+						 :cer-group
+						 (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+)
+						 :buildings-group
+						 (waste-messages-statistics-by-building-id +msg-status-closed-unsuccess+)
+						 :user-group
+						 (waste-messages-statistics-by-username +msg-status-closed-unsuccess+))
 					     :stream stream))))
-
-
 
 (define-lab-route waste-statistics ("/print-waste-stats/" :method :get)
   (with-authentication

@@ -129,18 +129,20 @@
 (define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
   :test #'string=)
 
-(define-constant +script-file-re+            "^/[a-z,\-]+.lisp$"                 :test #'string=)
+(define-constant +script-file-re+               "^/[a-z,\-]+.lisp$"                 :test #'string=)
 
-(define-constant +cer-code-re+               "^CER[0-9]+\\*?$"                   :test #'string=)
+(define-constant +cer-code-re+                  "^CER[0-9]+\\*?$"                   :test #'string=)
 
-(define-constant +adr-code-class-re+         "(^[0-9]$)|(^[0-9]\\.[0-9][A-Z]?$)" :test #'string=)
+(define-constant +adr-code-class-re+            "(^[0-9]$)|(^[0-9]\\.[0-9][A-Z]?$)" :test #'string=)
 
-(define-constant +adr-uncode-re+             "^UN[0-9]{4}$"                      :test #'string=)
+(define-constant +adr-uncode-re+                "^UN[0-9]{4}$"                      :test #'string=)
 
-(define-constant +adr-code-radioactive+      "^7"                                :test #'string=)
+(define-constant +adr-code-radioactive+         "^7"                                :test #'string=)
 
-(define-constant +waste-form-weight-re+      "^\\p{N}+\\p{L}{1,2}$"              :test #'string=)
+(define-constant +waste-form-weight-re+         "^\\p{N}+\\p{L}{1,2}$"              :test #'string=)
 
-(define-constant +federated-query-product-re+  "(?i)^.{3,}$"                     :test #'string=)
+(define-constant +federated-query-product-re+   "(?i)^.{3,}$"                       :test #'string=)
 
-(define-constant +federated-query-id-re+       "(?i)^.+-[0-9]+"                  :test #'string=)
+(define-constant +federated-query-id-re+        "(?i)^.+-[0-9]+"                    :test #'string=)
+
+(define-constant +waste-registration-number-re+ "^[^;\\\"'<>&]+$"                   :test #'string=)

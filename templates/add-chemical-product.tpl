@@ -453,7 +453,7 @@
   <!-- federated query results -->
   <div id="fq-res-container">
     <h3>
-      <i class="fa fa-cloud-download fa-2x" style="color: #83D1E7" aria-hidden="true"></i>
+      <i class="fa fa-cloud-download fa-2x fq-download" aria-hidden="true"></i>
       <!-- TMPL_VAR fq-table-res-header -->
     </h3>
 

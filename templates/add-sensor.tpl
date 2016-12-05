@@ -98,7 +98,10 @@
       </a>
       <!-- TMPL_IF has-sensor-log -->
       <a target="_blank" href="<!-- TMPL_VAR graph-sensor-link -->">
-	<div class="graph-button">&nbsp;</div>
+	  <div class="graph-button">
+	      <i class="fa fa-bar-chart fa-2x" aria-hidden="true">
+	      </i>
+	  </div>
       </a>
       <!-- /TMPL_IF -->
     </td>

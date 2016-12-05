@@ -139,24 +139,16 @@
 	    (letter-hp-codes hps)
 	    phys-state)))
 
-(defun get-column-from-id (id re object column-fn &key (default ""))
-  (let ((obj-db (single object :id (if (scan-to-strings re id)
-				       (parse-integer id)
-				       +db-invalid-id-number+))))
-    (if obj-db
-	(funcall column-fn obj-db)
-	default)))
-
 (defun generate-letter (username lab-number building-id weight cer-id
 			phys-state-id body adrs hp-codes)
-    (let* ((all-adrs      (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
-	   (all-hp        (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
-	   (phys-state  (get-column-from-id phys-state-id
-					    +pos-integer-re+
-					    'db:waste-physical-state
-					    #'db:explanation
-					    :default
-					    (_ "*warning: no valid physical state*")))
+    (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
+	   (all-hp     (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
+	   (phys-state (get-column-from-id phys-state-id
+					   +pos-integer-re+
+					   'db:waste-physical-state
+					   #'db:explanation
+					   :default
+					   (_ "*warning: no valid physical state*")))
 	   (actual-cer (get-column-from-id cer-id
 					   +pos-integer-re+
 					   'db:cer-code

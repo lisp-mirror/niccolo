@@ -15,9 +15,15 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-broadcast-msg-body+    "body" :test #'string=)
+(define-constant +name-broadcast-msg-body+    "body"    :test #'string=)
 
-(define-constant +name-broadcast-msg-subject+ "subj" :test #'string=)
+(define-constant +name-broadcast-msg-subject+ "subj"    :test #'string=)
+
+(define-constant +name-registration-num+      "reg-num" :test #'string=)
+
+(define-constant +name-id-message+            "id"      :test #'string=)
+
+(define-constant +name-broadcast-msg-subject+ "subj"    :test #'string=)
 
 (defmacro define-status-codes (&rest codes)
   `(progn
@@ -337,13 +343,16 @@
       raw)))
 
 (defun %build-waste-template (user-id &optional (other-status nil))
-  (let* ((the-query (select ((:as :message.id        :msg-id)
-			     (:as :message.status    :status)
-			     (:as :message.sent-time :sent-time)
-			     (:as :message.subject   :subject)
-			     (:as :message.text      :text)
-			     (:as :sender.username   :sender-username)
-			     (:as :rcpt.username     :rcpt-username))
+  (let* ((the-query (select ((:as :message.id                    :msg-id)
+			     (:as :message.status                :status)
+			     (:as :message.sent-time             :sent-time)
+			     (:as :message.subject               :subject)
+			     (:as :message.text                  :text)
+			     (:as :waste-msg.weight              :weight)
+			     (:as :waste-msg.id                  :waste-id)
+			     (:as :waste-msg.registration-number :registration-number)
+			     (:as :sender.username               :sender-username)
+			     (:as :rcpt.username                 :rcpt-username))
 		      (from :message)
 		      (left-join (:as :user :sender) :on (:= :message.sender :sender.id))
 		      (left-join (:as :user :rcpt)   :on (:= :message.recipient :rcpt.id))
@@ -366,17 +375,20 @@
 	(do-rows (rown res) raw
 	  (let* ((row (elt raw rown))
 		 (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
-		 (close-w-success-link  (restas:genurl 'close-w-success-message
+		 (close-w-success-link (restas:genurl 'close-w-success-message
 						       :id (getf row :msg-id)))
-		 (close-w-failure-link  (restas:genurl 'close-w-failure-message
-						       :id (getf row :msg-id))))
+		 (close-w-failure-link (restas:genurl 'close-w-failure-message
+						      :id (getf row :msg-id)))
+		 (assoc-registration-number-link
+		  (restas:genurl 'assoc-registration-waste-message)))
 	    (setf (elt raw rown)
 		  (nconc row
-			 (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
-			 (list :delete-link delete-link)
-			 (list :close-w-success-link close-w-success-link)
-			 (list :close-w-failure-link close-w-failure-link)
-			 (list :admin-p (session-admin-p))
+			 (list :decoded-sent-time    (decode-datetime-string (getf row :sent-time)))
+			 (list :delete-link          delete-link)
+			 (list :close-w-success-link  close-w-success-link)
+			 (list :close-w-failure-link  close-w-failure-link)
+			 (list :assoc-reg-number-link assoc-registration-number-link)
+			 (list :admin-p               (session-admin-p))
 			 (children-template (getf row :msg-id))))))
 	raw))))
 
@@ -607,13 +619,16 @@
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-messages.tpl"
 					     (with-path-prefix
-						 :waste-messages-hd-lb (_ "Opened Waste messages")
-						 :subject-lb           (_ "Subject")
-						 :sent-time-lb         (_ "Sent at")
-						 :sender-lb            (_ "Sender")
-						 :rcpt-lb              (_ "Recipient")
-						 :message-lb           (_ "Message")
-						 :operations-lb        (_ "Operations")
+						 :waste-messages-hd-lb   (_ "Opened Waste messages")
+						 :subject-lb             (_ "Subject")
+						 :sent-time-lb           (_ "Sent at")
+						 :sender-lb              (_ "Sender")
+						 :rcpt-lb                (_ "Recipient")
+						 :message-lb             (_ "Message")
+						 :operations-lb          (_ "Operations")
+						 :registration-number-lb (_ "Registration number")
+						 :name-registration-num  +name-registration-num+
+						 :name-id-message        +name-id-message+
 						 :messages (build-waste-template +msg-status-open+))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-messages.tpl"
@@ -625,30 +640,39 @@
 						 :rcpt-lb              (_ "Recipient")
 						 :message-lb           (_ "Message")
 						 :operations-lb        (_ "Operations")
+						 :registration-number-lb (_ "Registration number")
+						 :name-registration-num  +name-registration-num+
+						 :name-id-message        +name-id-message+
 						 :messages (build-waste-template +msg-status-closed-unsuccess+))
 					     :stream stream)
       (html-template:fill-and-print-template #p"waste-messages.tpl"
 					     (with-path-prefix
-						 :waste-messages-hd-lb (_ "Accepted waste messages")
-						 :subject-lb           (_ "Subject")
-						 :sent-time-lb         (_ "Sent at")
-						 :sender-lb            (_ "Sender")
-						 :rcpt-lb              (_ "Recipient")
-						 :message-lb           (_ "Message")
-						 :operations-lb        (_ "Operations")
+						 :waste-messages-hd-lb
+					       (_ "Accepted waste messages")
+						 :subject-lb             (_ "Subject")
+						 :sent-time-lb           (_ "Sent at")
+						 :sender-lb              (_ "Sender")
+						 :rcpt-lb                (_ "Recipient")
+						 :message-lb             (_ "Message")
+						 :operations-lb          (_ "Operations")
+						 :registration-number-lb (_ "Registration number")
+						 :name-registration-num  +name-registration-num+
+						 :name-id-message        +name-id-message+
 						 :messages (build-waste-template +msg-status-closed-success+))
 					     :stream stream)
 
       (let ((html-template:*string-modifier* #'identity))
 	(html-template:fill-and-print-template #p"user-messages.tpl"
 					       (with-path-prefix
-						   :user-messages-hd-lb (_ "Messages")
-						   :subject-lb          (_ "Subject")
-						   :sent-time-lb        (_ "Sent at")
-						   :sender-lb           (_ "Sender")
-						   :rcpt-lb             (_ "Recipient")
-						   :message-lb          (_ "Message")
-						   :operations-lb       (_ "Operations")
+						   :user-messages-hd-lb    (_ "Messages")
+						   :subject-lb             (_ "Subject")
+						   :sent-time-lb           (_ "Sent at")
+						   :sender-lb              (_ "Sender")
+						   :rcpt-lb                (_ "Recipient")
+						   :message-lb             (_ "Message")
+						   :operations-lb          (_ "Operations")
+						   :name-registration-num  +name-registration-num+
+						   :name-id-message        +name-id-message+
 						   :messages (build-general-message-template))
 					       :stream stream)))))
 
@@ -696,6 +720,46 @@
   (format nil
 	  (_ "Your request:~2%----~2%~a~2%----~2%has been rejected.")
 	  (db:text msg)))
+
+(defun reply-to (id subject body)
+  (with-authentication
+    (with-admin-privileges
+	(let* ((error-no-id (regexp-validate (list (list id
+							 +integer-re+
+							 (_ "Invalid message ID provided")))))
+	       (error-no-message (if (and (not error-no-id)
+					  (not (single 'db:message :id id)))
+				     (_ "No message with ID ~a found")
+				     nil)))
+	  (if (and (not error-no-id)
+		   (not error-no-message))
+	      (let ((parent (single 'db:message :id id)))
+		(send-user-message (make-instance 'db:message)
+				   (db:recipient parent)
+				   (db:recipient parent)
+				   subject
+				   body
+				   :child-message nil
+				   :parent-message id)
+		(when (db:echo-to parent)
+		  (let ((echo-message (single 'db:message :id (db:echo-to parent))))
+		    (when echo-message
+		      (send-user-message (make-instance 'db:message)
+					 (db:recipient    parent)
+					 (db:recipient echo-message)
+					 subject
+					 body
+					 :email-text body
+					 :child-message nil
+					 :parent-message (db:id echo-message)))))
+		(print-messages nil (list (format nil
+						  (_ "Replied to Message ~a")
+						  id))))
+	      (print-messages (concatenate 'list
+					   error-no-id
+					   error-no-message)
+			      nil)))
+      (print-messages (list *insufficient-privileges-message*) nil))))
 
 (defun close-w-status-message (id status)
   (with-authentication
@@ -756,6 +820,61 @@
 (define-lab-route close-w-failure-message ("/close-failure-message/:id" :method :get)
   (close-w-status-message id +msg-status-closed-unsuccess+))
 
+(define-lab-route assoc-registration-waste-message ("/assoc-reg-waste/" :method :get)
+  (with-authentication
+    (with-admin-privileges
+	(let* ((error-reg (regexp-validate (list (list (get-parameter +name-registration-num+)
+						       +waste-registration-number-re+
+						       (_ "Registration number format invalid")))))
+
+	       (error-msg-id (regexp-validate (list (list (get-parameter +name-id-message+)
+							  +integer-re+
+							  (_ "Id not valid")))))
+	       (message      (and (null error-reg)
+				  (null error-msg-id)
+				  (get-column-from-id (get-parameter +name-id-message+)
+						      +pos-integer-re+
+						      'db:waste-message
+						      #'identity
+						      :default nil)))
+	       (wrapper-message (and message
+				     (single 'db:message :id (db:message message)))))
+	  (when message
+	    (cond
+	      ((and wrapper-message
+		    (typep message 'db:waste-message)
+		    (null  (db:registration-number message))
+		    (string= (db:status wrapper-message) +msg-status-closed-success+))
+	       (setf (db:registration-number message) (get-parameter +name-registration-num+))
+	       (save message)
+	       (reply-to (format nil "~a" (db:id wrapper-message))
+			 (format nil
+				 (_ "Added registration number ~a")
+				 (get-parameter +name-registration-num+))
+			 (format nil
+				 (_ "The registration number ~s has been attached to your message:  ~3%~a")
+				 (get-parameter +name-registration-num+)
+				 (db:text wrapper-message)))
+	       (print-messages nil
+			       (list (format nil
+					     (_ "The registration number ~s has been attached to message: ~a")
+					     (get-parameter +name-registration-num+)
+					     (db:id wrapper-message)))))
+	      ((and wrapper-message
+		    (typep message 'db:waste-message)
+		    (null  (db:registration-number message))
+		    (string/= (db:status wrapper-message) +msg-status-closed-success+))
+	       (print-messages (list (_ "Request has not been closed with success."))
+			       nil))
+	      ((and message
+		    (typep message 'db:waste-message)
+		    (not (null (db:registration-number message))))
+	       (print-messages (list (_ "The registration number can not be changed"))
+			       nil))
+	      (t
+	       (print-messages (list (_ "Generic error")) nil)))))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
 (defun send-broadcast-message (subject body)
   (let* ((actual-subject (strip-tags subject))
 	 (actual-body    (strip-tags body))
@@ -778,7 +897,6 @@
 						  actual-subject))
 				    nil))
 	 (manage-broadcast-message  nil errors))))
-
 
 (defun manage-broadcast-message (infos errors)
   (with-standard-html-frame (stream

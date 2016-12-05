@@ -257,6 +257,7 @@
    :expiration-message
    :validity-expired-message
    :waste-message
+   :registration-number
    :compound-shortage-message
    :message
    :cer-code-id
@@ -315,7 +316,8 @@
    :+barcode-id-re+
    :+waste-form-weight-re+
    :+federated-query-product-re+
-   :+federated-query-id-re+))
+   :+federated-query-id-re+
+   :+waste-registration-number-re+))
 
 (defpackage :string-utils
   (:use
@@ -370,7 +372,8 @@
      :query-low-level
      :db-nil-p
      :if-db-nil-else
-     :count-all))
+     :count-all
+     :get-column-from-id))
 
 (defpackage :db-config
   (:use

@@ -39,24 +39,22 @@
       </td>
 
       <td class="chemical-op-link">
-	<a href="<!-- TMPL_VAR delete-link -->">
-	  <div class="delete-button">&nbsp;</div>
-	</a>
-	<a href="<!-- TMPL_VAR assoc-haz-link -->">
-	  <div class="ghs-haz-button">&nbsp;</div>
-	</a>
-	<a href="<!-- TMPL_VAR assoc-prec-link -->">
-	  <div class="ghs-prec-button">&nbsp;</div>
-	</a>
-	<a href="<!-- TMPL_VAR assoc-sec-fq-link -->">
-	  <div class="assoc-security-fq">
-	    <i
-	       class="fa fa-cloud-download fa-2x"
-	       style="color: #83D1E7"
-	       aria-hidden="true">
-	    </i>
-	</div>
-	</a>
+	  <a href="<!-- TMPL_VAR delete-link -->">
+	      <div class="delete-button">&nbsp;</div>
+	  </a>
+	  <a href="<!-- TMPL_VAR assoc-haz-link -->">
+	      <div class="ghs-haz-button">&nbsp;</div>
+	  </a>
+	  <a href="<!-- TMPL_VAR assoc-prec-link -->">
+	      <div class="ghs-prec-button">&nbsp;</div>
+	  </a>
+	  <a href="<!-- TMPL_VAR assoc-sec-fq-link -->">
+	      <div class="assoc-security-fq">
+		  <i  class="fa fa-cloud-download fa-2x"
+		      aria-hidden="true">
+		  </i>
+	      </div>
+	  </a>
 
         <script>
           $(function() {

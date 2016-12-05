@@ -65,3 +65,11 @@
 (defun count-all (class)
   (second (first (crane:query (select ((:as (:count :*) :ct))
 				(from class))))))
+
+(defun get-column-from-id (id re object column-fn &key (default ""))
+  (let ((obj-db (single object :id (if (scan-to-strings re id)
+				       (parse-integer id)
+				       +db-invalid-id-number+))))
+    (if obj-db
+	(funcall column-fn obj-db)
+	default)))

@@ -351,7 +351,7 @@ legend {
 
 th {
     font-weight:bolder;
-    background: #83D1E7;
+    background: #3EAEE5;
     padding:    5pt;
     text-align: center;
     border:     1pt solid #EFA700;
@@ -359,7 +359,7 @@ th {
 }
 
 td {
-    border:     1pt solid #83D1E7;
+    border:     1pt solid #3EAEE5;
     padding:    5pt;
     text-align: center;
 }
@@ -523,6 +523,18 @@ td {
     min-height:	         32px;
     text-decoration:     none;
     vertical-align:      text-top;
+    color:               #3EAEE5;
+}
+
+.waste-assoc-registry-button {
+    margin:              3pt 3pt 3pt 3pt;
+    display:             inline-block;
+    width:	         32px;
+    min-height:	         32px;
+    text-decoration:     none;
+    vertical-align:      text-top;
+    color:               #3EAEE5;
+    cursor:              pointer;
 }
 
 .ghs-prec-button {
@@ -660,14 +672,14 @@ td {
 }
 
 .graph-button {
-    margin:              auto;
+    margin:              3pt 3pt 3pt 3pt;
     display:             inline-block;
     width:	         32px;
-    height:	         32px;
-    background-image:    url("../images/icon-graph.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
+    min-height:	         32px;
     text-decoration:     none;
+    vertical-align:      text-top;
+    color:               #A00200;
+    cursor:              pointer;
 }
 
 .add-ajax-button {
@@ -782,7 +794,7 @@ div.biblio-ref{
 
 .description {
     border:        thin solid #047595;
-    background:    #83D1E7;
+    background:    #3EAEE5;
     font-size:     200%;
     display:       block;
     margin-top:     10pt;
@@ -842,6 +854,11 @@ table.waste-stats th {
 .more-info-link {
     font-size: 60%;
 }
+
+.fq-download {
+    color: #3EAEE5;
+}
+
 
 
 /* jquery ui extension */
