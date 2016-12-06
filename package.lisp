@@ -108,6 +108,7 @@
    :+pictogram-web-image-ext+
    :+ghs-pictogram-web-image-subdir+
    :+adr-pictogram-web-image-subdir+
+   :+pictogram-phys-size+
    :+pictogram-id-none+
    :+mime-postscript+
    :+security-warning-log-level+

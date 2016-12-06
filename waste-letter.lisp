@@ -218,24 +218,46 @@
 		  (single class :id i))))
 
 (defun %draw-pictograms-row (doc objs y)
-  (let ((h-res 0))
+  (let ((x-offset   0.0)
+	(y-offset   0.0)
+	(starting-y y)
+	(pics       (remove-duplicates objs
+				       :key  #'db:pictogram-file
+				       :test #'string=)))
     (loop
-       for pict in (remove-duplicates objs
-				      :key  #'db:pictogram-file
-				      :test #'string=)
+       for pics-ct from 0 below (length pics)
        for x-ct = 0 then (+ x-ct 1) do ; assumig all images have the same sizes
-	 (with-save-restore (doc)
-	   (let* ((pict-path (uiop:unix-namestring
-			      (local-system-path (db:pictogram-file pict)))))
-	     (multiple-value-bind (image-handle w h)
-		 (ps:open-image-file doc
-				     ps:+image-file-type-eps+
-				     pict-path
-				     "" 0)
-	       (ps:translate   doc (* x-ct w) (- y h))
-	       (ps:place-image doc image-handle 0.0 0.0 1.0)
-	       (setf h-res h)))))
-    h-res))
+	 (let* ((pict-path (uiop:unix-namestring
+			    (local-system-path (db:pictogram-file (elt pics pics-ct))))))
+	   (multiple-value-bind (image-handle w h) ; w and h are in mm
+	       (ps:open-image-file doc
+				   ps:+image-file-type-eps+
+				   pict-path
+				   "" 0)
+	     (let* ((scaling  (/ +pictogram-phys-size+ w))
+		    (w-scaled (* w scaling))
+		    (h-scaled (* h scaling)))
+	       (setf x-offset (* 1/20 w-scaled))
+	       (setf y-offset (* 1/20 h-scaled))
+	       (if (< (+ (* x-ct w-scaled) w-scaled x-offset)
+		      (ps:width +a4-landscape-page-sizes+))
+		   (ps:place-image doc
+				   image-handle
+				   (+ x-offset (* x-ct w-scaled))
+				   (- y h-scaled y-offset)
+				   scaling)
+		   (if (> (- (- y h-scaled) h-scaled y-offset)
+			  0)
+		       (progn
+			 (setf x-ct -1)
+			 (decf y h-scaled)
+			 (decf pics-ct))
+		       (progn
+			 (ps:end-page doc)
+			 (ps:begin-page doc)
+			 (setf x-ct -1)
+			 (setf y    starting-y)
+			 (decf pics-ct))))))))))
 
 (defun generate-waste-label (id-message username lab-number building-id weight
 			     cer-id phys-state-id adrs hp-codes)
@@ -250,12 +272,18 @@
 					  #'db:explanation
 					  :default
 					  (_ "*warning: no valid physical state*")))
-	 (actual-cer (get-column-from-id cer-id
-					 +pos-integer-re+
-					 'db:cer-code
-					 #'db:code
-					 :default
-					 (_ "*Warning: no such cer code*")))
+	 (cer-code (get-column-from-id cer-id
+				       +pos-integer-re+
+				       'db:cer-code
+				       #'db:code
+				       :default
+				       (_ "*Warning: no such cer code*")))
+	 (cer-desc (get-column-from-id cer-id
+				       +pos-integer-re+
+				       'db:cer-code
+				       #'db:explanation
+				       :default
+				       (_ "*Warning: no such cer code*")))
 	 (building   (get-column-from-id building-id
 					 +pos-integer-re+
 					 'db:building
@@ -292,11 +320,16 @@
 	  (if (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a))) all-adrs)
 	      (progn
 		(ps:setfont doc font h3)
-		(setf actual-cer
+		(setf cer-code
 		      (_ "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance")))
 	      (ps:setfont doc font h1))
 	  (ps:translate doc +page-margin-left+ y)
-	  (ps:show-xy doc actual-cer 0 0))
+	  (ps:show-xy doc cer-code 0 0))
+	(decf y h1)
+	(with-save-restore (doc)
+	  (ps:setfont doc font h2)
+	  (ps:translate doc +page-margin-left+ y)
+	  (ps:show-xy doc cer-desc 0 0))
 	(when (not (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a)))
 			    all-adrs))
 	  (decf y h1)
@@ -313,17 +346,20 @@
 				    (_ "ADR codes: ~{~a ~}")
 				    (mapcar #'db:uncode all-adrs))
 			0 0))
-	  (let ((h-pict (%draw-pictograms-row doc hp-pictogram (- y top-offset))))
-	    (decf y (+ top-offset h-pict))
-	    (setf h-pict (%draw-pictograms-row doc adr-pictogram y))
-	    (decf y (+ h-pict (* 2.0 h2)))
-	    (with-save-restore (doc)
-	      (ps:setfont doc font h3)
-	      (ps:translate doc +page-margin-left+ y)
-	      (ps:show-xy doc (format nil
+	  (decf y h1)
+	  (with-save-restore (doc)
+	    (ps:setfont doc font h3)
+	    (ps:translate doc +page-margin-left+ y)
+	    (ps:show-xy doc (format nil
 				      (_ "Weight: ~akg Physical state: ~a")
 				      weight phys-state)
-			  0 0))))))))
+			0 0))
+	  (ps:end-page doc)
+	  (ps:begin-page doc)
+	  (%draw-pictograms-row doc hp-pictogram (ps:height +a4-landscape-page-sizes+))
+	  (ps:end-page doc)
+	  (ps:begin-page doc)
+	  (%draw-pictograms-row doc adr-pictogram (ps:height +a4-landscape-page-sizes+)))))))
 
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication

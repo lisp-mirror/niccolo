@@ -65,7 +65,9 @@
 
 (define-constant +adr-pictogram-web-image-subdir+ "adr-pictograms/"          :test #'string=)
 
-(define-constant +pictogram-id-none+              10                         :test #'=)
+(define-constant +pictogram-phys-size+           90.0                        :test #'=)
+
+(define-constant +pictogram-id-none+             10                          :test #'=)
 
 (define-constant +mime-postscript+                "application/postscript"   :test #'string=)
 
