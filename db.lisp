@@ -190,6 +190,9 @@
    :nullp t)
   (msds
    :type text
+   :nullp t)
+  (structure
+   :type text
    :nullp t))
 
 (deftable user ()
