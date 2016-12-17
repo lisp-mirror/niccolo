@@ -581,6 +581,28 @@ td {
     text-decoration:     none;
 }
 
+.struct-file-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         23px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-struct-file.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.add-struct-file-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         23px;
+    min-height:	         32px;
+    background-image:    url("../images/icon-add-struct-file.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
 .add-map-file-button {
     margin:              auto;
     display:             inline-block;

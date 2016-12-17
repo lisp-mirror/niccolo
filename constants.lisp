@@ -71,6 +71,10 @@
 
 (define-constant +mime-postscript+                "application/postscript"   :test #'string=)
 
+(define-constant +mime-pdf+                       "application/pdf"          :test #'string=)
+
+(define-constant +mime-sdf+                       "chemical/x-mdl-sdfile"    :test #'string=)
+
 (define-constant +security-warning-log-level+     :warning                   :test #'string=)
 
 (define-constant +search-chem-id+                 "s-id"                     :test #'string=)

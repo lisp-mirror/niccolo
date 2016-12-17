@@ -299,7 +299,10 @@
 	     (top-offset         (* 2 h3))
 	     (starting-text-area (- (ps:height +a4-landscape-page-sizes+)
 				    +header-image-export-height+))
-	     (y                  (- starting-text-area (+ h1 h2))))
+	     (y                  (- starting-text-area (+ h1 h2)))
+	     (box-h              (* 1/7 (ps:height +a4-landscape-page-sizes+)))
+	     (box-w              (- (ps:width +a4-landscape-page-sizes+)
+				    (* 2 +page-margin-left+))))
 	(ps:setcolor doc ps:+color-type-fillstroke+ (cl-colors:rgb 0.0 0.0 0.0))
 	(ps:setfont doc font 4.0)
 	(ps:set-parameter   doc ps:+value-key-linebreak+ ps:+true+)
@@ -318,48 +321,71 @@
 	  (ps:show-xy   doc (format nil "~a ~a ~a" username lab-number building) 0 0))
 	(with-save-restore (doc)
 	  (if (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a))) all-adrs)
-	      (progn
+	      (ps:draw-text-confined-in-box doc
+					    font
+					    (_ "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance")
+					    +page-margin-left+
+					    (- y (* box-h 2))
+					    box-w
+					    (* box-h 2)
+					    :vertical-align    :bottom
+					    :horizontal-align  ps:+boxed-text-h-mode-justify+
+					    :maximum-font-size (* 2 h1))
+	    (progn
+	      (ps:draw-text-confined-in-box doc
+					    font
+					    cer-code
+					    +page-margin-left+
+					    y
+					    box-w
+					    box-h
+					    :horizontal-align  ps:+boxed-text-h-mode-justify+
+					    :maximum-font-size h1)
+	      (decf y box-h)
+	      (ps:draw-text-confined-in-box doc
+					    font
+					    cer-desc
+					    +page-margin-left+
+					    y
+					    box-w
+					    box-h
+					    :horizontal-align  ps:+boxed-text-h-mode-justify+
+					    :maximum-font-size h2)
+	      (decf y box-h)
+	      (ps:draw-text-confined-in-box doc
+					    font
+					    (format nil
+						    (_ "HP codes: ~{~a ~}")
+						    (mapcar #'db:code all-hp))
+					    +page-margin-left+ y
+					    box-w box-h
+					    :horizontal-align  ps:+boxed-text-h-mode-justify+
+					    :maximum-font-size h2)
+	      (decf y box-h)
+	      (ps:draw-text-confined-in-box doc
+					    font
+					    (format nil
+						    (_ "ADR codes: ~{~a ~}")
+						    (mapcar #'db:uncode all-adrs))
+					    +page-margin-left+ y
+					    box-w box-h
+					    :horizontal-align  ps:+boxed-text-h-mode-justify+
+					    :maximum-font-size h2)
+
+	      (decf y box-h)
+	      (with-save-restore (doc)
 		(ps:setfont doc font h3)
-		(setf cer-code
-		      (_ "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance")))
-	      (ps:setfont doc font h1))
-	  (ps:translate doc +page-margin-left+ y)
-	  (ps:show-xy doc cer-code 0 0))
-	(decf y h1)
-	(with-save-restore (doc)
-	  (ps:setfont doc font h2)
-	  (ps:translate doc +page-margin-left+ y)
-	  (ps:show-xy doc cer-desc 0 0))
-	(when (not (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a)))
-			    all-adrs))
-	  (decf y h1)
-	  (with-save-restore (doc)
-	    (ps:setfont doc font h2)
-	    (ps:translate doc +page-margin-left+ y)
-	    (ps:show-xy doc (format nil (_ "HP codes: ~{~a ~}") (mapcar #'db:code all-hp))
-			0 0))
-	  (decf y h1)
-	  (with-save-restore (doc)
-	    (ps:setfont doc font h2)
-	    (ps:translate doc +page-margin-left+ y)
-	    (ps:show-xy doc (format nil
-				    (_ "ADR codes: ~{~a ~}")
-				    (mapcar #'db:uncode all-adrs))
-			0 0))
-	  (decf y h1)
-	  (with-save-restore (doc)
-	    (ps:setfont doc font h3)
-	    (ps:translate doc +page-margin-left+ y)
-	    (ps:show-xy doc (format nil
-				      (_ "Weight: ~akg Physical state: ~a")
-				      weight phys-state)
-			0 0))
-	  (ps:end-page doc)
-	  (ps:begin-page doc)
-	  (%draw-pictograms-row doc hp-pictogram (ps:height +a4-landscape-page-sizes+))
-	  (ps:end-page doc)
-	  (ps:begin-page doc)
-	  (%draw-pictograms-row doc adr-pictogram (ps:height +a4-landscape-page-sizes+)))))))
+		(ps:translate doc +page-margin-left+ y)
+		(ps:show-xy doc (format nil
+					(_ "Weight: ~akg Physical state: ~a")
+					weight phys-state)
+			    0 0)))))
+	(ps:end-page doc)
+	(ps:begin-page doc)
+	(%draw-pictograms-row doc hp-pictogram (ps:height +a4-landscape-page-sizes+))
+	(ps:end-page doc)
+	(ps:begin-page doc)
+	(%draw-pictograms-row doc adr-pictogram (ps:height +a4-landscape-page-sizes+))))))
 
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication

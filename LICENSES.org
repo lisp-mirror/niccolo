@@ -44,6 +44,8 @@
 
 - www/images/icon-add-msds-pdf.png
   www/images/icon-msds-pdf.png
+  www/images/icon-add-struct-file.png
+  www/images/icon-struct-file.png
   derived from works © leandrosciola
   according to https://openclipart.org/detail/171857/icon-pdf-a%C2%8Dcone
   released under CC0 https://creativecommons.org/publicdomain/zero/1.0/

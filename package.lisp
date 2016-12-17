@@ -111,6 +111,8 @@
    :+pictogram-phys-size+
    :+pictogram-id-none+
    :+mime-postscript+
+   :+mime-pdf+
+   :+mime-sdf+
    :+security-warning-log-level+
    :+db-invalid-id+
    :+db-invalid-id-number+
@@ -221,6 +223,7 @@
    :chemical-compound
    :pubchem-cid
    :msds
+   :structure-file
    :chemical-hazard
    :chemical-precautionary
    :ghs-p
@@ -296,6 +299,7 @@
    :magic-validate-p
    :png-validate-p
    :pdf-validate-p
+   :sdf-validate-p
    :integer-%-validate
    :integer-positive-validate
    :cookie-key-script-visited-validate
@@ -319,6 +323,27 @@
    :+federated-query-product-re+
    :+federated-query-id-re+
    :+waste-registration-number-re+))
+
+(defpackage :math-utils
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :config
+   :constants)
+  (:export
+   ;; matrix
+   :fmatrix
+   :make-fmatrix
+   :fmref
+   :fm-w
+   :fm-h
+   :fm-row
+   :fm-column
+   :make-same-dimension-fmatrix
+   :loop-fm
+   :fm-transpose
+   :fm*))
 
 (defpackage :string-utils
   (:use
@@ -475,6 +500,39 @@
    :draw-graph-point-norm
    :draw-graph
    :with-http-png-reply))
+
+(defpackage :molecule
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :parse-number
+   :config
+   :constants
+   :math-utils)
+  (:export
+   :ch-atom
+   :charge
+   :label
+   :x
+   :y
+   :z
+   :molecule
+   :atoms
+   :connections))
+
+(defpackage :molfile
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :parse-number
+   :config
+   :constants
+   :math-utils
+   :molecule)
+  (:export
+   :parse-mdl))
 
 (defpackage :views
   (:use

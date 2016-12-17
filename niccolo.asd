@@ -23,6 +23,8 @@
 	       :cl-ppcre-unicode
 	       :trivial-timeout
 	       :bordeaux-threads
+	       :cl-lex
+	       :yacc
 	       :dbi
 	       :envy
                :crane
@@ -59,8 +61,11 @@
 	       (:file "risk-phrases")
 	       (:file "risk-calculator")
 	       (:file "general-routes")
-	       (:file "validation")
+	       (:file "math-utils")
 	       (:file "string-utils")
+	       (:file "molecule")
+	       (:file "molfile")
+	       (:file "validation")
 	       (:file "ps-utils")
 	       (:file "db-utils")
 	       (:file "db-config")

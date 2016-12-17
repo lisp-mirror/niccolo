@@ -87,6 +87,9 @@
 (defun pdf-validate-p (file)
   (magic-validate-p file '(#x25 #x50 #x44 #x46)))
 
+(defun sdf-validate-p (filepath)
+  (molfile:parse-mdl (read-file-into-string filepath)))
+
 (defun integer-%-validate (v)
   (let ((parsed (parse-integer v :junk-allowed t)))
     (and parsed

@@ -191,7 +191,7 @@
   (msds
    :type text
    :nullp t)
-  (structure
+  (structure-file
    :type text
    :nullp t))
 
