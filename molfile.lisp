@@ -176,16 +176,16 @@
     (magic-number)))
 
 (defun parse-mdl (mol-in-memory)
-  (with-input-from-string (stream mol-in-memory)
-    (and
-     (read-line stream nil nil)
-     (read-line stream nil nil)
-     (read-line stream nil nil)
-     (let ((*parsed-mol-file* (make-instance 'molecule))
-	   (*atoms-count*     -1)
-	   (*bonds-count*     -1))
-       (handler-case
+  (handler-case
+      (with-input-from-string (stream mol-in-memory)
+	(and
+	 (read-line stream nil nil)
+	 (read-line stream nil nil)
+	 (read-line stream nil nil)
+	 (let ((*parsed-mol-file* (make-instance 'molecule))
+	       (*atoms-count*     -1)
+	       (*bonds-count*     -1))
 	   (progn
 	     (yacc:parse-with-lexer (tokenizer stream) *parser*)
-	     *parsed-mol-file*)
-	 (error () nil))))))
+	     *parsed-mol-file*))))
+    (error () nil)))

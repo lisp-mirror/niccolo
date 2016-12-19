@@ -36,7 +36,6 @@
     :reader text))
   (:documentation "Null reference"))
 
-
 (define-condition out-of-bounds (error)
   ((seq
     :initarg :seq
@@ -45,7 +44,6 @@
     :initarg :idx
     :reader idx))
    (:documentation "Error when you go out of bound"))
-
 
 (define-condition length-error (text-error)
   ((seq

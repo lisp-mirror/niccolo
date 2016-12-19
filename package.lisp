@@ -341,7 +341,9 @@
    :fm-row
    :fm-column
    :make-same-dimension-fmatrix
-   :loop-fm
+   :fm-loop
+   :fm-map
+   :fm-flat-copy
    :fm-transpose
    :fm*))
 
@@ -361,6 +363,44 @@
    :encode-barcode
    :find-filename-from-path
    :random-password))
+
+(defpackage :molecule
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :parse-number
+   :config
+   :constants
+   :math-utils)
+  (:export
+   :ch-atom
+   :charge
+   :label
+   :x
+   :y
+   :z
+   :molecule
+   :atoms
+   :connections
+   :valence
+   :atom@
+   :bond-types-count
+   :permutation-matrix
+   :subgraph-isomorphism))
+
+(defpackage :molfile
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :parse-number
+   :config
+   :constants
+   :math-utils
+   :molecule)
+  (:export
+   :parse-mdl))
 
 (defpackage :ps-utils
   (:use
@@ -500,39 +540,6 @@
    :draw-graph-point-norm
    :draw-graph
    :with-http-png-reply))
-
-(defpackage :molecule
-  (:use
-   :cl
-   :alexandria
-   :cl-ppcre
-   :parse-number
-   :config
-   :constants
-   :math-utils)
-  (:export
-   :ch-atom
-   :charge
-   :label
-   :x
-   :y
-   :z
-   :molecule
-   :atoms
-   :connections))
-
-(defpackage :molfile
-  (:use
-   :cl
-   :alexandria
-   :cl-ppcre
-   :parse-number
-   :config
-   :constants
-   :math-utils
-   :molecule)
-  (:export
-   :parse-mdl))
 
 (defpackage :views
   (:use

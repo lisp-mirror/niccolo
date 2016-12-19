@@ -1,6 +1,7 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
-<form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/add-chemical/" enctype="multipart/form-data">
+<form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/add-chemical/"
+      enctype="multipart/form-data">
   <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
   <label for="cid-text">Pubchem CID</label>

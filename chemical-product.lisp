@@ -67,6 +67,7 @@
 	    (:as :chem.name            :chem-name)
 	    (:as :chem.id              :chem-id)
 	    (:as :chem.pubchem-cid     :chem-cid)
+	    (:as :chem.structure-file  :chem-struct)
 	    (:as :user.username        :owner-name)
 	    (:as :user.id              :owner-id)
 	    (:as :storage.id           :storage-id)
@@ -195,6 +196,7 @@
 				       update-link)))
 
 (defun fetch-product (owner chem-name building-name floor storage-name shelf
+		      struct-file
 		      &optional
 			(delete-link nil)
 			(update-link nil))
@@ -213,6 +215,17 @@
 						(if shelf
 						    (list := :shelf shelf)
 						    (list := 1 1))))))))
+    (when struct-file
+      (let ((group (molfile:parse-mdl (read-file-into-string struct-file))))
+	(when group
+	  (setf raw
+		(remove-if-not #'(lambda (a)
+				   (let ((molecule (molfile:parse-mdl (getf a
+									    :|chem-struct|
+									    ""))))
+				     (and molecule
+					  (molecule:subgraph-isomorphism group molecule))))
+			       raw)))))
     (build-template-list-chemical-prod raw delete-link update-link)))
 
 (defun fetch-product-min-id (id &optional (delete-link nil) (update-link nil))
@@ -238,83 +251,91 @@
 	  (json-all-storage-long-desc)
 	(html-template:fill-and-print-template #p"add-chemical-product.tpl"
 					       (with-path-prefix
-						   :add-new-product-lb (_ "Add new product")
-						   :compound-name-lb  (_ "Compound name")
-						   :storage-name-lb   (_ "Storage name")
-						   :shelf-lb          (_ "Shelf")
-						   :quantity-lb      (_ "Quantity (Mass or Volume)")
-						   :units-lb          (_ "Unit of measure")
-						   :expire-date-lb    (_ "Expire date")
-						   :validity-date-lb  (_ "Validity date")
-						   :item-count-lb     (_ "Item count")
+						   :add-new-product-lb        (_ "Add new product")
+						   :compound-name-lb          (_ "Compound name")
+						   :storage-name-lb           (_ "Storage name")
+						   :shelf-lb                  (_ "Shelf")
+						   :quantity-lb
+						   (_ "Quantity (Mass or Volume)")
+						   :units-lb                  (_ "Unit of measure")
+						   :expire-date-lb            (_ "Expire date")
+						   :validity-date-lb          (_ "Validity date")
+						   :item-count-lb             (_ "Item count")
 						   :search-products-legend-lb (_ "Search products")
-						   :barcode-number-lb  (_ "Barcode number (ID)")
-						   :owner-lb           (_ "Owner")
-						   :name-lb            (_ "Name")
-						   :building-lb        (_ "Building")
-						   :floor-lb           (_ "Floor")
-						   :shelf-lb           (_ "Shelf")
-						   :notes-optional-lb  (_ "Notes (optional)")
-						   :other-operations-lb (_ "Other operations")
-						   :submit-gen-barcode-lb  (_ "Generate barcode")
+						   :barcode-number-lb
+						   (_ "Barcode number (ID)")
+						   :owner-lb                  (_ "Owner")
+						   :name-lb                   (_ "Name")
+						   :building-lb               (_ "Building")
+						   :floor-lb                  (_ "Floor")
+						   :shelf-lb                  (_ "Shelf")
+						   :notes-optional-lb         (_ "Notes (optional)")
+						   :other-operations-lb       (_ "Other operations")
+						   :submit-gen-barcode-lb     (_ "Generate barcode")
 						   :submit-massive-delete-lb  (_ "Delete")
-						   :lending-lb          (_ "Lending")
-						   :submit-lend-to-lb   (_ "Lend to")
-						   :shortage-threshold-lb (_ "Shortage threshold")
-						   :threshold-lb          (_ "Threshold")
-						   :submit-shortage-lb    (_ "Change threshold")
-						   :user-lb             (_ "User")
-						   :sum-quantities-lb   (_ "Sum quantities")
-						   :select-all-lb       (_ "Select all")
-						   :deselect-all-lb     (_ "Deselect all")
-						   :select-lb           (_ "Select")
-						   :owner-lb            (_ "Owner")
-						   :structure-lb        (_ "Structure")
-						   :storage-lb          (_ "Storage")
-						   :notes-lb            (_ "Notes")
-						   :operations-lb       (_ "Operations")
-						   :origin-lb           (_ "Origin")
-						   :fq-table-res-header (_ "Results from federated servers")
-						   :chemical-id +name-chem-id+
-						   :storage-id  +name-chp-storage-id+
-						   :shelf       +name-shelf+
-						   :quantity    +name-quantity+
-						   :units       +name-units+
-						   :validity-date  +name-validity-date+
-						   :expire-date +name-expire-date+
- 						   :count       +name-count+
+						   :lending-lb                (_ "Lending")
+						   :submit-lend-to-lb         (_ "Lend to")
+						   :shortage-threshold-lb
+						   (_ "Shortage threshold")
+						   :threshold-lb              (_ "Threshold")
+						   :submit-shortage-lb        (_ "Change threshold")
+						   :user-lb                   (_ "User")
+						   :sum-quantities-lb         (_ "Sum quantities")
+						   :select-all-lb             (_ "Select all")
+						   :deselect-all-lb           (_ "Deselect all")
+						   :select-lb                 (_ "Select")
+						   :owner-lb                  (_ "Owner")
+						   :structure-lb              (_ "Structure")
+						   :storage-lb                (_ "Storage")
+						   :notes-lb                  (_ "Notes")
+						   :operations-lb             (_ "Operations")
+						   :origin-lb                 (_ "Origin")
+						   :struct-file-lb (_ "Stucture file")
+						   :fq-table-res-header
+						   (_ "Results from federated servers")
+						   :chemical-id        +name-chem-id+
+						   :storage-id         +name-chp-storage-id+
+						   :shelf              +name-shelf+
+						   :quantity           +name-quantity+
+						   :units              +name-units+
+						   :validity-date      +name-validity-date+
+						   :expire-date        +name-expire-date+
+						   :count              +name-count+
 						   :shortage-threshold +name-shortage-threshold+
 						   :shortage-threshold-value
 						   +default-shortage-threshold+
 						   :submit-change-shortage
 						   +op-submit-change-shortage-threshold+
-						   :notes       +name-notes+
-						   :json-storages-id  json-storage-id
-						   :json-storages  json-storage
-						   :json-chemicals json-chemical
-						   :json-chemicals-id json-chemical-id
-						   :value-owner       (get-session-username)
-						   :chemp-id          +search-chem-id+
-						   :chem-cid-exists  +name-chem-cid-exists+
-						   :pubchem-host +pubchem-host+
-						   :owner +search-chem-owner+
-						   :name  +search-chem-name+
-						   :building +search-chem-building+
-						   :floor +search-chem-floor+
-						   :storage +search-chem-storage+
-						   :search-shelf +search-chem-shelf+
-						   :submit-gen-barcode +op-submit-gen-barcode+
-						   :submit-massive-delete +op-submit-massive-delete+
-						   :submit-lend-to     +op-submit-lend-to+
-						   :username-lending   +name-username-lending+
+						   :notes                +name-notes+
+						   :json-storages-id     json-storage-id
+						   :json-storages        json-storage
+						   :json-chemicals       json-chemical
+						   :json-chemicals-id    json-chemical-id
+						   :value-owner          (get-session-username)
+						   :chemp-id             +search-chem-id+
+						   :chem-cid-exists      +name-chem-cid-exists+
+						   :pubchem-host         +pubchem-host+
+						   :owner                +search-chem-owner+
+						   :name                 +search-chem-name+
+						   :building             +search-chem-building+
+						   :floor                +search-chem-floor+
+						   :storage              +search-chem-storage+
+						   :search-shelf         +search-chem-shelf+
+						   :struct-data          +name-chem-struct-data+
+						   :submit-gen-barcode   +op-submit-gen-barcode+
+						   :submit-massive-delete
+						   +op-submit-massive-delete+
+						   :submit-lend-to       +op-submit-lend-to+
+						   :username-lending     +name-username-lending+
 						   ;; federated query
 						   :fq-start-url
 						   (restas:genurl 'ws-federated-query-product)
 						   :fq-results-url
 						   (restas:genurl 'ws-federated-query-results)
-						   :fq-query-key-param +query-http-parameter-key+
-						   :render-local-results-p has-local-results-p
-						   :data-table data)
+						   :fq-query-key-param   +query-http-parameter-key+
+						   :render-local-results-p
+						   has-local-results-p
+						   :data-table            data)
 					       :stream stream)))))
 
 (defun %match-or-null (s re)
@@ -329,7 +350,8 @@
 	    s
 	    ""))))
 
-(defun search-products (id owner chem-name building-name floor storage-name shelf)
+(defun search-products (id owner chem-name building-name floor storage-name shelf
+			structure-filename)
   (let* ((data (if (not (string-empty-p id))
 		   (fetch-product-by-id (%match-or-null id +barcode-id-re+)
 					'delete-chem-prod
@@ -340,6 +362,9 @@
 				  (%match-or-null floor +integer-re+)
 				  (%match-or-null storage-name +free-text-re+)
 				  (%match-or-null shelf +pos-integer-re+)
+				  (and structure-filename
+				       (sdf-validate-p structure-filename)
+				       structure-filename)
 				  'delete-chem-prod
 				  'update-chemical-product)))
 	 (info-message (if data
@@ -396,21 +421,47 @@
 
 (define-lab-route search-chem-prod ("/search-chem-prod/" :method :get)
   (with-authentication
-    (if (or (get-parameter +search-chem-id+)
-	    (get-parameter +search-chem-owner+)
-	    (get-parameter +search-chem-name+)
-	    (get-parameter +search-chem-building+)
-	    (get-parameter +search-chem-floor+)
-	    (get-parameter +search-chem-storage+)
-	    (get-parameter +search-chem-shelf+))
+    (if (or (get-parameter     +search-chem-id+)
+	    (get-parameter     +search-chem-owner+)
+	    (get-parameter     +search-chem-name+)
+	    (get-parameter     +search-chem-building+)
+	    (get-parameter     +search-chem-floor+)
+	    (get-parameter     +search-chem-storage+)
+	    (get-parameter     +search-chem-shelf+))
 	(search-products (get-parameter +search-chem-id+)
 			 (get-parameter +search-chem-owner+)
 			 (get-parameter +search-chem-name+)
 			 (get-parameter +search-chem-building+)
 			 (get-parameter +search-chem-floor+)
 			 (get-parameter +search-chem-storage+)
-			 (get-parameter +search-chem-shelf+))
+			 (get-parameter +search-chem-shelf+)
+			 nil)
 	(manage-chem-prod nil nil))))
+
+(define-lab-route post-search-chem-prod ("/post-search-chem-prod/" :method :post)
+  (with-authentication
+    (let ((errors (if (and (get-post-filename +name-chem-struct-data+)
+			   (not (sdf-validate-p (get-post-filename +name-chem-struct-data+))))
+		      (list (_ "MOL file invalid"))
+		      nil)))
+      (if (and (not errors)
+	       (or (post-parameter     +search-chem-id+)
+		   (post-parameter     +search-chem-owner+)
+		   (post-parameter     +search-chem-name+)
+		   (post-parameter     +search-chem-building+)
+		   (post-parameter     +search-chem-floor+)
+		   (post-parameter     +search-chem-storage+)
+		   (post-parameter     +search-chem-shelf+)
+		   (get-post-filename +name-chem-struct-data+)))
+	  (search-products (post-parameter +search-chem-id+)
+			   (post-parameter +search-chem-owner+)
+			   (post-parameter +search-chem-name+)
+			   (post-parameter +search-chem-building+)
+			   (post-parameter +search-chem-floor+)
+			   (post-parameter +search-chem-storage+)
+			   (post-parameter +search-chem-shelf+)
+			   (get-post-filename +name-chem-struct-data+))
+	  (manage-chem-prod nil errors)))))
 
 (define-lab-route chem-prod ("/chem-prod/" :method :get)
   (with-authentication

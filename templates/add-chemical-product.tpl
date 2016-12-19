@@ -204,7 +204,8 @@
 
 <fieldset class="search-chem-prod">
   <legend><!-- TMPL_VAR search-products-legend-lb --></legend>
-  <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/search-chem-prod/">
+  <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/post-search-chem-prod/"
+	enctype="multipart/form-data">
     <label for="chem-owner"><!-- TMPL_VAR barcode-number-lb --></label>
     <input id="chem-id" type="text" name="<!-- TMPL_VAR chemp-id -->">
     <label for="chem-owner"><!-- TMPL_VAR owner-lb --></label>
@@ -220,6 +221,8 @@
     <input id="chem-storage" type="text" name="<!-- TMPL_VAR storage -->" />
     <label for="chem-shelf"><!-- TMPL_VAR shelf-lb --></label>
     <input id="chem-shelf" type="text" name="<!-- TMPL_VAR search-shelf -->" />
+    <label for="struct-file"><!-- TMPL_VAR struct-file-lb --></label>
+    <input id="struct-file" type="file" name="<!-- TMPL_VAR struct-data -->" />
     <input id="submit-search" type="submit" />
   </form>
 </fieldset>

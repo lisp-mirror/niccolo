@@ -59,14 +59,30 @@
 (defun make-same-dimension-fmatrix (m)
   (make-fmatrix (fm-h m) (fm-w m)))
 
-(defmacro loop-fm ((m) &body body)
-  `(loop for r fixnum from 0 below (fm-h ,m) do
-	(loop for c fixnum from 0 below (fm-w ,m) do
+(defmacro fm-loop ((m r c) &body body)
+  `(loop for ,r fixnum from 0 below (fm-h ,m) do
+	(loop for ,c fixnum from 0 below (fm-w ,m) do
 	     ,@body)))
+
+(defun fm-map (m predicate)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (fmatrix m))
+  (declare (function predicate))
+  (let ((res (make-same-dimension-fmatrix m)))
+    (declare (fmatrix res))
+    (fm-loop (m r c)
+       (setf (fmref res r c)
+	     (funcall predicate (fmref m r c) r c)))
+    res))
+
+(defun fm-flat-copy (m)
+  (fm-map m #'(lambda (v r c)
+		(declare (ignore r c))
+		v)))
 
 (defun fm-transpose (m)
   (let ((res (make-fmatrix (fm-w m) (fm-h m))))
-    (loop-fm (m)
+    (fm-loop (m r c)
        (setf (fmref res c r) (fmref m r c)))
     res))
 
@@ -74,8 +90,7 @@
    (declare (fmatrix lhs rhs))
    (assert (= (fm-w lhs) (fm-h rhs)))
    (let ((res (make-fmatrix (fm-h lhs) (fm-w rhs))))
-     (format t "res ~a~%" res)
-     (loop-fm (res)
+     (fm-loop (res r c)
 	(setf (fmref res r c)
 	      (reduce #'+
 		      (map 'list

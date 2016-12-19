@@ -2800,4 +2800,106 @@ translation "Attenzione: il codice indicato e' associato alle sostanze radioatti
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Structure not uploaded, chemical (id: ~a) not found"
+translation "Struttura non caricata: il composto, con id ~a, non e' stato trovato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Structure not uploaded"
+translation "Struttura non caricata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Structure uploaded"
+translation "Struttura caricata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Stucture file"
+translation "File struttura"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Invalid structure file"
+translation "File struttura non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Generic error"
+translation "Errore generico"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "The registration number can not be changed"
+translation "Il numero di protocollo non può essere cambiato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Request has not been closed with success."
+translation "La richiesta e' stata chiusa con successo."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "The registration number ~s has been attached to message: ~a"
+translation "Il numero di protocollo ~s è stato assegnato al messaggio ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "The registration number ~s has been attached to your message:  ~3%~a"
+translation "Il numero di protocollo ~s è stato assegnato al tuo messaggio: ~3%~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Added registration number ~a"
+translation "Assegnato numero di protocollo ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Id not valid"
+translation "Id non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Registration number format invalid"
+translation "Formato del numero di protocollo non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Replied to Message ~a"
+translation "Rispota al messaggio ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Registration number"
+translation "Numero di protocollo"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Closed and registered"
+translation "Chiuso e registrato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "MOL file invalid"
+translation "File MOL non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )
