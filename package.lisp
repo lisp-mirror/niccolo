@@ -41,6 +41,7 @@
    :*ssl-certfile*
    :*ssl-key*
    :+ssl-pass+
+   :+https-client-verify-certificate+
    :+use-smtp+
    :+smtp-host+
    :+smtp-from-address+

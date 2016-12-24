@@ -87,18 +87,20 @@
 (defun send-get-request (uri)
   (multiple-value-bind (body status headers)
       (http-request uri
+		    :verify      :required
 		    :want-stream nil
-		    :method :get
-		    :cookie-jar *cookies*)
+		    :method      :get
+		    :cookie-jar  *cookies*)
     (values body status headers)))
 
 (defun send-post-request (uri parameters)
   (multiple-value-bind (body status headers)
       (http-request uri
+		    :verify      :required
 		    :want-stream nil
-		    :method :post
-		    :cookie-jar *cookies*
-		    :parameters parameters)
+		    :method      :post
+		    :cookie-jar  *cookies*
+		    :parameters  parameters)
     (values body status headers)))
 
 (defun make-query* (pairs)
@@ -140,6 +142,9 @@
     (error () nil)))
 
 (defun service-validate (ticket)
+  ;; to ensure certificate verification
+  (setf (cl+ssl:ssl-check-verify-p) t)
+  (cl+ssl:ssl-set-global-default-verify-paths)
   (let ((uri (make-service-validate-uri ticket)))
     (multiple-value-bind (body-raw status)
 	(send-get-request uri)

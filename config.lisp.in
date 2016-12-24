@@ -73,19 +73,22 @@
 
 ;; ssl
 
-(define-constant +https-port+ 8443 :test #'=)
+(define-constant +https-port+ 8443                   :test #'=)
 
-(define-constant +hostname+   "localhost" :test #'string=)
+(define-constant +hostname+   "localhost"            :test #'string=)
 
 (defparameter *ssl-certfile* (local-system-path #p"ssl/cert.pem"))
 
 (defparameter *ssl-key* (local-system-path #p"ssl/key.pem"))
 
-(define-constant +ssl-pass+   "" :test #'string=)
+(define-constant +ssl-pass+   ""                     :test #'string=)
+
+;; change to nil only for debug, must never be changed to nil in production
+(define-constant +https-client-verify-certificate+ t :test #'eq)
 
 ;; define this with a positive value only if you are using a reverse proxy
 
-(define-constant +https-proxy-port+ -1 :test #'=)
+(define-constant +https-proxy-port+ -1               :test #'=)
 
 ;; cas config
 

@@ -252,6 +252,9 @@
   (initialize-adr-pictogram #p"data/adr-pictograms/vert.eps"))
 
 (progn
+  (when +https-client-verify-certificate+
+    (setf (cl+ssl:ssl-check-verify-p) t)
+    (cl+ssl:ssl-set-global-default-verify-paths))
   (open-log)
   (initialize-ghs-pictograms-db)
   (initialize-adr-pictograms-db)
