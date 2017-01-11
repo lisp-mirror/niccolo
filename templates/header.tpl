@@ -50,7 +50,7 @@
       $("button").button();
       $("input:submit").button();
       $("input:button").button();
-      $("select").not('#waste-form-adr-select,#waste-form-hp-select').selectmenu();
+      $("select").not("[multiple]").selectmenu();
       $("#accordion-menu").accordion({
 	  activate   : function( event, ui ) {
 	      var index = jQuery("#accordion-menu").find(".ui-accordion-header-active").index() / 2;
