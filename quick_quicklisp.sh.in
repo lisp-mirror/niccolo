@@ -22,6 +22,8 @@
  --eval "(ql:quickload \"cl-ppcre-unicode\")" \
  --eval "(ql:quickload \"trivial-timeout\")"  \
  --eval "(ql:quickload \"bordeaux-threads\")" \
+ --eval "(ql:quickload \"cl-lex\")" \
+ --eval "(ql:quickload \"yacc\")" \
  --eval "(ql:quickload \"dbi\")" \
  --eval "(ql:quickload \"envy\")" \
  --eval "(ql:quickload \"crane\")" \
