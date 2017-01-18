@@ -2844,7 +2844,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Request has not been closed with success."
-translation "La richiesta e' stata chiusa con successo."
+translation "La richiesta non e' stata chiusa con successo."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
