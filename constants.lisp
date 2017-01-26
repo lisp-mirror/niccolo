@@ -75,6 +75,8 @@
 
 (define-constant +mime-sdf+                       "chemical/x-mdl-sdfile"    :test #'string=)
 
+(define-constant +mime-csv+                       "text/csv"                 :test #'string=)
+
 (define-constant +security-warning-log-level+     :warning                   :test #'string=)
 
 (define-constant +search-chem-id+                 "s-id"                     :test #'string=)

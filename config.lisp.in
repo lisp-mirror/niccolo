@@ -145,6 +145,8 @@
 (setf html-template:*default-template-pathname*
       (local-system-path #p"templates/"))
 
+(define-constant +spreadsheet-tpl-dir+ "spreadsheet/"                               :test #'string=)
+
 (defparameter *default-css-abs-path* (local-system-path #p"www/css/style.css"))
 
 (defparameter *default-css-filename* "style.css")
@@ -163,7 +165,7 @@
 
 (define-constant +lisp-logo+        (local-system-path #p"www/images/lisplogo.png") :test 'equal)
 
-(define-constant +images-url-path+ "/images/"                                       :test #'string=)
+(define-constant +images-url-path+     "/images/"                                   :test #'string=)
 
 (define-constant +openstreetmap-query-url+ "http://nominatim.openstreetmap.org/search.php"
   :test #'string=)

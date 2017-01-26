@@ -266,64 +266,63 @@
 					    (errors nil)
 					    (css-file *default-css-filename*))
 				    &body body)
+  `(with-output-to-string (,stream)
+     (html-template:fill-and-print-template #p"header.tpl"
+					    (with-path-prefix
+						:css-file (restas:genurl
+							   'restas.lab::-css-.route
+							   :path ,css-file)
+						:jquery-ui-css (restas:genurl
+								'restas.lab::-css-.route
+								:path "jquery-ui.min.css")
+						:jquery (restas:genurl 'restas.lab::-js-.route
+								       :path "jquery.js")
+						:jquery-ui (restas:genurl
+							    'restas.lab::-js-.route
+							    :path "jquery-ui.js")
+						:sugar (restas:genurl 'restas.lab::-js-.route
+								      :path "sugar.js")
+						:mustache (restas:genurl 'restas.lab::-js-.route
+									 :path "mustache.js")
+						:title    ,title)
+					    :stream ,stream)
+     (restas.lab:render-logout-control stream)
+     (html-template:fill-and-print-template #p"main-wrapper-header.tpl"
+					    nil
+					    :stream ,stream)
 
-    `(with-output-to-string (,stream)
-       (html-template:fill-and-print-template #p"header.tpl"
-					      (with-path-prefix
-						  :css-file (restas:genurl
-							     'restas.lab::-css-.route
-							     :path ,css-file)
-						  :jquery-ui-css (restas:genurl
-								  'restas.lab::-css-.route
-								  :path "jquery-ui.min.css")
-						  :jquery (restas:genurl 'restas.lab::-js-.route
-									 :path "jquery.js")
-						  :jquery-ui (restas:genurl
-							      'restas.lab::-js-.route
-							      :path "jquery-ui.js")
-						  :sugar (restas:genurl 'restas.lab::-js-.route
-									:path "sugar.js")
-						  :mustache (restas:genurl 'restas.lab::-js-.route
-									:path "mustache.js")
-						  :title    ,title)
-					      :stream ,stream)
-       (restas.lab:render-logout-control stream)
-       (html-template:fill-and-print-template #p"main-wrapper-header.tpl"
-					      nil
-					      :stream ,stream)
+     (restas.lab:render-main-menu      stream)
+     (html-template:fill-and-print-template #p"main-content-wrapper-header.tpl"
+					    nil
+					    :stream ,stream)
 
-       (restas.lab:render-main-menu      stream)
-       (html-template:fill-and-print-template #p"main-content-wrapper-header.tpl"
-					      nil
-					      :stream ,stream)
-
-       (html-template:fill-and-print-template #p"section-title.tpl"
-					      (list :title ,title)
-					      :stream ,stream)
-       (html-template:fill-and-print-template #p"messages.tpl"
-					      (list :display-messages-p (or ,errors
-									    ,infos)
-						    :add-errors-p ,errors
-						    :errors ,(when errors
-								   `(loop for e in ,errors collect
-									 (list :error e)))
-						    :add-infos-p ,infos
-						    :infos ,(when infos
-								  `(loop for e in ,infos collect
-									(list :info e))))
-					      :stream ,stream)
-       ,@body
-       (html-template:fill-and-print-template #p"main-content-wrapper-footer.tpl"
-					      nil
-					      :stream ,stream)
-       (html-template:fill-and-print-template #p"main-wrapper-footer.tpl"
-					      nil
-					      :stream ,stream)
-       (html-template:fill-and-print-template #p"footer.tpl"
-					      (with-path-prefix
-						  :acknowledgment-lb (_ "Acknowledgment")
-						  :legal-lb          (_ "Legal"))
-					      :stream ,stream)))
+     (html-template:fill-and-print-template #p"section-title.tpl"
+					    (list :title ,title)
+					    :stream ,stream)
+     (html-template:fill-and-print-template #p"messages.tpl"
+					    (list :display-messages-p (or ,errors
+									  ,infos)
+						  :add-errors-p ,errors
+						  :errors ,(when errors
+								 `(loop for e in ,errors collect
+								       (list :error e)))
+						  :add-infos-p ,infos
+						  :infos ,(when infos
+								`(loop for e in ,infos collect
+								      (list :info e))))
+					    :stream ,stream)
+     ,@body
+     (html-template:fill-and-print-template #p"main-content-wrapper-footer.tpl"
+					    nil
+					    :stream ,stream)
+     (html-template:fill-and-print-template #p"main-wrapper-footer.tpl"
+					    nil
+					    :stream ,stream)
+     (html-template:fill-and-print-template #p"footer.tpl"
+					    (with-path-prefix
+						:acknowledgment-lb (_ "Acknowledgment")
+						:legal-lb          (_ "Legal"))
+					    :stream ,stream)))
 
 (defun fetch-raw-template-list (what template-keyword &key
 							(delete-link nil)

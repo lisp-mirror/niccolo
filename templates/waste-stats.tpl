@@ -1,6 +1,12 @@
 <fieldset class="waste-stats">
   <legend>
     <!-- TMPL_VAR legend-group-lb -->
+
+      <a href="<!-- TMPL_VAR spreadsheet-url -->">
+	<i class="fa fa-download" aria-hidden="true"></i>
+      </a>
+
+
   </legend>
   <!-- TMPL_IF cer-group -->
   <table class="waste-stats">

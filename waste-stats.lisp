@@ -15,6 +15,16 @@
 
 (in-package :restas.lab)
 
+(define-constant +waste-spreadsheet-status-opened+           0 :test #'=)
+
+(define-constant +waste-spreadsheet-status-closed-success+   1 :test #'=)
+
+(define-constant +waste-spreadsheet-status-closed-unsuccess+ 2 :test #'=)
+
+(define-constant +waste-spreadsheet-last-year-only+          1 :test #'=)
+
+(define-constant +waste-spreadsheet-registered-only+         1 :test #'=)
+
 (defmacro gen-select-message-statistics (status group-by-column)
   `(select ((:as (:sum :waste-message.weight)       :sum-weight)
 	    (:as :cer-code.id                       :cer-id)
@@ -40,7 +50,7 @@
 
 (defmacro define-aggregation-waste-query (group-by-column)
   `(defun ,(format-symbol t "~:@(waste-messages-statistics-by-~a~)" group-by-column)
-       (status &optional (last-year-only))
+       (status &optional (last-year-only nil))
      (let* ((the-query (gen-select-message-statistics status ,group-by-column))
 	    (raw (keywordize-query-results (query the-query))))
        (if last-year-only
@@ -56,6 +66,50 @@
 (defun remove-if-nil-reg-number (rows)
   (remove-if #'(lambda (a) (db-nil-p (getf a :registration-number)))
 	     rows))
+
+(defun print-waste-spreadsheet (&optional
+				  (status      +msg-status-open+)
+				  (last-year-p nil)
+				  (registered-only nil))
+  (labels ((escape-strings-fn ()
+	     #'(lambda (row)
+		 (mapcar #'(lambda (a) (if (stringp a)
+					   (escape-csv-field a)
+					   a))
+			 row)))
+	   (escape-as-csv (table)
+	     (mapcar (escape-strings-fn) table)))
+    (let* ((template (with-path-prefix
+			 :legend-group-lb            (escape-csv-field (_ "Opened"))
+			 :not-found-lb               (escape-csv-field (_ "Nothing found"))
+			 :code-lb                    (escape-csv-field (_ "Code"))
+			 :weight-lb                  (escape-csv-field (_ "Weight (Kg)"))
+			 :username-lb                (escape-csv-field (_ "Username"))
+			 :user-group-caption-lb      (escape-csv-field (_ "Grouped by user"))
+			 :building-description-lb    (escape-csv-field (_ "Building"))
+			 :buildings-group-caption-lb
+			 (escape-csv-field (_ "Grouped by building"))
+			 :cer-group-caption-lb
+			 (escape-csv-field (_ "Grouped by CER code"))
+			 :cer-group
+			 (escape-as-csv
+			  (if registered-only
+			      (remove-if-nil-reg-number
+			       (waste-messages-statistics-by-cer-id status last-year-p))
+			      (waste-messages-statistics-by-cer-id status last-year-p)))
+			 :buildings-group
+			 (escape-as-csv
+			  (if registered-only
+			      (remove-if-nil-reg-number
+			       (waste-messages-statistics-by-building-id status last-year-p))
+			      (waste-messages-statistics-by-building-id status last-year-p)))
+			 :user-group
+			 (escape-as-csv
+			  (if registered-only
+			      (remove-if-nil-reg-number
+			       (waste-messages-statistics-by-username status last-year-p))
+			      (waste-messages-statistics-by-username status last-year-p))))))
+      (template->string #p"spreadsheet/waste-stats.tpl" template))))
 
 (defun print-waste-statistic (errors infos)
   (with-authentication
@@ -77,6 +131,14 @@
 						 (_ "Grouped by building")
 						 :cer-group-caption-lb
 						 (_ "Grouped by CER code")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								 +waste-spreadsheet-status-opened+
+								 :last-year
+								 +waste-spreadsheet-last-year-only+
+								 :registered-only
+								 (1- +waste-spreadsheet-registered-only+))
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-open+ t)
 						 :buildings-group
@@ -96,6 +158,15 @@
 						 (_ "Grouped by building")
 						 :cer-group-caption-lb    (_ "Grouped by CER code")
 						 :building-description-lb (_ "Building")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								+waste-spreadsheet-status-closed-success+
+								:last-year
+								+waste-spreadsheet-last-year-only+
+								:registered-only
+								(1- +waste-spreadsheet-registered-only+))
+
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-closed-success+ t)
 						 :buildings-group
@@ -116,6 +187,14 @@
 						 (_ "Grouped by building")
 						 :cer-group-caption-lb    (_ "Grouped by CER code")
 						 :building-description-lb (_ "Building")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								 +waste-spreadsheet-status-closed-success+
+								 :last-year
+								 +waste-spreadsheet-last-year-only+
+								 :registered-only
+								 +waste-spreadsheet-registered-only+)
 						 :cer-group
 						 (remove-if-nil-reg-number
 						  (waste-messages-statistics-by-cer-id +msg-status-closed-success+ t))
@@ -139,6 +218,15 @@
 						 :cer-group-caption-lb
 						 (_ "Grouped by CER code")
 						 :building-description-lb    (_ "Building")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								 +waste-spreadsheet-status-closed-unsuccess+
+								 :last-year
+								 +waste-spreadsheet-last-year-only+
+								 :registered-only
+								 (1- +waste-spreadsheet-registered-only+))
+
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+ t)
 						 :buildings-group
@@ -163,6 +251,14 @@
 						 :buildings-group-caption-lb
 						 (_ "Grouped by building")
 						 :cer-group-caption-lb (_ "Grouped by CER code")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								+waste-spreadsheet-status-opened+
+								:last-year
+								(1- +waste-spreadsheet-last-year-only+)
+								:registered-only
+								(1- +waste-spreadsheet-registered-only+))
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-open+)
 						 :buildings-group
@@ -183,6 +279,15 @@
 						 :cer-group-caption-lb
 						 (_ "Grouped by CER code")
 						 :building-description-lb    (_ "Building")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								+waste-spreadsheet-status-closed-success+
+								:last-year
+								(1- +waste-spreadsheet-last-year-only+)
+								:registered-only
+								(1- +waste-spreadsheet-registered-only+))
+
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-closed-success+)
 						 :buildings-group
@@ -203,6 +308,14 @@
 						 :cer-group-caption-lb
 						 (_ "Grouped by CER code")
 						 :building-description-lb    (_ "Building")
+						 :spreadsheet-url
+						 (restas:genurl 'waste-statistics-spreadsheet
+								:status
+								+waste-spreadsheet-status-closed-unsuccess+
+								:last-year
+								(1- +waste-spreadsheet-last-year-only+)
+								:registered-only
+								(1- +waste-spreadsheet-registered-only+))
 						 :cer-group
 						 (waste-messages-statistics-by-cer-id +msg-status-closed-unsuccess+)
 						 :buildings-group
@@ -215,4 +328,25 @@
   (with-authentication
     (with-admin-privileges
 	(print-waste-statistic nil nil)
+      (print-messages (list *insufficient-privileges-message*) nil))))
+
+(define-lab-route waste-statistics-spreadsheet ("/print-waste-stats/:status/:last-year/:registered-only"
+						:method :get)
+  (with-authentication
+    (with-admin-privileges
+	(let* ((print-last-year-p (> (integer-validate last-year :default 0)
+				     0))
+	       (status-raw        (integer-validate status :default -1))
+	       (registeredp       (> (integer-validate registered-only :default 0)
+				     0)))
+	  (setf (header-out :content-type) +mime-csv+)
+	  (cond
+	    ((= status-raw +waste-spreadsheet-status-opened+)
+	     (print-waste-spreadsheet +msg-status-open+   print-last-year-p registeredp))
+	    ((= status-raw +waste-spreadsheet-status-closed-success+)
+	     (print-waste-spreadsheet +msg-status-closed-success+ print-last-year-p registeredp))
+	    ((= status-raw  +waste-spreadsheet-status-closed-unsuccess+)
+	     (print-waste-spreadsheet +msg-status-closed-unsuccess+ print-last-year-p registeredp))
+	    (t
+	     "error")))
       (print-messages (list *insufficient-privileges-message*) nil))))

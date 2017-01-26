@@ -54,3 +54,6 @@
 (defun random-password (&optional (length 12))
   (coerce (loop repeat length collect (code-char (+ 33 (random 93))))
 	  'string))
+
+(defun escape-csv-field (field)
+  (cl-ppcre:regex-replace-all "\"" field "\"\""))

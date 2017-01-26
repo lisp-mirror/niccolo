@@ -57,6 +57,7 @@
    :*default-www-root*
    :*images-dir*
    :*jquery-ui-images-dir*
+   :+spreadsheet-tpl-dir+
    :*css-dir*
    :*js-dir*
    :+images-url-path+
@@ -114,6 +115,7 @@
    :+mime-postscript+
    :+mime-pdf+
    :+mime-sdf+
+   :+mime-csv+
    :+security-warning-log-level+
    :+db-invalid-id+
    :+db-invalid-id-number+
@@ -363,7 +365,8 @@
    :sha-encode->string
    :encode-barcode
    :find-filename-from-path
-   :random-password))
+   :random-password
+   :escape-csv-field))
 
 (defpackage :molecule
   (:use
