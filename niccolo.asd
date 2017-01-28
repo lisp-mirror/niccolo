@@ -42,6 +42,7 @@
 	       :cl-json
 	       :cl-i18n
 	       :flexi-streams
+	       :cl-csv
 	       :cl-gd
 	       :cl-pslib
 	       :cl-pslib-barcode

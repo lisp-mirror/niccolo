@@ -16,39 +16,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-@SBCL@ --load quicklisp.lisp \
- --eval "(quicklisp-quickstart:install)" \
- --eval "(ql:quickload \"alexandria\")" \
- --eval "(ql:quickload \"cl-ppcre-unicode\")" \
- --eval "(ql:quickload \"trivial-timeout\")"  \
- --eval "(ql:quickload \"bordeaux-threads\")" \
- --eval "(ql:quickload \"cl-lex\")" \
- --eval "(ql:quickload \"yacc\")" \
- --eval "(ql:quickload \"dbi\")" \
- --eval "(ql:quickload \"envy\")" \
- --eval "(ql:quickload \"crane\")" \
- --eval "(ql:quickload \"local-time\")" \
- --eval "(ql:quickload \"cl-smtp\")"    \
- --eval "(ql:quickload \"sanitize\")"   \
- --eval "(ql:quickload \"parse-number\")" \
- --eval "(ql:quickload \"xmls\")" \
- --eval "(ql:quickload \"html-template\")" \
- --eval "(ql:quickload \"cl-base64\")" \
- --eval "(ql:quickload \"osicat\")" \
- --eval "(ql:quickload \"log4cl\")" \
- --eval "(ql:quickload \"ironclad\")" \
- --eval "(ql:quickload \"cl-who\")" \
- --eval "(ql:quickload \"cl-json\")" \
- --eval "(ql:quickload \"flexi-streams\")" \
- --eval "(ql:quickload \"cl-gd\")" \
- --eval "(ql:quickload \"drakma\")" \
- --eval "(ql:quickload \"hunchentoot\")" \
- --eval "(ql:quickload \"restas\")" \
+@SBCL@ --load quicklisp.lisp                            \
+ --eval "(quicklisp-quickstart:install)"                \
+ --eval "(ql:quickload \"alexandria\")"                 \
+ --eval "(ql:quickload \"cl-ppcre-unicode\")"           \
+ --eval "(ql:quickload \"trivial-timeout\")"            \
+ --eval "(ql:quickload \"bordeaux-threads\")"           \
+ --eval "(ql:quickload \"cl-lex\")"                     \
+ --eval "(ql:quickload \"yacc\")"                       \
+ --eval "(ql:quickload \"dbi\")"                        \
+ --eval "(ql:quickload \"envy\")"                       \
+ --eval "(ql:quickload \"crane\")"                      \
+ --eval "(ql:quickload \"local-time\")"                 \
+ --eval "(ql:quickload \"cl-smtp\")"                    \
+ --eval "(ql:quickload \"sanitize\")"                   \
+ --eval "(ql:quickload \"parse-number\")"               \
+ --eval "(ql:quickload \"xmls\")"                       \
+ --eval "(ql:quickload \"html-template\")"              \
+ --eval "(ql:quickload \"cl-base64\")"                  \
+ --eval "(ql:quickload \"osicat\")"                     \
+ --eval "(ql:quickload \"log4cl\")"                     \
+ --eval "(ql:quickload \"ironclad\")"                   \
+ --eval "(ql:quickload \"cl-who\")"                     \
+ --eval "(ql:quickload \"cl-json\")"                    \
+ --eval "(ql:quickload \"flexi-streams\")"              \
+ --eval "(ql:quickload \"cl-csv\")"                     \
+ --eval "(ql:quickload \"cl-gd\")"                      \
+ --eval "(ql:quickload \"drakma\")"                     \
+ --eval "(ql:quickload \"hunchentoot\")"                \
+ --eval "(ql:quickload \"restas\")"                     \
  --eval "(ql:quickload \"restas-directory-publisher\")" \
- --eval "(ql:quickload \"cl-pslib\")" \
- --eval "(ql:quickload \"cl-pslib-barcode\")" \
- --eval "(ql:quickload \"cl-i18n\")" \
- --eval "(ql:add-to-init-file)" \
+ --eval "(ql:quickload \"cl-pslib\")"                   \
+ --eval "(ql:quickload \"cl-pslib-barcode\")"           \
+ --eval "(ql:quickload \"cl-i18n\")"                    \
+ --eval "(ql:add-to-init-file)"                         \
  --eval "(sb-ext:quit)"
 
 echo "Type the directory, relative to $HOME, (ex. \"lisp/\") where the sources (*.lisp) are, followed by [ENTER]:"

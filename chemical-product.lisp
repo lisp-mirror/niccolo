@@ -43,7 +43,13 @@
 
 (define-constant +name-chem-cid-exists+                "chem-cid-exists"           :test #'string=)
 
-(define-constant +default-shortage-threshold+          5                  :test #'=)
+(define-constant +default-shortage-threshold+          5                           :test #'=)
+
+;; import functionality
+
+(define-constant +name-import-building-id+             "building"                  :test #'string=)
+
+(define-constant +name-import-spreadsheet-data+        "csv"                       :test #'string=)
 
 (gen-autocomplete-functions db:chemical-compound db:name)
 
@@ -372,6 +378,24 @@
 			   (list (_ "Your query returned no results")))))
       (manage-chem-prod info-message nil :data data)))
 
+(defun search-products-in-range (from to)
+  (with-session-user (user)
+    (let ((errors-msg (concatenate 'list
+				   (regexp-validate (list
+						     (list from
+							   +pos-integer-re+
+							   (_ "Starting range ivalid"))
+						     (list to
+							   +pos-integer-re+
+							   (_ "Ending range ivalid"))))))
+	  (results      (build-template-list-chemical-prod (query (gen-all-prod-select
+								    (where
+								     (:and
+								      (:= :chemp.owner (db:id user))
+								      (:>= :chemp-id from)
+								      (:<= :chemp-id to))))))))
+    (manage-chem-prod errors-msg nil :data results))))
+
 (defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes
 			     validity-date expire-date)
   (with-session-user (user)
@@ -403,31 +427,34 @@
 				    errors-msg-validity-date
 				    errors-msg-expire-date))
 	   (success-msg (and (not errors-msg)
-			     (list (format nil (_ "Saved chemical product"))))))
-      (when (and user
-		 (not errors-msg))
-	(let* ((chem (create 'db:chemical-product
-			    :compound      chemical-id
-			    :storage       storage-id
-			    :shelf         shelf
-			    :quantity      quantity
-			    :units         units
-			    :validity-date (encode-datetime-string validity-date)
-			    :expire-date   (encode-datetime-string expire-date)
-			    :owner         (db:id user)
-			    :notes         (clean-string notes))))
-	  (save chem))) ; useless?
-      (values errors-msg success-msg))))
+			     (list (format nil (_ "Saved chemical product: ~a")
+					   (db:name (single 'db:chemical-compound
+							    :id chemical-id)))))))
+      (if (and user
+	       (not errors-msg))
+	  (let* ((chem (create 'db:chemical-product
+			       :compound      chemical-id
+			       :storage       storage-id
+			       :shelf         shelf
+			       :quantity      quantity
+			       :units         units
+			       :validity-date (encode-datetime-string validity-date)
+			       :expire-date   (encode-datetime-string expire-date)
+			       :owner         (db:id user)
+			       :notes         (clean-string notes))))
+	    (save chem) ; useless?
+	    (values errors-msg success-msg chem)
+	    (values errors-msg success-msg chem))))))
 
 (define-lab-route search-chem-prod ("/search-chem-prod/" :method :get)
   (with-authentication
-    (if (or (get-parameter     +search-chem-id+)
-	    (get-parameter     +search-chem-owner+)
-	    (get-parameter     +search-chem-name+)
-	    (get-parameter     +search-chem-building+)
-	    (get-parameter     +search-chem-floor+)
-	    (get-parameter     +search-chem-storage+)
-	    (get-parameter     +search-chem-shelf+))
+    (if (or (get-parameter +search-chem-id+)
+	    (get-parameter +search-chem-owner+)
+	    (get-parameter +search-chem-name+)
+	    (get-parameter +search-chem-building+)
+	    (get-parameter +search-chem-floor+)
+	    (get-parameter +search-chem-storage+)
+	    (get-parameter +search-chem-shelf+))
 	(search-products (get-parameter +search-chem-id+)
 			 (get-parameter +search-chem-owner+)
 			 (get-parameter +search-chem-name+)
@@ -437,6 +464,10 @@
 			 (get-parameter +search-chem-shelf+)
 			 nil)
 	(manage-chem-prod nil nil))))
+
+(define-lab-route search-chem-prod-id-range ("/search-chem-prod/:from/:to/" :method :get)
+  (with-authentication
+    (search-products-in-range from to)))
 
 (define-lab-route post-search-chem-prod ("/post-search-chem-prod/" :method :post)
   (with-authentication
@@ -765,3 +796,171 @@
 			    (post-parameter +name-shortage-threshold+)))
 	(t
 	 (manage-chem-prod nil nil :data nil))))))
+
+;; row: chemical name, storage, shelf, quantity, units, date-validity, date-expire
+(define-constant +csv-field-count+         7 :test #'=)
+
+(define-constant +csv-field-name+          0 :test #'=)
+
+(define-constant +csv-field-storage+       1 :test #'=)
+
+(define-constant +csv-field-shelf+         2 :test #'=)
+
+(define-constant +csv-field-quantiy+       3 :test #'=)
+
+(define-constant +csv-field-units+         4 :test #'=)
+
+(define-constant +csv-field-date-validity+ 5 :test #'=)
+
+(define-constant +csv-field-date-expire+   6 :test #'=)
+
+(define-lab-route get-import-chem-prod ("/import-chem-prod/" :method :get)
+  (with-authentication
+    (with-standard-html-frame (stream
+			       (_ "Import Data")
+			       :errors '()
+			       :infos  '())
+      (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+	    (template  (with-path-prefix
+			   :help-dialog-lb
+			 (_ "Each row must contains exactly 7 field: chemical name, storage, shelf, quantity, units, date-validity, date-expire")
+			   :import-data-legend-lb (_ "Upload")
+			   :building-lb           (_ "Building")
+			   :building-id           +name-import-building-id+
+			   :spreadsheet-file-lb   (_ "File (csv format)")
+			   :spreadsheet-data      +name-import-spreadsheet-data+
+			   :json-buildings        (array-autocomplete-building)
+			   :json-buildings-id     (array-autocomplete-building-id))))
+	(html-template:fill-and-print-template #p"import-chemical-product.tpl"
+					       template
+					       :stream stream)))))
+
+(define-lab-route import-chem-prod ("/import-chem-prod/" :method :post)
+  (with-authentication
+    (let ((errors          '())
+	  (infos           '())
+	  (row-number       0)
+	  (imported-prod-id '())
+	  (building-id (if (integer-positive-validate (post-parameter +name-import-building-id+))
+			   (post-parameter +name-import-building-id+)
+			   +db-invalid-id+))
+	  (data-table  '()))
+      (flet ((import-csv-row (row)
+	       (incf row-number)
+	       (if (= (length row) +csv-field-count+)
+		   (let ((chemical   (single 'db:chemical-compound
+					     :name (elt row +csv-field-name+)))
+			 (storage    (single 'db:storage
+					     :name (elt row +csv-field-storage+)
+					     :id   building-id))
+			 (date-valid (if (date-validate-p (elt row +csv-field-date-validity+))
+					 (elt row +csv-field-date-validity+)
+					 nil))
+			 (date-expire (if (date-validate-p (elt row +csv-field-date-expire+))
+					  (elt row +csv-field-date-expire+)
+					  nil)))
+		     (if (not chemical)
+			 (push (format nil
+				       (_ "row ~a: chemical name ~a not found.")
+				       row-number
+				       (elt row +csv-field-name+))
+			       errors)
+			 (if (not storage)
+			     (push (format nil
+					   (_ "row ~a storage name ~a not found.")
+					   row-number
+					   (elt row +csv-field-storage+))
+				   errors)
+			     (if (not date-valid)
+				 (push (format nil
+					       (_ "row ~a validity date ~a not valid.")
+					       row-number
+					       (elt row +csv-field-date-validity+))
+				       errors)
+				 (if (not date-expire)
+				     (push (format nil
+						   (_ "row ~a expire date ~a not valid.")
+						   row-number
+						   (elt row +csv-field-date-expire+))
+					   errors)
+				     ;; note; this method will make more validation so it is safe
+				     ;; to pass the data directly from the request (i.e. the client)
+				     (multiple-value-bind (err info prod)
+					 (add-single-chem-prod (format nil "~d" (db:id chemical))
+							       (format nil "~d" (db:id storage))
+							       (elt row +csv-field-shelf+)
+							       (elt row +csv-field-quantiy+)
+							       (elt row +csv-field-units+)
+							       "none"
+							       date-valid
+							       date-expire)
+				       (setf errors (append errors err)
+					     infos  (append infos  info))
+				       (when (and (not err)
+						  prod)
+					 (push (db:id prod) imported-prod-id)
+					 (push (list :chemp-id       (db:id            prod)
+						     :chem-name      (db:name          chemical)
+						     :building-name
+						     (db:name (single 'db:building
+								      :id building-id))
+						     :storage-floor   (db:floor-number storage)
+						     :storage-name    (db:name         storage)
+						     :shelf           (db:shelf        prod)
+						     :quantity        (db:quantity     prod)
+						     :units           (db:units        prod)
+						     :validity-date-decoded
+						     (decode-datetime-string
+						      (db:validity-date prod))
+						     :expire-date-decoded
+						     (decode-datetime-string
+						      (db:expire-date prod)))
+					       data-table))))))))
+		   (push (format nil
+				 (_ "row ~a is too long/short, must be ~a instead of ~a.")
+				 row-number
+				 +csv-field-count+
+				 (length row))
+			 errors))))
+	(let* ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+	       (file-name (get-post-filename +name-import-spreadsheet-data+)))
+	  (when file-name
+	    (cl-csv:read-csv file-name
+			     :map-fn #'import-csv-row))
+	  (let* ((min-imported (if imported-prod-id
+				   (reduce #'(lambda (a b) (if (< a b) a b)) imported-prod-id)
+				   0))
+		 (max-imported (if imported-prod-id
+				   (reduce #'(lambda (a b) (if (> a b) a b)) imported-prod-id)
+				   0))
+		 (template  (with-path-prefix
+				:import-data-legend-lb (_ "Upload")
+				:building-lb           (_ "Building")
+				:building-id           +name-import-building-id+
+				:spreadsheet-file-lb   (_ "File (csv format)")
+				:spreadsheet-data      +name-import-spreadsheet-data+
+				:json-buildings        (array-autocomplete-building)
+				:json-buildings-id     (array-autocomplete-building-id)
+				:name-lb               (_ "Name")
+				:building-lb           (_ "Building")
+				:storage-lb            (_ "Storage")
+				:floor-lb              (_ "Floor")
+				:shelf-lb              (_ "Shelf")
+				:quantity-lb           (_ "Quantity (Mass or Volume)")
+				:units-lb              (_ "Unit of measure")
+				:expire-date-lb        (_ "Expire date")
+				:validity-date-lb      (_ "Validity date")
+				:operations-lb         (_ "Operations")
+				:help-dialog-lb
+				(_ "Each row must contains exactly 7 field: chemical name, storage, shelf, quantity, units, date-validity, date-expire.")
+				:update-link           (restas:genurl 'search-chem-prod-id-range
+								      :from min-imported
+								      :to   max-imported)
+				:data-table            data-table)))
+	    (with-standard-html-frame (stream
+				       (_ "Import Data")
+				       :errors errors
+				       :infos  infos)
+	      (html-template:fill-and-print-template #p"import-chemical-product.tpl"
+						     template
+						     :stream stream))))))))
