@@ -23,7 +23,7 @@
     :initarg   :label
     :accessor  label)
    (charge
-    :initform  nil
+    :initform  0
     :initarg   :charge
     :accessor  charge)
    (x
@@ -41,6 +41,12 @@
 
 (defmethod print-object ((object ch-atom) stream)
   (format stream "[~a~[~:;(~:*~@d)~]]" (label object) (charge object)))
+
+(defgeneric ch-atom= (a b))
+
+(defmethod  ch-atom= ((a ch-atom) (b ch-atom))
+  (and (string= (label a)  (label  b))
+       (=       (charge a) (charge b))))
 
 (defclass molecule ()
   ((atoms
@@ -60,6 +66,8 @@
 (defgeneric atom@ (object atom-index))
 
 (defgeneric bond-types-count (object atom-index))
+
+(defgeneric all-first-near (object))
 
 (defgeneric subgraph-isomorphism (group molecule))
 
@@ -91,6 +99,15 @@
 	(loop for i in bonds-types collect
 	     (cons i (count i bonds :test #'=)))))))
 
+(defmethod all-first-near ((object molecule))
+  (with-accessors ((atoms atoms) (connections connections)) object
+    (loop for row-ct from 0 below (fm-w connections) collect
+	 (let ((row (fm-row connections row-ct)))
+	   (loop
+	      for i from 0 by 1
+	      for bond in row when (> bond 0) collect
+		(elt atoms i))))))
+
 (defun group-by-bond (row)
   (let ((bond-types (do ((res    '())
 			 (source (copy-list row) (rest source)))
@@ -111,12 +128,31 @@
 	     (return-from bonds-compatible-p nil)))
     t))
 
+(defun first-near-compatible-p (group group-index molecule molecule-index)
+  (let ((first-near-group (and (all-first-near group)
+			       (elt (all-first-near group)
+				    group-index)))
+	(first-near-molecule (and (all-first-near molecule)
+				  (elt (all-first-near molecule)
+				       molecule-index))))
+    (loop for i from 0 below (length first-near-group) do
+	 (let ((count-group (count (elt first-near-group i)
+				   first-near-group
+				   :test #'ch-atom=))
+	       (count-mol   (count (elt first-near-group i)
+				   first-near-molecule
+				   :test #'ch-atom=)))
+	   (when (< count-mol count-group)
+	     (return-from first-near-compatible-p nil))))
+    t))
+
 (defun %pmatrix-calculate-element (group group-index molecule molecule-index)
   (if (and (<= (valence group    group-index)
 	       (valence molecule molecule-index))
 	   (string= (label (atom@ group     group-index))
 		    (label (atom@ molecule  molecule-index)))
-	   (bonds-compatible-p group group-index molecule molecule-index))
+	   (bonds-compatible-p      group group-index molecule molecule-index)
+	   (first-near-compatible-p group group-index molecule molecule-index))
       1
       0))
 
@@ -182,19 +218,26 @@
 	(beta                  (fm-map (connections molecule-beta)
 				       #'%flat-adjacency))
 	(results               '()))
-    (labels ((%subgraph-isomorphism (alpha beta perm-mat d)
-	       (if (< d (fm-h perm-mat))
+    (labels ((column-free-from-ones (matrix target-row column)
+	       (loop for r from 0 below (fm-h matrix) do
+		    (when (and (= (fmref matrix r column) 1)
+			       (< r target-row))
+		      (return-from column-free-from-ones nil)))
+	       t)
+	     (%subgraph-isomorphism (alpha beta perm-mat d)
+	       (if (< d (fm-h perm-mat)) ;; we are not in the last row
 		   (loop for i from 0 below (fm-w perm-mat) do
 			(when (= (fmref perm-mat d i) 1)
 			  (let ((pm-copy (fm-flat-copy perm-mat)))
 			    (loop for j from 0 below (fm-w perm-mat) do
 				 (when (/= j i)
 				   (setf (fmref pm-copy d j) 0)))
-					;(format t "ppp ~% ~a~2%" pm-copy)
-			    (%subgraph-isomorphism alpha beta pm-copy (1+ d)))))
+			    (when (column-free-from-ones pm-copy d i)
+			      (%subgraph-isomorphism alpha beta pm-copy (1+ d))))))
 		   (when (isomorphic-p alpha beta
 				       (connections group-alpha) (connections molecule-beta)
 				       perm-mat)
-		     (push perm-mat results)))))
+		     (push perm-mat results) ; maybe will be useful getting all matching some day :)
+		     (return-from subgraph-isomorphism t)))))
       (%subgraph-isomorphism alpha beta permutation-matrix 0)
-      results)))
+      nil)))
