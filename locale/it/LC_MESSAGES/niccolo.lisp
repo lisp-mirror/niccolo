@@ -2046,7 +2046,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Sent at"
-translation "Spedito a"
+translation "Spedito alle"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2899,6 +2899,84 @@ plurals NIL
 
  id "MOL file invalid"
 translation "File MOL non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "row ~a is too long/short, must be ~a instead of ~a."
+translation "la riga ~a e' troppo lunga o corta, deve essere ~a invece di ~a."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "row ~a expire date ~a not valid."
+translation "riga ~a: data di scadenza non valida."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "row ~a validity date ~a not valid."
+translation "riga ~a: data di validita' non valida."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "row ~a storage name ~a not found."
+translation "riga ~a: unita di immagazzinamento ~a non trovata."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "row ~a: chemical name ~a not found."
+translation "riga ~a: specie ~a non trovata."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "File (csv format)"
+translation "File (formato CSV)"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Upload"
+translation "Carica"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Import Data"
+translation "Importa Dati"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Saved chemical product: ~a"
+translation "Salvato prodotto: ~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Ending range ivalid"
+translation "Limite superiore intervallo invalido."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Starting range ivalid"
+translation "Limite inferiore intervallo invalido."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Import"
+translation "Importa"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Each row must contains exactly 7 fields: chemical name, storage, shelf, quantity, units, date-validity, date-expire."
+translation "Ogni riga deve contenere esattamente 7 campi separati da virgola: nome specie, unita di immagazzinamento, scaffale, quantita', unita' di misura, data di validita', data di scadenza."
 plurals-form ""
 status :TRANSLATED
 plurals NIL

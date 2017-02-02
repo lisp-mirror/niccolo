@@ -297,6 +297,9 @@
 						   :operations-lb             (_ "Operations")
 						   :origin-lb                 (_ "Origin")
 						   :struct-file-lb (_ "Stucture file")
+						   :table-res-header
+						   (_ "Results")
+
 						   :fq-table-res-header
 						   (_ "Results from federated servers")
 						   :chemical-id        +name-chem-id+
@@ -823,7 +826,7 @@
       (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
 	    (template  (with-path-prefix
 			   :help-dialog-lb
-			 (_ "Each row must contains exactly 7 field: chemical name, storage, shelf, quantity, units, date-validity, date-expire")
+			 (_ "Each row must contains exactly 7 fields: chemical name, storage, shelf, quantity, units, date-validity, date-expire.")
 			   :import-data-legend-lb (_ "Upload")
 			   :building-lb           (_ "Building")
 			   :building-id           +name-import-building-id+
@@ -952,7 +955,7 @@
 				:validity-date-lb      (_ "Validity date")
 				:operations-lb         (_ "Operations")
 				:help-dialog-lb
-				(_ "Each row must contains exactly 7 field: chemical name, storage, shelf, quantity, units, date-validity, date-expire.")
+				(_ "Each row must contains exactly 7 fields: chemical name, storage, shelf, quantity, units, date-validity, date-expire.")
 				:update-link           (restas:genurl 'search-chem-prod-id-range
 								      :from min-imported
 								      :to   max-imported)

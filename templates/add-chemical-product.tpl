@@ -16,6 +16,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/federated-query.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
+
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
@@ -58,11 +60,13 @@
 	$( ".search-chem-prod").height(addPos.top);
 	$( ".add-new-chem-prod").height(addPos.top);
 	$( ".other-ops-chem-prod").height(addPos.top);
+
         placeFooter();
 	$( "#select-all").click(function (e){
 	    e.preventDefault();
 	    $( "input[type=checkbox]").prop("checked", true);
 	});
+
 	$( "#deselect-all").click(function (e){
 	    e.preventDefault();
 	    $( "input[type=checkbox]").prop("checked", false);
@@ -72,6 +76,17 @@
 	    show:  { effect: false },
 	    title: "Information",
 	    autoOpen: false
+	});
+
+	function cleanField (field){
+	    return field.replace(/\[[^\]]+\]/g, "").replace(/[\s\t]+/, "");
+
+	}
+
+	$("#export-csv-local-button").click(function (e){
+	    let csv = table2csv("local-results", cleanField);
+	    console.log(csv);
+	    location.href = "data:text/csv;base64," +  window.btoa(csv);
 	});
 
 	if (mobilep()){  // this is a mobile device
@@ -275,7 +290,14 @@
   </fieldset>
 
   <!-- TMPL_IF render-local-results-p -->
-  <table class="sortable chemp-list">
+  <h3>
+    <!-- TMPL_VAR table-res-header -->
+    <a id="export-csv-local-button" class="help-button">
+      <i class="fa fa-download" aria-hidden="true"></i>
+    </a>
+  </h3>
+
+  <table class="sortable chemp-list"  id="local-results">
     <thead>
       <tr>
 	<th class="chemp-select-id-hd"><!-- TMPL_VAR select-lb --></th>

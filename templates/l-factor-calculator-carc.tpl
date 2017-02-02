@@ -1,76 +1,85 @@
+<script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
+
 <script>
 
-$(function() {
-    $( "#start" ).click(function(e){
-	function colorizeRes (val){
-	    var bgColor ="#ff0000";
+ $(function() {
+     $( "#start" ).click(function(e){
+	 function colorizeRes (val){
+	     var bgColor ="#ff0000";
 
-	    if (val < 1){
-		bgColor = "#00ff00";
-	    }
+	     if (val < 1){
+		 bgColor = "#00ff00";
+	     }
 
-	    return bgColor;
-	}
+	     return bgColor;
+	 }
 
-	var extractText = function (a) { return $(a).text().trim(); }
+	 var extractText = function (a) { return $(a).text().trim(); }
 
-	function extractSelected (a) {
-	    return $.makeArray($(a).children( "option:selected" )).map(extractText);
-	}
+	 function extractSelected (a) {
+	     return $.makeArray($(a).children( "option:selected" )).map(extractText);
+	 }
 
-	var obj                = {};
-	obj.protectiveDevice   = extractSelected($( "#protective-devices" ));
-	obj.physicalState      = extractSelected($( "#physical-states" ));
-        obj.twork              = $( "#working-temp" ).val().trim();
-        obj.teb                = $( "#boiling-point" ).val().trim();
-	obj.quantityUsed       = $( "#quantity-used"  ).val().trim();
-	obj.usagePerDay        = $( "#usage-per-day"  ).val().trim();
-	obj.usagePerYear       = $( "#usage-per-year" ).val().trim();
-	var jj = JSON.stringify(obj);
-	$.ajax({
-	    url:    "<!-- TMPL_VAR service-link -->",
-	    method: "POST",
-	    data: { req: jj }
-	}).success(function( data ) {
-	    var info = JSON.parse(data);
-	    var tplView = {};
-	    var tpl     = "<tr>"                +
-		"<td>{{protectiveDevice}}</td>" +
-		"<td>{{physicalState}}</td>"    +
-		"<td>{{twork}}</td>"            +
-		"<td>{{teb}}</td>"              +
-		"<td>{{quantityUsed}}</td>"     +
-		"<td>{{usagePerDay}}</td>"      +
-		"<td>{{usagePerYear}}</td>"     +
-		"<td style=\"background: {{bgRes}}\">{{res}}</td>"              +
-		"<td >{{err}}</td>"             +
-		"</tr>";
-	    tplView.protectiveDevice = obj.protectiveDevice;
-	    tplView.physicalState    = obj.physicalState;
-	    tplView.twork            = obj.twork;
-	    tplView.teb              = obj.teb;
-	    tplView.quantityUsed     = obj.quantityUsed;
-	    tplView.usagePerDay      = obj.usagePerDay;
-	    tplView.usagePerYear     = obj.usagePerYear;
-	    tplView.bgRes            = colorizeRes(info.res);
-	    tplView.res              = info.res;
-	    tplView.err              = info.err;
+	 var obj                = {};
+	 obj.protectiveDevice   = extractSelected($( "#protective-devices" ));
+	 obj.physicalState      = extractSelected($( "#physical-states" ));
+         obj.twork              = $( "#working-temp" ).val().trim();
+         obj.teb                = $( "#boiling-point" ).val().trim();
+	 obj.quantityUsed       = $( "#quantity-used"  ).val().trim();
+	 obj.usagePerDay        = $( "#usage-per-day"  ).val().trim();
+	 obj.usagePerYear       = $( "#usage-per-year" ).val().trim();
+	 var jj = JSON.stringify(obj);
+	 $.ajax({
+	     url:    "<!-- TMPL_VAR service-link -->",
+	     method: "POST",
+	     data: { req: jj }
+	 }).success(function( data ) {
+	     var info = JSON.parse(data);
+	     var tplView = {};
+	     var tpl     = "<tr>"                +
+			   "<td>{{protectiveDevice}}</td>"                    +
+			   "<td>{{physicalState}}</td>"                       +
+			   "<td>{{twork}}</td>"                               +
+			   "<td>{{teb}}</td>"                                 +
+			   "<td>{{quantityUsed}}</td>"                        +
+			   "<td>{{usagePerDay}}</td>"                         +
+			   "<td>{{usagePerYear}}</td>"                        +
+			   "<td style=\"background: {{bgRes}}\">{{res}}</td>" +
+			   "<td >{{err}}</td>"                                +
+			   "</tr>";
+	     tplView.protectiveDevice = obj.protectiveDevice;
+	     tplView.physicalState    = obj.physicalState;
+	     tplView.twork            = obj.twork;
+	     tplView.teb              = obj.teb;
+	     tplView.quantityUsed     = obj.quantityUsed;
+	     tplView.usagePerDay      = obj.usagePerDay;
+	     tplView.usagePerYear     = obj.usagePerYear;
+	     tplView.bgRes            = colorizeRes(info.res);
+	     tplView.res              = info.res;
+	     tplView.err              = info.err;
 
-	    $( "#results" ).append(Mustache.render(tpl, tplView));
-	    placeFooter();
-	}).error(function( data ) {
-	    $( "#results" ).append("<tr><td>" + "ERROR" + "</td></tr>");
-	    placeFooter();
-	});
+	     $( "#results" ).append(Mustache.render(tpl, tplView));
+	     placeFooter();
+	 }).error(function( data ) {
+	     $( "#results" ).append("<tr><td>" + "ERROR" + "</td></tr>");
+	     placeFooter();
+	 });
 
-    });
+     });
 
-});
+     $("#export-csv-button").click(function (e){
+	 let csv = table2csv("results");
+	 console.log(csv);
+	 location.href = "data:text/csv;base64," +  window.btoa(csv);
+     });
+
+ });
 </script>
 
 <label for="protective-devices">
   <!-- TMPL_VAR protective-devices-lb -->
 </label>
+
 <select id="protective-devices" multiple>
   <!-- TMPL_LOOP option-protective-devices -->
   <option value="<!-- TMPL_VAR protective-device -->">
@@ -78,6 +87,7 @@ $(function() {
   </option>
   <!-- /TMPL_LOOP  -->
 </select>
+
 <label for="physical-states"><!-- TMPL_VAR physical-states-lb --></label>
 <select id="physical-states" multiple>
   <!-- TMPL_LOOP option-phys-states -->
@@ -86,6 +96,7 @@ $(function() {
   </option>
   <!-- /TMPL_LOOP  -->
 </select>
+
 <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
 <input type="text" id="working-temp" value="25"/>
 <label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
@@ -99,6 +110,14 @@ $(function() {
 <input id="start" type="submit" value="Calculate" />
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->
+
+
+<h3>
+    <!-- TMPL_VAR table-res-header -->
+    <a id="export-csv-button" class="help-button">
+	<i class="fa fa-download" aria-hidden="true"></i>
+    </a>
+</h3>
 
 <table id="results">
   <tr>

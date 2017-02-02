@@ -1,5 +1,7 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/place-footer.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
+
 <script>
     // Shorthand for $( document ).ready()
     $(function() {
@@ -91,6 +93,14 @@
 		placeFooter();
 	    });
 	});
+
+	$("#export-csv-button").click(function (e){
+	    let csv = table2csv("results");
+	    console.log(csv);
+	    location.href = "data:text/csv;base64," +  window.btoa(csv);
+	});
+
+
     });
 </script>
 
@@ -154,6 +164,14 @@
     <input id="start" type="submit" value="Calculate" />
 
     <!-- TMPL_INCLUDE 'back-button.tpl' -->
+
+    <h3>
+      <!-- TMPL_VAR table-res-header -->
+      <a id="export-csv-button" class="help-button">
+	<i class="fa fa-download" aria-hidden="true"></i>
+      </a>
+    </h3>
+
 
     <table id="results">
       <tr>

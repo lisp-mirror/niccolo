@@ -135,32 +135,50 @@
 		       alist
 		       :initial-value nil)))
 
-(defun local-uri (path)
+(defun local-uri (path &key (query nil))
   (with-output-to-string (stream)
-    (puri:render-uri (make-instance 'puri:uri
-				    :scheme :https
-				    :host +hostname+
-				    :port (if (> +https-proxy-port+ 0)
-					      +https-proxy-port+
-					      +https-port+)
-				    :path path)
-		     stream)))
+    (if query
+	(puri:render-uri (make-instance 'puri:uri
+					:scheme :https
+					:host   +hostname+
+					:port   (if (> +https-proxy-port+ 0)
+						    +https-proxy-port+
+						    +https-port+)
+					:path   path
+					:query  query)
+			 stream)
+	(puri:render-uri (make-instance 'puri:uri
+					:scheme :https
+					:host   +hostname+
+					:port   (if (> +https-proxy-port+ 0)
+						    +https-proxy-port+
+						    +https-port+)
+					:path   path)
+			 stream))))
 
-(defun local-uri-noport (path)
+
+(defun local-uri-noport (path &key (query nil))
   (with-output-to-string (stream)
-    (puri:render-uri (make-instance 'puri:uri
+    (if query
+	(puri:render-uri (make-instance 'puri:uri
 				    :scheme :https
-				    :host +hostname+
-				    :path path)
-		     stream)))
+				    :host   +hostname+
+				    :path   path
+				    :query  query)
+			 stream)
+	(puri:render-uri (make-instance 'puri:uri
+					:scheme :https
+					:host   +hostname+
+					:path   path)
+			 stream))))
 
 (defun remote-uri (host port path)
   (with-output-to-string (stream)
     (puri:render-uri (make-instance 'puri:uri
 				    :scheme :https
-				    :host host
-				    :port port
-				    :path path)
+				    :host   host
+				    :port   port
+				    :path   path)
 		     stream)))
 
 ;; web, "lab" specific
