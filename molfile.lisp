@@ -41,6 +41,8 @@
    (return (values 'integer-block (parse-integer $@))))
   ("M  END"
    (return (values 'mend $@)))
+  ("^(A|M|S|V)  .+"
+   (return (values 'property $@)))
   ("([a-z,A-Z,\\*,#]{3})|([a-z,A-Z,\\*,#]{2}\\p{White_Space}{1})|([a-z,A-Z,\\*,#]{1}\\p{White_Space}{2})"
    (return (values 'atom-label (string-trim '(#\space) $@))))
   ("(-?[0-9]{1})|(\\p{White_Space}[0-9]{1})"
@@ -125,12 +127,14 @@
       (setf (fmref (connections *parsed-mol-file*) (1- b-idx) (1- a-idx)) bond-type))))
 
   (yacc:define-parser *parser*
+    (:print-derives-epsilon t)
     (:start-symbol molfile)
     (:terminals (integer-block empty-integer-block
 			       float-block   empty-float-block
 			       atom-label    magic-number
-			       single-space  mass-difference junk mend))
-    (molfile    (count-line atom-block bond-block mend))
+			       single-space  mass-difference
+                               junk mend property))
+    (molfile    (count-line atom-block bond-block properties))
     (count-line
      (atom-count bond-count atom-list-count obsolete chiral-flag stext-count obsolete obsolete
 		 obsolete obsolete additional-properties-count magic-number #'yy-parse-count-line))
@@ -147,6 +151,10 @@
      (x y z single-space atom-label mass-difference charge stereo-par hydrogen-count
 	stereo-care valence h0 ignored ignored atom-atom-mapping inversion/retention exact-change
 	#'yy-parse-atom-spec))
+    (properties
+     property
+     (property properties)
+     mend)
     (x                           float-block)
     (y                           float-block)
     (z                           float-block)
