@@ -864,13 +864,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Product ~a not deleted. "
-translation "Prodotto ~a non cancellato"
+translation "Prodotto ~a non cancellato "
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Product ~a deleted. "
-translation "Prodotto ~a cancellato"
+translation "Prodotto ~a cancellato "
 plurals-form ""
 status :TRANSLATED
 plurals NIL
