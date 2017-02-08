@@ -341,6 +341,7 @@
    :fmref
    :fm-w
    :fm-h
+   :fm=
    :fm-row
    :fm-column
    :make-same-dimension-fmatrix

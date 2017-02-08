@@ -69,6 +69,8 @@
 
 (defgeneric all-first-near (object))
 
+(defgeneric first-near (object index))
+
 (defgeneric subgraph-isomorphism (group molecule))
 
 (defmacro with-check-atoms-limits ((atoms index) &body body)
@@ -99,14 +101,28 @@
 	(loop for i in bonds-types collect
 	     (cons i (count i bonds :test #'=)))))))
 
+(defstruct neighbour
+  (atom)
+  (index))
+
 (defmethod all-first-near ((object molecule))
+  "Evaluate to  list ofa cons where car is the atom and cdr is the index in molecule's atom list"
   (with-accessors ((atoms atoms) (connections connections)) object
     (loop for row-ct from 0 below (fm-w connections) collect
 	 (let ((row (fm-row connections row-ct)))
 	   (loop
 	      for i from 0 by 1
 	      for bond in row when (> bond 0) collect
-		(elt atoms i))))))
+		(make-neighbour :atom (elt atoms i) :index i))))))
+
+(defmethod first-near ((object molecule) index)
+  (with-accessors ((atoms atoms) (connections connections)) object
+    (assert (< index (length atoms)))
+    (let ((row (fm-row connections index)))
+      (loop
+         for i from 0 by 1
+         for bond in row when (> bond 0) collect
+           (make-neighbour :atom (elt atoms i) :index i)))))
 
 (defun group-by-bond (row)
   (let ((bond-types (do ((res    '())
@@ -136,11 +152,13 @@
 				  (elt (all-first-near molecule)
 				       molecule-index))))
     (loop for i from 0 below (length first-near-group) do
-	 (let ((count-group (count (elt first-near-group i)
+	 (let ((count-group (count (neighbour-atom (elt first-near-group i))
 				   first-near-group
+                                   :key #'neighbour-atom
 				   :test #'ch-atom=))
-	       (count-mol   (count (elt first-near-group i)
+	       (count-mol   (count (neighbour-atom (elt first-near-group i))
 				   first-near-molecule
+                                   :key #'neighbour-atom
 				   :test #'ch-atom=)))
 	   (when (< count-mol count-group)
 	     (return-from first-near-compatible-p nil))))
@@ -211,6 +229,29 @@
 		      (return-from isomorphic-p nil)))))))
     t))
 
+(defun prune (matrix group molecule)
+  (let ((copy (fm-flat-copy matrix)))
+    (fm-loop (copy i j)
+      (when (= (fmref copy i j) 1)
+        (let ((neighbors-fragment (first-near group i)))
+          (loop for neighbor-fragment in neighbors-fragment do
+               (let ((neighbors-molecule (first-near molecule j)))
+                 (let ((no-mapping-exists-p t))
+                   (loop
+                      named inner
+                      for neighbor-molecule in neighbors-molecule do
+                        (when (= (fmref copy
+                                        (neighbour-index neighbor-fragment)
+                                        (neighbour-index neighbor-molecule))
+                                 1)
+                          (setf no-mapping-exists-p nil)
+                          (return-from inner t)))
+                   (when no-mapping-exists-p
+                     (setf (fmref copy i j) 0))))))))
+    (if (fm= matrix copy)
+        copy
+        (prune copy group molecule))))
+
 (defmethod subgraph-isomorphism ((group-alpha molecule) (molecule-beta molecule))
   (let ((permutation-matrix    (permutation-matrix group-alpha molecule-beta))
 	(alpha                 (fm-map (connections group-alpha)
@@ -228,13 +269,13 @@
 	       (if (< d (fm-h perm-mat)) ;; we are not in the last row
 		   (loop for i from 0 below (fm-w perm-mat) do
 			(when (= (fmref perm-mat d i) 1)
-			  (let ((pm-copy (fm-flat-copy perm-mat)))
-			    (loop for j from 0 below (fm-w perm-mat) do
+			  (let ((pruned (prune perm-mat group-alpha molecule-beta)))
+                            (loop for j from 0 below (fm-w perm-mat) do
 				 (when (/= j i)
-				   (setf (fmref pm-copy d j) 0)))
-			    (when (column-free-from-ones pm-copy d i)
-			      (%subgraph-isomorphism alpha beta pm-copy (1+ d))))))
-		   (when (isomorphic-p alpha beta
+				   (setf (fmref pruned d j) 0)))
+			    (when (column-free-from-ones pruned d i)
+			      (%subgraph-isomorphism alpha beta pruned (1+ d))))))
+		   (when (isomorphic-p alpha beta ;; reached max depth here
 				       (connections group-alpha) (connections molecule-beta)
 				       perm-mat)
 		     (push perm-mat results) ; maybe will be useful getting all matching some day :)

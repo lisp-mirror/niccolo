@@ -34,15 +34,35 @@
 
 (defun fm-w (m)
   "# of columns"
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (declare (fmatrix m))
   (array-dimension m 1))
 
 (defun fm-h (m)
   "# of rows"
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (declare (fmatrix m))
   (array-dimension m 0))
 
+(defun fm= (a b)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (fmatrix a b))
+  (flet ((all-equals ()
+           (loop
+              for r fixnum from 0 below (fm-h a)
+              for c fixnum from 0 below (fm-w a) do
+                (when (/= (the fixnum (fmref a r c))
+                          (the fixnum (fmref b r c)))
+                  (return-from all-equals nil)))
+           t))
+    (and (= (the fixnum (fm-w a))
+            (the fixnum (fm-w b)))
+         (= (the fixnum (fm-h a))
+            (the fixnum (fm-h b)))
+         (all-equals))))
+
 (defun fm-row (m index)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (declare (fmatrix m))
   (declare (fixnum index))
   (loop
@@ -50,6 +70,7 @@
        (fmref m index i)))
 
 (defun fm-column (m index)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (declare (fmatrix m))
   (declare (fixnum index))
   (loop
