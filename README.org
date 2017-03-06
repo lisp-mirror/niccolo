@@ -41,7 +41,7 @@ disposing.
 
   Except for  crane (see below) all  of them are  available from  quicklisp.
 
-  For crane a patched version (available [[https://github.com/cage2/crane/tree/sqlite][here]]), is needed.
+  For crane a patched version (available [[https://notabug.org/cage/crane/][here]]), is needed.
 
   Also be sure to install the following C libraries:
 
@@ -79,13 +79,14 @@ already installed and ASDF configured  (but you should install all the
 8. autoreconf -fiv
 9. ./configure
 10. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
-11. clone [[https://github.com/cage2/crane/tree/sqlite][this version of crane]] in  ~/quicklisp/local-projects;
-12. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
-13. make
-14. cd ~/lisp/niccolo/
-15. make
-16. put your ssl certificate in ssl/
-17. edit config.lisp
+11. clone [[https://notabug.org/cage/crane/][this version of crane]] in  ~/quicklisp/local-projects;
+12. checkout branch sqlite for crane
+13. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
+14. make
+15. cd ~/lisp/niccolo/
+16. make
+17. put your ssl certificate in ssl/
+18. edit config.lisp
     #+BEGIN_SRC lisp
 
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
