@@ -81,3 +81,5 @@
   <!-- /TMPL_LOOP  --> <!-- data table -->
   </tbody>
 </table>
+
+<!-- TMPL_INCLUDE 'pagination-navigation.tpl' -->

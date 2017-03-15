@@ -21,8 +21,6 @@
 
 (define-constant +name-adr-uncode+         "uncode"     :test #'string=)
 
-(define-constant +start-pagination-offset+ 10           :test #'=)
-
 (defun all-adr-code-select ()
   (query (select (( :as :adr.id                       :id)
 		  ( :as :adr.uncode                   :uncode)
@@ -41,10 +39,8 @@
 					 cell))
 				 row))
 		  (all-adr-code-select))))
-    (do-rows (rown res)	(subseq raw
-				(max 0 start-from)
-				(min (length raw) (+ start-from
-						     +start-pagination-offset+)))
+    (do-rows (rown res)
+	(slice-for-pagination raw start-from)
       (let* ((row           (elt res rown))
 	     (pict-template (pictograms-template-struct 'db:adr-pictogram
 							(concatenate 'string
@@ -63,13 +59,7 @@
 			   row
 			   pict-template
 			   (if delete-link
-			       (list :delete-link
-				     (concatenate 'string
-						  (restas:genurl delete-link :id (getf row :id))
-						  (alist->query-uri (list (cons +name-start-pagination+
-										start-from))
-								    :prepend-character
-								    +uri-query-start+)))
+			       (list :delete-link (delete-uri delete-link row))
 			       nil)
 			   (if update-link
 			       (list :update-link (restas:genurl update-link :id (getf row :id)))
@@ -101,53 +91,45 @@
 	(save ghs)))
     (manage-adr-code success-msg errors-msg)))
 
-(defun manage-adr-code (infos errors &key (start-from "0"))
-  (let* ((actual-start (%actual-start start-from))
+(defun manage-adr-code (infos errors &key (start-from 0))
+  (let* ((actual-start (actual-pagination-start start-from))
 	 (all-adrs     (build-template-list-adr-code actual-start
 						     :delete-link 'delete-adr
-						     :update-link nil))
-	 (next-start   (if (< (+ actual-start +start-pagination-offset+)
-			      (count-all :adr-code))
-			   (+ actual-start +start-pagination-offset+)
-			   nil))
-	 (prev-start   (if (>= (- actual-start +start-pagination-offset+) 0)
-			   (- actual-start +start-pagination-offset+)
-			   nil)))
-    (with-standard-html-frame (stream (_ "Manage ADR codes")
-				      :infos  infos
-				      :errors errors)
-      (html-template:fill-and-print-template #p"add-adr.tpl"
-					     (with-back-to-root
-						 (with-path-prefix
-						     :class-lb   (_ "Class")
-						     :un-code-lb (_ "UN Code")
-						     :explanation-lb (_ "Explanation")
-						     :uncode-ex-lb (_ "UNCode (for example UN1000)")
-						     :proper-shipping-lb (_ "Proper Shipping Name")
-						     :delete-lb          (_ "Delete")
-						     :code-class         +name-adr-code-class+
-						     :uncode             +name-adr-uncode+
-						     :expl               +name-adr-expl+
-						     :start-from-name    +name-start-pagination+
-						     :start-from-value   start-from
-						     :next-start         next-start
-						     :prev-start         prev-start
-						     :data-table all-adrs))
-					     :stream stream))))
-
-(defun %actual-start (start)
-  (if (integer-positive-validate start)
-      (parse-integer start)
-      0))
+						     :update-link nil)))
+    (multiple-value-bind (next-start prev-start)
+	(pagination-bounds actual-start 'db:adr-code)
+      (with-standard-html-frame (stream (_ "Manage ADR codes")
+					:infos  infos
+					:errors errors)
+	(html-template:fill-and-print-template #p"add-adr.tpl"
+					       (with-back-to-root
+						   (with-pagination-template
+						       (next-start prev-start)
+						     (with-path-prefix
+							 :class-lb         (_ "Class")
+							 :un-code-lb       (_ "UN Code")
+							 :explanation-lb   (_ "Explanation")
+							 :uncode-ex-lb
+							 (_ "UNCode (for example UN1000)")
+							 :proper-shipping-lb
+							 (_ "Proper Shipping Name")
+							 :delete-lb        (_ "Delete")
+							 :code-class       +name-adr-code-class+
+							 :uncode           +name-adr-uncode+
+							 :expl             +name-adr-expl+
+							 :data-table       all-adrs)))
+					       :stream stream)))))
 
 (define-lab-route adr ("/adr/" :method :get)
   (with-authentication
-    (manage-adr-code nil nil :start-from (get-parameter +name-start-pagination+))))
+    (with-pagination (pagination-uri)
+      (manage-adr-code nil nil
+		       :start-from (session-pagination-start pagination-uri)))))
 
 (define-lab-route add-adr ("/add-adr/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (add-new-adr-code (get-parameter +name-adr-code-class+)
 			    (get-parameter +name-adr-uncode+)
 			    (get-parameter +name-adr-expl+)))
@@ -161,13 +143,13 @@
 	    (let ((to-trash (single 'db:adr-code :id id)))
 	      (when to-trash
 		(del (single 'db:adr-code  :id id)))))
-	  (manage-adr-code nil nil :start-from (get-parameter +name-start-pagination+)))
+	  (restas:redirect 'adr))
       (manage-adr-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route assoc-adr-pictogram ("/assoc-adr-pictogram/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
 						       +pos-integer-re+ "")))))
@@ -177,5 +159,5 @@
 			 pict)
 		(setf (db:pictogram adr-code) (db:id pict))
 		(save adr-code))))
-	  (manage-adr-code nil nil :start-from (get-parameter +name-start-pagination+)))
+	  (restas:redirect 'adr))
       (manage-adr-code nil (list *insufficient-privileges-message*)))))

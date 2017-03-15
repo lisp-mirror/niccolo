@@ -71,6 +71,7 @@
 	       (:file "db-utils")
 	       (:file "db-config")
 	       (:file "db")
+	       (:file "session-user")
 	       (:file "utils")
 	       (:file "i18n")
 	       (:file "images-utils")

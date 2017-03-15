@@ -15,25 +15,25 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-user-name+         "username"     :test #'string=)
+(define-constant +name-user-name+                 "username"          :test #'string=)
 
-(define-constant +name-user-email+        "email"        :test #'string=)
+(define-constant +name-user-email+                "email"             :test #'string=)
 
-(define-constant +name-user-password+     "password"     :test #'string=)
+(define-constant +name-user-password+             "password"          :test #'string=)
 
-(define-constant +name-user-password-2+   "password-2"   :test #'string=)
+(define-constant +name-user-password-2+           "password-2"        :test #'string=)
 
-(define-constant +name-user-old-password+ "old-password" :test #'string=)
+(define-constant +name-user-old-password+         "old-password"      :test #'string=)
 
-(define-constant +name-address-zipcode+   "zipcode"      :test #'string=)
+(define-constant +name-address-zipcode+           "zipcode"           :test #'string=)
 
-(define-constant +name-address-link+      "link"         :test #'string=)
+(define-constant +name-address-link+              "link"              :test #'string=)
 
-(define-constant +name-pref-locale+       "locale"       :test #'string=)
+(define-constant +name-pref-locale+               "locale"            :test #'string=)
 
-(define-constant +name-pref-email+        "email"        :test #'string=)
+(define-constant +name-pref-email+                "email"             :test #'string=)
 
-(define-constant +name-user-level+        "level"        :test #'string=)
+(define-constant +name-user-level+                "level"             :test #'string=)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defparameter *admin-acl-level-expl*  "Administrator")

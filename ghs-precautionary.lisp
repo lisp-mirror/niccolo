@@ -45,38 +45,47 @@
 	(save ghs)))
     (manage-ghs-precautionary-code success-msg errors-msg)))
 
-(defun manage-ghs-precautionary-code (infos errors)
-  (let ((all-ghss (fetch-raw-template-list 'db:ghs-precautionary-statement
-					   '(:id :code :explanation)
-					   :delete-link 'delete-ghs-precautionary
-					   :additional-tpl
-					   #'(lambda (row)
-					       (list
-						:update-link
-						(restas:genurl 'update-precautionary
-							       :id (db:id row)))))))
-    (with-standard-html-frame (stream (_ "Manage GHS Precautionary Statements")
-				      :infos  infos
-				      :errors errors)
-      (html-template:fill-and-print-template #p"add-precautionary.tpl"
-					     (with-back-to-root
-						 (with-path-prefix
-						     :code-lb         (_ "Code")
-						     :statement-lb    (_ "Statement")
-						     :operations-lb   (_ "Operations")
-						     :code            +name-ghs-precautionary-code+
-						     :expl            +name-ghs-precautionary-expl+
-						     :data-table      all-ghss))
-					     :stream stream))))
+(defun manage-ghs-precautionary-code (infos errors &key (start-from 0))
+  (let* ((all-ghss       (fetch-raw-template-list 'db:ghs-precautionary-statement
+						  '(:id :code :explanation)
+						  :delete-link 'delete-ghs-precautionary
+						  :additional-tpl
+						  #'(lambda (row)
+						      (list
+						       :update-link
+						       (restas:genurl 'update-precautionary
+								      :id (db:id row))))))
+	 (paginated-ghss (slice-for-pagination all-ghss start-from)))
+    (multiple-value-bind (next-start prev-start)
+	(pagination-bounds (actual-pagination-start start-from) 'db:ghs-precautionary-statement)
+      (with-standard-html-frame (stream (_ "Manage GHS Precautionary Statements")
+					:infos  infos
+					:errors errors)
+	(html-template:fill-and-print-template #p"add-precautionary.tpl"
+					       (with-back-to-root
+						   (with-pagination-template
+						       (next-start prev-start)
+						     (with-path-prefix
+							 :code-lb       (_ "Code")
+							 :statement-lb  (_ "Statement")
+							 :operations-lb (_ "Operations")
+							 :code
+							 +name-ghs-precautionary-code+
+							 :expl
+							 +name-ghs-precautionary-expl+
+							 :data-table    paginated-ghss)))
+					       :stream stream)))))
 
 (define-lab-route ghs-precautionary ("/ghs-precautionary/" :method :get)
   (with-authentication
-    (manage-ghs-precautionary-code nil nil)))
+    (with-pagination (pagination-uri)
+      (manage-ghs-precautionary-code nil nil
+				     :start-from (session-pagination-start pagination-uri)))))
 
 (define-lab-route add-ghs-precautionary ("/add-ghs-precautionary/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (add-new-ghs-precautionary-code (get-parameter +name-ghs-precautionary-code+)
 					  (get-parameter +name-ghs-precautionary-expl+)))
       (manage-ghs-precautionary-code nil (list *insufficient-privileges-message*)))))
@@ -84,7 +93,7 @@
 (define-lab-route delete-ghs-precautionary ("/delete-ghs-precautionary/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:ghs-precautionary-statement :id id)))
 	      (when to-trash

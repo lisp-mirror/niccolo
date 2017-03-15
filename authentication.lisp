@@ -15,27 +15,6 @@
 
 (in-package :restas.lab)
 
-(defclass user-session (db:user)
-  ((authorized
-   :reader authorized-p
-   :writer (setf authorized)
-   :initform nil
-   :initarg :authorized)))
-
-(defun user->user-session (db-user &key (auth t))
-  (make-instance 'user-session
-		 :id         (db:id       db-user)
-		 :username   (db:username db-user)
-		 :authorized auth
-		 :level      (db:level db-user)
-		 :password   (db:password db-user)))
-
-(defun user-session->user (user)
-  (and user
-       (db:id user)
-       (> (db:id user) 0)
-       (single 'db:user :id (db:id user))))
-
 (defun authenticate-user (uname password)
   "Return user, if authenticated, nil otherwise"
   (when (and uname password (single 'db:user :username uname))
@@ -96,38 +75,6 @@
 		       (render-login-form)))))
 	   (render-login-form)))))
 
-(defun get-session-username ()
-  (if (and (tbnl:start-session)
-	   (tbnl:session-value +user-session+)
- 	   (db:username (tbnl:session-value +user-session+)))
-      (db:username (tbnl:session-value +user-session+))
-      "Guest"))
-
-(defmacro with-session-user ((user) &body body)
-  `(let ((,user (and (tbnl:start-session)
-		     (tbnl:session-value +user-session+))))
-     ,@body))
-
-(defun get-session-user-id ()
-  (if (and (tbnl:start-session)
-	   (tbnl:session-value +user-session+)
- 	   (db:username (tbnl:session-value +user-session+)))
-      (db:id (tbnl:session-value +user-session+))
-      0))
-
-(defun admin-id ()
-  (db:id (admin-user)))
-
-(defun admin-user ()
-  (single 'db:user :level +admin-acl-level+))
-
-(defun get-session-level ()
-  (if (and (tbnl:start-session)
-	   (tbnl:session-value +user-session+)
- 	   (db:username (tbnl:session-value +user-session+)))
-      (db:level (tbnl:session-value +user-session+))
-      (1+ +user-acl-level+)))
-
 (defun logout-user ()
   (let* ((the-session (tbnl:start-session)))
     (unwind-protect
@@ -141,9 +88,6 @@
 			   (puri:render-uri (mini-cas:make-logout-uri) stream))))
       #-mini-cas
       (restas:redirect (restas:genurl 'root)))))
-
-(defun session-admin-p ()
-  (= (db:level (tbnl:session-value +user-session+)) +admin-acl-level+))
 
 (defmacro admin-or-login ((action) &body body)
   `(if (session-admin-p)
@@ -167,16 +111,6 @@
   (authenticate (nil nil)
     (logout-user)
     (restas:redirect 'root)))
-
-(defgeneric account-enabled-p (user))
-
-(defmethod account-enabled-p ((object db:user))
-  (and object
-       (= (db:account-enabled object) +user-account-enabled+)))
-
-(defmethod account-enabled-p ((object user-session))
-  (let ((db-user (user-session->user object)))
-    (account-enabled-p db-user)))
 
 (defmacro with-authentication (&body body)
   "Check if user is authenticated, if true try to set the translation table"

@@ -128,7 +128,10 @@
    :+search-chem-shelf+
    :+name-validity-date+
    :+name-expire-date+
-   :+name-start-pagination+
+   :+start-pagination-offset+
+   :+name-count-pagination+
+   :+name-count-pagination-inc+
+   :+name-count-pagination-dec+
    :+no-html-tags-at-all+
    :+cookie-key-script-visited+
    :+query-product-path+
@@ -455,6 +458,32 @@
    :hunchentoot
    :crane))
 
+(defpackage :session-user
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :hunchentoot
+   :crane
+   :config
+   :constants)
+  (:export
+   :+user-private-pagination-offset+
+   :user-session
+   :authorized
+   :authorized-p
+   :private-storage
+   :user->user-session
+   :user-session->user
+   :get-session-username
+   :with-session-user
+   :get-session-user-id
+   :admin-id
+   :admin-user
+   :get-session-level
+   :session-admin-p
+   :account-enabled-p))
+
 (defpackage :utils
   (:use
    :cl
@@ -478,18 +507,27 @@
    :chemical-products-template->json-string
    :path-prefix-tpl
    :with-path-prefix
+   :with-pagination-template
    :with-back-uri
    :with-back-to-root
    :alist->query-uri
    :local-uri
    :local-uri-noport
    :remote-uri
+   :delete-uri
    :address-string->vector
    :get-host-by-address
    :get-host-by-name
    :gen-autocomplete-functions
    :prepare-for-update
    :set-cookie-script-visited
+   :slice-for-pagination
+   :actual-pagination-start
+   :pagination-bounds
+   :session-pagination-start
+   :session-pagination-increase
+   :session-pagination-decrease
+   :with-pagination
    :with-standard-html-frame
    :fetch-raw-template-list
    :template->string
@@ -601,6 +639,7 @@
    :ps-utils
    :string-utils
    :db-utils
+   :session-user
    :utils
    :views)
   (:export

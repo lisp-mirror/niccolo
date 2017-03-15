@@ -81,24 +81,4 @@
   </tbody>
 </table>
 
-<!-- TMPL_IF prev-start -->
-<div class="pagination-minus">
-    <form method="GET" ACTION="">
-	<input type="hidden"
-	       name="<!-- TMPL_VAR start-from-name -->"
-	       value="<!-- TMPL_VAR prev-start -->" />
-	<input class="button-pagination" type="submit" value="<" />
-    </form>
-</div>
-<!-- /TMPL_IF -->
-
-<!-- TMPL_IF next-start -->
-<div class="pagination-plus">
-    <form method="GET" ACTION="">
-	<input type="hidden"
-	       name="<!-- TMPL_VAR start-from-name -->"
-	       value="<!-- TMPL_VAR next-start -->" />
-	<input class="button-pagination" type  = "submit" value=">" />
-    </form>
-</div>
-<!-- /TMPL_IF -->
+<!-- TMPL_INCLUDE 'pagination-navigation.tpl' -->

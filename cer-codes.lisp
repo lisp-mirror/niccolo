@@ -21,7 +21,7 @@
 
 (defun add-new-cer-code (code expl)
   (let* ((errors-msg-1  (regexp-validate (list
-					  (list code +cer-code-re+ (_"CER code invalid"))
+					  (list code +cer-code-re+  (_ "CER code invalid"))
 					  (list expl +free-text-re+ (_ "CER phrase invalid")))))
 	 (errors-msg-2  (when (not errors-msg-1)
 			  (unique-p-validate 'db:cer-code
@@ -34,40 +34,46 @@
 					 (_ "Saved new CER code: ~s - ~s")
 					 code expl)))))
     (when (not errors-msg)
-      (let ((ghs (create 'db:cer-code
-			 :code code
-			 :explanation expl)))
-	(save ghs)))
+      (let ((cer-code (create 'db:cer-code
+			      :code code
+			      :explanation expl)))
+	(save cer-code)))
     (manage-cer-code success-msg errors-msg)))
 
-(defun manage-cer-code (infos errors)
-  (let ((all-ghss (fetch-raw-template-list 'db:cer-code
-					   '(:id :code :explanation)
-					   :delete-link 'delete-cer)))
-    (with-standard-html-frame (stream (_ "Manage CER codes")
-				      :infos  infos
-				      :errors errors)
-
-      (html-template:fill-and-print-template #p"add-cer.tpl"
-					     (with-back-to-root
-						 (with-path-prefix
-						     :code-lb        (_ "Code")
-						     :statement-lb   (_ "Statement")
-						     :delete-lb      (_ "Delete")
-						     :explanation-lb (_ "Explanation")
-						     :code           +name-cer-code+
-						     :expl           +name-cer-expl+
-						     :data-table all-ghss))
-					     :stream stream))))
+(defun manage-cer-code (infos errors &key (start-from 0))
+  (let* ((all-cer-codes       (fetch-raw-template-list 'db:cer-code
+						       '(:id :code :explanation)
+						       :delete-link 'delete-cer))
+	 (paginated-cer-codes (slice-for-pagination all-cer-codes start-from)))
+    (multiple-value-bind (next-start prev-start)
+	(pagination-bounds (actual-pagination-start start-from) 'db:cer-code)
+      (with-standard-html-frame (stream (_ "Manage CER codes")
+					:infos  infos
+					:errors errors)
+	(html-template:fill-and-print-template #p"add-cer.tpl"
+					       (with-back-to-root
+						   (with-pagination-template
+						       (next-start prev-start)
+						     (with-path-prefix
+							 :code-lb        (_ "Code")
+							 :statement-lb   (_ "Statement")
+							 :delete-lb      (_ "Delete")
+							 :explanation-lb (_ "Explanation")
+							 :code           +name-cer-code+
+							 :expl           +name-cer-expl+
+							 :data-table     paginated-cer-codes)))
+					       :stream stream)))))
 
 (define-lab-route cer ("/cer/" :method :get)
   (with-authentication
-    (manage-cer-code nil nil)))
+    (with-pagination (pagination-uri)
+      (manage-cer-code nil nil
+		       :start-from (session-pagination-start pagination-uri)))))
 
 (define-lab-route add-cer ("/add-cer/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (add-new-cer-code (get-parameter +name-cer-code+)
 			    (get-parameter +name-cer-expl+)))
       (manage-cer-code nil (list *insufficient-privileges-message*)))))
@@ -75,7 +81,7 @@
 (define-lab-route delete-cer ("/delete-cer/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
+	(with-pagination (pagination-uri)
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:cer-code :id id)))
 	      (when to-trash
