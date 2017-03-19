@@ -127,11 +127,14 @@
     (list ,@tpls)))
 
 (defmacro with-pagination-template ((next-start prev-start) tpl)
-  `(nconc (list :pagination-count-name +name-count-pagination+
-		:pagination-inc        +name-count-pagination-inc+
-		:pagination-dec        +name-count-pagination-dec+
-		:next-start            ,next-start
-		:prev-start            ,prev-start)
+  `(nconc (list :pagination-op-name     +name-op-pagination+
+		:pagination-count-name  +name-count-pagination+
+		:pagination-inc         +name-op-pagination-inc+
+		:pagination-dec         +name-op-pagination-dec+
+		:pagination-more-items  +name-count-pagination-inc+
+		:pagination-less-items  +name-count-pagination-dec+
+		:next-start             ,next-start
+		:prev-start             ,prev-start)
 	 ,tpl))
 
 (defun alist->query-uri (alist &key (prepend-character ""))
@@ -224,14 +227,14 @@
 
 ;; web rendering
 
-(defun slice-for-pagination (sequence start)
+(defun slice-for-pagination (sequence start count)
   (subseq sequence
-	  (max 0 start)
-	  (min (length sequence)
-	       (+ start
-		  +start-pagination-offset+))))
+	  (clamp start 0 (1- (length sequence)))
+          (clamp (+ start count)
+                 0
+                 (1- (length sequence)))))
 
-(defun actual-pagination-start (start)
+(defun actual-bounds (start)
   (cond
     ((and (numberp start)
 	  (>=      start 0))
@@ -241,13 +244,19 @@
     (t
      0)))
 
-(defun pagination-bounds (start table)
-  (values (if (< (+ start +start-pagination-offset+)
+(defun actual-pagination-start (start)
+  (actual-bounds start))
+
+(defun actual-pagination-count (start)
+  (actual-bounds start))
+
+(defun pagination-bounds (start count table)
+  (values (if (< (+ start count)
 		 (db-utils:count-all (alexandria:make-keyword table)))
-	      (+ start +start-pagination-offset+)
+	      (+ start count)
 	      nil)
-	  (if (>= (- start +start-pagination-offset+) 0)
-	      (- start +start-pagination-offset+)
+	  (if (>= (- start count) 0)
+	      (- start count)
 	      nil)))
 
 (defmacro with-pagination-start-hashtable ((user pagination-hashtable) &body body)
@@ -288,15 +297,60 @@
 	(session-pagination-change uri-path
 				   (max 0
 					(- old-value delta)))))))
+;;;; pagination count
+
+(defmacro with-pagination-count-hashtable ((user pagination-hashtable) &body body)
+  `(with-accessors ((private-storage session-user:private-storage)) ,user
+     (let ((,pagination-hashtable (gethash session-user:+user-private-pagination-count+
+					   private-storage)))
+       ,@body)))
+
+(defun session-pagination-count (uri-path)
+  (session-user:with-session-user (user)
+    (if user
+	(with-pagination-count-hashtable (user pagination-count-hashtable)
+	  (multiple-value-bind (results existsp)
+	      (gethash uri-path pagination-count-hashtable)
+	    (when (not results)
+	      (setf results +start-pagination-offset+)
+	      (setf existsp t))
+	    (values results existsp)))
+	(values nil nil))))
+
+(defun session-pagination-count-change (uri-path new-value)
+  (session-user:with-session-user (user)
+    (when user
+      (with-pagination-count-hashtable (user pagination-start-hashtable)
+	(setf (gethash uri-path pagination-start-hashtable)
+	      new-value)))))
+
+(defun session-pagination-count-increase (uri-path &optional (delta +start-pagination-offset+))
+  (session-user:with-session-user (user)
+    (when user
+      (let ((old-value (session-pagination-count uri-path)))
+	(session-pagination-count-change uri-path (+ old-value delta))))))
+
+(defun session-pagination-count-decrease (uri-path &optional (delta +start-pagination-offset+))
+  (session-user:with-session-user (user)
+    (when user
+      (let ((old-value (session-pagination-count uri-path)))
+	(session-pagination-count-change uri-path
+                                         (max +start-pagination-offset+
+                                              (- old-value delta)))))))
 
 (defmacro with-pagination ((uri) &body body)
-  (with-gensyms (page-modification)
+  (with-gensyms (page-modification-move page-modification-change-window)
     `(let ((,uri (tbnl:script-name*))
-	   (,page-modification (get-parameter +name-count-pagination+)))
-       (when ,page-modification
-	 (if (string= ,page-modification +name-count-pagination-inc+)
-	     (session-pagination-increase ,uri)
-	     (session-pagination-decrease ,uri)))
+	   (,page-modification-move          (get-parameter +name-op-pagination+))
+           (,page-modification-change-window (get-parameter +name-count-pagination+)))
+       (when ,page-modification-change-window
+         (if (string= ,page-modification-change-window +name-count-pagination-inc+)
+	     (session-pagination-count-increase ,uri)
+	     (session-pagination-count-decrease ,uri)))
+       (when ,page-modification-move
+	 (if (string= ,page-modification-move +name-op-pagination-inc+)
+	     (session-pagination-increase ,uri (session-pagination-count ,uri))
+	     (session-pagination-decrease ,uri (session-pagination-count ,uri))))
        ,@body)))
 
 ;; net addresses
@@ -383,6 +437,9 @@
 						:jquery-ui-css (restas:genurl
 								'restas.lab::-css-.route
 								:path "jquery-ui.min.css")
+						:anim-css (restas:genurl
+							   'restas.lab::-css-.route
+							   :path "anim.css")
 						:jquery (restas:genurl 'restas.lab::-js-.route
 								       :path "jquery.js")
 						:jquery-ui (restas:genurl

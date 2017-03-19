@@ -30,7 +30,8 @@
 	   (from (:as :adr-code :adr))
 	   (left-join :adr-pictogram :on (:= :adr.pictogram :adr-pictogram.id)))))
 
-(defun build-template-list-adr-code (start-from &key (delete-link nil) (update-link nil))
+(defun build-template-list-adr-code (start-from data-count
+                                     &key (delete-link nil) (update-link nil))
   (let ((raw (map 'list #'(lambda (row)
 			    (map 'list
 				 #'(lambda (cell)
@@ -40,7 +41,7 @@
 				 row))
 		  (all-adr-code-select))))
     (do-rows (rown res)
-	(slice-for-pagination raw start-from)
+	(slice-for-pagination raw start-from data-count)
       (let* ((row           (elt res rown))
 	     (pict-template (pictograms-template-struct 'db:adr-pictogram
 							(concatenate 'string
@@ -91,13 +92,15 @@
 	(save ghs)))
     (manage-adr-code success-msg errors-msg)))
 
-(defun manage-adr-code (infos errors &key (start-from 0))
+(defun manage-adr-code (infos errors &key (start-from 0) (data-count 1))
   (let* ((actual-start (actual-pagination-start start-from))
+         (actual-count (actual-pagination-count data-count))
 	 (all-adrs     (build-template-list-adr-code actual-start
+                                                     data-count
 						     :delete-link 'delete-adr
 						     :update-link nil)))
     (multiple-value-bind (next-start prev-start)
-	(pagination-bounds actual-start 'db:adr-code)
+	(pagination-bounds actual-start actual-count 'db:adr-code)
       (with-standard-html-frame (stream (_ "Manage ADR codes")
 					:infos  infos
 					:errors errors)
@@ -124,7 +127,8 @@
   (with-authentication
     (with-pagination (pagination-uri)
       (manage-adr-code nil nil
-		       :start-from (session-pagination-start pagination-uri)))))
+		       :start-from (session-pagination-start pagination-uri)
+                       :data-count (session-pagination-count pagination-uri)))))
 
 (define-lab-route add-adr ("/add-adr/" :method :get)
   (with-authentication

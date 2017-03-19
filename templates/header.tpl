@@ -5,6 +5,7 @@
   <title><!-- TMPL_VAR title --></title>
   <link rel="icon" type="image/vnd.microsoft.icon" href="<!-- TMPL_VAR path-prefix -->/images/favicon.ico" />
   <link rel="stylesheet" href="<!-- TMPL_VAR jquery-ui-css -->" />
+  <link rel="stylesheet" href="<!-- TMPL_VAR anim-css -->" />
   <link rel="stylesheet" type="text/css" href="<!-- TMPL_VAR css-file -->" />
   <script src="<!-- TMPL_VAR jquery -->"></script>
   <script src="<!-- TMPL_VAR jquery-ui -->"></script>
@@ -65,6 +66,17 @@
       }).css('width', '200pt');
 
       setClassesUi();
+
+      $(".with-attention-scale-anim").mouseover(function() {
+	  $(this).removeClass("anim-scale-down-2x");
+	  $(this).addClass("anim-scale-up-2x");
+      });
+
+      $(".with-attention-scale-anim").mouseout(function() {
+	  $(this).removeClass("anim-scale-up-2x");
+	  $(this).addClass("anim-scale-down-2x");
+      });
+
 
   });
 </script>

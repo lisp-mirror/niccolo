@@ -97,11 +97,17 @@
 
 (define-constant +name-expire-date+               "expire-date"              :test #'string=)
 
-(define-constant +name-count-pagination+          "pagination"               :test #'string=)
+(define-constant +name-op-pagination+             "pagination"               :test #'string=)
 
-(define-constant +name-count-pagination-inc+      "inc"                      :test #'string=)
+(define-constant +name-count-pagination+          "pagination-count"         :test #'string=)
 
-(define-constant +name-count-pagination-dec+      "dec"                      :test #'string=)
+(define-constant +name-op-pagination-inc+         "inc"                      :test #'string=)
+
+(define-constant +name-op-pagination-dec+         "dec"                      :test #'string=)
+
+(define-constant +name-count-pagination-inc+      "more"                     :test #'string=)
+
+(define-constant +name-count-pagination-dec+      "less"                     :test #'string=)
 
 (define-constant +start-pagination-offset+       10                          :test #'=)
 

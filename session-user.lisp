@@ -15,7 +15,9 @@
 
 (in-package :session-user)
 
-(define-constant +user-private-pagination-offset+ :pagination-offset :test #'string=)
+(define-constant +user-private-pagination-offset+ :pagination-offset :test #'eq)
+
+(define-constant +user-private-pagination-count+  :pagination-count  :test #'eq)
 
 (defclass user-session (db:user)
   ((authorized
@@ -31,6 +33,8 @@
 (defmethod initialize-instance :after ((object user-session) &key &allow-other-keys)
   (with-accessors ((private-storage private-storage)) object
     (setf (gethash +user-private-pagination-offset+ private-storage)
+          (make-hash-table :test 'equal))
+    (setf (gethash +user-private-pagination-count+ private-storage)
           (make-hash-table :test 'equal))))
 
 (defun user->user-session (db-user &key (auth t))

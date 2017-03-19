@@ -149,17 +149,30 @@ textarea {
     text-align:  center;
 }
 
-.pagination-plus {
+#pagination-more-items {
+    float:        left;
+    margin-left:  10pt;
+    margin-right: 10pt;
+}
+
+#pagination-less-items {
+    float:      left;
+}
+
+#pagination-no-of-items {
+    display:  block;
+    margin:   auto;
+    position: relative;
+    left:     50%
+}
+
+#pagination-plus {
     display: block;
     float:   right;
 }
 
-.pagination-minus {
+#pagination-minus {
     float: left;
-}
-
-.button-pagination {
-    background: transparent;
 }
 
 .button-login {
@@ -897,4 +910,21 @@ table.waste-stats th {
     padding-bottom: 0;
     padding-left:   1pt;
     padding-right:  1pt;
+}
+
+.anim-scale-down-2x {
+    animation-duration:        0.22s;
+    animation-iteration-count: 1;
+    animation-name:            scale-down-2x;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+}
+
+.anim-scale-up-2x {
+    animation-duration:        0.22s;
+    animation-iteration-count: 1;
+    animation-name:            scale-up-2x;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+
 }

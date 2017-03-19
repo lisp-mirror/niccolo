@@ -40,13 +40,17 @@
 	(save cer-code)))
     (manage-cer-code success-msg errors-msg)))
 
-(defun manage-cer-code (infos errors &key (start-from 0))
+(defun manage-cer-code (infos errors &key (start-from 0) (data-count 1))
   (let* ((all-cer-codes       (fetch-raw-template-list 'db:cer-code
 						       '(:id :code :explanation)
 						       :delete-link 'delete-cer))
-	 (paginated-cer-codes (slice-for-pagination all-cer-codes start-from)))
+	 (paginated-cer-codes (slice-for-pagination all-cer-codes
+                                                    (actual-pagination-start start-from)
+                                                    (actual-pagination-count data-count))))
     (multiple-value-bind (next-start prev-start)
-	(pagination-bounds (actual-pagination-start start-from) 'db:cer-code)
+	(pagination-bounds (actual-pagination-start start-from)
+                           (actual-pagination-count data-count)
+                           'db:cer-code)
       (with-standard-html-frame (stream (_ "Manage CER codes")
 					:infos  infos
 					:errors errors)
@@ -68,7 +72,8 @@
   (with-authentication
     (with-pagination (pagination-uri)
       (manage-cer-code nil nil
-		       :start-from (session-pagination-start pagination-uri)))))
+		       :start-from (session-pagination-start pagination-uri)
+                       :data-count (session-pagination-count pagination-uri)))))
 
 (define-lab-route add-cer ("/add-cer/" :method :get)
   (with-authentication

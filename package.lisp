@@ -130,8 +130,11 @@
    :+name-expire-date+
    :+start-pagination-offset+
    :+name-count-pagination+
+   :+name-op-pagination+
    :+name-count-pagination-inc+
    :+name-count-pagination-dec+
+   :+name-op-pagination-inc+
+   :+name-op-pagination-dec+
    :+no-html-tags-at-all+
    :+cookie-key-script-visited+
    :+query-product-path+
@@ -469,6 +472,7 @@
    :constants)
   (:export
    :+user-private-pagination-offset+
+   :+user-private-pagination-count+
    :user-session
    :authorized
    :authorized-p
@@ -523,8 +527,10 @@
    :set-cookie-script-visited
    :slice-for-pagination
    :actual-pagination-start
+   :actual-pagination-count
    :pagination-bounds
    :session-pagination-start
+   :session-pagination-count
    :session-pagination-increase
    :session-pagination-decrease
    :with-pagination

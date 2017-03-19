@@ -45,7 +45,8 @@
 	(save ghs)))
     (manage-ghs-precautionary-code success-msg errors-msg)))
 
-(defun manage-ghs-precautionary-code (infos errors &key (start-from 0))
+(defun manage-ghs-precautionary-code (infos errors &key (start-from 0) (data-count 1))
+
   (let* ((all-ghss       (fetch-raw-template-list 'db:ghs-precautionary-statement
 						  '(:id :code :explanation)
 						  :delete-link 'delete-ghs-precautionary
@@ -55,9 +56,13 @@
 						       :update-link
 						       (restas:genurl 'update-precautionary
 								      :id (db:id row))))))
-	 (paginated-ghss (slice-for-pagination all-ghss start-from)))
+	 (paginated-ghss (slice-for-pagination all-ghss
+                                               (actual-pagination-start start-from)
+                                               (actual-pagination-count data-count))))
     (multiple-value-bind (next-start prev-start)
-	(pagination-bounds (actual-pagination-start start-from) 'db:ghs-precautionary-statement)
+	(pagination-bounds (actual-pagination-start start-from)
+                           (actual-pagination-count data-count)
+                           'db:ghs-precautionary-statement)
       (with-standard-html-frame (stream (_ "Manage GHS Precautionary Statements")
 					:infos  infos
 					:errors errors)
@@ -80,7 +85,8 @@
   (with-authentication
     (with-pagination (pagination-uri)
       (manage-ghs-precautionary-code nil nil
-				     :start-from (session-pagination-start pagination-uri)))))
+				     :start-from (session-pagination-start pagination-uri)
+                                     :data-count (session-pagination-count pagination-uri)))))
 
 (define-lab-route add-ghs-precautionary ("/add-ghs-precautionary/" :method :get)
   (with-authentication

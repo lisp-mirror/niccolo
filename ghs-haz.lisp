@@ -32,7 +32,8 @@
 	   (from (:as :ghs-hazard-statement  :h))
 	   (left-join :ghs-pictogram   :on (:= :h.pictogram :ghs-pictogram.id)))))
 
-(defun build-template-list-hazard-code (start-from &key (delete-link nil) (update-link nil))
+(defun build-template-list-hazard-code (start-from data-count
+                                        &key (delete-link nil) (update-link nil))
   (let ((raw (map 'list #'(lambda (row)
 			    (map 'list
 				 #'(lambda (cell)
@@ -42,7 +43,7 @@
 				 row))
 		  (all-ghs-hazard-code-select))))
     (do-rows (rown res)
-	(slice-for-pagination raw start-from)
+	(slice-for-pagination raw start-from data-count)
       (let* ((row (elt res rown)))
 	(setf (getf row :pictogram)
 	      (if (stringp (getf row :pictogram))
@@ -85,12 +86,15 @@
 	(save ghs)))
     (manage-ghs-hazard-code success-msg errors-msg)))
 
-(defun manage-ghs-hazard-code (infos errors &key (start-from 0))
+(defun manage-ghs-hazard-code (infos errors &key (start-from 0) (data-count 1))
   (let ((all-ghss (build-template-list-hazard-code (actual-pagination-start start-from)
+                                                   (actual-pagination-count data-count)
 						   :delete-link  'delete-ghs-hazard
 						   :update-link  'update-hazard)))
     (multiple-value-bind (next-start prev-start)
-	(pagination-bounds (actual-pagination-start start-from) 'db:ghs-hazard-statement)
+	(pagination-bounds (actual-pagination-start start-from)
+                           (actual-pagination-count data-count)
+                           'db:ghs-hazard-statement)
       (with-standard-html-frame (stream (_ "Manage GHS Hazard Statements")
 					:infos infos :errors errors)
 	(html-template:fill-and-print-template #p"add-hazard.tpl"
@@ -117,7 +121,8 @@
   (with-authentication
     (with-pagination (pagination-uri)
       (manage-ghs-hazard-code nil nil
-			      :start-from (session-pagination-start pagination-uri)))))
+			      :start-from (session-pagination-start pagination-uri)
+                              :data-count (session-pagination-count pagination-uri)))))
 
 (define-lab-route add-ghs-hazard ("/add-ghs-hazard/" :method :get)
   (with-authentication
