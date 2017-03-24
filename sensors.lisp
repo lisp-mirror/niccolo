@@ -194,35 +194,49 @@
 	      (if update-link
 		  (list :update-sensor-link (restas:genurl update-link :id sid))))))))
 
-  (defun-w-lock manage-sensor (infos errors)
-    (let ((all-sensors (fetch-all-sensors 'delete-sensor 'update-sensor-route)))
-      (with-standard-html-frame (stream
-				 "Manage Sensor Places"
-				 :errors errors
-				 :infos  infos)
-	(let ((html-template:*string-modifier* #'html-template:escape-string-minimal))
-	  (html-template:fill-and-print-template #p"add-sensor.tpl"
-						 (with-back-to-root
-						     (with-path-prefix
-							 :map-lb              (_ "Map")
-							 :description-lb      (_ "Description")
-							 :address-lb          (_ "Address")
-							 :path-lb             (_ "Path")
-							 :secret-lb           (_ "Secret key")
-							 :script-lb           (_ "Script")
-							 :status-lb           (_ "Status")
-							 :last-access-time-lb (_ "Last access")
-							 :last-value-lb       (_ "Last value")
-							 :operations-lb       (_ "Operations")
-							 :description   +name-sensor-description+
-							 :address       +name-sensor-address+
-							 :path          +name-sensor-path+
-							 :secret        +name-sensor-secret-name+
-							 :script        +name-sensor-script+
-							 :data-table all-sensors))
-						 :stream stream)))))
+  (defun-w-lock manage-sensor (infos errors &key (start-from 0) (data-count 1))
+    (let* ((all-sensors     (fetch-all-sensors 'delete-sensor 'update-sensor-route))
+	   (paginated-items (slice-for-pagination all-sensors
+						  (actual-pagination-start start-from)
+						  (actual-pagination-count data-count))))
+      (multiple-value-bind (next-start prev-start)
+	  (pagination-bounds (actual-pagination-start start-from)
+			     (actual-pagination-count data-count)
+			     'db:sensor)
+	(with-standard-html-frame (stream
+				   "Manage Sensor Places"
+				   :errors errors
+				   :infos  infos)
+	  (let ((html-template:*string-modifier* #'html-template:escape-string-minimal))
+	    (html-template:fill-and-print-template #p"add-sensor.tpl"
+						   (with-back-to-root
+						       (with-pagination-template
+							   (next-start
+							    prev-start
+							    (restas:genurl 'sensor))
+							 (with-path-prefix
+							     :map-lb              (_ "Map")
+							     :description-lb      (_ "Description")
+							     :address-lb          (_ "Address")
+							     :path-lb             (_ "Path")
+							     :secret-lb           (_ "Secret key")
+							     :script-lb           (_ "Script")
+							     :status-lb           (_ "Status")
+							     :last-access-time-lb (_ "Last access")
+							     :last-value-lb       (_ "Last value")
+							     :operations-lb       (_ "Operations")
+							     :description
+							     +name-sensor-description+
+							     :address       +name-sensor-address+
+							     :path          +name-sensor-path+
+							     :secret
+							     +name-sensor-secret-name+
+							     :script        +name-sensor-script+
+							     :data-table    paginated-items)))
+						     :stream stream))))))
 
-  (defun-w-lock add-new-sensor (description address path secret script)
+  (defun-w-lock add-new-sensor (description address path secret script
+					    &key (start-from 0) (data-count 1))
     (let* ((errors-msg-1 (concatenate 'list
 				      (regexp-validate (list
 							(list description
@@ -262,27 +276,38 @@
 			      :s-coord 0
 			      :t-coord 0)))
 	  (save sensor)))
-      (manage-sensor success-msg errors-msg)))
+      (manage-sensor success-msg errors-msg
+		     :start-from start-from
+		     :data-count data-count)))
 
   (define-lab-route sensor ("/sensor/" :method :get)
     (with-authentication
-      (manage-sensor nil nil)))
+      (with-pagination (pagination-uri utils:*alias-pagination*)
+	(manage-sensor nil nil
+		       :start-from (session-pagination-start pagination-uri
+							     utils:*alias-pagination*)
+                       :data-count (session-pagination-count pagination-uri
+							     utils:*alias-pagination*)))))
 
   (define-lab-route add-sensor ("/add-sensor/" :method :get)
     (with-authentication
       (with-admin-privileges
-	  (progn
+	  (with-pagination (pagination-uri utils:*alias-pagination*)
 	    (add-new-sensor (get-parameter +name-sensor-description+)
 			    (get-parameter +name-sensor-address+)
 			    (get-parameter +name-sensor-path+)
 			    (get-parameter +name-sensor-secret-name+)
-			    (get-parameter +name-sensor-script+)))
+			    (get-parameter +name-sensor-script+)
+			    :start-from (session-pagination-start pagination-uri
+								  utils:*alias-pagination*)
+			    :data-count (session-pagination-count pagination-uri
+								  utils:*alias-pagination*)))
 	(manage-sensor nil (list *insufficient-privileges-message*)))))
 
   (define-lab-route delete-sensor ("/delete-sensor/:id" :method :get)
     (with-authentication
       (with-admin-privileges
-	  (progn
+	  (with-pagination (pagination-uri utils:*alias-pagination*)
 	    (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	      (let ((to-trash (single 'db:sensor :id id)))
 		(when to-trash
@@ -294,51 +319,52 @@
     (with-authentication
       (with-admin-privileges
 	  (bt:with-recursive-lock-held (lock)
-	    (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
-		   (y (get-parameter (format nil "~a.y" +map-image-coord-name+)))
-		   (errors-msg-1 (concatenate 'list
-					      (regexp-validate (list
-								(list mid
-								      +pos-integer-re+
-								      (_ "Map id invalid"))
-								(list sid
-								      +pos-integer-re+
-								      (_ "Sensor id ivalid"))))))
+	    (progn
+	      (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
+		     (y (get-parameter (format nil "~a.y" +map-image-coord-name+)))
+		     (errors-msg-1 (concatenate 'list
+						(regexp-validate (list
+								  (list mid
+									+pos-integer-re+
+									(_ "Map id invalid"))
+								  (list sid
+									+pos-integer-re+
+									(_ "Sensor id ivalid"))))))
 
-		   (errors-msg-sensor-not-found (when (and (not errors-msg-1)
-							   (not (single 'db:sensor :id sid)))
-						  (list (_ "Sensor not in the database"))))
-		   (errors-msg-map-not-found (when (and (not errors-msg-1)
-							(not (single 'db:plant-map :id mid)))
-					       (list (_ "Map not in the database"))))
-		   (error-no-coords          (regexp-validate (list (list x
-									  +pos-integer-re+
-									  (_ "x coordinate not valid"))
-								    (list y
-									  +pos-integer-re+
-									  (_ "y coordinate not valid")))))
-		   (errors-msg (concatenate 'list
-					    errors-msg-1
-					    errors-msg-sensor-not-found
-					    errors-msg-map-not-found
-					    error-no-coords))
-		   (success-msg (and (not errors-msg)
-				     (list (format nil (_ "Saved maps coordinates"))))))
-	      (if success-msg
-		  (progn
-		    (with-dump-map (tmp-image-file mid)
-		      (cl-gd:with-image-from-file (bg tmp-image-file :png)
-			(multiple-value-bind (w h)
-			    (cl-gd:image-size bg)
-			  (let ((sc (round (* +relative-coord-scaling+ (/ (parse-integer x) w))))
-				(tc (round (* +relative-coord-scaling+ (/ (parse-integer y) h))))
-				(updated-sensor  (single 'db:sensor :id sid))) ;; always not null here
-			    (setf (db:s-coord updated-sensor) sc
-				  (db:t-coord updated-sensor) tc
-				  (db:map-id  updated-sensor)  mid)
-			    (save updated-sensor)))))
-		    (restas:redirect 'sensor))
-		  (restas:redirect 'sensor))))
+		     (errors-msg-sensor-not-found (when (and (not errors-msg-1)
+							     (not (single 'db:sensor :id sid)))
+						    (list (_ "Sensor not in the database"))))
+		     (errors-msg-map-not-found (when (and (not errors-msg-1)
+							  (not (single 'db:plant-map :id mid)))
+						 (list (_ "Map not in the database"))))
+		     (error-no-coords          (regexp-validate (list (list x
+									    +pos-integer-re+
+									    (_ "x coordinate not valid"))
+								      (list y
+									    +pos-integer-re+
+									    (_ "y coordinate not valid")))))
+		     (errors-msg (concatenate 'list
+					      errors-msg-1
+					      errors-msg-sensor-not-found
+					      errors-msg-map-not-found
+					      error-no-coords))
+		     (success-msg (and (not errors-msg)
+				       (list (format nil (_ "Saved maps coordinates"))))))
+		(if success-msg
+		    (progn
+		      (with-dump-map (tmp-image-file mid)
+			(cl-gd:with-image-from-file (bg tmp-image-file :png)
+			  (multiple-value-bind (w h)
+			      (cl-gd:image-size bg)
+			    (let ((sc (round (* +relative-coord-scaling+ (/ (parse-integer x) w))))
+				  (tc (round (* +relative-coord-scaling+ (/ (parse-integer y) h))))
+				  (updated-sensor  (single 'db:sensor :id sid))) ;; always not null here
+			      (setf (db:s-coord updated-sensor) sc
+				    (db:t-coord updated-sensor) tc
+				    (db:map-id  updated-sensor)  mid)
+			      (save updated-sensor)))))
+		      (restas:redirect 'sensor))
+		    (restas:redirect 'sensor)))))
 	(manage-sensor nil (list *insufficient-privileges-message*)))))
 
   ;; updating

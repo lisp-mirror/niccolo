@@ -63,7 +63,7 @@
 			 nil)))))))
 
 
-(defun add-new-ghs-hazard-code (code expl carcenogenic)
+(defun add-new-ghs-hazard-code (code expl carcenogenic &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (regexp-validate (list
 					 (list code +ghs-hazard-code-re+ (_ "GHS code invalid"))
 					 (list expl +free-text-re+ (_ "GHS phrase invalid"))
@@ -84,7 +84,10 @@
 			 :carcinogenic carcenogenic
 			 :pictogram    +pictogram-id-none+)))
 	(save ghs)))
-    (manage-ghs-hazard-code success-msg errors-msg)))
+    (manage-ghs-hazard-code success-msg
+			    errors-msg
+			    :start-from start-from
+			    :data-count data-count)))
 
 (defun manage-ghs-hazard-code (infos errors &key (start-from 0) (data-count 1))
   (let ((all-ghss (build-template-list-hazard-code (actual-pagination-start start-from)
@@ -100,7 +103,9 @@
 	(html-template:fill-and-print-template #p"add-hazard.tpl"
 					       (with-back-to-root
 						   (with-pagination-template
-						       (next-start prev-start)
+						       (next-start
+							prev-start
+							(restas:genurl 'ghs-hazard))
 						     (with-path-prefix
 							 :code-lb           (_ "Code")
 							 :statement-lb      (_ "Statement")
@@ -119,18 +124,24 @@
 
 (define-lab-route ghs-hazard ("/ghs-hazard/" :method :get)
   (with-authentication
-    (with-pagination (pagination-uri)
+    (with-pagination (pagination-uri utils:*alias-pagination*)
       (manage-ghs-hazard-code nil nil
-			      :start-from (session-pagination-start pagination-uri)
-                              :data-count (session-pagination-count pagination-uri)))))
+			      :start-from (session-pagination-start pagination-uri
+								    utils:*alias-pagination*)
+                              :data-count (session-pagination-count pagination-uri
+								    utils:*alias-pagination*)))))
 
 (define-lab-route add-ghs-hazard ("/add-ghs-hazard/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (add-new-ghs-hazard-code (get-parameter +name-ghs-hazard-code+)
 				   (get-parameter +name-ghs-hazard-expl+)
-				   (get-parameter +name-ghs-hazard-carcinogenic+)))
+				   (get-parameter +name-ghs-hazard-carcinogenic+)
+				   :start-from (session-pagination-start pagination-uri
+									 utils:*alias-pagination*)
+				   :data-count (session-pagination-count pagination-uri
+									 utils:*alias-pagination*)))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-ghs-hazard ("/delete-ghs-hazard/:id" :method :get)
@@ -147,7 +158,7 @@
 (define-lab-route assoc-ghs-pictogram ("/assoc-ghs-pictogram/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
 						       +pos-integer-re+ "")))))

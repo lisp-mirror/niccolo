@@ -19,7 +19,7 @@
 
 (define-constant +name-cer-code+ "code" :test #'string=)
 
-(defun add-new-cer-code (code expl)
+(defun add-new-cer-code (code expl &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1  (regexp-validate (list
 					  (list code +cer-code-re+  (_ "CER code invalid"))
 					  (list expl +free-text-re+ (_ "CER phrase invalid")))))
@@ -28,17 +28,19 @@
 					     :code
 					     code
 					     (_ "CER code already in the database"))))
-	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
-	 (success-msg (and (not errors-msg)
-			   (list (format nil
-					 (_ "Saved new CER code: ~s - ~s")
-					 code expl)))))
+	 (errors-msg    (concatenate 'list errors-msg-1 errors-msg-2))
+	 (success-msg   (and (not errors-msg)
+			     (list (format nil
+					   (_ "Saved new CER code: ~s - ~s")
+					   code expl)))))
     (when (not errors-msg)
       (let ((cer-code (create 'db:cer-code
 			      :code code
 			      :explanation expl)))
 	(save cer-code)))
-    (manage-cer-code success-msg errors-msg)))
+    (manage-cer-code success-msg errors-msg
+		     :start-from start-from
+		     :data-count data-count)))
 
 (defun manage-cer-code (infos errors &key (start-from 0) (data-count 1))
   (let* ((all-cer-codes       (fetch-raw-template-list 'db:cer-code
@@ -57,7 +59,7 @@
 	(html-template:fill-and-print-template #p"add-cer.tpl"
 					       (with-back-to-root
 						   (with-pagination-template
-						       (next-start prev-start)
+						       (next-start prev-start (restas:genurl 'cer))
 						     (with-path-prefix
 							 :code-lb        (_ "Code")
 							 :statement-lb   (_ "Statement")
@@ -70,23 +72,29 @@
 
 (define-lab-route cer ("/cer/" :method :get)
   (with-authentication
-    (with-pagination (pagination-uri)
+    (with-pagination (pagination-uri utils:*alias-pagination*)
       (manage-cer-code nil nil
-		       :start-from (session-pagination-start pagination-uri)
-                       :data-count (session-pagination-count pagination-uri)))))
+		       :start-from (session-pagination-start pagination-uri
+							     utils:*alias-pagination*)
+                       :data-count (session-pagination-count pagination-uri
+							     utils:*alias-pagination*)))))
 
 (define-lab-route add-cer ("/add-cer/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (add-new-cer-code (get-parameter +name-cer-code+)
-			    (get-parameter +name-cer-expl+)))
+			    (get-parameter +name-cer-expl+)
+			    :start-from (session-pagination-start pagination-uri
+								  utils:*alias-pagination*)
+			    :data-count (session-pagination-count pagination-uri
+								  utils:*alias-pagination*)))
       (manage-cer-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-cer ("/delete-cer/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:cer-code :id id)))
 	      (when to-trash

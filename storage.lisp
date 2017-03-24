@@ -99,32 +99,43 @@
 
 (gen-autocomplete-functions db:building db:build-description)
 
-(defun manage-storage (infos errors)
-  (let ((all-storages (fetch-all-storages 'delete-storage 'update-storage-route)))
-    (with-standard-html-frame (stream
-			       "Manage Storage Places"
-			       :errors errors
-			       :infos  infos)
-      (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
-	    (json-building    (array-autocomplete-building))
-	    (json-building-id (array-autocomplete-building-id)))
-	(html-template:fill-and-print-template #p"add-storage.tpl"
-					       (with-back-to-root
-						   (with-path-prefix
-						       :name-lb       (_ "Name")
-						       :building-lb   (_ "Building")
-						       :floor-lb      (_ "Floor")
-						       :map-lb        (_ "Map")
-						       :operations-lb (_ "Operations")
-						       :name        +name-storage-proper-name+
-						       :building-id +name-storage-building-id+
-						       :floor       +name-storage-floor+
-						       :json-buildings    json-building
-						       :json-buildings-id json-building-id
-						       :data-table all-storages))
-					       :stream stream)))))
+(defun manage-storage (infos errors &key (start-from 0) (data-count 1))
+  (let* ((all-storages       (fetch-all-storages 'delete-storage 'update-storage-route))
+	 (paginated-storages (slice-for-pagination all-storages
+						   (actual-pagination-start start-from)
+						   (actual-pagination-count data-count))))
+    (multiple-value-bind (next-start prev-start)
+	(pagination-bounds (actual-pagination-start start-from)
+                           (actual-pagination-count data-count)
+                           'db:storage)
+      (with-standard-html-frame (stream
+				 "Manage Storage Places"
+				 :errors errors
+				 :infos  infos)
+	(let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+	      (json-building    (array-autocomplete-building))
+	      (json-building-id (array-autocomplete-building-id)))
+	  (html-template:fill-and-print-template #p"add-storage.tpl"
+						 (with-back-to-root
+						     (with-pagination-template
+							 (next-start
+							  prev-start
+							  (restas:genurl 'storage))
+						       (with-path-prefix
+							 :name-lb       (_ "Name")
+							 :building-lb   (_ "Building")
+							 :floor-lb      (_ "Floor")
+							 :map-lb        (_ "Map")
+							 :operations-lb (_ "Operations")
+							 :name        +name-storage-proper-name+
+							 :building-id +name-storage-building-id+
+							 :floor       +name-storage-floor+
+							 :json-buildings    json-building
+							 :json-buildings-id json-building-id
+							 :data-table        paginated-storages)))
+						 :stream stream))))))
 
-(defun add-new-storage (name building-id floor)
+(defun add-new-storage (name building-id floor &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list
 						      (list name
@@ -159,19 +170,30 @@
 			     :s-coord 0
 			     :t-coord 0)))
 	(save storage)))
-    (manage-storage success-msg errors-msg)))
+    (manage-storage success-msg
+		    errors-msg
+		    :start-from start-from
+		    :data-count data-count)))
 
 (define-lab-route storage ("/storage/" :method :get)
   (with-authentication
-    (manage-storage nil nil)))
+    (with-pagination (pagination-uri utils:*alias-pagination*)
+      (manage-storage nil nil
+		      :start-from (session-pagination-start pagination-uri utils:*alias-pagination*)
+		      :data-count (session-pagination-count pagination-uri
+							    utils:*alias-pagination*)))))
 
 (define-lab-route add-storage ("/add-storage/" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (add-new-storage (get-parameter +name-storage-proper-name+)
 			   (get-parameter +name-storage-building-id+)
-			   (get-parameter +name-storage-floor+)))
+			   (get-parameter +name-storage-floor+)
+			   :start-from (session-pagination-start pagination-uri
+								 utils:*alias-pagination*)
+			   :data-count (session-pagination-count pagination-uri
+								 utils:*alias-pagination*)))
       (manage-storage nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-storage ("/delete-storage/:id" :method :get)

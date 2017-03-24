@@ -126,15 +126,19 @@
     (path-prefix-tpl)
     (list ,@tpls)))
 
-(defmacro with-pagination-template ((next-start prev-start) tpl)
-  `(nconc (list :pagination-op-name     +name-op-pagination+
-		:pagination-count-name  +name-count-pagination+
-		:pagination-inc         +name-op-pagination-inc+
-		:pagination-dec         +name-op-pagination-dec+
-		:pagination-more-items  +name-count-pagination-inc+
-		:pagination-less-items  +name-count-pagination-dec+
-		:next-start             ,next-start
-		:prev-start             ,prev-start)
+(defmacro with-pagination-template ((next-start
+				     prev-start
+				     pagination-next-page-url)
+				    tpl)
+  `(nconc (list :pagination-op-name       +name-op-pagination+
+		:pagination-count-name    +name-count-pagination+
+		:pagination-inc           +name-op-pagination-inc+
+		:pagination-dec           +name-op-pagination-dec+
+		:pagination-more-items    +name-count-pagination-inc+
+		:pagination-less-items    +name-count-pagination-dec+
+		:pagination-next-page-url ,pagination-next-page-url
+		:next-start               ,next-start
+		:prev-start               ,prev-start)
 	 ,tpl))
 
 (defun alist->query-uri (alist &key (prepend-character ""))
@@ -223,16 +227,23 @@
 		   :max-age   60
 		   :domain    +hostname+))
 
-
-
 ;; web rendering
 
+
+;; pagination
+
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defparameter *alias-pagination* (make-hash-table :test 'equal)))
+
 (defun slice-for-pagination (sequence start count)
-  (subseq sequence
-	  (clamp start 0 (1- (length sequence)))
-          (clamp (+ start count)
-                 0
-                 (1- (length sequence)))))
+  (if sequence
+      (subseq sequence
+	      (clamp start 0 (length sequence))
+	      (clamp (+ start count)
+		     0
+		     (length sequence)))
+      nil))
 
 (defun actual-bounds (start)
   (cond
@@ -259,44 +270,62 @@
 	      (- start count)
 	      nil)))
 
-(defmacro with-pagination-start-hashtable ((user pagination-hashtable) &body body)
+(defmacro with-pagination-start-hashtable ((user pagination-hashtable)
+					   &body body)
   `(with-accessors ((private-storage session-user:private-storage)) ,user
      (let ((,pagination-hashtable (gethash session-user:+user-private-pagination-offset+
 					   private-storage)))
        ,@body)))
 
-(defun session-pagination-start (uri-path)
+(defun session-pagination-values (uri-path session-hashtable alias-hashtable)
+  (let* ((alias (gethash uri-path alias-hashtable)))
+    (multiple-value-bind (results existsp)
+	(if alias
+	    (gethash alias    session-hashtable)
+	    (gethash uri-path session-hashtable))
+      (values results existsp alias))))
+
+(defun session-pagination-start (uri-path alias-hashtable)
   (session-user:with-session-user (user)
     (if user
 	(with-pagination-start-hashtable (user pagination-start-hashtable)
 	  (multiple-value-bind (results existsp)
-	      (gethash uri-path pagination-start-hashtable)
+	      (session-pagination-values uri-path pagination-start-hashtable alias-hashtable)
 	    (when (not results)
 	      (setf results 0)
 	      (setf existsp t))
 	    (values results existsp)))
 	(values nil nil))))
 
-(defun session-pagination-change (uri-path new-value)
+(defun session-pagination-change (uri-path new-value alias-hashtable)
   (session-user:with-session-user (user)
     (when user
       (with-pagination-start-hashtable (user pagination-start-hashtable)
-	(setf (gethash uri-path pagination-start-hashtable)
-	      new-value)))))
+	(multiple-value-bind (results existsp in-alias)
+	    (session-pagination-values uri-path pagination-start-hashtable alias-hashtable)
+	  (declare (ignore results existsp))
+	  (if in-alias
+	      (setf (gethash in-alias pagination-start-hashtable)
+		    new-value)
+	      (setf (gethash uri-path pagination-start-hashtable)
+		    new-value)))))))
 
-(defun session-pagination-increase (uri-path &optional (delta +start-pagination-offset+))
+(defun session-pagination-increase (uri-path alias-hashtable
+				    &optional (delta +start-pagination-offset+))
   (session-user:with-session-user (user)
     (when user
-      (let ((old-value (session-pagination-start uri-path)))
-	(session-pagination-change uri-path (+ old-value delta))))))
+      (let ((old-value (session-pagination-start uri-path alias-hashtable)))
+	(session-pagination-change uri-path (+ old-value delta) alias-hashtable)))))
 
-(defun session-pagination-decrease (uri-path &optional (delta +start-pagination-offset+))
+(defun session-pagination-decrease (uri-path alias-hashtable
+				    &optional (delta +start-pagination-offset+))
   (session-user:with-session-user (user)
     (when user
-      (let ((old-value (session-pagination-start uri-path)))
+      (let ((old-value (session-pagination-start uri-path alias-hashtable)))
 	(session-pagination-change uri-path
 				   (max 0
-					(- old-value delta)))))))
+					(- old-value delta))
+				   alias-hashtable)))))
 ;;;; pagination count
 
 (defmacro with-pagination-count-hashtable ((user pagination-hashtable) &body body)
@@ -305,52 +334,65 @@
 					   private-storage)))
        ,@body)))
 
-(defun session-pagination-count (uri-path)
+(defun session-pagination-count (uri-path alias-hashtable)
   (session-user:with-session-user (user)
     (if user
 	(with-pagination-count-hashtable (user pagination-count-hashtable)
 	  (multiple-value-bind (results existsp)
-	      (gethash uri-path pagination-count-hashtable)
+	      (session-pagination-values uri-path pagination-count-hashtable alias-hashtable)
 	    (when (not results)
 	      (setf results +start-pagination-offset+)
 	      (setf existsp t))
 	    (values results existsp)))
 	(values nil nil))))
 
-(defun session-pagination-count-change (uri-path new-value)
+(defun session-pagination-count-change (uri-path new-value alias-hashtable)
   (session-user:with-session-user (user)
     (when user
-      (with-pagination-count-hashtable (user pagination-start-hashtable)
-	(setf (gethash uri-path pagination-start-hashtable)
-	      new-value)))))
+      (with-pagination-count-hashtable (user pagination-count-hashtable)
+	(multiple-value-bind (results existsp in-alias)
+	    (session-pagination-values uri-path pagination-count-hashtable alias-hashtable)
+	  (declare (ignore results existsp))
+	  (if in-alias
+	      (setf (gethash in-alias pagination-count-hashtable)
+		    new-value)
+	      (setf (gethash uri-path pagination-count-hashtable)
+		    new-value)))))))
 
-(defun session-pagination-count-increase (uri-path &optional (delta +start-pagination-offset+))
+(defun session-pagination-count-increase (uri-path alias-hashtable
+					  &optional (delta +start-pagination-offset+))
   (session-user:with-session-user (user)
     (when user
-      (let ((old-value (session-pagination-count uri-path)))
-	(session-pagination-count-change uri-path (+ old-value delta))))))
+      (let ((old-value (session-pagination-count uri-path alias-hashtable)))
+	(session-pagination-count-change uri-path (+ old-value delta) alias-hashtable)))))
 
-(defun session-pagination-count-decrease (uri-path &optional (delta +start-pagination-offset+))
+(defun session-pagination-count-decrease (uri-path alias-hashtable
+					  &optional (delta +start-pagination-offset+))
   (session-user:with-session-user (user)
     (when user
-      (let ((old-value (session-pagination-count uri-path)))
+      (let ((old-value (session-pagination-count uri-path alias-hashtable)))
 	(session-pagination-count-change uri-path
                                          (max +start-pagination-offset+
-                                              (- old-value delta)))))))
+                                              (- old-value delta))
+					 alias-hashtable)))))
 
-(defmacro with-pagination ((uri) &body body)
+(defmacro with-pagination ((uri alias-hashtable) &body body)
   (with-gensyms (page-modification-move page-modification-change-window)
     `(let ((,uri (tbnl:script-name*))
 	   (,page-modification-move          (get-parameter +name-op-pagination+))
            (,page-modification-change-window (get-parameter +name-count-pagination+)))
        (when ,page-modification-change-window
          (if (string= ,page-modification-change-window +name-count-pagination-inc+)
-	     (session-pagination-count-increase ,uri)
-	     (session-pagination-count-decrease ,uri)))
+	     (session-pagination-count-increase ,uri ,alias-hashtable)
+	     (session-pagination-count-decrease ,uri ,alias-hashtable)))
        (when ,page-modification-move
 	 (if (string= ,page-modification-move +name-op-pagination-inc+)
-	     (session-pagination-increase ,uri (session-pagination-count ,uri))
-	     (session-pagination-decrease ,uri (session-pagination-count ,uri))))
+	     (session-pagination-increase ,uri
+					  ,alias-hashtable
+					  (session-pagination-count ,uri ,alias-hashtable))
+	     (session-pagination-decrease ,uri
+					  ,alias-hashtable
+					  (session-pagination-count ,uri ,alias-hashtable))))
        ,@body)))
 
 ;; net addresses

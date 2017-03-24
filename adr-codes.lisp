@@ -66,7 +66,7 @@
 			       (list :update-link (restas:genurl update-link :id (getf row :id)))
 			       nil)))))))
 
-(defun add-new-adr-code (code-class uncode expl)
+(defun add-new-adr-code (code-class uncode expl &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1  (regexp-validate (list
 					  (list code-class +adr-code-class-re+
 						(_ "ADR code class invalid"))
@@ -90,7 +90,9 @@
 			 :uncode uncode
 			 :explanation expl)))
 	(save ghs)))
-    (manage-adr-code success-msg errors-msg)))
+    (manage-adr-code success-msg errors-msg
+		     :start-from start-from
+		     :data-count data-count)))
 
 (defun manage-adr-code (infos errors &key (start-from 0) (data-count 1))
   (let* ((actual-start (actual-pagination-start start-from))
@@ -107,7 +109,7 @@
 	(html-template:fill-and-print-template #p"add-adr.tpl"
 					       (with-back-to-root
 						   (with-pagination-template
-						       (next-start prev-start)
+						       (next-start prev-start (restas:genurl 'adr))
 						     (with-path-prefix
 							 :class-lb         (_ "Class")
 							 :un-code-lb       (_ "UN Code")
@@ -125,18 +127,24 @@
 
 (define-lab-route adr ("/adr/" :method :get)
   (with-authentication
-    (with-pagination (pagination-uri)
+    (with-pagination (pagination-uri utils:*alias-pagination*)
       (manage-adr-code nil nil
-		       :start-from (session-pagination-start pagination-uri)
-                       :data-count (session-pagination-count pagination-uri)))))
+		       :start-from (session-pagination-start pagination-uri
+							     utils:*alias-pagination*)
+                       :data-count (session-pagination-count pagination-uri
+							     utils:*alias-pagination*)))))
 
 (define-lab-route add-adr ("/add-adr/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (add-new-adr-code (get-parameter +name-adr-code-class+)
 			    (get-parameter +name-adr-uncode+)
-			    (get-parameter +name-adr-expl+)))
+			    (get-parameter +name-adr-expl+)
+			    :start-from (session-pagination-start pagination-uri
+								  utils:*alias-pagination*)
+			    :data-count (session-pagination-count pagination-uri
+								  utils:*alias-pagination*)))
       (manage-adr-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-adr ("/delete-adr/:id" :method :get)
@@ -153,7 +161,7 @@
 (define-lab-route assoc-adr-pictogram ("/assoc-adr-pictogram/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
 						       +pos-integer-re+ "")))))

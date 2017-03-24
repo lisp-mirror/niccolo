@@ -19,7 +19,7 @@
 
 (define-constant +name-ghs-precautionary-code+ "code" :test #'string=)
 
-(defun add-new-ghs-precautionary-code (code expl)
+(defun add-new-ghs-precautionary-code (code expl &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (concatenate 'list
 				    (regexp-validate (list
 						      (list code
@@ -43,7 +43,10 @@
 			 :code code
 			 :explanation expl)))
 	(save ghs)))
-    (manage-ghs-precautionary-code success-msg errors-msg)))
+    (manage-ghs-precautionary-code success-msg
+				   errors-msg
+				   :start-from start-from
+				   :data-count data-count)))
 
 (defun manage-ghs-precautionary-code (infos errors &key (start-from 0) (data-count 1))
 
@@ -69,7 +72,9 @@
 	(html-template:fill-and-print-template #p"add-precautionary.tpl"
 					       (with-back-to-root
 						   (with-pagination-template
-						       (next-start prev-start)
+						       (next-start
+							prev-start
+							(restas:genurl 'ghs-precautionary))
 						     (with-path-prefix
 							 :code-lb       (_ "Code")
 							 :statement-lb  (_ "Statement")
@@ -83,23 +88,30 @@
 
 (define-lab-route ghs-precautionary ("/ghs-precautionary/" :method :get)
   (with-authentication
-    (with-pagination (pagination-uri)
+    (with-pagination (pagination-uri utils:*alias-pagination*)
       (manage-ghs-precautionary-code nil nil
-				     :start-from (session-pagination-start pagination-uri)
-                                     :data-count (session-pagination-count pagination-uri)))))
+				     :start-from (session-pagination-start pagination-uri
+									   utils:*alias-pagination*)
+                                     :data-count
+				     (session-pagination-count pagination-uri
+							       utils:*alias-pagination*)))))
 
 (define-lab-route add-ghs-precautionary ("/add-ghs-precautionary/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (add-new-ghs-precautionary-code (get-parameter +name-ghs-precautionary-code+)
-					  (get-parameter +name-ghs-precautionary-expl+)))
+					  (get-parameter +name-ghs-precautionary-expl+)
+					  :start-from (session-pagination-start pagination-uri
+										utils:*alias-pagination*)
+					  :data-count
+					  (session-pagination-count pagination-uri utils:*alias-pagination*)))
       (manage-ghs-precautionary-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-ghs-precautionary ("/delete-ghs-precautionary/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri)
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 	    (let ((to-trash (single 'db:ghs-precautionary-statement :id id)))
 	      (when to-trash

@@ -43,6 +43,20 @@
 	 "delete"
 	 "update")))
 
+(defmacro define-pagination-alias (a alias-to-a)
+  `(setf (gethash (restas:genurl ,a) utils:*alias-pagination*)
+	 (restas:genurl ,alias-to-a)))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (progn
+    (define-pagination-alias 'add-ghs-hazard        'ghs-hazard)
+    (define-pagination-alias 'add-ghs-precautionary 'ghs-precautionary)
+    (define-pagination-alias 'add-cer               'cer)
+    (define-pagination-alias 'add-adr               'adr)
+    (define-pagination-alias 'add-ghs-precautionary 'ghs-precautionary)
+    (define-pagination-alias 'add-storage           'storage)
+    (define-pagination-alias 'add-chemical          'chemical)))
+
 (defun manage-welcome ()
   (with-standard-html-frame (stream (_ "Welcome"))
     (html-template:fill-and-print-template #p"welcome.tpl"

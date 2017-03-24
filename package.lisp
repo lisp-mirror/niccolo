@@ -529,6 +529,7 @@
    :actual-pagination-start
    :actual-pagination-count
    :pagination-bounds
+   :*alias-pagination*
    :session-pagination-start
    :session-pagination-count
    :session-pagination-increase

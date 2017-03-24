@@ -1,6 +1,7 @@
 <!-- TMPL_IF prev-start -->
 <div>
-    <form class="with-attention-scale-anim" id="pagination-minus" method="GET" ACTION="">
+  <form class="with-attention-scale-anim" id="pagination-minus" method="GET"
+	ACTION="<!-- TMPL_VAR pagination-next-page-url -->">
 	<input type="hidden"
 	       name="<!-- TMPL_VAR pagination-op-name -->"
 	       value="<!-- TMPL_VAR pagination-dec -->" />
@@ -13,7 +14,8 @@
 
 <!-- TMPL_IF next-start -->
 <div>
-    <form class="with-attention-scale-anim" id="pagination-plus" method="GET" ACTION="">
+  <form class="with-attention-scale-anim" id="pagination-plus" method="GET"
+	ACTION="<!-- TMPL_VAR pagination-next-page-url -->">
 	<input type="hidden"
 	       name="<!-- TMPL_VAR  pagination-op-name -->"
 	       value="<!-- TMPL_VAR pagination-inc -->" />
@@ -26,7 +28,8 @@
 <!-- /TMPL_IF -->
 
 <div id="pagination-no-of-items">
-    <form class="with-attention-scale-anim" id="pagination-more-items" method="GET" ACTION="">
+  <form class="with-attention-scale-anim" id="pagination-more-items" method="GET"
+	ACTION="<!-- TMPL_VAR pagination-next-page-url -->">
     <input type="hidden"
 	   name="<!-- TMPL_VAR  pagination-count-name -->"
 	   value="<!-- TMPL_VAR pagination-more-items -->" />
@@ -36,7 +39,8 @@
   </form>
 
 
-  <form class="with-attention-scale-anim" id="pagination-less-items" method="GET" ACTION="">
+  <form class="with-attention-scale-anim" id="pagination-less-items" method="GET"
+	ACTION="<!-- TMPL_VAR pagination-next-page-url -->">
     <input type="hidden"
 	   name="<!-- TMPL_VAR  pagination-count-name -->"
 	   value="<!-- TMPL_VAR pagination-less-items -->" />

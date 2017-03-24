@@ -157,3 +157,5 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
   <!-- /TMPL_LOOP  -->
   </tbody>
 </table>
+
+<!-- TMPL_INCLUDE 'pagination-navigation.tpl' -->

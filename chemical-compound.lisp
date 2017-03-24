@@ -25,7 +25,7 @@
 
 (define-constant +name-chem-struct-data+ "structure-file" :test #'string=)
 
-(defun add-new-chem (name msds-filename struct-filename cid)
+(defun add-new-chem (name msds-filename struct-filename cid &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1  (regexp-validate (list (list name +free-text-re+ (_ "Name invalid")))))
 	 (errors-msg-msds-file (when (and msds-filename
 					  (not (pdf-validate-p msds-filename)))
@@ -59,54 +59,67 @@
 						  (read-file-into-string struct-filename)
 						  nil))))
 	(save new-chem)))
-    (manage-chem success-msg errors-msg)))
+    (manage-chem success-msg errors-msg
+		 :start-from start-from
+		 :data-count data-count)))
 
-(defun manage-chem (infos errors)
-  (let ((all-chem (do-rows (row-idx res)
-		      (fetch-raw-template-list 'db:chemical-compound
-					       '(:id :name :msds :structure-file)
-					       :delete-link 'delete-chemical
-					       :additional-tpl
-					       #'(lambda (row)
-						   (list
-						    :update-chemical-link
-						    (restas:genurl 'update-chemical
-								   :id (db:id row)))))
-		    (let ((row (elt res row-idx)))
-		      (setf (elt res row-idx)
-			    (nconc row
-				   (list
-				    :assoc-prec-link
-				    (restas:genurl 'assoc-chem-prec :id (getf row :id))
-				    :assoc-haz-link
-				    (restas:genurl 'assoc-chem-haz :id (getf row :id))
-				    :assoc-sec-fq-link
-				    (restas:genurl 'assoc-chem-haz-prec-fq :id (getf row :id))
-				    :has-msds (if (getf row :msds) t nil)
-				    :has-struct-file (if (getf row :structure-file) t nil)
-				    :msds-pdf-link
-				    (restas:genurl 'chemical-get-msds :id (getf row :id))
-				    :struct-file-link
-				    (restas:genurl 'chemical-get-struct-file
-						   :id (getf row :id)))))))))
-    (with-standard-html-frame (stream (_ "Manage Chemical Compound")
-				      :infos infos
-				      :errors errors)
-      (html-template:fill-and-print-template #p"add-chemical.tpl"
-					     (with-back-to-root
-						 (with-path-prefix
-						     :name-lb        (_ "Name")
-						     :msds-file-lb   (_ "MSDS file")
-						     :data-sheet-lb  (_ "Data Sheet")
-						     :struct-file-lb (_ "Stucture file")
-						     :operations-lb  (_ "Operations")
-						     :id             +name-chem-id+
-						     :name           +name-chem-proper-name+
-						     :msds-pdf       +name-chem-msds-data+
-						     :struct-data    +name-chem-struct-data+
-						     :pubchem-cid    +name-chem-cid+
-						     :data-table     all-chem))
-					     :stream stream))))
+(defun manage-chem (infos errors &key (start-from 0) (data-count 1))
+  (let* ((all-chem       (do-rows (row-idx res) ; TODO refactor
+			     (fetch-raw-template-list 'db:chemical-compound
+						      '(:id :name :msds :structure-file)
+						      :delete-link 'delete-chemical
+						      :additional-tpl
+						      #'(lambda (row)
+							  (list
+							   :update-chemical-link
+							   (restas:genurl 'update-chemical
+									  :id (db:id row)))))
+			   (let ((row (elt res row-idx)))
+			     (setf (elt res row-idx)
+				   (nconc row
+					  (list
+					   :assoc-prec-link
+					   (restas:genurl 'assoc-chem-prec :id (getf row :id))
+					   :assoc-haz-link
+					   (restas:genurl 'assoc-chem-haz :id (getf row :id))
+					   :assoc-sec-fq-link
+					   (restas:genurl 'assoc-chem-haz-prec-fq :id (getf row :id))
+					   :has-msds (if (getf row :msds) t nil)
+					   :has-struct-file (if (getf row :structure-file) t nil)
+					   :msds-pdf-link
+					   (restas:genurl 'chemical-get-msds :id (getf row :id))
+					   :struct-file-link
+					   (restas:genurl 'chemical-get-struct-file
+							  :id (getf row :id))))))))
+	 (paginated-chem (slice-for-pagination all-chem
+					       (actual-pagination-start start-from)
+					       (actual-pagination-count data-count))))
+    (multiple-value-bind (next-start prev-start)
+	(pagination-bounds (actual-pagination-start start-from)
+			   (actual-pagination-count data-count)
+			   'db:chemical-compound)
+      (with-standard-html-frame (stream (_ "Manage Chemical Compound")
+					:infos infos
+					:errors errors)
+	(html-template:fill-and-print-template #p"add-chemical.tpl"
+					       (with-back-to-root
+						   (with-pagination-template
+						       (next-start
+							prev-start
+							(restas:genurl 'chemical))
+						     (with-path-prefix
+							 :name-lb        (_ "Name")
+							 :msds-file-lb   (_ "MSDS file")
+							 :data-sheet-lb  (_ "Data Sheet")
+							 :struct-file-lb (_ "Stucture file")
+							 :operations-lb  (_ "Operations")
+							 :id             +name-chem-id+
+							 :name           +name-chem-proper-name+
+							 :msds-pdf       +name-chem-msds-data+
+							 :struct-data    +name-chem-struct-data+
+							 :pubchem-cid    +name-chem-cid+
+							 :data-table     paginated-chem)))
+					       :stream stream)))))
 
 (defun get-chem-data-column (id column-fn)
   (when (integer-positive-validate id)
@@ -114,7 +127,6 @@
       (if chem
 	  (funcall column-fn chem)
 	  nil))))
-
 
 (define-lab-route chemical-get-msds ("/chemical-msds/:id" :method :get)
   (with-authentication
@@ -136,17 +148,24 @@
 
 (define-lab-route chemical ("/chemical/" :method :get)
   (with-authentication
-    (manage-chem nil nil)))
+    (with-pagination (pagination-uri utils:*alias-pagination*)
+      (manage-chem nil nil
+		   :start-from (session-pagination-start pagination-uri utils:*alias-pagination*)
+		   :data-count (session-pagination-count pagination-uri
+							 utils:*alias-pagination*)))))
 
 (define-lab-route add-chemical ("/add-chemical/" :method :post)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
+	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (let ((name            (tbnl:post-parameter +name-chem-proper-name+))
 		(cid             (tbnl:post-parameter +name-chem-cid+))
 		(msds-filename   (get-post-filename +name-chem-msds-data+))
 		(struct-filename (get-post-filename +name-chem-struct-data+)))
-	    (add-new-chem name msds-filename struct-filename cid)))
+	    (add-new-chem name msds-filename struct-filename cid
+			  :start-from (session-pagination-start pagination-uri utils:*alias-pagination*)
+			  :data-count (session-pagination-count pagination-uri
+								utils:*alias-pagination*))))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-chemical ("/delete-chemical/:id" :method :get)

@@ -109,3 +109,5 @@
   <!-- /TMPL_LOOP  -->
   </tbody>
 </table>
+
+<!-- TMPL_INCLUDE 'pagination-navigation.tpl' -->
