@@ -305,6 +305,7 @@
 	<th class="chemp-owner-hd"><!-- TMPL_VAR owner-lb --></th>
 	<th class="chemp-name-hd"><!-- TMPL_VAR  name-lb --></th>
 	<th class="chemp-thumb-hd"><!-- TMPL_VAR  structure-lb --></th>
+	<th class="chemp-haz-diamond-hd"><!-- TMPL_VAR  haz-diamond-lb --></th>
 	<th class="chemp-building-name-hd"><!-- TMPL_VAR building-lb --></th>
 	<th class="chemp-floor-hd"><!-- TMPL_VAR floor-lb --></th>
 	<th class="chemp-storage-hd"><!-- TMPL_VAR storage-lb --></th>
@@ -407,6 +408,10 @@
 	    <img class="thumb" src="<!-- TMPL_VAR thumbnail-link -->">
 	  </a>
 	</td>
+	<td class="chemp-haz-diamond">
+	  <img src="<!-- TMPL_VAR haz-diamond-url -->" />
+	</td>
+
 	<td class="chemp-building-name">
 	  <a class="building-link" href="<!-- TMPL_VAR building-link -->">
 	    <!-- TMPL_VAR building-name -->

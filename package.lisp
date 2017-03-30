@@ -230,6 +230,10 @@
    :user-preferences
    :language
    :chemical-compound
+   :haz-color
+   :fire-color
+   :reactive-color
+   :corrosive-color
    :pubchem-cid
    :msds
    :structure-file
@@ -589,7 +593,8 @@
    :draw-graph-x-axe
    :draw-graph-point-norm
    :draw-graph
-   :with-http-png-reply))
+   :with-http-png-reply
+   :draw-hazard-diamond))
 
 (defpackage :views
   (:use

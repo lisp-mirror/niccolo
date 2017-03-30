@@ -254,3 +254,47 @@
 			     :font :giant
 			     :up nil
 			     :color fg)))))
+
+(defun %draw-subdiamond (r g b x y size &optional (filled t))
+  (with-allocated-color (color r g b)
+    (with-allocated-color (bg 0 0 0)
+      (let ((fg-x (1+ x))
+	    (fg-y (1+ y)))
+	(cl-gd:draw-rectangle* x y (+ x size) (+ y size) :filled filled :color bg)
+	(when filled
+	  (cl-gd:draw-rectangle* fg-x fg-y
+				 (+ fg-x (- size 2))
+				 (+ fg-y (- size 2))
+				 :filled filled
+				 :color  color))))))
+
+(defun draw-hazard-diamond (size &key (hazard t) (fire t) (reactive t) (corrosive t))
+  (let* ((diag         (floor (sqrt (* 2 (expt size 2)))))
+	 (inner-size   (1- size))
+	 (inner-size/2 (floor (/ inner-size 2))))
+    (images-utils:with-http-png-reply (diag diag)
+      (with-allocated-color (transparent 255 255 255)
+	(fill-bg 255 255 255)
+	(setf (cl-gd:transparent-color) transparent)
+	(cl-gd:with-image (orig size size t)
+	  (cl-gd:with-default-image (orig)
+	    (fill-bg 255 255 255)
+	    (when hazard
+	      (%draw-subdiamond 0 0 255 0 0 inner-size/2))
+	    (when fire
+	      (%draw-subdiamond 255 0 0 inner-size/2 0 inner-size/2))
+	    (when reactive
+	      (%draw-subdiamond 255 255 0 0 inner-size/2 inner-size/2))
+	    (when corrosive
+	      (%draw-subdiamond 0 255 0 inner-size/2 inner-size/2 inner-size/2))
+	    (%draw-subdiamond 0 0 0 0            0            inner-size/2 nil)
+	    (%draw-subdiamond 0 0 0 inner-size/2 0            inner-size/2 nil)
+	    (%draw-subdiamond 0 0 0 0            inner-size/2 inner-size/2 nil)
+	    (%draw-subdiamond 0 0 0 inner-size/2 inner-size/2 inner-size/2 nil))
+	  (cl-gd:copy-image orig
+			    cl-gd:*default-image*
+			    0 0
+			    (/ diag 2) (/ diag 2)
+			    size size
+			    :rotate t
+			    :angle  45))))))

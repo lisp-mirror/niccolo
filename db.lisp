@@ -193,6 +193,18 @@
    :nullp t)
   (structure-file
    :type text
+   :nullp t)
+  (haz-color
+   :type  text
+   :nullp t)
+  (fire-color
+   :type  text
+   :nullp t)
+  (reactive-color
+   :type  text
+   :nullp t)
+  (corrosive-color
+   :type  text
    :nullp t))
 
 (deftable user ()

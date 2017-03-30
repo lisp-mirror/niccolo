@@ -78,12 +78,28 @@
 			     (setf (elt res row-idx)
 				   (nconc row
 					  (list
+					   :haz-diamond-url
+					   (restas:genurl 'display-hazard-diamond
+							  :id (getf row :id))
+					   :toggle-haz-diamond-haz-link
+					   (restas:genurl 'toggle-haz-diamond-haz
+							  :id (getf row :id))
+					   :toggle-haz-diamond-fire-link
+					   (restas:genurl 'toggle-haz-diamond-fire
+							  :id (getf row :id))
+					   :toggle-haz-diamond-corrosive-link
+					   (restas:genurl 'toggle-haz-diamond-corrosive
+							  :id (getf row :id))
+					   :toggle-haz-diamond-reactive-link
+					   (restas:genurl 'toggle-haz-diamond-reactive
+							  :id (getf row :id))
 					   :assoc-prec-link
 					   (restas:genurl 'assoc-chem-prec :id (getf row :id))
 					   :assoc-haz-link
 					   (restas:genurl 'assoc-chem-haz :id (getf row :id))
 					   :assoc-sec-fq-link
-					   (restas:genurl 'assoc-chem-haz-prec-fq :id (getf row :id))
+					   (restas:genurl 'assoc-chem-haz-prec-fq
+							  :id (getf row :id))
 					   :has-msds (if (getf row :msds) t nil)
 					   :has-struct-file (if (getf row :structure-file) t nil)
 					   :msds-pdf-link
@@ -112,6 +128,7 @@
 							 :msds-file-lb   (_ "MSDS file")
 							 :data-sheet-lb  (_ "Data Sheet")
 							 :struct-file-lb (_ "Stucture file")
+							 :haz-diamond-lb (_ "Hazard")
 							 :operations-lb  (_ "Operations")
 							 :id             +name-chem-id+
 							 :name           +name-chem-proper-name+
@@ -227,4 +244,47 @@
 			(manage-chem success-msg nil))
 		      (manage-chem nil error-not-found)))
 		(manage-chem nil error-general))))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+(defun %toggle-color (id color-fn)
+  (let ((has-not-errors (and (regexp-validate (list (list id +pos-integer-re+ "")))
+			     (object-exists-in-db-p 'db:chemical-compound id))))
+    (when (not has-not-errors)
+      (let ((old-value (get-chem-data-column id color-fn))
+	    (updated-chem (single 'db:chemical-compound :id id)))
+	(when updated-chem
+	  (setf (slot-value updated-chem color-fn)
+		(if old-value nil "1"))
+	  (save updated-chem))))))
+
+(define-lab-route toggle-haz-diamond-haz ("/toggle-blue/:id" :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (%toggle-color id 'db:haz-color)
+	  (restas:redirect 'chemical))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route toggle-haz-diamond-fire ("/toggle-red/:id" :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (%toggle-color id 'db:fire-color)
+	  (restas:redirect 'chemical))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route toggle-haz-diamond-corrosive ("/toggle-yellow/:id" :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (%toggle-color id 'db:corrosive-color)
+	  (restas:redirect 'chemical))
+      (manage-chem nil (list *insufficient-privileges-message*)))))
+
+(define-lab-route toggle-haz-diamond-reactive ("/toggle-green/:id" :method :get)
+  (with-authentication
+    (with-editor-or-above-privileges
+	(progn
+	  (%toggle-color id 'db:reactive-color)
+	  (restas:redirect 'chemical))
       (manage-chem nil (list *insufficient-privileges-message*)))))

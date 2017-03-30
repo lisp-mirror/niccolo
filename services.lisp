@@ -15,6 +15,8 @@
 
 (in-package :restas.lab)
 
+(define-constant +haz-diamond-size+ 300 :test #'=)
+
 (define-lab-route ws-building ("/ws/building/:id" :method :get)
   (with-authentication
     (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
@@ -340,3 +342,22 @@
 				(error () nil)))))))
 		    (images-utils:draw-graph (reverse xs) (reverse ys)))))))
 	 (manage-address nil (list *insufficient-privileges-message*)))))
+
+
+(define-lab-route display-hazard-diamond ("/ws/hazard-diamond/:id")
+  (with-authentication
+    (let* ((error-valid-id (regexp-validate (list
+					     (list id +pos-integer-re+ "Errors"))))
+	   (error-not-exists (if (and (null error-valid-id)
+				      (object-exists-in-db-p 'db:chemical-compound id))
+				 nil
+				 t)))
+      (if (or error-valid-id
+	      error-not-exists)
+	  +http-not-found+
+	  (let* ((chem (single 'db:chemical-compound :id id)))
+	    (images-utils:draw-hazard-diamond +haz-diamond-size+
+					      :hazard    (db:haz-color       chem)
+					      :fire      (db:fire-color      chem)
+					      :reactive  (db:reactive-color  chem)
+					      :corrosive (db:corrosive-color chem)))))))

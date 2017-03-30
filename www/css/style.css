@@ -103,6 +103,48 @@ textarea {
     min-width: 100pt;
 }
 
+td.chemp-haz-diamond img {
+    width:  80px;
+    height: 80px;
+
+}
+
+.haz-diamond-toggle td {
+    border: 0;
+}
+
+.haz-diamond-toggle a.haz-diam-haz {
+    text-decoration: none;
+    color:           blue;
+    display:         block;
+    padding:         0;
+    font-size:       180%;
+}
+
+.haz-diamond-toggle a.haz-diam-fire {
+    text-decoration: none;
+    color:           red;
+    display:         block;
+    padding:         0;
+    font-size:       180%;
+}
+
+.haz-diamond-toggle a.haz-diam-corrosive {
+    text-decoration: none;
+    color:           green;
+    display:         block;
+    padding:         0;
+    font-size:       180%;
+}
+
+.haz-diamond-toggle a.haz-diam-reactive {
+    text-decoration: none;
+    color:           yellow;
+    display:         block;
+    padding:         0;
+    font-size:       180%;
+}
+
 #textarea-note-waste {
     width:    50%;
     height:  300pt;
@@ -567,6 +609,17 @@ td {
     width:	         32px;
     min-height:	         32px;
     background-image:    url("../images/icon-ghs-haz.png");
+    background-repeat:   no-repeat;
+    background-position: 0% 0%;
+    text-decoration:     none;
+}
+
+.haz-diamond-button {
+    margin:              auto;
+    display:             inline-block;
+    width:	         32px;
+    height:	         32px;
+    background-image:    url("../images/icon-haz-diamond.png");
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;

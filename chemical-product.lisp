@@ -125,6 +125,7 @@
 	   (structure-link   (if (not (eq (getf row :chem-cid) :nil))
 				 (make-pubchem-2d (getf row :chem-cid) :size :large)
 				 (actual-image-unknown-struct-path)))
+	   (haz-diamond-url  (restas:genurl 'display-hazard-diamond :id (getf row :chem-id)))
 	   (remove-loan-link (restas:genurl 'remove-loan :id (getf row :chemp-id)))
 	   (lending-user  (fetch-loan (getf row :chemp-id)))
 	   (gen-custom-label-link  (restas:genurl 'gen-custom-label :id (getf row :chemp-id)))
@@ -156,6 +157,7 @@
 		   (list :lending-user  lending-user)
 		   (list :remove-lending-link remove-loan-link)
 		   (list :gen-custom-label-link gen-custom-label-link)
+		   (list :haz-diamond-url haz-diamond-url)
 		   (if delete-link
 		       (list :delete-link (restas:genurl delete-link
 							 :id    (getf row :chemp-id)
@@ -292,6 +294,7 @@
 						   :select-lb                 (_ "Select")
 						   :owner-lb                  (_ "Owner")
 						   :structure-lb              (_ "Structure")
+						   :haz-diamond-lb            (_ "Hazard")
 						   :storage-lb                (_ "Storage")
 						   :notes-lb                  (_ "Notes")
 						   :operations-lb             (_ "Operations")

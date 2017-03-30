@@ -23,6 +23,12 @@
   Got from http://www.unece.org/trans/danger/publi/ghs/pictograms.html
   The United Nations Economic Commission for Europe (UNECE)
 
+- www/images/icon-ghs-prec.png
+  derived from
+  © kg
+  according to https://openclipart.org/detail/104263/warning-sign
+  released under CC0 https://creativecommons.org/publicdomain/zero/1.0/
+
 - data/letter-header.png
   © 2016 Universita' degli Studi di Palermo
   Released under GPL version 3
