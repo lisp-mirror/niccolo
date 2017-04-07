@@ -54,12 +54,14 @@
           <table class="haz-diamond-toggle">
               <tr>
                   <td>
+                      Haza.
                       <a href="<!-- TMPL_VAR  toggle-haz-diamond-haz-link -->"
                          class="haz-diam-haz with-attention-scale-anim">
                           &#x25C6;
                       </a>
                   </td>
                   <td>
+                      Flam.
                       <a href="<!-- TMPL_VAR toggle-haz-diamond-fire-link -->"
                          class="haz-diam-fire with-attention-scale-anim">
                           &#x25C6;
@@ -67,6 +69,7 @@
 
                   </td>
                   <td>
+                      Corr.
                       <a href="<!-- TMPL_VAR toggle-haz-diamond-corrosive-link -->"
                          class="haz-diam-corrosive with-attention-scale-anim">
                           &#x25C6;
@@ -74,6 +77,7 @@
 
                   </td>
                   <td>
+                      Reac.
                       <a href="<!-- TMPL_VAR toggle-haz-diamond-reactive-link -->"
                          class="haz-diam-reactive with-attention-scale-anim">
                           &#x25C6;
@@ -91,9 +95,6 @@
           </a>
           <a href="<!-- TMPL_VAR assoc-prec-link -->">
               <div class="ghs-prec-button">&nbsp;</div>
-          </a>
-          <a href="<!-- TMPL_VAR assoc-haz-diamond-link -->">
-              <div class="haz-diamond-button">&nbsp;</div>
           </a>
           <a href="<!-- TMPL_VAR assoc-sec-fq-link -->">
               <div class="assoc-security-fq">

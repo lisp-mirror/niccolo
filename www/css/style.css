@@ -118,7 +118,7 @@ td.chemp-haz-diamond img {
     color:           blue;
     display:         block;
     padding:         0;
-    font-size:       180%;
+    font-size:       130%;
 }
 
 .haz-diamond-toggle a.haz-diam-fire {
@@ -126,7 +126,7 @@ td.chemp-haz-diamond img {
     color:           red;
     display:         block;
     padding:         0;
-    font-size:       180%;
+    font-size:       130%;
 }
 
 .haz-diamond-toggle a.haz-diam-corrosive {
@@ -134,7 +134,7 @@ td.chemp-haz-diamond img {
     color:           green;
     display:         block;
     padding:         0;
-    font-size:       180%;
+    font-size:       130%;
 }
 
 .haz-diamond-toggle a.haz-diam-reactive {
@@ -142,7 +142,7 @@ td.chemp-haz-diamond img {
     color:           yellow;
     display:         block;
     padding:         0;
-    font-size:       180%;
+    font-size:       130%;
 }
 
 #textarea-note-waste {
