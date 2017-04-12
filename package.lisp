@@ -128,6 +128,7 @@
    :+search-chem-shelf+
    :+name-validity-date+
    :+name-expire-date+
+   :+name-opening-date+
    :+start-pagination-offset+
    :+name-count-pagination+
    :+name-op-pagination+
@@ -244,6 +245,7 @@
    :chemical-product
    :validity-date
    :expire-date
+   :opening-package-date
    :owner
    :compound
    :storage

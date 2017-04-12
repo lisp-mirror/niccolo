@@ -261,6 +261,9 @@
   (expire-date
    :type timestamp
    :nullp nil)
+  (opening-package-date
+   :type timestamp
+   :nullp t)
   (shelf
    :type integer
    :nullp nil)

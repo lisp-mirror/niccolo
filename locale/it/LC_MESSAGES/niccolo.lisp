@@ -2980,4 +2980,52 @@ translation "Ogni riga deve contenere esattamente 7 campi separati da virgola: n
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "CER code invalid"
+translation "Codice CER non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Hazard"
+translation "Pericolo"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Opening package date"
+translation "Data di apertura confezione"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "validity"
+translation "validita'"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "expiring"
+translation "scadenza"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Opening date not properly formatted."
+translation "Data di apertura non valida"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Error: date invalid"
+translation "Errore: data non valida"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Error: opening date ~a is older than ~a (~a)"
+translation "errore: la data di apertura ~a e' piu' vecchia della data di ~a (~a)"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

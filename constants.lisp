@@ -97,6 +97,8 @@
 
 (define-constant +name-expire-date+               "expire-date"              :test #'string=)
 
+(define-constant +name-opening-date+              "opening-date"             :test #'string=)
+
 (define-constant +name-op-pagination+             "pagination"               :test #'string=)
 
 (define-constant +name-count-pagination+          "pagination-count"         :test #'string=)

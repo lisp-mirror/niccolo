@@ -314,6 +314,7 @@
 	<th class="chemp-quantity-hd"><!-- TMPL_VAR units-lb --></th>
 	<th class="chemp-validity-date-hd"><!-- TMPL_VAR validity-date-lb --></th>
 	<th class="chemp-expire-date-hd"><!-- TMPL_VAR expire-date-lb --></th>
+	<th class="chemp-opening-date-hd"><!-- TMPL_VAR opening-package-date-lb --></th>
 	<th class="chemp-shortage-threshold-hd"><!-- TMPL_VAR shortage-threshold-lb --></th>
 	<th class="chemp-notes-hd"><!-- TMPL_VAR notes-lb --></th>
 	<th class="chemp-operations"><!-- TMPL_VAR operations-lb --></th>
@@ -443,6 +444,9 @@
 	</td>
 	<td class="expire-date">
 	  <!-- TMPL_VAR expire-date-decoded -->
+	</td>
+	<td class="opening-date">
+	  <!-- TMPL_VAR opening-package-date-decoded -->
 	</td>
 	<td class="shortage-threshold">
 	  <!-- TMPL_VAR shortage-threshold -->

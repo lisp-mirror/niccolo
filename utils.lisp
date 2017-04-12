@@ -578,10 +578,15 @@
 (defun local-time-obj-now ()
   (local-time:now))
 
-(defun encode-datetime-string (d)
-  (local-time:parse-timestring d))
+(defun encode-datetime-string (d &optional (fallback nil))
+  (handler-case
+      (local-time:parse-timestring d)
+     (error () fallback)))
 
 (defgeneric decode-datetime-string (object))
+
+(defmethod decode-datetime-string ((object (eql nil)))
+  "")
 
 (defmethod decode-datetime-string ((object local-time:timestamp))
   (local-time:format-timestring nil object :format '(:year "-" (:month 2) "-"
@@ -591,6 +596,9 @@
   (decode-datetime-string (encode-datetime-string object)))
 
 (defgeneric decode-date-string (object))
+
+(defmethod decode-date-string ((object (eql nil)))
+  "")
 
 (defmethod decode-date-string ((object local-time:timestamp))
   (local-time:format-timestring nil object :format '(:year "-" (:month 2) "-"

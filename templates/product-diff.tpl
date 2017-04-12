@@ -12,4 +12,11 @@
     <td><i class="fa fa-arrow-right" aria-hidden="true"></td>
     <td class="new-date"><!-- TMPL_VAR new-expire-date --></td>
   </tr>
+  <tr><td colspan="3"><!-- TMPL_VAR opening-package-date-lb --></td></tr>
+  <tr>
+    <td class="old-date"><!-- TMPL_VAR old-opening-date --></td>
+    <td><i class="fa fa-arrow-right" aria-hidden="true"></td>
+    <td class="new-date"><!-- TMPL_VAR new-opening-date --></td>
+  </tr>
+
 </table>
