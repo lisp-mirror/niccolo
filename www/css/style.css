@@ -452,6 +452,7 @@ td {
 .menu-level-2 ul{
     display:      block;
     padding-left: 0;
+    overflow: hidden;
 }
 
 .menu-level-2 ul li {
@@ -477,7 +478,6 @@ td {
 }
 
 .menu-level-2 ul li a:hover{
-    background:     #FFDD8C;
     padding-right:  0;
     padding-top:    3pt;
     padding-bottom: 3pt;
@@ -980,4 +980,26 @@ table.waste-stats th {
     animation-timing-function: ease;
     animation-fill-mode: both;
 
+}
+
+.anim-menu-attention-get {
+    animation: menu-item-attention-get 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.anim-menu-attention-out {
+    animation: menu-item-attention-out 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+
+.anim-fade-out {
+    animation: fade-out 1s ease-out both;
+}
+
+.anim-fade-in {
+    animation: fade-in 1s ease-out both;
+}
+
+#logo-bg {
+    position:  absolute;
+    animation: logo-out 1s ease-out both;
 }

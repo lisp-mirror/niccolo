@@ -77,6 +77,16 @@
 	  $(this).addClass("anim-scale-down-2x");
       });
 
+      $(".with-menu-item-anim").mouseover(function() {
+	  $(this).removeClass("anim-menu-attention-out");
+	  $(this).addClass("anim-menu-attention-get");
+      });
+
+      $(".with-menu-item-anim").mouseout(function() {
+	  $(this).removeClass("anim-menu-attention-get");
+	  $(this).addClass("anim-menu-attention-out");
+      });
+
 
   });
 </script>
