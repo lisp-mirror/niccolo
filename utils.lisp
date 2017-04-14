@@ -468,6 +468,7 @@
 (defmacro with-standard-html-frame ((stream title &key
 					    (infos nil)
 					    (errors nil)
+					    (use-animated-logo-p nil)
 					    (css-file *default-css-filename*))
 				    &body body)
   `(with-output-to-string (,stream)
@@ -498,7 +499,7 @@
 					    nil
 					    :stream ,stream)
 
-     (restas.lab:render-main-menu      stream)
+     (restas.lab:render-main-menu      stream :use-animated-logo-p ,use-animated-logo-p)
      (html-template:fill-and-print-template #p"main-content-wrapper-header.tpl"
 					    nil
 					    :stream ,stream)

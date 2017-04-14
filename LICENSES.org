@@ -292,3 +292,11 @@
   This code derived from (c) 2016  G.Krocker (Mad Frog Labs)
   according to: https://github.com/GeorgK/MQ135 */
   licensed under GPLv3
+
+- www/css/anim.css
+  www/css/style.css
+
+  Contains code:
+  © Animista
+  http://animista.net
+  original license FreeBSD License, see http://animista.net/license

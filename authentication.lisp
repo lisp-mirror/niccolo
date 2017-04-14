@@ -95,7 +95,7 @@
        (render-login-form ,action)))
 
 (defun render-login-form ()
-  (with-standard-html-frame (stream "Welcome")
+  (with-standard-html-frame (stream "Welcome" :use-animated-logo-p t)
     #+mini-cas
     (html-template:fill-and-print-template #p"login-form.tpl"
 					   nil

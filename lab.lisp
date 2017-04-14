@@ -141,9 +141,10 @@
 					   template
 					   :stream stream)))
 
-(defun render-main-menu (stream)
+(defun render-main-menu (stream &key (use-animated-logo-p nil))
   (let ((template (with-path-prefix
 		      :has-nyan              (time-to-nyan) ;-)
+		      :use-animated-logo-p   use-animated-logo-p
 		      :safety-lbl            (_ "Safety")
 		      :manage-ghs-hazard     (restas:genurl 'ghs-hazard)
 		      :manage-ghs-hazard-lbl (_ "GHS Hazard Codes")

@@ -257,6 +257,7 @@ td.chemp-haz-diamond img {
     margin:           10pt;
     padding-top:       5pt;
     padding-bottom:    5pt;
+    animation:         info-message 0.5s ease-out both;
 }
 
 .info-message li{
@@ -268,6 +269,7 @@ td.chemp-haz-diamond img {
     margin:           10pt;
     padding-top:       5pt;
     padding-bottom:    5pt;
+    animation: shake-vertical 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 
 .error-message li{
@@ -492,6 +494,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .negative-button {
@@ -503,6 +506,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .close-w-success-button {
@@ -514,6 +518,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .close-w-failure-button {
@@ -525,6 +530,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .link-button {
@@ -547,6 +553,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .prohibition-button {
@@ -558,6 +565,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .delete-button {
@@ -569,6 +577,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .assoc-security-fq {
@@ -579,6 +588,7 @@ td {
     text-decoration:     none;
     vertical-align:      text-top;
     color:               #3EAEE5;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .waste-assoc-registry-button {
@@ -590,6 +600,7 @@ td {
     vertical-align:      text-top;
     color:               #3EAEE5;
     cursor:              pointer;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .ghs-prec-button {
@@ -601,6 +612,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .ghs-haz-button {
@@ -612,6 +624,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .haz-diamond-button {
@@ -623,6 +636,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .msds-pdf-button {
@@ -634,6 +648,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .add-msds-pdf-button {
@@ -645,6 +660,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .struct-file-button {
@@ -656,6 +672,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .add-struct-file-button {
@@ -667,6 +684,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .add-map-file-button {
@@ -678,6 +696,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .location-button {
@@ -689,6 +708,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .location-add-button {
@@ -700,6 +720,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .remove-lending-button {
@@ -711,6 +732,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .tag-with-string-button {
@@ -722,6 +744,7 @@ td {
    background-repeat:   no-repeat;
    background-position: 0% 0%;
    text-decoration:     none;
+   animation:           fade-in 0.5s ease-out both;
 }
 
 .edit-button {
@@ -733,6 +756,7 @@ td {
     background-repeat:   no-repeat;
     background-position: 0% 0%;
     text-decoration:     none;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .gen-qrcode-button {
@@ -745,6 +769,7 @@ td {
     background-position: 0% 0%;
     text-decoration:     none;
     cursor:              pointer;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .sensor-button {
@@ -757,6 +782,7 @@ td {
     background-position: 0% 0%;
     text-decoration:     none;
     cursor:              pointer;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .graph-button {
@@ -768,6 +794,7 @@ td {
     vertical-align:      text-top;
     color:               #A00200;
     cursor:              pointer;
+    animation:           fade-in 0.5s ease-out both;
 }
 
 .help-button {
@@ -999,7 +1026,6 @@ table.waste-stats th {
     animation: fade-in 1s ease-out both;
 }
 
-#logo-bg {
-    position:  absolute;
-    animation: logo-out 1s ease-out both;
+#software-logo {
+    animation: software-logo-in 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
