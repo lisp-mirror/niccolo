@@ -268,15 +268,23 @@
   (initialize-adr-pictogram #p"data/adr-pictograms/vert_blanc-1.eps")
   (initialize-adr-pictogram #p"data/adr-pictograms/vert.eps"))
 
-(progn
+(defun init-ssl-client ()
   (when +https-client-verify-certificate+
     (setf (cl+ssl:ssl-check-verify-p) t)
-    (cl+ssl:ssl-set-global-default-verify-paths))
-  (open-log)
+    (cl+ssl:ssl-set-global-default-verify-paths)))
+
+(defun init-db-default-values ()
   (initialize-ghs-pictograms-db)
-  (initialize-adr-pictograms-db)
+  (initialize-adr-pictograms-db))
+
+(defun main ()
+  (init-ssl-client)
+  (init-db-default-values)
+  (open-log)
   (fq:init-nodes)
-  (init-sensors-thread)
+  ;; on some platform, for example arm  when sbcl is used, there is no
+  ;; thread support
+  #+thread-support (init-sensors-thread)
   (to-log :info "Server starting")
   (restas:start '#:restas.lab
 		:acceptor-class 'lab-acceptor
