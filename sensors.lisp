@@ -194,11 +194,16 @@
 	      (if update-link
 		  (list :update-sensor-link (restas:genurl update-link :id sid))))))))
 
+  (defun no-thread-support ()
+    (list (_ "There is no threads system available for the software on your platform therefore sensors monitoring will not works; please consider supporting the development of the compiler SBCL (www.sbcl.org) to improve threads system.")))
+
   (defun-w-lock manage-sensor (infos errors &key (start-from 0) (data-count 1))
     (let* ((all-sensors     (fetch-all-sensors 'delete-sensor 'update-sensor-route))
 	   (paginated-items (slice-for-pagination all-sensors
 						  (actual-pagination-start start-from)
-						  (actual-pagination-count data-count))))
+						  (actual-pagination-count data-count)))
+           (actual-infos    (append #-thread-support (no-thread-support) infos)))
+
       (multiple-value-bind (next-start prev-start)
 	  (pagination-bounds (actual-pagination-start start-from)
 			     (actual-pagination-count data-count)
@@ -206,7 +211,7 @@
 	(with-standard-html-frame (stream
 				   "Manage Sensor Places"
 				   :errors errors
-				   :infos  infos)
+				   :infos  actual-infos)
 	  (let ((html-template:*string-modifier* #'html-template:escape-string-minimal))
 	    (html-template:fill-and-print-template #p"add-sensor.tpl"
 						   (with-back-to-root
@@ -471,7 +476,6 @@
 
   (define-lab-route list-all-sensors-maps ("/sensors-list-all-maps/:sensor-id" :method :get)
     (gen-list-all-maps sensor-id assoc-sensor-map :back-route sensor))
-
 
   (define-lab-route ws-sensors-associated-w-map ("/ws/sensors/maps/:id" :method :get)
     (with-authentication
