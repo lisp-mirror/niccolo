@@ -128,75 +128,120 @@
 			  (t
 			   (format nil "il ~a" address)))))
     (format nil
-	    *waste-letter-body*
-	    user
-	    lab-num
-	    actual-address
-	    weight
-	    body
-	    cer
-	    (letter-adr-codes adrs)
-	    (letter-hp-codes hps)
-	    phys-state)))
+            *waste-letter-body*
+            user
+            lab-num
+            actual-address
+            weight
+            body
+            cer
+            (letter-adr-codes adrs)
+            (letter-hp-codes hps)
+            phys-state)))
+
+(defun validate-letter-request (username lab-number building-id weight cer-id
+                               phys-state-id body adrs hp-codes)
+  (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
+         (all-hp     (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
+         (phys-state (get-column-from-id phys-state-id
+                                         +pos-integer-re+
+                                         'db:waste-physical-state
+                                         #'db:explanation
+                                         :default nil))
+         (actual-cer (get-column-from-id cer-id
+                                         +pos-integer-re+
+                                         'db:cer-code
+                                         #'db:code
+                                         :default nil))
+         (building   (get-column-from-id building-id
+                                         +pos-integer-re+
+                                         'db:building
+                                         #'db:name
+                                         :default nil))
+         (errors     '()))
+      (when (string-empty-p username)
+       (push (_ "User not specified") errors))
+      (when (string-empty-p lab-number)
+       (push (_ "Laboratory not specified") errors))
+      (when (string-empty-p building)
+       (push (_ "Building not specified") errors))
+      (when (string-empty-p weight)
+       (push (_ "Weight not specified") errors))
+      (when (string-empty-p actual-cer)
+       (push (_ "CER not specified") errors))
+      (when (string-empty-p phys-state)
+       (push (_ "Physical state not specified") errors))
+      (when (string-empty-p body)
+       (push (_ "Letter's body empty") errors))
+      (when (null all-adrs)
+       (push (_ "ADR codes empty") errors))
+      (when (null all-hp)
+       (push (_ "HP codes empty") errors))
+      errors))
 
 (defun generate-letter (username lab-number building-id weight cer-id
 			phys-state-id body adrs hp-codes)
-    (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
-	   (all-hp     (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
-	   (phys-state (get-column-from-id phys-state-id
-					   +pos-integer-re+
-					   'db:waste-physical-state
-					   #'db:explanation
-					   :default
-					   (_ "*warning: no valid physical state*")))
-	   (actual-cer (get-column-from-id cer-id
-					   +pos-integer-re+
-					   'db:cer-code
-					   #'db:code
-					   :default
-					   (_ "*Warning: no such cer code*")))
-	   (building   (get-column-from-id building-id
-					   +pos-integer-re+
-					   'db:building
-					   #'db:name
-					   :default
-					   (_ "*warning: no such building*")))
-	   (msg-text (write-letter username lab-number building weight actual-cer
-				   phys-state body
-				   (mapcar #'(lambda (a) (format nil "~a (classe ~a)"
-								 (db:uncode a)
-								 (db:code-class a)))
-					   all-adrs)
-				   (mapcar #'(lambda (a) (db:code a))
-					   all-hp)))
-	   (reminder-message (send-user-message (make-instance 'db:waste-message)
-						(get-session-user-id)
-						(get-session-user-id)
-						(_ "Waste production")
-						msg-text
-						:parent-message nil
-						:child-message nil
-						:cer-code-id cer-id
-						:building-id building-id
-						:weight      weight
-						:adr-ids     adrs
-						:hp-ids      hp-codes))
-	   ;; message for admin
-	   (admin-message (send-user-message (make-instance 'db:waste-message)
-					     (get-session-user-id)
-					     (admin-id)
-					     (_ "Waste production")
-					     msg-text
-					     :parent-message nil
-					     :child-message  nil
-					     :echo-message   (db:id reminder-message)
-					     :cer-code-id    cer-id
-					     :building-id    building-id
-					     :weight         weight
-					     :adr-ids        adrs
-					     :hp-ids         hp-codes)))
-      (generate-waste-label (db:id admin-message) username lab-number building-id weight
-			    cer-id phys-state-id adrs hp-codes)))
+  (let ((errors (validate-letter-request username lab-number building-id weight cer-id
+                                         phys-state-id body adrs hp-codes)))
+    (if (null errors)
+        (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
+               (all-hp     (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
+               (phys-state (get-column-from-id phys-state-id
+                                               +pos-integer-re+
+                                               'db:waste-physical-state
+                                               #'db:explanation
+                                               :default
+                                               (_ "*warning: no valid physical state*")))
+               (actual-cer (get-column-from-id cer-id
+                                               +pos-integer-re+
+                                               'db:cer-code
+                                               #'db:code
+                                               :default
+                                               (_ "*Warning: no such cer code*")))
+               (building   (get-column-from-id building-id
+                                               +pos-integer-re+
+                                               'db:building
+                                               #'db:name
+                                               :default
+                                               (_ "*warning: no such building*")))
+               (msg-text (write-letter username lab-number building weight actual-cer
+                                       phys-state body
+                                       (mapcar #'(lambda (a) (format nil "~a (classe ~a)"
+                                                                     (db:uncode a)
+                                                                     (db:code-class a)))
+                                               all-adrs)
+                                       (mapcar #'(lambda (a) (db:code a))
+                                               all-hp)))
+               (reminder-message (send-user-message (make-instance 'db:waste-message)
+                                                    (get-session-user-id)
+                                                    (get-session-user-id)
+                                                    (_ "Waste production")
+                                                    msg-text
+                                                    :parent-message nil
+                                                    :child-message nil
+                                                    :cer-code-id cer-id
+                                                    :building-id building-id
+                                                    :weight      weight
+                                                    :adr-ids     adrs
+                                                    :hp-ids      hp-codes))
+               ;; message for admin
+               (admin-message (send-user-message (make-instance 'db:waste-message)
+                                                 (get-session-user-id)
+                                                 (admin-id)
+                                                 (_ "Waste production")
+                                                 msg-text
+                                                 :parent-message nil
+                                                 :child-message  nil
+                                                 :echo-message   (db:id reminder-message)
+                                                 :cer-code-id    cer-id
+                                                 :building-id    building-id
+                                                 :weight         weight
+                                                 :adr-ids        adrs
+                                                 :hp-ids         hp-codes)))
+          (values (generate-waste-label (db:id admin-message) username lab-number building-id weight
+                                        cer-id phys-state-id adrs hp-codes)
+                  nil))
+        (values errors t))))
 
 (defun %get-label-pictogram (class objects)
   (remove-if #'null
@@ -389,13 +434,18 @@
 
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication
-    (setf (header-out :content-type) +mime-postscript+)
-    (generate-letter (strip-tags (get-parameter +name-waste-user-name+))
-		     (strip-tags (get-parameter +name-waste-lab-num+))
-		     (strip-tags (get-parameter +name-waste-building-id+))
-		     (strip-tags (get-parameter +name-waste-weight+))
-		     (strip-tags (get-parameter +name-waste-cer-id+))
-		     (strip-tags (get-parameter +name-waste-phys-id+))
-		     (strip-tags (get-parameter +name-waste-description+))
-		     (collect-all-adr (get-parameters*))
-		     (collect-all-hp  (get-parameters*)))))
+    (multiple-value-bind (results has-errors-p)
+        (generate-letter (strip-tags (get-parameter +name-waste-user-name+))
+                         (strip-tags (get-parameter +name-waste-lab-num+))
+                         (strip-tags (get-parameter +name-waste-building-id+))
+                         (strip-tags (get-parameter +name-waste-weight+))
+                         (strip-tags (get-parameter +name-waste-cer-id+))
+                         (strip-tags (get-parameter +name-waste-phys-id+))
+                         (strip-tags (get-parameter +name-waste-description+))
+                         (collect-all-adr (get-parameters*))
+                         (collect-all-hp  (get-parameters*)))
+      (if (not has-errors-p)
+          (progn
+            (setf (header-out :content-type) +mime-postscript+)
+            results)
+          (manage-waste-letter nil results)))))

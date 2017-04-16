@@ -3028,4 +3028,64 @@ translation "errore: la data di apertura ~a e' piu' vecchia della data di ~a (~a
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "There is no threads system available for the software on your platform therefore sensors monitoring will not works; please consider supporting the development of the compiler SBCL (www.sbcl.org) to improve threads system."
+translation "La piattaforma usata non supporta i thread, quindi il sistema di sensori non funzionera'; prendete in considerazione la possibilita' di sostenere lo sviluppo del compilatore che usano gli sviluppatori di questo programma: www.sbcl.org"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "HP codes empty"
+translation "Codici HP vuoti."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "ADR codes empty"
+translation "Codici ADR vuoti."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Letter's body empty"
+translation "Corpo della lettera vuoto."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Physical state not specified"
+translation "Stato fisico non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "CER not specified"
+translation "CER non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Weight not specified"
+translation "Peso non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Building not specified"
+translation "Edificio non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Laboratory not specified"
+translation "Laboratorio non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "User not specified"
+translation "Utente non specificato."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )
