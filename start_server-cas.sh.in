@@ -3,4 +3,4 @@
 screen -L "terminal.log" -d -m  @SBCL@             \
        --eval "(asdf:load-system 'mini-cas)"       \
        --eval "(asdf:load-system '@PACKAGE_NAME@)" \
-       --eval "(lab::main)"
+       --eval "(restas.lab::main)"
