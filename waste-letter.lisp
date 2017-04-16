@@ -376,55 +376,54 @@
 					    :vertical-align    :bottom
 					    :horizontal-align  ps:+boxed-text-h-mode-justify+
 					    :maximum-font-size (* 2 h1))
-	    (progn
-	      (ps:draw-text-confined-in-box doc
-					    font
-					    cer-code
-					    +page-margin-left+
-					    y
-					    box-w
-					    box-h
-					    :horizontal-align  ps:+boxed-text-h-mode-justify+
-					    :maximum-font-size h1)
-	      (decf y box-h)
-	      (ps:draw-text-confined-in-box doc
-					    font
-					    cer-desc
-					    +page-margin-left+
-					    y
-					    box-w
-					    box-h
-					    :horizontal-align  ps:+boxed-text-h-mode-justify+
-					    :maximum-font-size h2)
-	      (decf y box-h)
-	      (ps:draw-text-confined-in-box doc
-					    font
-					    (format nil
-						    (_ "HP codes: ~{~a ~}")
-						    (mapcar #'db:code all-hp))
-					    +page-margin-left+ y
-					    box-w box-h
-					    :horizontal-align  ps:+boxed-text-h-mode-justify+
-					    :maximum-font-size h2)
-	      (decf y box-h)
-	      (ps:draw-text-confined-in-box doc
-					    font
-					    (format nil
-						    (_ "ADR codes: ~{~a ~}")
-						    (mapcar #'db:uncode all-adrs))
-					    +page-margin-left+ y
-					    box-w box-h
-					    :horizontal-align  ps:+boxed-text-h-mode-justify+
-					    :maximum-font-size h2)
-
-	      (decf y box-h)
-	      (with-save-restore (doc)
-		(ps:setfont doc font h3)
-		(ps:translate doc +page-margin-left+ y)
-		(ps:show-xy doc (format nil
-					(_ "Weight: ~akg Physical state: ~a")
-					weight phys-state)
-			    0 0)))))
+              (progn
+                (ps:draw-text-confined-in-box doc
+                                              font
+                                              cer-code
+                                              +page-margin-left+
+                                              y
+                                              box-w
+                                              box-h
+                                              :horizontal-align  ps:+boxed-text-h-mode-justify+
+                                              :maximum-font-size h1)
+                (decf y box-h)
+                (ps:draw-text-confined-in-box doc
+                                              font
+                                              cer-desc
+                                              +page-margin-left+
+                                              y
+                                              box-w
+                                              box-h
+                                              :horizontal-align  ps:+boxed-text-h-mode-justify+
+                                              :maximum-font-size h2)
+                (decf y box-h)
+                (ps:draw-text-confined-in-box doc
+                                              font
+                                              (format nil
+                                                      (_ "HP codes: ~{~a ~}")
+                                                      (mapcar #'db:code all-hp))
+                                              +page-margin-left+ y
+                                              box-w box-h
+                                              :horizontal-align  ps:+boxed-text-h-mode-justify+
+                                              :maximum-font-size h2)
+                (decf y box-h)
+                (ps:draw-text-confined-in-box doc
+                                              font
+                                              (format nil
+                                                      (_ "ADR codes: ~{~a ~}")
+                                                      (mapcar #'db:uncode all-adrs))
+                                              +page-margin-left+ y
+                                              box-w box-h
+                                              :horizontal-align  ps:+boxed-text-h-mode-justify+
+                                              :maximum-font-size h2)
+                (decf y box-h)
+                (with-save-restore (doc)
+                  (ps:setfont doc font h3)
+                  (ps:translate doc +page-margin-left+ y)
+                  (ps:show-xy doc (format nil
+                                          (_ "Weight: ~akg Physical state: ~a")
+                                          weight phys-state)
+                              0 0)))))
 	(ps:end-page doc)
 	(ps:begin-page doc)
 	(%draw-pictograms-row doc hp-pictogram (ps:height +a4-landscape-page-sizes+))

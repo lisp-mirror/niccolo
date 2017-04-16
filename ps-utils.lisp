@@ -57,7 +57,7 @@
      (set-parameter ,doc +parameter-key-imagereuse+ +false+)
      (set-info ,doc +ps-comment-key-orientation+ "Portrait")
      (open-doc ,doc nil)
-     (let ((img-header (open-image-file ,doc +image-file-type-png+
+     (let ((img-header (open-image-file ,doc +image-file-type-eps+
 					   (namestring (local-system-path +letter-header+))
 					   "" 0)))
        (begin-page ,doc)

@@ -49,13 +49,13 @@
 
 (define-constant +data-path+                     #p"data/"                   :test #'equal)
 
-(define-constant +letter-header+                 #p"data/letter-header.png"  :test #'equal)
+(define-constant +letter-header+                 #p"data/letter-header.eps"  :test #'equal)
 
 (define-constant +image-unknown-struct-path+     "/images/no-struct.png"     :test #'string=)
 
-(define-constant +header-image-export-height+    42.68611                    :test #'=)
+(define-constant +header-image-export-height+    34.92                       :test #'=)
 
-(define-constant +header-image-export-width+     82.90277                    :test #'=)
+(define-constant +header-image-export-width+     91.37                       :test #'=)
 
 (define-constant +default-font-name+              "font"                     :test #'string=)
 
