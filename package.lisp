@@ -507,6 +507,9 @@
    :+uri-query-start+
    :define-lab-route
    :get-post-filename
+   :source-origin-header
+   :target-origin-header
+   :check-origin-target
    :cat-salt-password
    :encode-pass
    :generate-salt

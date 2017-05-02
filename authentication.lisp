@@ -119,7 +119,8 @@
 		    (tbnl:parameter +auth-name-login-password+))
        (i18n:with-user-translation ((get-session-user-id))
 	 (with-session-user (,session-user)
-	   (if (account-enabled-p ,session-user)
+	   (if (and (account-enabled-p ,session-user)
+		    (check-origin-target))
 	       (progn
 		  ,@body)
 	       (logout-user)))))))

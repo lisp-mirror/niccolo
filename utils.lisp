@@ -103,6 +103,28 @@
   (and (> (length (tbnl:post-parameter name)) 2)
        (elt (tbnl:post-parameter name) 0)))
 
+(defun source-origin-header ()
+  "Fallback to referrer if origin is not present"
+  (let ((origin-list   (cl-ppcre:split "\\p{Z}+" (tbnl:header-in* :origin)))
+	(referrer-list (tbnl:referer)))
+    (if (not (null origin-list))
+	(setf origin-list (mapcar #'puri:parse-uri origin-list))
+	(setf origin-list (list (puri:parse-uri referrer-list))))
+    origin-list))
+
+(defun target-origin-header ()
+  (let ((proxy-origin (tbnl:header-in* :x-forwarded-host))
+	(host         (tbnl:host)))
+    (if proxy-origin
+	proxy-origin
+	host)))
+
+(defun check-origin-target ()
+  (let ((origin (first (source-origin-header)))
+	(target (target-origin-header)))
+    (and origin
+	 (string= (puri:uri-host origin) target))))
+
 ;; web uri
 
 (defun path-prefix-tpl ()
