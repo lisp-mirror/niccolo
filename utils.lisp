@@ -120,10 +120,15 @@
 	host)))
 
 (defun check-origin-target ()
-  (let ((origin (first (source-origin-header)))
-	(target (target-origin-header)))
+  (let* ((origin       (first (source-origin-header)))
+         (origin-host  (puri:uri-host origin))
+         (origin-port  (format nil "~a" (puri:uri-port origin)))
+         (target       (cl-ppcre:split ":" (target-origin-header)))
+         (target-host  (first target))
+         (target-port  (second target)))
     (and origin
-	 (string= (puri:uri-host origin) target))))
+         (string= origin-host target-host)
+         (string= origin-port target-port))))
 
 ;; web uri
 
