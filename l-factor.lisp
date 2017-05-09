@@ -23,6 +23,14 @@
   (let ((raw (filter 'db:ghs-hazard-statement)))
     (loop for i in raw collect (list :h-code (db:code i)))))
 
+(defun sort-all-ghs-tpl (tpl)
+  (sort tpl #'(lambda (a b)
+		(let ((parse-fn #'(lambda (e)
+				    (parse-integer (scan-to-strings "[0-9]+" (second e))))))
+		  (< (funcall parse-fn a)
+		     (funcall parse-fn b))))))
+
+
 (defun %select-builder (keyword &rest keys)
   (loop for i in keys collect (list keyword (_ i))))
 
@@ -85,6 +93,7 @@
 	   (template     (with-back-to-root
 			     (with-path-prefix
 				 :service-link         service-link
+				 :chem-name-lb         (_ "Chemical name")
 				 :h-phrase-lb          (_ "H phrase")
 				 :exposition-types-lb  (_ "Exposition types")
 				 :physical-state-lb    (_ "Physical state")
@@ -102,7 +111,8 @@
 				 :results-lb            (_ "Results")
 				 :table-res-header      (_ "Results")
 				 :errors-lb             (_ "Errors")
-				 :option-h-codes       (fetch-all-ghs)
+				 :sum-quantities-lb     (_ "Sum quantities")
+				 :option-h-codes       (sort-all-ghs-tpl (fetch-all-ghs))
 				 :option-exp-types     (select-exp-types)
 				 :option-phys-states   (select-phys-state)
 				 :option-exp-time-type (select-exp-time-type)
@@ -121,6 +131,7 @@
 	   (template     (with-back-to-root
 			     (with-path-prefix
 				 :service-link              service-link
+				 :chem-name-lb              (_ "Chemical name")
 				 :protective-devices-lb     (_ "Protective devices")
 				 :physical-states-lb        (_ "Physical state")
 				 :working-temp-lb           (_ "Working temperature (°C)")
@@ -129,6 +140,7 @@
 				 :usage-per-day-lb          (_ "Usage per day (min.)")
 				 :usage-per-year-lb         (_ "Usage per year (days)")
 				 :results-lb                (_ "Results")
+				 :sum-quantities-lb         (_ "Sum quantities")
 				 :table-res-header          (_ "Results")
 				 :errors-lb                 (_ "Errors")
 				 :option-protective-devices (select-prot-devices)

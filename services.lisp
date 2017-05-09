@@ -106,6 +106,7 @@
 	 (progn
 	   (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
 		  (risk-calculator:*errors* '())
+		  (name    (cdr (assoc :name params)))
 		  (results (risk-calculator:l-factor-i (cdr (assoc :r-phrases params))
 						       (cdr (assoc :exposition-types params))
 						       (cadr (assoc :physical-state params))
@@ -123,12 +124,13 @@
 							      0.0)
 							   (%extract-parse :safety-threshold params)
 							   1.0))))
-	     (utils:plist->json (list :res results :err risk-calculator:*errors*))))
+	     (utils:plist->json (list :name name :res results :err risk-calculator:*errors*))))
 	 (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
 
 (define-lab-route l-factor-carc-i ("/ws/l-factor-carc/" :method :post)
   (with-authentication
     (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+	   (name    (cdr (assoc :name params)))
 	   (risk-calculator:*errors* '())
 	   (results (risk-calculator:l-factor-carc-i (cdr (assoc :protective-device params))
 						     (cdr (assoc :physical-state params))
@@ -137,7 +139,7 @@
 						     (%extract-parse :quantity-used params)
 						     (%extract-parse :usage-per-day params)
 						     (%extract-parse :usage-per-year params))))
-      (utils:plist->json (list :res results :err risk-calculator:*errors*)))))
+      (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
 
 (define-lab-route ws-get-user-message ("/ws/user-messages/:id" :method :get)
   (with-authentication

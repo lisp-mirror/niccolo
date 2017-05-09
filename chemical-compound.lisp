@@ -21,11 +21,14 @@
 
 (define-constant +name-chem-cid+         "pubchem-cid"    :test #'string=)
 
+(define-constant +name-chem-other-cid+   "other-cid"    :test #'string=)
+
 (define-constant +name-chem-msds-data+   "msds-pdf"       :test #'string=)
 
 (define-constant +name-chem-struct-data+ "structure-file" :test #'string=)
 
-(defun add-new-chem (name msds-filename struct-filename cid &key (start-from 0) (data-count 1))
+(defun add-new-chem (name msds-filename struct-filename cid other-cid
+		     &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1  (regexp-validate (list (list name +free-text-re+ (_ "Name invalid")))))
 	 (errors-msg-msds-file (when (and msds-filename
 					  (not (pdf-validate-p msds-filename)))
@@ -38,16 +41,23 @@
 				    'db:chemical-compound
 				    :name name
 				    (_ "Chemical compound already in the database")))))
+	 (error-msg-other-cid (when (and (not (string-empty-p other-cid))
+					 (not (other-registry-number-validate-p other-cid)))
+				(list (_ "Chemical identifier format not valid"))))
 	 (errors-msg (concatenate 'list
 				  errors-msg-1
 				  errors-msg-2
 				  errors-msg-msds-file
-				  errors-msg-struct-file))
+				  errors-msg-struct-file
+				  error-msg-other-cid))
 	 (success-msg (and (not errors-msg)
 			   (list (format nil (_ "Saved chemical: ~s") name)))))
     (when (not errors-msg)
       (let ((new-chem (create 'db:chemical-compound
 			      :name name
+			      :other-cid   (if (string-empty-p other-cid)
+					       nil
+					       other-cid)
 			      :pubchem-cid (if (scan +pos-integer-re+ cid)
 					       cid
 					       nil)
@@ -66,7 +76,8 @@
 (defun manage-chem (infos errors &key (start-from 0) (data-count 1))
   (let* ((all-chem       (do-rows (row-idx res) ; TODO refactor
 			     (fetch-raw-template-list 'db:chemical-compound
-						      '(:id :name :msds :structure-file)
+						      '(:id :pubchem-cid :other-cid :name
+							:msds :structure-file)
 						      :delete-link 'delete-chemical
 						      :additional-tpl
 						      #'(lambda (row)
@@ -125,6 +136,10 @@
 							(restas:genurl 'chemical))
 						     (with-path-prefix
 							 :name-lb        (_ "Name")
+							 :pubchem-cid-lb
+							 (_ "pubchem CID")
+							 :other-cid-lb
+							 (_ "Other registration number")
 							 :msds-file-lb   (_ "MSDS file")
 							 :data-sheet-lb  (_ "Data Sheet")
 							 :struct-file-lb (_ "Stucture file")
@@ -135,6 +150,7 @@
 							 :msds-pdf       +name-chem-msds-data+
 							 :struct-data    +name-chem-struct-data+
 							 :pubchem-cid    +name-chem-cid+
+							 :other-cid      +name-chem-other-cid+
 							 :data-table     paginated-chem)))
 					       :stream stream)))))
 
@@ -177,9 +193,10 @@
 	(with-pagination (pagination-uri utils:*alias-pagination*)
 	  (let ((name            (tbnl:post-parameter +name-chem-proper-name+))
 		(cid             (tbnl:post-parameter +name-chem-cid+))
+		(other-cid       (tbnl:post-parameter +name-chem-other-cid+))
 		(msds-filename   (get-post-filename +name-chem-msds-data+))
 		(struct-filename (get-post-filename +name-chem-struct-data+)))
-	    (add-new-chem name msds-filename struct-filename cid
+	    (add-new-chem name msds-filename struct-filename cid other-cid
 			  :start-from (session-pagination-start pagination-uri utils:*alias-pagination*)
 			  :data-count (session-pagination-count pagination-uri
 								utils:*alias-pagination*))))

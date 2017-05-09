@@ -82,17 +82,17 @@ plurals-form "+liquid-gas+"
 status :TRANSLATED
 plurals NIL
 id "+highly-volatile+"
-translation "Altamente volatile"
+translation "Liquido altamente volatile"
 plurals-form "+highly-volatile+"
 status :TRANSLATED
 plurals NIL
 id "+medium-volatile+"
-translation "Mediamente volatile"
+translation "Liquido mediamente volatile"
 plurals-form "+medium-volatile+"
 status :TRANSLATED
 plurals NIL
 id "+low-volatile+"
-translation "Bassa volatilità"
+translation "liquido a bassa volatilità"
 plurals-form "+low-volatile+"
 status :TRANSLATED
 plurals NIL
@@ -107,17 +107,17 @@ plurals-form "+solid+"
 status :TRANSLATED
 plurals NIL
 id "HIGHLY_VOLATILE"
-translation "Altamente volatile"
+translation "Liquido altamente volatile"
 plurals-form "HIGHLY_VOLATILE"
 status :TRANSLATED
 plurals NIL
 id "MEDIUM_VOLATILE"
-translation "Mediamente volatile"
+translation "Liquido mediamente volatile"
 plurals-form "MEDIUM_VOLATILE"
 status :TRANSLATED
 plurals NIL
 id "LOW_VOLATILE"
-translation "Bassa volatilità"
+translation "Liquido a bassa volatilità"
 plurals-form "LOW_VOLATILE"
 status :TRANSLATED
 plurals NIL

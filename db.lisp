@@ -188,6 +188,9 @@
   (pubchem-cid
    :type text
    :nullp t)
+  (other-cid
+   :type text
+   :nullp t)
   (msds
    :type text
    :nullp t)

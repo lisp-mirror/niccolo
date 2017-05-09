@@ -236,6 +236,7 @@
    :reactive-color
    :corrosive-color
    :pubchem-cid
+   :other-cid
    :msds
    :structure-file
    :chemical-hazard
@@ -315,6 +316,7 @@
    :png-validate-p
    :pdf-validate-p
    :sdf-validate-p
+   :other-registry-number-validate-p
    :integer-%-validate
    :integer-positive-validate
    :cookie-key-script-visited-validate

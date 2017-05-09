@@ -4,12 +4,19 @@
       enctype="multipart/form-data">
   <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
-  <label for="cid-text">Pubchem CID</label>
+
+  <label for="cid-text"><!-- TMPL_VAR pubchem-cid-lb --></label>
   <input id="cid-text" type="text" name="<!-- TMPL_VAR pubchem-cid -->" />
+
+  <label for="ocid-text"><!-- TMPL_VAR other-cid-lb --></label>
+  <input id="ocid-text" type="text" name="<!-- TMPL_VAR other-cid -->" />
+
   <label for="msds-file"><!-- TMPL_VAR msds-file-lb --></label>
   <input id="msds-file"   type="file" name="<!-- TMPL_VAR msds-pdf -->" />
+
   <label for="struct-file"><!-- TMPL_VAR struct-file-lb --></label>
   <input id="struct-file" type="file" name="<!-- TMPL_VAR struct-data -->" />
+
   <input type="submit" />
 </form>
 
@@ -19,6 +26,8 @@
   <thead>
     <tr>
       <th class="chemical-id-hd">ID</th>
+      <th class="chemical-cid-hd"><!-- TMPL_VAR pubchem-cid-lb --></th>
+      <th class="chemical-other-cid-hd"><!-- TMPL_VAR other-cid-lb --></th>
       <th class="chemical-name-hd"><!-- TMPL_VAR name-lb --></th>
       <th class="chemical-data-sheet-hd"><!-- TMPL_VAR data-sheet-lb --></th>
       <th class="chemical-struct-file-hd"><!-- TMPL_VAR struct-file-lb --></th>
@@ -31,6 +40,12 @@
     <tr>
       <td class="chemical-id">
         <!-- TMPL_VAR id -->
+      </td>
+       <td class="chemical-cid">
+        <!-- TMPL_VAR pubchem-cid -->
+      </td>
+      <td class="chemical-ocid">
+        <!-- TMPL_VAR other-cid -->
       </td>
       <td class="chemical-name">
         <!-- TMPL_VAR name -->

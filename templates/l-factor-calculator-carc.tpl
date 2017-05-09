@@ -1,5 +1,7 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/sum-column.js"></script>
+
 <script>
 
  $(function() {
@@ -21,6 +23,7 @@
 	 }
 
 	 var obj                = {};
+	 obj.name               = $( "#chem-name" ).val().trim();
 	 obj.protectiveDevice   = extractSelected($( "#protective-devices" ));
 	 obj.physicalState      = extractSelected($( "#physical-states" ));
          obj.twork              = $( "#working-temp" ).val().trim();
@@ -36,7 +39,8 @@
 	 }).success(function( data ) {
 	     var info = JSON.parse(data);
 	     var tplView = {};
-	     var tpl     = "<tr>"                +
+	     var tpl     = "<tr>"                                             +
+			   "<td>{{name}}</td>"                                +
 			   "<td>{{protectiveDevice}}</td>"                    +
 			   "<td>{{physicalState}}</td>"                       +
 			   "<td>{{twork}}</td>"                               +
@@ -44,9 +48,10 @@
 			   "<td>{{quantityUsed}}</td>"                        +
 			   "<td>{{usagePerDay}}</td>"                         +
 			   "<td>{{usagePerYear}}</td>"                        +
-			   "<td style=\"background: {{bgRes}}\">{{res}}</td>" +
+			   "<td class=\"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
 			   "<td >{{err}}</td>"                                +
 			   "</tr>";
+	     tplView.name             = obj.name;
 	     tplView.protectiveDevice = obj.protectiveDevice;
 	     tplView.physicalState    = obj.physicalState;
 	     tplView.twork            = obj.twork;
@@ -76,25 +81,30 @@
  });
 </script>
 
+<div id="dialog-sum" title="Total"></div>
+
+<label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
+<input type="text" id="chem-name" value=""/>
+
 <label for="protective-devices">
-  <!-- TMPL_VAR protective-devices-lb -->
+    <!-- TMPL_VAR protective-devices-lb -->
 </label>
 
 <select id="protective-devices" multiple>
-  <!-- TMPL_LOOP option-protective-devices -->
-  <option value="<!-- TMPL_VAR protective-device -->">
-    <!-- TMPL_VAR protective-device -->
-  </option>
-  <!-- /TMPL_LOOP  -->
+    <!-- TMPL_LOOP option-protective-devices -->
+    <option value="<!-- TMPL_VAR protective-device -->">
+	<!-- TMPL_VAR protective-device -->
+    </option>
+    <!-- /TMPL_LOOP  -->
 </select>
 
 <label for="physical-states"><!-- TMPL_VAR physical-states-lb --></label>
 <select id="physical-states" multiple>
-  <!-- TMPL_LOOP option-phys-states -->
-  <option value="<!-- TMPL_VAR phys-state -->">
-    <!-- TMPL_VAR phys-state -->
-  </option>
-  <!-- /TMPL_LOOP  -->
+    <!-- TMPL_LOOP option-phys-states -->
+    <option value="<!-- TMPL_VAR phys-state -->">
+	<!-- TMPL_VAR phys-state -->
+    </option>
+    <!-- /TMPL_LOOP  -->
 </select>
 
 <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
@@ -111,7 +121,6 @@
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->
 
-
 <h3>
     <!-- TMPL_VAR table-res-header -->
     <a id="export-csv-button" class="help-button">
@@ -119,36 +128,45 @@
     </a>
 </h3>
 
-<table id="results">
-  <tr>
-    <th>
-      <!-- TMPL_VAR protective-devices-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR physical-states-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR working-temp-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR boiling-point-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR quantity-used-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR usage-per-day-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR usage-per-year-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR results-lb -->
-    </th>
-    <th>
-      <!-- TMPL_VAR errors-lb -->
-    </th>
-  </tr>
+<input id="sum-selected" type="submit"
+       name=""
+       value="<!-- TMPL_VAR sum-quantities-lb -->"/>
+
+<table id="results" class="sortable">
+    <tr>
+
+	<th>
+	    <!-- TMPL_VAR chem-name-lb -->
+	</th>
+
+	<th>
+	    <!-- TMPL_VAR protective-devices-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR physical-states-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR working-temp-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR boiling-point-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR quantity-used-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR usage-per-day-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR usage-per-year-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR results-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR errors-lb -->
+	</th>
+    </tr>
 </table>
 <div class="biblio-ref">
   <div class="authors">
