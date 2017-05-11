@@ -62,10 +62,10 @@
   (cl-json:encode-json-plist-to-string obj))
 
 (defun json->list (serialized)
-   (handler-case
-       (cl-json:decode-json-from-string serialized)
-     (json:json-syntax-error () nil)
-     (end-of-file            () nil)))
+  (handler-case
+      (cl-json:decode-json-from-string serialized)
+    (json:json-syntax-error () nil)
+    (end-of-file            () nil)))
 
 (defun chemical-products-template->json-string (products &key (other-pairs nil))
   (with-output-to-string (stream)

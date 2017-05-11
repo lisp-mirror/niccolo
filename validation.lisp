@@ -90,6 +90,8 @@
 (defun sdf-validate-p (filepath)
   (molfile:parse-mdl (read-file-into-string filepath)))
 
+(define-constant +other-cid-re+ "^([A-Z]){1,}-[0-9]+-[0-9]+-[0-9]+$" :test #'string=)
+
 (defun other-registry-number-validate-p (d)
   (scan +other-cid-re+ d))
 
@@ -152,6 +154,3 @@
 (define-constant +federated-query-id-re+        "(?i)^.+-[0-9]+"                    :test #'string=)
 
 (define-constant +waste-registration-number-re+ "^[^;\\\"'<>&]+$"                   :test #'string=)
-
-(define-constant +other-cid-re+                 "^([A-Z]){1,}-[0-9]+-[0-9]+-[0-9]+$"
-  :test #'string=)
