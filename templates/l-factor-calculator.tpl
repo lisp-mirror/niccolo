@@ -178,7 +178,7 @@
 </select>
 
 <label for="safety-threshold">
-    <!-- TMPL_VAR safety-threshold-lb --> ( g/(m<sup>3</sup> * h) )
+    <!-- TMPL_VAR safety-threshold-lb --> ( mg/m<sup>3</sup> )
 </label>
 
 <input type="text" id="safety-threshold" value="0.1" />
