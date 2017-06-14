@@ -2,6 +2,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/sum-column.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/delete-row-dynamic.js"></script>
+
 <script>
 
  $(function() {
@@ -39,17 +41,20 @@
 	 }).success(function( data ) {
 	     var info = JSON.parse(data);
 	     var tplView = {};
-	     var tpl     = "<tr>"                                             +
-			   "<td>{{name}}</td>"                                +
-			   "<td>{{protectiveDevice}}</td>"                    +
-			   "<td>{{physicalState}}</td>"                       +
-			   "<td>{{twork}}</td>"                               +
-			   "<td>{{teb}}</td>"                                 +
-			   "<td>{{quantityUsed}}</td>"                        +
-			   "<td>{{usagePerDay}}</td>"                         +
-			   "<td>{{usagePerYear}}</td>"                        +
-			   "<td class=\"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
-			   "<td >{{err}}</td>"                                +
+	     var tpl     = "<tr>"                                                             +
+			   "<td>{{name}}</td>"                                                +
+			   "<td>{{protectiveDevice}}</td>"                                    +
+			   "<td>{{physicalState}}</td>"                                       +
+			   "<td>{{twork}}</td>"                                               +
+			   "<td>{{teb}}</td>"                                                 +
+			   "<td>{{quantityUsed}}</td>"                                        +
+			   "<td>{{usagePerDay}}</td>"                                         +
+			   "<td>{{usagePerYear}}</td>"                                        +
+			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
+			   "<td >{{err}}</td>"                                                +
+			   "<td>"                                                             +
+			   "<div class= \"delete-button delete-row-button\">&nbsp;</div>"     +
+                           "</td>"                                                            +
 			   "</tr>";
 	     tplView.name             = obj.name;
 	     tplView.protectiveDevice = obj.protectiveDevice;
@@ -165,6 +170,9 @@
 	</th>
 	<th>
 	    <!-- TMPL_VAR errors-lb -->
+	</th>
+	<th>
+	    <!-- TMPL_VAR operations-lb -->
 	</th>
     </tr>
 </table>

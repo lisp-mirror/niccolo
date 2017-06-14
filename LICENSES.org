@@ -297,6 +297,6 @@
   www/css/style.css
 
   Contains code:
-  © Animista
+  © Ana Travas
   http://animista.net
   original license FreeBSD License, see http://animista.net/license

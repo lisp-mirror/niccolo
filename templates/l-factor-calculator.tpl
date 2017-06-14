@@ -4,6 +4,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/sum-column.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/delete-row-dynamic.js"></script>
+
 <script>
  // Shorthand for $( document ).ready()
  $(function() {
@@ -25,6 +27,7 @@
 
 	 return bgColor;
      }
+
 
      $( "#start" ).on('click', function(e){
 	 var extractText = function (a) { return $(a).text().trim(); }
@@ -56,23 +59,26 @@
 	 }).success(function( data ) {
 	     let info = JSON.parse(data),
 		 tplView = {},
-		 tpl     = "<tr>"                                             +
-			   "<td>{{name}}</td>"                                +
-			   "<td>{{rPhrases}}</td>"                            +
-			   "<td>{{expositionTypes}}</td>"                     +
-			   "<td>{{physicalState}}</td>"                       +
-			   "<td>{{workingTemp}}</td>"                         +
-			   "<td>{{boilingPoint}}</td>"                        +
-			   "<td>{{expositionTimeType}}</td>"                  +
-			   "<td>{{expositionTime}}</td>"                      +
-			   "<td>{{usage}}</td>"                               +
-			   "<td>{{quantityUsed}}</td>"                        +
-			   "<td>{{quantityStocked}}</td>"                     +
-			   "<td>{{workType}}</td>"                            +
-			   "<td>{{protectionsFactor}}</td>"                   +
-			   "<td>{{safetyThreshold}}</td>"                     +
-			   "<td class=\"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
-			   "<td >{{err}}</td>"                                +
+		 tpl     = "<tr>"                                                             +
+			   "<td>{{name}}</td>"                                                +
+			   "<td>{{rPhrases}}</td>"                                            +
+			   "<td>{{expositionTypes}}</td>"                                     +
+			   "<td>{{physicalState}}</td>"                                       +
+			   "<td>{{workingTemp}}</td>"                                         +
+			   "<td>{{boilingPoint}}</td>"                                        +
+			   "<td>{{expositionTimeType}}</td>"                                  +
+			   "<td>{{expositionTime}}</td>"                                      +
+			   "<td>{{usage}}</td>"                                               +
+			   "<td>{{quantityUsed}}</td>"                                        +
+			   "<td>{{quantityStocked}}</td>"                                     +
+			   "<td>{{workType}}</td>"                                            +
+			   "<td>{{protectionsFactor}}</td>"                                   +
+			   "<td>{{safetyThreshold}}</td>"                                     +
+			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
+			   "<td >{{err}}</td>"                                                +
+			   "<td>"                                                             +
+			   "<div class=\"delete-button delete-row-button\">&nbsp;</div>"      +
+                           "</td>"                                                            +
 			   "</tr>";
 	     tplView.name               = obj.name;
 	     tplView.rPhrases           = obj.rPhrases;
@@ -104,7 +110,6 @@
 	 console.log(csv);
 	 location.href = "data:text/csv;base64," +  window.btoa(csv);
      });
-
 
  });
 </script>
@@ -248,6 +253,10 @@
 	<th>
 	    <!-- TMPL_VAR errors-lb -->
 	</th>
+	<th>
+	    <!-- TMPL_VAR operations-lb -->
+	</th>
+
     </tr>
 </table>
 
