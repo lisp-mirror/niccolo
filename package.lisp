@@ -381,7 +381,8 @@
    :encode-barcode
    :find-filename-from-path
    :random-password
-   :escape-csv-field))
+   :escape-csv-field
+   :escape-string-all-but-double-quotes))
 
 (defpackage :molecule
   (:use

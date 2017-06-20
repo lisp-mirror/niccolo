@@ -18,153 +18,152 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
+
 <script>
-    // Shorthand for $( document ).ready()
-    $(function() {
+ // Shorthand for $( document ).ready()
+ $(function() {
 
-	$( "#validity-date" ).datepicker({dateFormat : "yy-mm-dd"});
+     $( "#validity-date" ).datepicker({dateFormat : "yy-mm-dd"});
 
-	$( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
+     $( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
 
-	var availableStorages = <!-- TMPL_VAR json-storages -->;
-	var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
-	$( "#target-storage" ).autocomplete({
-	    source: availableStorages ,
-	    select: function( event, ui ) {
-		var idx = $.inArray(ui.item.label, availableStorages);
-		$("#target-storage-id").val(availableStoragesId[idx]);
-	    }
-	});
-	var availableChemicals = <!-- TMPL_VAR json-chemicals -->;
-	var availableChemicalsId   = <!-- TMPL_VAR json-chemicals-id -->;
-	$( "#target-chemical" ).autocomplete({
-	    source: availableChemicals ,
-	    select: function( event, ui ) {
-		var idx = $.inArray(ui.item.label, availableChemicals);
-		$("#target-chemical-id").val(availableChemicalsId[idx]);
-	    }
-	});
+     var availableStorages = <!-- TMPL_VAR json-storages -->;
+     var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
+     $( "#target-storage" ).autocomplete({
+	 source: availableStorages ,
+	 select: function( event, ui ) {
+	     var idx = $.inArray(ui.item.label, availableStorages);
+	     $("#target-storage-id").val(availableStoragesId[idx]);
+	 }
+     });
 
-	$( "#target-chemical-shortage" ).autocomplete({
-	    source: availableChemicals ,
-	    select: function( event, ui ) {
-		var idx = $.inArray(ui.item.label, availableChemicals);
-		$("#target-chemical-shortage-id").val(availableChemicalsId[idx]);
-	    }
-	});
+     var availableChemicals = <!-- TMPL_VAR json-chemicals -->;
+     var availableChemicalsId   = <!-- TMPL_VAR json-chemicals-id -->;
 
-	// let's try to align button
-	var addPos= $( "#submit-add" ).position();
-	$( "#submit-search").css("position", "absolute");
-        $( "#submit-search").css("top", addPos.top);
-	$( ".search-chem-prod").height(addPos.top);
-	$( ".add-new-chem-prod").height(addPos.top);
-	$( ".other-ops-chem-prod").height(addPos.top);
+     buildAutocompleteChemicals("#target-chemical", "#target-chemical-id",
+				availableChemicals, availableChemicalsId);
 
-        placeFooter();
-	$( "#select-all").click(function (e){
-	    e.preventDefault();
-	    $( "input[type=checkbox]").prop("checked", true);
-	});
+     $( "#target-chemical-shortage" ).autocomplete({
+	 source: availableChemicals ,
+	 select: function( event, ui ) {
+	     var idx = $.inArray(ui.item.label, availableChemicals);
+	     $("#target-chemical-shortage-id").val(availableChemicalsId[idx]);
+	 }
+     });
 
-	$( "#deselect-all").click(function (e){
-	    e.preventDefault();
-	    $( "input[type=checkbox]").prop("checked", false);
-	});
+     // let's try to align button
+     var addPos= $( "#submit-add" ).position();
+     $( "#submit-search").css("position", "absolute");
+     $( "#submit-search").css("top", addPos.top);
+     $( ".search-chem-prod").height(addPos.top);
+     $( ".add-new-chem-prod").height(addPos.top);
+     $( ".other-ops-chem-prod").height(addPos.top);
 
-	$( "#dialog-chem-cid" ).dialog({
-	    show:  { effect: false },
-	    title: "Information",
-	    autoOpen: false
-	});
+     placeFooter();
+     $( "#select-all").click(function (e){
+	 e.preventDefault();
+	 $( "input[type=checkbox]").prop("checked", true);
+     });
 
-	function cleanField (field){
-	    return field.replace(/\[[^\]]+\]/g, "").replace(/[\s\t]+/, "");
+     $( "#deselect-all").click(function (e){
+	 e.preventDefault();
+	 $( "input[type=checkbox]").prop("checked", false);
+     });
 
-	}
+     $( "#dialog-chem-cid" ).dialog({
+	 show:  { effect: false },
+	 title: "Information",
+	 autoOpen: false
+     });
 
-	$("#export-csv-local-button").click(function (e){
-	    let csv = table2csv("local-results", cleanField);
-	    console.log(csv);
-	    location.href = "data:text/csv;base64," +  window.btoa(csv);
-	});
+     function cleanField (field){
+	 return field.replace(/\[[^\]]+\]/g, "").replace(/[\s\t]+/, "");
 
-	if (mobilep()){  // this is a mobile device
-	    $("fieldset").remove();
-	    $(".logout-link").css("float", "none")
-                             .css("font-size","200%");
-	    $(".left-menu").remove();
-	    $("th,td").not("*[class^='chemp-name'],*[class^='chemp-shelf']").remove();
-            $(".section-title").css("font-size", "6pt");
-	    $("#main-wrapper").css("display", "block");
-	    $("#main-wrapper").css("width", "100%");
-	    $("#main-content-wrapper").css("display", "block");
-	    $("#main-content-wrapper").css("width", "100%");
+     }
 
-	    $("table").css("width", "100%");
+     $("#export-csv-local-button").click(function (e){
+	 let csv = table2csv("local-results", cleanField);
+	 console.log(csv);
+	 location.href = "data:text/csv;base64," +  window.btoa(csv);
+     });
 
-	} // end if (mobilep)
+     if (mobilep()){  // this is a mobile device
+	 $("fieldset").remove();
+	 $(".logout-link").css("float", "none")
+                          .css("font-size","200%");
+	 $(".left-menu").remove();
+	 $("th,td").not("*[class^='chemp-name'],*[class^='chemp-shelf']").remove();
+         $(".section-title").css("font-size", "6pt");
+	 $("#main-wrapper").css("display", "block");
+	 $("#main-wrapper").css("width", "100%");
+	 $("#main-content-wrapper").css("display", "block");
+	 $("#main-content-wrapper").css("width", "100%");
 
-	function verifyRegistryNumbers(numberString, checkDigit){
-	    var arrDgt = numberString.split('');
-	    var sum    = arrDgt.reduce(function(a, b){ return parseInt(a) + parseInt(b);}, 0);
-	    var div    = sum / 10.0;
-	    return  ((div - parseInt(div)) * 10) == parseInt(checkDigit);
-	}
+	 $("table").css("width", "100%");
 
-	// federated-query
+     } // end if (mobilep)
 
-	if(getParameterByName('<!-- TMPL_VAR name -->') != null &&
-	   getParameterByName('<!-- TMPL_VAR name -->') != ""   &&
-	   !mobilep()){
-	    let key        = getParameterByName('<!-- TMPL_VAR name -->'),
+     function verifyRegistryNumbers(numberString, checkDigit){
+	 var arrDgt = numberString.split('');
+	 var sum    = arrDgt.reduce(function(a, b){ return parseInt(a) + parseInt(b);}, 0);
+	 var div    = sum / 10.0;
+	 return  ((div - parseInt(div)) * 10) == parseInt(checkDigit);
+     }
+
+     // federated-query
+
+     if(getParameterByName('<!-- TMPL_VAR name -->') != null &&
+	getParameterByName('<!-- TMPL_VAR name -->') != ""   &&
+	!mobilep()){
+	 let key        = getParameterByName('<!-- TMPL_VAR name -->'),
 	     urlKey     = "<!-- TMPL_VAR fq-query-key-param -->",
 	     startUrl   = "<!-- TMPL_VAR fq-start-url -->",
 	     resultsUrl = "<!-- TMPL_VAR fq-results-url -->",
 	     successFn  = function (data){
-		try{
-		    var info = JSON.parse(data);
-		    info.forEach(function (a) {
-			let tplView = {},
-                            tpl     = "<tr>"            +
-                            "<td>{{host}}</td>"         +
-                            "<td>{{chempId}}</td>"      +
-                            "<td>{{ownerName}}</td>"    +
-                            "<td>{{chemName}}</td>"     +
-                            "<td>{{buildingName}}</td>" +
-                            "<td>{{storageFloor}}</td>" +
-                            "<td>{{storageName}}</td>"  +
-                            "<td>{{shelf}}</td>"        +
-                            "<td>{{quantity}}</td>"     +
-                            "<td>{{units}}</td>"        +
-                            "<td >{{notes}}</td>"       +
-			    "</tr>";
-			tplView.host         = a.host;
-			tplView.chempId      = a.chempId;
-			tplView.ownerName    = a.ownerName;
-			tplView.chemName     = a.chemName;
-			tplView.buildingName = a.buildingName;
-			tplView.storageFloor = a.storageFloor;
-			tplView.storageName  = a.storageName;
-			tplView.shelf        = a.shelf;
-			tplView.quantity     = a.quantity;
-			tplView.units        = a.units;
-			tplView.notes        = a.notes;
+		 try{
+		     var info = JSON.parse(data);
+		     info.forEach(function (a) {
+			 let tplView = {},
+                             tpl     = "<tr>"            +
+				       "<td>{{host}}</td>"         +
+				       "<td>{{chempId}}</td>"      +
+				       "<td>{{ownerName}}</td>"    +
+				       "<td>{{chemName}}</td>"     +
+				       "<td>{{buildingName}}</td>" +
+				       "<td>{{storageFloor}}</td>" +
+				       "<td>{{storageName}}</td>"  +
+				       "<td>{{shelf}}</td>"        +
+				       "<td>{{quantity}}</td>"     +
+				       "<td>{{units}}</td>"        +
+				       "<td >{{notes}}</td>"       +
+				       "</tr>";
+			 tplView.host         = a.host;
+			 tplView.chempId      = a.chempId;
+			 tplView.ownerName    = a.ownerName;
+			 tplView.chemName     = a.chemName;
+			 tplView.buildingName = a.buildingName;
+			 tplView.storageFloor = a.storageFloor;
+			 tplView.storageName  = a.storageName;
+			 tplView.shelf        = a.shelf;
+			 tplView.quantity     = a.quantity;
+			 tplView.units        = a.units;
+			 tplView.notes        = a.notes;
 
-			$("#fq-results tbody" ).append(Mustache.render(tpl, tplView));
-		    });
-		}catch (a){};
-		placeFooter();
+			 $("#fq-results tbody" ).append(Mustache.render(tpl, tplView));
+		     });
+		 }catch (a){};
+		 placeFooter();
 
 	     },
 	     errorFn  = function(a) { placeFooter();};
 
-	    federatedQuery(key, urlKey, startUrl, resultsUrl, successFn, errorFn);
-	}else{
-	    $( "#fq-res-container" ).empty();
-	}
+	 federatedQuery(key, urlKey, startUrl, resultsUrl, successFn, errorFn);
+     }else{
+	 $( "#fq-res-container" ).empty();
+     }
 
-    });
+ });
 </script>
 
 <div id="dialog-building" title=""></div>
@@ -454,7 +453,7 @@
 	<td class="chemp-notes">
 	  <!-- TMPL_VAR notes -->
 	</td>
-	<td class="chemp-delete-link">
+	<td class="operations">
 	  <a href="<!-- TMPL_VAR delete-link -->">
 	    <div class="delete-button">
 	      &nbsp;

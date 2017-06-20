@@ -57,3 +57,9 @@
 
 (defun escape-csv-field (field)
   (cl-ppcre:regex-replace-all "\"" field "\"\""))
+
+(defun escape-string-all-but-double-quotes (string)
+  "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
+  (html-template:escape-string string :test #'(lambda (char)
+						(or (find char "<>&'")
+						    (> (char-code char) 255)))))

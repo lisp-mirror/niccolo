@@ -4,6 +4,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/delete-row-dynamic.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
+
 <script>
 
  $(function() {
@@ -83,13 +85,23 @@
 	 location.href = "data:text/csv;base64," +  window.btoa(csv);
      });
 
+     var availableChemicals   = <!-- TMPL_VAR json-chemicals -->;
+     var availableChemicalsId = <!-- TMPL_VAR json-chemicals-id -->;
+
+     buildAutocompleteChemicals("#chem-name", "#chem-id",
+				availableChemicals, availableChemicalsId);
+
+
  });
 </script>
 
 <div id="dialog-sum" title="Total"></div>
 
 <label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
-<input type="text" id="chem-name" value=""/>
+<input id="chem-id" type="hidden" name="" />
+<span class="ui-widget">
+    <input type="text" id="chem-name" value=""/>
+</span>
 
 <label for="protective-devices">
     <!-- TMPL_VAR protective-devices-lb -->

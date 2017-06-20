@@ -108,7 +108,7 @@
 	    <td class="expire-date">
 		<!-- TMPL_VAR expire-date-decoded -->
 	    </td>
-	    <td class="chemp-delete-link">
+	    <td class="operations">
 		<!-- edit chemical-product -->
 		<a href="<!-- TMPL_VAR update-link -->">
 		    <div class="edit-button">&nbsp;</div>

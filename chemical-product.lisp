@@ -255,7 +255,7 @@
 			     (_ "Manage Chemical Products")
 			     :errors errors
 			     :infos  infos)
-    (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+    (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
 	  (json-chemical    (array-autocomplete-chemical-compound))
 	  (json-chemical-id (array-autocomplete-chemical-compound-id))
 	  (has-local-results-p (> (length data) 0)))
@@ -832,7 +832,7 @@
 			       (_ "Import Data")
 			       :errors '()
 			       :infos  '())
-      (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+      (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
 	    (template  (with-path-prefix
 			   :help-dialog-lb
 			 (_ "Each row must contains exactly 7 fields: chemical name, storage, shelf, quantity, units, date-validity, date-expire.")
@@ -858,6 +858,7 @@
 			   +db-invalid-id+))
 	  (data-table  '()))
       (flet ((import-csv-row (row)
+	       (setf row (mapcar #'strip-tags row))
 	       (incf row-number)
 	       (if (= (length row) +csv-field-count+)
 		   (let ((chemical   (single 'db:chemical-compound
@@ -934,7 +935,7 @@
 				 +csv-field-count+
 				 (length row))
 			 errors))))
-	(let* ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+	(let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
 	       (file-name (get-post-filename +name-import-spreadsheet-data+)))
 	  (when file-name
 	    (cl-csv:read-csv file-name
