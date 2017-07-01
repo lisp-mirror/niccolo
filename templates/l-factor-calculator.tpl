@@ -6,6 +6,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/delete-row-dynamic.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/clear-all-forms.js"></script>
+
 <script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
 
 <script>
@@ -120,101 +122,107 @@
      buildAutocompleteChemicals("#chem-name", "#chem-id",
 				availableChemicals, availableChemicalsId);
 
-
+     $("#clear-forms").on('click', clearAllForms);
  });
 </script>
+<form onclick="return false;">
+    <div id="dialog-sum" title="Total"></div>
 
-<div id="dialog-sum" title="Total"></div>
+    <label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
+    <input id="chem-id" type="hidden" name="" />
+    <span class="ui-widget">
+	<input type="text" id="chem-name" value=""/>
+    </span>
 
-<label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
-<input id="chem-id" type="hidden" name="" />
-<span class="ui-widget">
-    <input type="text" id="chem-name" value=""/>
-</span>
+    <label for="r-phrases"><!-- TMPL_VAR h-phrase-lb --></label>
+    <select id="r-phrases" multiple>
+	<!-- TMPL_LOOP option-h-codes -->
+	<option value="<!-- TMPL_VAR h-code -->"><!-- TMPL_VAR h-code --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
+    <label for="exp-types"><!-- TMPL_VAR exposition-types-lb --></label>
+    <select id="exp-types" multiple>
+	<!-- TMPL_LOOP option-exp-types -->
+	<option value="<!-- TMPL_VAR exp-type -->"><!-- TMPL_VAR exp-type --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
+    <label for="phys-states"><!-- TMPL_VAR physical-state-lb --></label>
+    <select id="phys-states">
+	<!-- TMPL_LOOP option-phys-states -->
+	<option value="<!-- TMPL_VAR phys-state -->"><!-- TMPL_VAR phys-state --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="r-phrases"><!-- TMPL_VAR h-phrase-lb --></label>
-<select id="r-phrases" multiple>
-    <!-- TMPL_LOOP option-h-codes -->
-    <option value="<!-- TMPL_VAR h-code -->"><!-- TMPL_VAR h-code --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
-<label for="exp-types"><!-- TMPL_VAR exposition-types-lb --></label>
-<select id="exp-types" multiple>
-    <!-- TMPL_LOOP option-exp-types -->
-    <option value="<!-- TMPL_VAR exp-type -->"><!-- TMPL_VAR exp-type --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
-<label for="phys-states"><!-- TMPL_VAR physical-state-lb --></label>
-<select id="phys-states">
-    <!-- TMPL_LOOP option-phys-states -->
-    <option value="<!-- TMPL_VAR phys-state -->"><!-- TMPL_VAR phys-state --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
+    <input type="text" id="working-temp" value="25"/>
 
-<label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
-<input type="text" id="working-temp" value="25"/>
+    <label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
+    <input type="text" id="boiling-point" value="100"/>
 
-<label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
-<input type="text" id="boiling-point" value="100"/>
+    <label for="exp-time-type"><!-- TMPL_VAR exposition-time-type-lb --></label>
+    <select id="exp-time-type">
+	<!-- TMPL_LOOP option-exp-time-type -->
+	<option value="<!-- TMPL_VAR exp-time-type -->"><!-- TMPL_VAR exp-time-type --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="exp-time-type"><!-- TMPL_VAR exposition-time-type-lb --></label>
-<select id="exp-time-type">
-    <!-- TMPL_LOOP option-exp-time-type -->
-    <option value="<!-- TMPL_VAR exp-time-type -->"><!-- TMPL_VAR exp-time-type --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="esposition-time"><!-- TMPL_VAR exposition-time-lb --></label>
+    <input type="text" id="exposition-time" value="100"/>
 
-<label for="esposition-time"><!-- TMPL_VAR exposition-time-lb --></label>
-<input type="text" id="exposition-time" value="100"/>
+    <label for="usage"><!-- TMPL_VAR usage-lb --></label>
+    <select id="usage">
+	<!-- TMPL_LOOP option-usages -->
+	<option value="<!-- TMPL_VAR usage -->"><!-- TMPL_VAR usage --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="usage"><!-- TMPL_VAR usage-lb --></label>
-<select id="usage">
-    <!-- TMPL_LOOP option-usages -->
-    <option value="<!-- TMPL_VAR usage -->"><!-- TMPL_VAR usage --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
+    <input type="text" id="quantity-used" value="0.0" />
 
-<label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
-<input type="text" id="quantity-used" value="0.0" />
+    <label for="quantity-stocked"><!-- TMPL_VAR quantity-stocked-lb --></label>
+    <input type="text" id="quantity-stocked" value="0.0" />
 
-<label for="quantity-stocked"><!-- TMPL_VAR quantity-stocked-lb --></label>
-<input type="text" id="quantity-stocked" value="0.0" />
+    <label for="work-type"><!-- TMPL_VAR work-type-lb --></label>
+    <select id="work-type">
+	<!-- TMPL_LOOP option-work-types -->
+	<option value="<!-- TMPL_VAR work-type -->"><!-- TMPL_VAR work-type --></option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="work-type"><!-- TMPL_VAR work-type-lb --></label>
-<select id="work-type">
-    <!-- TMPL_LOOP option-work-types -->
-    <option value="<!-- TMPL_VAR work-type -->"><!-- TMPL_VAR work-type --></option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="protection-factors"><!-- TMPL_VAR protection-factors-lb --></label>
+    <select id="protection-factors" multiple>
+	<!-- TMPL_LOOP option-protection-factors -->
+	<option value="<!-- TMPL_VAR protection-factor -->"><!-- TMPL_VAR protection-factor -->
+	</option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="protection-factors"><!-- TMPL_VAR protection-factors-lb --></label>
-<select id="protection-factors" multiple>
-    <!-- TMPL_LOOP option-protection-factors -->
-    <option value="<!-- TMPL_VAR protection-factor -->"><!-- TMPL_VAR protection-factor -->
-    </option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="safety-threshold">
+	<!-- TMPL_VAR safety-threshold-lb --> ( mg/m<sup>3</sup> )
+    </label>
 
-<label for="safety-threshold">
-    <!-- TMPL_VAR safety-threshold-lb --> ( mg/m<sup>3</sup> )
-</label>
+    <input type="text" id="safety-threshold" value="0.1" />
+    <input id="start" type="submit" value="Calculate" />
 
-<input type="text" id="safety-threshold" value="0.1" />
-<input id="start" type="submit" value="Calculate" />
+    <h3>
+	<!-- TMPL_VAR table-res-header -->
+	<a id="export-csv-button" class="help-button">
+	    <i class="fa fa-download" aria-hidden="true"></i>
+	</a>
+    </h3>
+
+    <input id="sum-selected" type="submit"
+	   name=""
+	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
+
+    <button id="clear-forms">
+	<!-- TMPL_VAR clear-lb -->
+    </button>
+</form>
+
+
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->
-
-<h3>
-    <!-- TMPL_VAR table-res-header -->
-    <a id="export-csv-button" class="help-button">
-	<i class="fa fa-download" aria-hidden="true"></i>
-    </a>
-</h3>
-
-<input id="sum-selected" type="submit"
-       name=""
-       value="<!-- TMPL_VAR sum-quantities-lb -->"/>
-
 
 <table id="results" class="sortable">
     <tr>

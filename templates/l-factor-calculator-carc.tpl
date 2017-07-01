@@ -4,6 +4,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/delete-row-dynamic.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/clear-all-forms.js"></script>
+
 <script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
 
 <script>
@@ -91,63 +93,67 @@
      buildAutocompleteChemicals("#chem-name", "#chem-id",
 				availableChemicals, availableChemicalsId);
 
-
+     $("#clear-forms").on('click', clearAllForms);
  });
 </script>
 
-<div id="dialog-sum" title="Total"></div>
+<form onclick="return false;">
+    <div id="dialog-sum" title="Total"></div>
 
-<label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
-<input id="chem-id" type="hidden" name="" />
-<span class="ui-widget">
-    <input type="text" id="chem-name" value=""/>
-</span>
+    <label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
+    <input id="chem-id" type="hidden" name="" />
+    <span class="ui-widget">
+	<input type="text" id="chem-name" value=""/>
+    </span>
 
-<label for="protective-devices">
-    <!-- TMPL_VAR protective-devices-lb -->
-</label>
+    <label for="protective-devices">
+	<!-- TMPL_VAR protective-devices-lb -->
+    </label>
 
-<select id="protective-devices" multiple>
-    <!-- TMPL_LOOP option-protective-devices -->
-    <option value="<!-- TMPL_VAR protective-device -->">
-	<!-- TMPL_VAR protective-device -->
-    </option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <select id="protective-devices" multiple>
+	<!-- TMPL_LOOP option-protective-devices -->
+	<option value="<!-- TMPL_VAR protective-device -->">
+	    <!-- TMPL_VAR protective-device -->
+	</option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="physical-states"><!-- TMPL_VAR physical-states-lb --></label>
-<select id="physical-states" multiple>
-    <!-- TMPL_LOOP option-phys-states -->
-    <option value="<!-- TMPL_VAR phys-state -->">
-	<!-- TMPL_VAR phys-state -->
-    </option>
-    <!-- /TMPL_LOOP  -->
-</select>
+    <label for="physical-states"><!-- TMPL_VAR physical-states-lb --></label>
+    <select id="physical-states" multiple>
+	<!-- TMPL_LOOP option-phys-states -->
+	<option value="<!-- TMPL_VAR phys-state -->">
+	    <!-- TMPL_VAR phys-state -->
+	</option>
+	<!-- /TMPL_LOOP  -->
+    </select>
 
-<label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
-<input type="text" id="working-temp" value="25"/>
-<label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
-<input type="text" id="boiling-point" value="100"/>
-<label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
-<input type="text" id="quantity-used" value="100"/>
-<label for="usage-per-day"><!-- TMPL_VAR usage-per-day-lb --></label>
-<input type="text" id="usage-per-day" value="100"/>
-<label for="usage-per-year"><!-- TMPL_VAR usage-per-year-lb --></label>
-<input type="text" id="usage-per-year" value="100"/xk>
-<input id="start" type="submit" value="Calculate" />
+    <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
+    <input type="text" id="working-temp" value="25"/>
+    <label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
+    <input type="text" id="boiling-point" value="100"/>
+    <label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
+    <input type="text" id="quantity-used" value="100"/>
+    <label for="usage-per-day"><!-- TMPL_VAR usage-per-day-lb --></label>
+    <input type="text" id="usage-per-day" value="100"/>
+    <label for="usage-per-year"><!-- TMPL_VAR usage-per-year-lb --></label>
+    <input type="text" id="usage-per-year" value="100"/xk>
+    <input id="start" type="submit" value="Calculate" />
+
+
+    <h3>
+	<!-- TMPL_VAR table-res-header -->
+	<a id="export-csv-button" class="help-button">
+	    <i class="fa fa-download" aria-hidden="true"></i>
+	</a>
+    </h3>
+
+    <input id="sum-selected" type="submit"
+	   name=""
+	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
+    <button id="clear-forms"><!-- TMPL_VAR clear-lb --></button>
+</form>
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->
-
-<h3>
-    <!-- TMPL_VAR table-res-header -->
-    <a id="export-csv-button" class="help-button">
-	<i class="fa fa-download" aria-hidden="true"></i>
-    </a>
-</h3>
-
-<input id="sum-selected" type="submit"
-       name=""
-       value="<!-- TMPL_VAR sum-quantities-lb -->"/>
 
 <table id="results" class="sortable">
     <tr>

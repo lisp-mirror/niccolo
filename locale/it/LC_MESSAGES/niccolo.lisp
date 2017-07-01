@@ -3094,4 +3094,28 @@ translation "Nome del composto"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Altro numero identificativo"
+translation ""
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "pubchem CID"
+translation "pubchem CID"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Chemical identifier format not valid"
+translation "Formato del numero identificativo non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Clear fields"
+translation "Pulisci i campi"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

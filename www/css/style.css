@@ -41,9 +41,10 @@ sub {
 }
 
 select {
-    display:       block;
-    margin-top:    5pt;
-    margin-bottom: 5pt;
+    display:         block;
+    margin-top:      5pt;
+    margin-bottom:   5pt;
+    min-width:     300pt;
 }
 
 input {
@@ -51,6 +52,10 @@ input {
     margin-top:    5pt;
     margin-bottom: 5pt;
     font-size:     100%;
+}
+
+form button {
+    min-width: 150pt;
 }
 
 input[type=image] {
@@ -223,10 +228,12 @@ td.chemp-haz-diamond img {
 
 .button-login {
     background: lightgreen;
+    min-width:  60%;
 }
 
 .button-logout {
     background: #FFCF5E;
+    min-width:  60%;
 }
 
 .button-back-navigation {
@@ -239,7 +246,7 @@ td.chemp-haz-diamond img {
 }
 
 .logout-username {
-    font-size:   75%;
+    font-size:   70%;
     font-family: serif;
 }
 

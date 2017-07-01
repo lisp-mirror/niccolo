@@ -114,6 +114,7 @@
 				 :table-res-header          (_ "Results")
 				 :errors-lb                 (_ "Errors")
 				 :sum-quantities-lb         (_ "Sum quantities")
+				 :clear-lb                  (_ "Clear fields")
 				 :operations-lb             (_ "Operations")
 				 :json-chemicals            json-chemical
 				 :json-chemicals-id         json-chemical-id
@@ -148,6 +149,7 @@
 				 :usage-per-year-lb         (_ "Usage per year (days)")
 				 :results-lb                (_ "Results")
 				 :sum-quantities-lb         (_ "Sum quantities")
+				 :clear-lb                  (_ "Clear fields")
 				 :operations-lb             (_ "Operations")
 				 :table-res-header          (_ "Results")
 				 :errors-lb                 (_ "Errors")
