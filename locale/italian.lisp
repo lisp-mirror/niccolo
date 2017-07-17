@@ -232,7 +232,7 @@ plurals-form "+no-aspiration+"
 status :TRANSLATED
 plurals NIL
 id "+other-manipulation-devices+"
-translation "Altri sistemi di manipolazione"
+translation "Propipette o altri sistemi di manipolazione controllata obbligatori"
 plurals-form "+other-manipulation-devices+"
 status :TRANSLATED
 plurals NIL
