@@ -187,6 +187,7 @@
    :constants)
   (:export
    :build-description
+   :generate-ps-custom-label
    :id
    :building
    :address
@@ -243,11 +244,13 @@
    :chemical-precautionary
    :ghs-p
    :ghs-h
+   :laboratory
    :chemical-product
    :validity-date
    :expire-date
    :opening-package-date
    :owner
+   :notes
    :compound
    :storage
    :quantity
@@ -262,6 +265,12 @@
    :user-from
    :user-to
    :product
+   :chemical-sample
+   :laboratory-id
+   :checkin-date
+   :checkout-date
+   :owner-user-db-object
+   :with-owner-object
    :message
    :sender
    :recipient
@@ -310,6 +319,8 @@
    :unique-p-validate
    :unique-p-validate*
    :exists-with-different-id-validate
+   :id-valid-and-used-p
+   :with-id-valid-and-used
    :integer-validate
    :date-validate-p
    :magic-validate-p
@@ -339,7 +350,9 @@
    :+waste-form-weight-re+
    :+federated-query-product-re+
    :+federated-query-id-re+
-   :+waste-registration-number-re+))
+   :+waste-registration-number-re+
+   :+laboratory-name-re+
+   :+sample-name-re+))
 
 (defpackage :math-utils
   (:use
@@ -382,7 +395,9 @@
    :find-filename-from-path
    :random-password
    :escape-csv-field
-   :escape-string-all-but-double-quotes))
+   :escape-string-all-but-double-quotes
+   :ellipsize
+   :safe-parse-number))
 
 (defpackage :molecule
   (:use
@@ -432,13 +447,16 @@
    :constants)
   (:shadowing-import-from :cl-pslib :rotate)
   (:export
-   :render-barcode-x-y
    :with-save-restore
+   :render-simple-label
+   :render-chemprod-barcode-x-y
    :+a4-landscape-page-sizes+
    :with-a4-lanscape-ps-doc
    :with-a4-ps-doc
+   :with-custom-size-ps-doc
    :default-font
-   :render-many-barcodes))
+   :render-many-chemprod-barcodes
+   :render-many-sample-barcodes))
 
 (defpackage :db-utils
     (:use
@@ -509,6 +527,9 @@
   (:export
    :+uri-query-start+
    :define-lab-route
+   :filter-all-get-params
+   :filter-all-post-params
+   :get-parameter-non-nil-p
    :get-post-filename
    :source-origin-header
    :target-origin-header

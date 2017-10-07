@@ -227,7 +227,7 @@
 	       (q        (- (* slope min-y)))
 	       (norm-y   (map 'vector
 			      #'(lambda (a) (+ (* slope
-						  (parse-number:parse-number a))
+						  (string-utils:safe-parse-number a))
 					       q))
 			      ys))
 	       (norm-x   xs))

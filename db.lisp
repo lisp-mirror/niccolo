@@ -17,6 +17,18 @@
 
 (defgeneric build-description (object))
 
+(defgeneric generate-ps-custom-label (object &key &allow-other-keys))
+
+(defgeneric owner-user-db-object (object))
+
+(defmethod owner-user-db-object (object)
+  (and (owner object)
+       (single 'user :id (owner object))))
+
+(defmacro with-owner-object ((owner object) &body body)
+  `(let ((,owner (and ,object (db:owner-user-db-object ,object))))
+     ,@body))
+
 (deftable plant-map ()
   (description
    :type text
@@ -57,8 +69,8 @@
 
 (defmethod build-description ((object building))
   (format nil "~a ~a"
-	  (name object)
-	  (build-complete-address (single 'address :id (address-id object)))))
+          (name object)
+          (build-complete-address (single 'address :id (address-id object)))))
 
 (deftable storage ()
   (name
@@ -116,7 +128,7 @@
 
 (defmethod build-description ((object ghs-hazard-statement))
   (format nil "~a ~a ~@[(~a)~] ~a" (code object) (explanation object) (carcinogenic object)
-	  (build-carcinogenic-description object)))
+          (build-carcinogenic-description object)))
 
 (deftable cer-code ()
   (code
@@ -277,6 +289,9 @@
    :type text
    :nullp t))
 
+(defmethod print-object ((object chemical-product) stream)
+  (format stream "~a (~a)" (name (single 'chemical-product :id (compound object))) (id object)))
+
 (deftable chemical-compound-preferences ()
   (owner
    :type integer
@@ -303,6 +318,18 @@
    :type integer
    :foreign (chemical-compound :restrict :cascade)))
 
+(deftable laboratory ()
+  (name
+   :type text
+   :nullp nil)
+  (owner
+   :type integer
+   :foreign (user :restrict :cascade)))
+
+(defmethod owner-user-db-object ((object laboratory))
+  (and (owner object)
+       (single 'user :id (owner object))))
+
 (deftable loans ()
   (product
    :type integer
@@ -313,6 +340,35 @@
   (user-to
    :type integer
    :foreign (user :restrict :cascade)))
+
+(deftable chemical-sample ()
+  (name
+   :type text)
+  (laboratory-id
+   :type integer
+   :foreign (laboratory :restrict :cascade))
+  (checkin-date
+   :type timestamp
+   :nullp nil)
+  (checkout-date
+   :type timestamp)
+  (quantity
+   :type integer
+   :nullp nil)
+  (units
+   :type text
+   :nullp nil)
+  (notes
+   :type text
+   :nullp t))
+
+(defmethod print-object ((object chemical-sample) stream)
+  (format stream "~a" (name object)))
+
+(defmethod owner-user-db-object ((object chemical-sample))
+  (let ((lab (single 'laboratory :id (laboratory-id object))))
+    (and lab
+	 (owner-user-db-object lab))))
 
 (deftable message ()
   (sender

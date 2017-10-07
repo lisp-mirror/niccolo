@@ -98,6 +98,12 @@
 	  </a>
 	</li>
 	<li class="with-menu-item-anim">
+	  <a href="<!-- TMPL_VAR manage-laboratories -->">
+	    <!-- TMPL_VAR manage-laboratories-lbl -->
+	  </a>
+	</li>
+
+	<li class="with-menu-item-anim">
 	  <a href="<!-- TMPL_VAR manage-maps -->">
 	    <!-- TMPL_VAR manage-maps-lbl -->
 	  </a>
@@ -136,6 +142,16 @@
 	</li>
       </ul>
     </li>
+    <li class="menu-level-1"><!-- TMPL_VAR samples-lbl --></li>
+    <li class="menu-level-2">
+      <ul>
+	<li class="with-menu-item-anim">
+	  <a href="<!-- TMPL_VAR manage-samples -->">
+	    <!-- TMPL_VAR manage-samples-lbl -->
+	  </a>
+	</li>
+      </ul>
+    </li>
     <li class="menu-level-1"><!-- TMPL_VAR users-lbl --></li>
     <li class="menu-level-2">
       <ul>
@@ -156,11 +172,19 @@
 	    <!-- TMPL_VAR manage-user-lbl -->
 	  </a>
 	</li>
+
+	<li class="with-menu-item-anim">
+	  <a href="<!-- TMPL_VAR manage-user-lab -->">
+	    <!-- TMPL_VAR manage-user-lab-lbl -->
+	  </a>
+	</li>
+
 	<li class="with-menu-item-anim">
 	  <a href="<!-- TMPL_VAR change-password -->">
 	    <!-- TMPL_VAR change-password-lbl -->
 	  </a>
 	</li>
+
 	<li class="with-menu-item-anim">
 	  <a href="<!-- TMPL_VAR user-preferences -->">
 	    <!-- TMPL_VAR user-preferences-lbl -->

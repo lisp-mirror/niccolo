@@ -119,7 +119,7 @@
 	   (ghs-haz-link     (restas:genurl 'ws-ghs-hazard :id (getf row :chem-id)))
 	   (ghs-prec-link    (restas:genurl 'ws-ghs-prec   :id (getf row :chem-id)))
 	   (msds-link        (restas:genurl 'chemical-get-msds :id (getf row :chem-id)))
-	   (barcode-link     (restas:genurl 'single-barcode :id (getf row :chemp-id)))
+	   (barcode-link     (restas:genurl 'single-chemprod-barcode :id (getf row :chemp-id)))
 	   (thumbnail-link   (if (not (eq (getf row :chem-cid) :nil))
 				 (make-pubchem-2d (getf row :chem-cid))
 				 (actual-image-unknown-struct-path)))
@@ -602,7 +602,8 @@
       ""
       (getf key row)))
 
-(defun generate-ps-custom-label (product)
+(defmethod db:generate-ps-custom-label ((product db:chemical-product)
+                                        &key &allow-other-keys)
   (let ((haz-data (keywordize-query-results
 		   (query
 		    (select ((:as :chem.name               :name)
@@ -734,38 +735,36 @@
       (if product
 	  (progn
 	    (setf (header-out :content-type) +mime-postscript+)
-	    (generate-ps-custom-label product))
+	    (db:generate-ps-custom-label product))
 	  (manage-chem-prod nil (list (_ "Failure")))))))
 
-(defun massive-delete (ids)
+(defun massive-delete (ids class message-ok message-error manage-fn)
   (with-authentication
     (with-session-user (user)
       (let ((all-errors   "")
 	    (all-messages ""))
 	(loop for id in ids do
 	     (if (not (regexp-validate (list (list id +pos-integer-re+ (_ "no")))))
-		 (let ((product (crane:single 'db:chemical-product :id id)))
-		   (if (and (not (null product))
-			    (or (session-admin-p)
-				(= (db:id user) (db:owner product))))
-		       (progn
-			 (setf all-messages (concatenate 'string
-							 all-messages
-							 (format nil
-								 (_ "Product ~a deleted. ")
-								 id)))
-			 (crane:del product))
-		       (setf all-errors (concatenate 'string
-						     all-errors
-						     (concatenate 'string
-							 all-messages
-							 (format nil
-								 (_ "Product ~a not deleted. ")
-								 id))))))))
-	(manage-chem-prod (and (not (string= "" all-messages))
-			       (list all-messages))
-			  (and (not (string= "" all-errors))
-			       (list all-errors)))))))
+		 (let ((object (single class :id id)))
+                   (when (not (null object))
+                     (db:with-owner-object (owner object)
+                       (if (and (not (null owner))
+				(= (db:id user) (db:id owner)))
+                           (progn
+                             (setf all-messages (concatenate 'string
+                                                             all-messages
+                                                             (format nil
+                                                                     message-ok
+                                                                     object)))
+                             (crane:del object))
+                           (setf all-errors (concatenate 'string
+                                                         all-errors
+                                                         (format nil message-error object)))))))))
+	(funcall manage-fn
+                 (and (not (string= "" all-messages))
+                      (list all-messages))
+                 (and (not (string= "" all-errors))
+                      (list all-errors)))))))
 
 (defun manage-threshold (id shortage)
   (with-authentication
@@ -797,12 +796,15 @@
       (cond
 	((post-parameter +op-submit-gen-barcode+)
 	 (setf (header-out :content-type) +mime-postscript+)
-	 (render-many-barcodes all-ids))
+	 (render-many-chemprod-barcodes all-ids))
 	((post-parameter +op-submit-lend-to+)
 	 (lend-to (get-session-user-id) (post-parameter +name-username-lending+)
 		  (or (first all-ids) "")))
 	((post-parameter +op-submit-massive-delete+)
-	 (massive-delete all-ids))
+	 (massive-delete all-ids 'db:chemical-product
+                         (_ "Product ~a deleted. ")
+                         (_ "Product ~a not deleted. ")
+                         #'manage-chem-prod))
 	((post-parameter  +op-submit-change-shortage-threshold+)
 	 (manage-threshold  (post-parameter +name-chem-id+)
 			    (post-parameter +name-shortage-threshold+)))

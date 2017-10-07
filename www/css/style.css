@@ -78,6 +78,10 @@ input[type=password] {
     width:  150pt;
 }
 
+input[type=checkbox] {
+    display: inline;
+}
+
 .other-ops-chem-prod  input[type=submit] {
     min-width:    150pt;
     margin-left:  auto;
@@ -917,6 +921,14 @@ div.biblio-ref{
     list-style-type: none;
 }
 
+td.user-lab-operations {
+    text-align: left;
+}
+
+td.user-lab-operations label {
+    display: inline;
+}
+
 
 /* decision tree */
 
@@ -991,6 +1003,45 @@ table.waste-stats th {
 .fq-download {
     color: #3EAEE5;
 }
+
+.toggle-labs {
+    color:  #3EAEE5;
+    cursor: pointer;
+}
+
+fieldset.add-new-sample  {
+    width:  200pt;
+    float:  left;
+    margin:   5pt;
+    height: 390pt;
+}
+
+
+fieldset.search-new-sample  {
+    width:  200pt;
+    margin:   5pt;
+    height: 390pt;
+    float:  left;
+}
+
+
+#textarea-update-sample {
+    width:  512pt;
+    height: 256pt;
+}
+
+.other-ops-chem-sample  input[type=submit] {
+    min-width:    150pt;
+    margin-left:  auto;
+    margin-right: auto;
+}
+
+fieldset.other-ops-chem-sample  {
+    width:  200pt;
+    margin:   5pt;
+    height: 390pt;
+}
+
 
 /* jquery ui extension */
 

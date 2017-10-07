@@ -54,7 +54,7 @@
 (defun t-factor-extract (key)
   (let ((t-fact (gethash key *exposition-table*)))
     (if (not (null t-fact))
-	(parse-number t-fact)
+	(string-utils:safe-parse-number t-fact)
 	(progn
 	  (push (format nil (_ "Exposition type ~a not found") key) *errors*)
 	  0.0))))
@@ -107,7 +107,7 @@
 (defun s-factor-value->string (number)
   (let ((res nil))
     (maphash #'(lambda (k v)
-		 (when (= number (parse-number v))
+		 (when (= number (string-utils:safe-parse-number v))
 		   (setf res (cl-i18n:translate k))))
 	     *physical-state-table*)
     res))
@@ -115,7 +115,7 @@
 (defun s-factor-table (key)
   (let ((s-fact (gethash key *physical-state-table*)))
     (if (not (null s-fact))
-	(parse-number s-fact)
+	(string-utils:safe-parse-number s-fact)
 	(progn
 	  (push (format nil (_ "Physical state ~a not found") key) *errors*)
 	  0.0))))
@@ -165,7 +165,7 @@
 (defun e-factor (time key)
   (let ((exposition (gethash key *exposition-time-table*)))
     (if (not (null exposition))
-	(/ time (parse-number exposition))
+	(/ time (string-utils:safe-parse-number exposition))
 	(progn
 	  (push (format nil (_ "Exposition time ~a not found") key) *errors*)
 	  0.0))))
@@ -195,7 +195,7 @@
 (defun u-factor (key)
   (let ((usage (gethash key *usage-table*)))
     (if (not (null usage))
-	(parse-number usage)
+	(string-utils:safe-parse-number usage)
 	(progn
 	  (push (format nil (_ "Usage ~a not found") key) *errors*)
 	  0.0))))
@@ -238,16 +238,16 @@
 	     (xml-utils:with-tagmatch (+segment-el+ node)
 	       (setf node (xmls:xmlrep-children node))
 	       (let ((qmin (xml-utils:with-tagmatch (+qmin-el+ (first node))
-			     (parse-number
+			     (string-utils:safe-parse-number
 			      (first (xmls:xmlrep-children (first node))))))
 		     (qmax (xml-utils:with-tagmatch (+qmax-el+ (second node))
-			     (parse-number
+			     (string-utils:safe-parse-number
 			      (first (xmls:xmlrep-children (second node))))))
 		     (min (xml-utils:with-tagmatch (+min-el+ (third node))
-			    (parse-number
+			    (string-utils:safe-parse-number
 			     (first (xmls:xmlrep-children (third node))))))
 		     (max (xml-utils:with-tagmatch (+max-el+ (fourth node))
-			    (parse-number
+			    (string-utils:safe-parse-number
 			     (first (xmls:xmlrep-children (fourth node)))))))
 		 (list qmin qmax (line-eqn (list qmin min) (list qmax max)))))))
 
@@ -298,7 +298,7 @@
 (defun a-factor (key)
   (let ((usage (gethash key *work-table*)))
     (if (not (null usage))
-	(parse-number usage)
+	(string-utils:safe-parse-number usage)
 	(progn
 	  (push (format nil (_ "Work type ~a not found") key) *errors*)
 	  0.0))))
@@ -368,7 +368,7 @@
 (defun k-factor-extract (key)
   (let ((usage (gethash key *devices-table*)))
     (if (not (null usage))
-	(parse-number usage)
+	(string-utils:safe-parse-number usage)
 	(progn
 	  (push (format nil (_ "Devices type ~a not found") key) *errors*)
 	  1))))
@@ -438,7 +438,7 @@
 (defun p-factor-carc-extract (key)
   (let ((p-fact (gethash key *device-carc-table*)))
     (if (not (null p-fact))
-	(parse-number p-fact)
+	(string-utils:safe-parse-number p-fact)
 	(progn
 	  (push (format nil (_ "Protective device \"~a\" not found") key) *errors*)
 	  0.0))))
@@ -473,7 +473,7 @@
 (defun s-factor-carc-extract (key)
   (let ((s-fact (gethash key *physical-state-carc-table*)))
     (if (not (null s-fact))
-	(parse-number s-fact)
+	(string-utils:safe-parse-number s-fact)
 	(progn
 	  (push (format nil (_ "Physical state \"~a\" not found") key) *errors*)
 	  0.0))))
@@ -504,8 +504,8 @@
 	(xml-utils:with-tagmatch (root xmls-list)
 	  (let* ((thrs (p-threshold (xmls:xmlrep-children xmls-list)))
 		 (vals (p-value (first thrs))))
-	    (list (mapcar #'parse-number (second thrs))
-		  (mapcar #'parse-number (second vals)))))))))
+	    (list (mapcar #'string-utils:safe-parse-number (second thrs))
+		  (mapcar #'string-utils:safe-parse-number (second vals)))))))))
 
 (defparameter *working-temp-carc-table* (read-threshold-value-xml config:*working-temp-carc*
 								  +working-temp+))
@@ -557,7 +557,7 @@
 				       config:*exposition-time-carc*))
 
 (defun e-factor-carc (min)
-  (/ min (parse-number (gethash +value+ *exposition-carc-table*))))
+  (/ min (string-utils:safe-parse-number (gethash +value+ *exposition-carc-table*))))
 
 (alexandria:define-constant +frequency+ "frequency" :test #'equal)
 
@@ -567,7 +567,7 @@
 (defparameter *frequency-carc-table* (read-usage-freq-carc-config config:*frequency-carc*))
 
 (defun f-factor-carc (days)
-  (/ days (parse-number (gethash +value+ *frequency-carc-table*))))
+  (/ days (string-utils:safe-parse-number (gethash +value+ *frequency-carc-table*))))
 
 (alexandria:define-constant +frac-canc-l-carc+ 25/4)
 

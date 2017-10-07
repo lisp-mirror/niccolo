@@ -80,7 +80,7 @@
 	  (obj->json-string (db:id code))
 	  +http-not-found+))))
 
-(define-lab-route single-barcode ("/ws/gen-barcode/:id" :method :get)
+(define-lab-route single-chemprod-barcode ("/ws/gen-barcode/:id" :method :get)
   (with-authentication
     (if (and (scan +pos-integer-re+ id)
 	     (single 'db:chemical-product :id (parse-integer id)))
@@ -90,7 +90,9 @@
 	    (let ((ps:*callback-string* ""))
 	      (ps:open-doc doc nil)
 	      (ps:begin-page doc)
-	      (render-barcode-x-y doc id (/ (ps:width ps:+a4-page-size+) 2) +page-margin-top+)
+	      (render-chemprod-barcode-x-y doc id
+					   (/ (ps:width ps:+a4-page-size+) 2)
+					   +page-margin-top+)
 	      (ps:end-page doc)
 	      (ps:close-doc doc)
 	      (ps:shutdown)
@@ -98,7 +100,7 @@
 	+http-not-found+)))
 
 (defun %extract-parse (key bag &optional (default "1.0"))
-  (parse-number:parse-number (or (cdr (assoc key bag)) default)))
+  (string-utils:safe-parse-number (or (cdr (assoc key bag)) default)))
 
 (define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
@@ -337,7 +339,8 @@
 			    (when (= (length fields) 2)
 			      (handler-case
 				  (let ((time  (decode-time-string (elt fields 0)))
-					(value (and (parse-number:parse-number (elt fields 1))
+					(value (and (string-utils:safe-parse-number (elt fields
+                                                                                         1))
 						    (elt fields 1))))
 				    (push time  xs)
 				    (push value ys))

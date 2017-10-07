@@ -3118,4 +3118,268 @@ translation "Pulisci i campi"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "invalid id provided"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User ~s associed with: "
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "User invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Associate User to Laboratories"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Other registration number"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Associate users and laboratories"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Samples"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratories"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Responsible person"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage laboratory"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Saved new laboratory ~s"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory already in the database"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory name  invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample ~a not deleted. "
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample ~a deleted. "
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Successfully added samples"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample not deleted"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample ~a deleted"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Samples saved"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "You are not in charge of laboratory ~a"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Checkin date not valid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "sample name invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory id invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Generate labels"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Height"
+translation "Altezza"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Width"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Draw barcode"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Generate"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Search samples"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Checkout date"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Checkin date"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Search sample"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Add new sample"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage Samples"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update Sample"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample updated"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Sample not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Checkout date not properly formatted."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "laboratory unknown"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory name invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Height (mm)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Width (mm)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
 )

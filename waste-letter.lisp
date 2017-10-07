@@ -25,7 +25,7 @@
 
 (define-constant +name-waste-phys-id+            "physical-state-id" :test #'string=)
 
-(define-constant +name-waste-lab-num+            "lab-num"           :test #'string=)
+(define-constant +name-waste-lab-id+             "lab-id"           :test #'string=)
 
 (define-constant +name-waste-weight+             "weight"            :test #'string=)
 
@@ -34,6 +34,12 @@
 (define-constant +name-select-hp+                "select-hp"         :test #'string=)
 
 (gen-autocomplete-functions db:cer-code db:code)
+
+(defun lab-id->name (id)
+  (let ((res (single 'db:laboratory :id id)))
+    (if res
+	(db:name res)
+	(_ "laboratory unknown"))))
 
 (defun adr-list ()
   (let ((raw (filter 'db:adr-code)))
@@ -70,33 +76,37 @@
 	  (json-cer-id      (array-autocomplete-cer-code-id))
 	  (json-building    (array-autocomplete-building))
 	  (json-building-id (array-autocomplete-building-id))
+	  (json-labs        (array-autocomplete-laboratory))
+	  (json-labs-id     (array-autocomplete-laboratory-id))
 	  (json-phys        (array-autocomplete-waste-physical-state))
 	  (json-phys-id     (array-autocomplete-waste-physical-state-id)))
       (html-template:fill-and-print-template #p"waste-letter.tpl"
 					     (with-back-to-root
 						 (with-path-prefix
-						     :name-lb          (_ "Name")
-						     :building-lb      (_ "Building")
-						     :laboratory-lb    (_ "Laboratory")
-						     :weight-lb        (_ "Weight (Kg)")
-						     :description-lb   (_ "Description")
+						     :name-lb            (_ "Name")
+						     :building-lb        (_ "Building")
+						     :laboratory-lb      (_ "Laboratory")
+						     :weight-lb          (_ "Weight (Kg)")
+						     :description-lb     (_ "Description")
 						     :waste-physical-state-lb
 						     (_ "Physical state")
-						     :name             +name-waste-user-name+
-						     :cer-id           +name-waste-cer-id+
-						     :building-id      +name-waste-building-id+
-						     :phys-id          +name-waste-phys-id+
-						     :lab-num          +name-waste-lab-num+
-						     :weight           +name-waste-weight+
-						     :description      +name-waste-description+
-						     :json-cer         json-cer
-						     :json-cer-id      json-cer-id
-						     :json-building    json-building
-						     :json-building-id json-building-id
-						     :json-phys        json-phys
-						     :json-phys-id     json-phys-id
-						     :hp-list          (hp-list)
-						     :adr-list         (adr-list)))
+						     :name               +name-waste-user-name+
+						     :cer-id             +name-waste-cer-id+
+						     :building-id        +name-waste-building-id+
+						     :phys-id            +name-waste-phys-id+
+						     :lab-id             +name-waste-lab-id+
+						     :weight             +name-waste-weight+
+						     :description        +name-waste-description+
+						     :json-cer           json-cer
+						     :json-cer-id        json-cer-id
+						     :json-building      json-building
+						     :json-building-id   json-building-id
+						     :json-laboratory    json-labs
+						     :json-laboratory-id json-labs-id
+						     :json-phys          json-phys
+						     :json-phys-id       json-phys-id
+						     :hp-list            (hp-list)
+						     :adr-list           (adr-list)))
 					       :stream stream))))
 
 (define-lab-route waste-letter ("/waste-letter/" :method :get)
@@ -119,7 +129,7 @@
 	      (reduce #'(lambda (a b) (format nil "~a, ~a" a b))
 		      hps))))
 
-(defun write-letter (user lab-num address weight cer phys-state body adrs hps)
+(defun write-letter (user lab-id address weight cer phys-state body adrs hps)
   (let ((actual-address (cond
 			  ((scan "^[aeiouAEIOU]" address)
 			   (format nil "l'~a" address))
@@ -130,7 +140,7 @@
     (format nil
             *waste-letter-body*
             user
-            lab-num
+            (lab-id->name lab-id)
             actual-address
             weight
             body
@@ -139,7 +149,7 @@
             (letter-hp-codes hps)
             phys-state)))
 
-(defun validate-letter-request (username lab-number building-id weight cer-id
+(defun validate-letter-request (username lab-id building-id weight cer-id
                                phys-state-id body adrs hp-codes)
   (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
          (all-hp     (%get-all-objects-from-dirty-ids 'db:hp-waste-code hp-codes))
@@ -161,7 +171,7 @@
          (errors     '()))
       (when (string-empty-p username)
        (push (_ "User not specified") errors))
-      (when (string-empty-p lab-number)
+      (when (string-empty-p lab-id)
        (push (_ "Laboratory not specified") errors))
       (when (string-empty-p building)
        (push (_ "Building not specified") errors))
@@ -179,9 +189,9 @@
        (push (_ "HP codes empty") errors))
       errors))
 
-(defun generate-letter (username lab-number building-id weight cer-id
+(defun generate-letter (username lab-id building-id weight cer-id
 			phys-state-id body adrs hp-codes)
-  (let ((errors (validate-letter-request username lab-number building-id weight cer-id
+  (let ((errors (validate-letter-request username lab-id building-id weight cer-id
                                          phys-state-id body adrs hp-codes)))
     (if (null errors)
         (let* ((all-adrs   (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
@@ -204,7 +214,7 @@
                                                #'db:name
                                                :default
                                                (_ "*warning: no such building*")))
-               (msg-text (write-letter username lab-number building weight actual-cer
+               (msg-text (write-letter username lab-id building weight actual-cer
                                        phys-state body
                                        (mapcar #'(lambda (a) (format nil "~a (classe ~a)"
                                                                      (db:uncode a)
@@ -238,7 +248,7 @@
                                                  :weight         weight
                                                  :adr-ids        adrs
                                                  :hp-ids         hp-codes)))
-          (values (generate-waste-label (db:id admin-message) username lab-number building-id weight
+          (values (generate-waste-label (db:id admin-message) username lab-id building-id weight
                                         cer-id phys-state-id adrs hp-codes)
                   nil))
         (values errors t))))
@@ -304,7 +314,7 @@
 			 (setf y    starting-y)
 			 (decf pics-ct))))))))))
 
-(defun generate-waste-label (id-message username lab-number building-id weight
+(defun generate-waste-label (id-message username lab-id building-id weight
 			     cer-id phys-state-id adrs hp-codes)
 
   (let* ((all-adrs      (%get-all-objects-from-dirty-ids 'db:adr-code adrs))
@@ -363,7 +373,11 @@
 	  (ps:setfont   doc font h4)
 	  (ps:show-xy   doc (format nil (_"ID request: ~a") id-message) 0 0)
 	  (ps:translate doc 0 (- h4))
-	  (ps:show-xy   doc (format nil "~a ~a ~a" username lab-number building) 0 0))
+	  (ps:show-xy   doc (format nil "~a ~a ~a"
+				    username
+				    (lab-id->name lab-id)
+				    building)
+			0 0))
 	(with-save-restore (doc)
 	  (if (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a))) all-adrs)
 	      (ps:draw-text-confined-in-box doc
@@ -435,7 +449,7 @@
   (with-authentication
     (multiple-value-bind (results has-errors-p)
         (generate-letter (strip-tags (get-parameter +name-waste-user-name+))
-                         (strip-tags (get-parameter +name-waste-lab-num+))
+                         (strip-tags (get-parameter +name-waste-lab-id+))
                          (strip-tags (get-parameter +name-waste-building-id+))
                          (strip-tags (get-parameter +name-waste-weight+))
                          (strip-tags (get-parameter +name-waste-cer-id+))

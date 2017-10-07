@@ -254,7 +254,7 @@
     <input id="submit-gen-barcode" type="submit"
 	   name="<!-- TMPL_VAR submit-gen-barcode -->"
 	   value="<!-- TMPL_VAR submit-gen-barcode-lb -->"/>
-    <input id="submit-gen-barcode" type="submit"
+    <input id="submit-mass-delete" type="submit"
 	   name="<!-- TMPL_VAR submit-massive-delete -->"
 	   value="<!-- TMPL_VAR submit-massive-delete-lb -->"/>
     <input id="sum-selected" type="submit"

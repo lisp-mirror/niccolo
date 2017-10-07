@@ -63,3 +63,21 @@
   (html-template:escape-string string :test #'(lambda (char)
 						(or (find char "<>&'")
 						    (> (char-code char) 255)))))
+
+(defun ellipsize (string &key (len 15) (truncate-string "..."))
+  "If \"string\"'s length is bigger than \"length\", cut the last
+  characters out. Also replaces the last characters of the shortened
+  string for the omission string. It defaults to \"...\", but can be
+  nil or the empty string."
+  (let ((string-len (length string)))
+    (if (<= string-len len)
+	string
+	(concatenate 'string (subseq string 0 len)
+		     truncate-string))))
+
+(defun safe-parse-number (n &optional (default 1))
+  (handler-case
+      (if (numberp n)
+          n
+          (parse-number:parse-number n))
+    (error () default)))

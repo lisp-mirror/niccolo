@@ -99,6 +99,19 @@
 
 ;; web/tbnl
 
+(defun filter-params (key params &key (test-remove #'string=))
+  (mapcar #'cdr (remove-if-not #'(lambda (a) (funcall test-remove (car a) key))
+				 params)))
+
+(defun filter-all-get-params (key &key (test-remove #'string=))
+  (filter-params key (tbnl:get-parameters*) :test-remove test-remove))
+
+(defun filter-all-post-params (key &key (test-remove #'string=))
+  (filter-params key (tbnl:post-parameters*) :test-remove test-remove))
+
+(defun get-parameter-non-nil-p (param)
+  (tbnl:get-parameter param))
+
 (defun get-post-filename (name)
   (and (> (length (tbnl:post-parameter name)) 2)
        (elt (tbnl:post-parameter name) 0)))
@@ -582,8 +595,8 @@
 	     (push :enable-link plist))
 	   (when additional-tpl
 	     (if (functionp additional-tpl)
-		 (setf plist (nconc plist (funcall additional-tpl data)))
-		 (setf plist (nconc plist additional-tpl))))
+		 (setf plist (concatenate 'list plist (funcall additional-tpl data)))
+		 (setf plist (concatenate 'list plist additional-tpl))))
 	   plist))))
 
 (defun template->string (file template &optional (escaping-fn  #'(lambda (s) s)))

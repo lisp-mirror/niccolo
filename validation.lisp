@@ -15,6 +15,48 @@
 
 (in-package :validation)
 
+(define-constant +email-re+ "(?i)[a-z,0-9,\\-,_]+\\.?[a-z,0-9,\\-,_]+@[a-z,0-9,\\-,_]+\\.[a-z,0-9,\\-,_]+" :test #'string=)
+
+(define-constant +ghs-hazard-code-re+        "^((H|EUH)[0-9]+[a-z]?)(\\/?(H|EUH)[0-9]+[a-z]?)?$"
+  :test #'string=)
+
+(define-constant +ghs-precautionary-code-re+ "^(P[0-9]+)(\\+P[0-9]+){0,2}$"      :test #'string=)
+
+(define-constant +hp-waste-code-re+          "^(HP)[0-9]+$"                      :test #'string=)
+
+(define-constant +integer-re+                "^-?[1-9][0-9]*$"                   :test #'string=)
+
+(define-constant +pos-integer-re+            "^[1-9][0-9]*$"                     :test #'string=)
+
+(define-constant +barcode-id-re+             "^[0-9][0-9]*$"                     :test #'string=)
+
+(define-constant +free-text-re+              "^[^;\\\"'<>&]+$"                   :test #'string=)
+
+(define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
+  :test #'string=)
+
+(define-constant +script-file-re+               "^/[a-z,\-]+.lisp$"                 :test #'string=)
+
+(define-constant +cer-code-re+                  "^CER[0-9]+\\*?$"                   :test #'string=)
+
+(define-constant +adr-code-class-re+            "(^[0-9]$)|(^[0-9]\\.[0-9][A-Z]?$)" :test #'string=)
+
+(define-constant +adr-uncode-re+                "^UN[0-9]{4}$"                      :test #'string=)
+
+(define-constant +adr-code-radioactive+         "^7"                                :test #'string=)
+
+(define-constant +waste-form-weight-re+         "^\\p{N}+\\p{L}{1,2}$"              :test #'string=)
+
+(define-constant +federated-query-product-re+   "(?i)^.{3,}$"                       :test #'string=)
+
+(define-constant +federated-query-id-re+        "(?i)^.+-[0-9]+"                    :test #'string=)
+
+(define-constant +waste-registration-number-re+ "^[^;\\\"'<>&]+$"                   :test #'string=)
+
+(define-constant +laboratory-name-re+           "^[A-Z]+[0-9]+$"                    :test #'string=)
+
+(define-constant +sample-name-re+               "^[A-Z-a-z,\\-,0-9]+$"                      :test #'string=)
+
 (defun all-not-null-p (&rest vals)
   (notany #'null vals))
 
@@ -50,6 +92,21 @@
 						 `(:= ,c ,v))
 					    `((:!= :id ,id)))))))
 	(list ,error-message)))
+
+(defun id-valid-and-used-p (class id)
+  (and (null (regexp-validate (list (list id +pos-integer-re+ (_ "Id invalid")))))
+       (db-utils:object-exists-in-db-p class id)))
+
+(defmacro with-id-valid-and-used (class id msg-not-exists)
+  (with-gensyms (error-msg-not-integer error-msg-not-exists)
+    `(let* ((,error-msg-not-integer (validation:regexp-validate (list (list ,id
+									    +pos-integer-re+
+									    (_ "Id invalid")))))
+	    (,error-msg-not-exists  (when (and (not ,error-msg-not-integer)
+					       (not (db-utils:object-exists-in-db-p ,class ,id)))
+				      ,msg-not-exists)))
+       (concatenate 'list ,error-msg-not-exists ,error-msg-not-integer))))
+
 
 (defun boolean-p-validate (var)
   (or (string= var "0")
@@ -116,41 +173,3 @@
 
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))
-
-(define-constant +email-re+ "(?i)[a-z,0-9,\\-,_]+\\.?[a-z,0-9,\\-,_]+@[a-z,0-9,\\-,_]+\\.[a-z,0-9,\\-,_]+" :test #'string=)
-
-(define-constant +ghs-hazard-code-re+        "^((H|EUH)[0-9]+[a-z]?)(\\/?(H|EUH)[0-9]+[a-z]?)?$"
-  :test #'string=)
-
-(define-constant +ghs-precautionary-code-re+ "^(P[0-9]+)(\\+P[0-9]+){0,2}$"      :test #'string=)
-
-(define-constant +hp-waste-code-re+          "^(HP)[0-9]+$"                      :test #'string=)
-
-(define-constant +integer-re+                "^-?[1-9][0-9]*$"                   :test #'string=)
-
-(define-constant +pos-integer-re+            "^[1-9][0-9]*$"                     :test #'string=)
-
-(define-constant +barcode-id-re+             "^[0-9][0-9]*$"                     :test #'string=)
-
-(define-constant +free-text-re+              "^[^;\\\"'<>&]+$"                   :test #'string=)
-
-(define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
-  :test #'string=)
-
-(define-constant +script-file-re+               "^/[a-z,\-]+.lisp$"                 :test #'string=)
-
-(define-constant +cer-code-re+                  "^CER[0-9]+\\*?$"                   :test #'string=)
-
-(define-constant +adr-code-class-re+            "(^[0-9]$)|(^[0-9]\\.[0-9][A-Z]?$)" :test #'string=)
-
-(define-constant +adr-uncode-re+                "^UN[0-9]{4}$"                      :test #'string=)
-
-(define-constant +adr-code-radioactive+         "^7"                                :test #'string=)
-
-(define-constant +waste-form-weight-re+         "^\\p{N}+\\p{L}{1,2}$"              :test #'string=)
-
-(define-constant +federated-query-product-re+   "(?i)^.{3,}$"                       :test #'string=)
-
-(define-constant +federated-query-id-re+        "(?i)^.+-[0-9]+"                    :test #'string=)
-
-(define-constant +waste-registration-number-re+ "^[^;\\\"'<>&]+$"                   :test #'string=)
