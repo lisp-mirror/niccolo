@@ -133,7 +133,7 @@
                                                  :barcode-number-lb
                                                  (_ "Barcode number (ID)")
                                                  :name-lb                   (_ "Name")
-                                                 :notes-optional-lb         (_ "Notes (optional)")
+                                                 :notes-lb                  (_ "Notes")
                                                  :other-operations-lb       (_ "Other operations")
                                                  :submit-gen-barcode-lb     (_ "Generate")
                                                  :submit-massive-delete-lb  (_ "Delete")

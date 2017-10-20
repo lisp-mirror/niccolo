@@ -47,6 +47,7 @@
 				     (restas:genurl 'assoc-user-lab))
 				  (with-path-prefix
 				      :username-lb   (_ "Username")
+                                      :user-id-lb    (_ "User ID")
 				      :operations-lb (_ "Operations")
 				      :data-table    labs-template)))))
 	(with-standard-html-frame (stream

@@ -84,7 +84,7 @@
     <label for="count"><!-- TMPL_VAR item-count-lb --></label>
     <input id="count" type="text" name="<!-- TMPL_VAR count -->" />
 
-    <label for="textarea-add-sample"><!-- TMPL_VAR  notes-optional-lb --></label>
+    <label for="textarea-add-sample"><!-- TMPL_VAR  notes-lb --></label>
     <textarea id ="textarea-add-sample" class="textarea-add-sample"
 	      name="<!-- TMPL_VAR notes -->"></textarea>
 
