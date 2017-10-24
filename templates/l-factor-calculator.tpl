@@ -63,26 +63,28 @@
 	 }).success(function( data ) {
 	     let info = JSON.parse(data),
 		 tplView = {},
-		 tpl     = "<tr>"                                                             +
-			   "<td>{{name}}</td>"                                                +
-			   "<td>{{rPhrases}}</td>"                                            +
-			   "<td>{{expositionTypes}}</td>"                                     +
-			   "<td>{{physicalState}}</td>"                                       +
-			   "<td>{{workingTemp}}</td>"                                         +
-			   "<td>{{boilingPoint}}</td>"                                        +
-			   "<td>{{expositionTimeType}}</td>"                                  +
-			   "<td>{{expositionTime}}</td>"                                      +
-			   "<td>{{usage}}</td>"                                               +
-			   "<td>{{quantityUsed}}</td>"                                        +
-			   "<td>{{quantityStocked}}</td>"                                     +
-			   "<td>{{workType}}</td>"                                            +
-			   "<td>{{protectionsFactor}}</td>"                                   +
-			   "<td>{{safetyThreshold}}</td>"                                     +
-			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
-			   "<td >{{err}}</td>"                                                +
-			   "<td>"                                                             +
-			   "<div class=\"delete-button delete-row-button\">&nbsp;</div>"      +
-                           "</td>"                                                            +
+		 tpl     = "<tr>"                                                               +
+			   "<td>{{name}}</td>"                                                  +
+			   "<td>{{rPhrases}}</td>"                                              +
+			   "<td>{{expositionTypes}}</td>"                                       +
+			   "<td>{{physicalState}}</td>"                                         +
+			   "<td>{{workingTemp}}</td>"                                           +
+			   "<td>{{boilingPoint}}</td>"                                          +
+			   "<td>{{expositionTimeType}}</td>"                                    +
+			   "<td>{{expositionTime}}</td>"                                        +
+			   "<td>{{usage}}</td>"                                                 +
+			   "<td>{{quantityUsed}}</td>"                                          +
+			   "<td>{{quantityStocked}}</td>"                                       +
+			   "<td>{{workType}}</td>"                                              +
+			   "<td>{{protectionsFactor}}</td>"                                     +
+			   "<td>{{safetyThreshold}}</td>"                                       +
+			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>"   +
+			   "<td >{{err}}</td>"                                                  +
+			   "<td>"                                                               +
+			   "<i class=\"fa fa-remove fa-2x table-button delete-row-button\""     +
+                           " aria-hidden=\"true\">"                                             +
+			   "</i>"                                                               +
+                           "</td>"                                                              +
 			   "</tr>";
 	     tplView.name               = obj.name;
 	     tplView.rPhrases           = obj.rPhrases;
@@ -207,7 +209,7 @@
     <h3>
 	<!-- TMPL_VAR table-res-header -->
 	<a id="export-csv-button" class="help-button">
-	    <i class="fa fa-download" aria-hidden="true"></i>
+	    <!-- TMPL_INCLUDE 'download-button.tpl' -->
 	</a>
     </h3>
 

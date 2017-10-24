@@ -583,18 +583,6 @@ td {
     animation:           fade-in 0.5s ease-out both;
 }
 
-.delete-button {
-    margin:              auto;
-    display:             inline-block;
-    width:	         32px;
-    height:	         32px;
-    background-image:    url("../images/icon-delete.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
-    text-decoration:     none;
-    animation:           fade-in 0.5s ease-out both;
-}
-
 .assoc-security-fq {
     margin:              auto;
     display:             inline-block;
@@ -726,18 +714,6 @@ td {
     animation:           fade-in 0.5s ease-out both;
 }
 
-.location-add-button {
-    margin:              auto;
-    display:             inline-block;
-    width:	         32px;
-    min-height:	         32px;
-    background-image:    url("../images/location-add-icon.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
-    text-decoration:     none;
-    animation:           fade-in 0.5s ease-out both;
-}
-
 .remove-lending-button {
     margin:              auto;
     display:             inline-block;
@@ -750,66 +726,17 @@ td {
     animation:           fade-in 0.5s ease-out both;
 }
 
-.tag-with-string-button {
-   margin:              auto;
-   display:             inline-block;
-   width:	        32px;
-   min-height:	        32px;
-   background-image:    url("../images/tag-w-string.png");
-   background-repeat:   no-repeat;
-   background-position: 0% 0%;
-   text-decoration:     none;
-   animation:           fade-in 0.5s ease-out both;
+.table-button {
+    cursor:         pointer;
+    animation:      fade-in 0.5s ease-out both;
+    color:          #0F99C0;
+    vertical-align: bottom;
 }
 
 .edit-button {
-    margin:              auto;
-    display:             inline-block;
-    width:	         32px;
-    height:	         32px;
-    background-image:    url("../images/icon-edit.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
-    text-decoration:     none;
-    animation:           fade-in 0.5s ease-out both;
-}
-
-.gen-qrcode-button {
-    margin:              auto;
-    display:             inline-block;
-    width:	         32px;
-    height:	         32px;
-    background-image:    url("../images/icon-gen-qrcode.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
-    text-decoration:     none;
     cursor:              pointer;
     animation:           fade-in 0.5s ease-out both;
-}
 
-.sensor-button {
-    margin:              auto;
-    display:             inline-block;
-    width:	         32px;
-    height:	         32px;
-    background-image:    url("../images/icon-sensor.png");
-    background-repeat:   no-repeat;
-    background-position: 0% 0%;
-    text-decoration:     none;
-    cursor:              pointer;
-    animation:           fade-in 0.5s ease-out both;
-}
-
-.graph-button {
-    margin:              3pt 3pt 3pt 3pt;
-    display:             inline-block;
-    width:	         32px;
-    min-height:	         32px;
-    text-decoration:     none;
-    vertical-align:      text-top;
-    color:               #A00200;
-    cursor:              pointer;
-    animation:           fade-in 0.5s ease-out both;
 }
 
 .help-button {

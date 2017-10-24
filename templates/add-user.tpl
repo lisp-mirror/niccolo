@@ -56,9 +56,7 @@
 
     <td class="delete-link">
       <a href="<!-- TMPL_VAR delete-link -->">
-	<div class="delete-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
 
       <!-- TMPL_IF active-p -->

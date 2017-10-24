@@ -34,9 +34,7 @@
       <td class="reg-number"><!-- TMPL_VAR registration-number --></td>
       <td class="operations">
 	<a href="<!-- TMPL_VAR delete-link -->">
-	  <div class="delete-button">
-	    &nbsp;
-	  </div>
+	  <!-- TMPL_INCLUDE 'delete-button.tpl' -->
 	</a>
 	<!-- TMPL_IF admin-p -->
 	<a href="<!-- TMPL_VAR close-w-success-link -->">

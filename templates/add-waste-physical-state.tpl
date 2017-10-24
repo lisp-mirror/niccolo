@@ -23,13 +23,11 @@
     <td class="waste-phys-state-name">        <!-- TMPL_VAR explanation --></td>
     <td class="waste-phys-state-operations">
       <a href="<!-- TMPL_VAR delete-link -->">
-      <div class="delete-button">
-	&nbsp;
-      </div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
       <!-- edit statement -->
       <a href="<!-- TMPL_VAR update-link -->">
-	<div class="edit-button">&nbsp;</div>
+	<!-- TMPL_INCLUDE 'edit-button.tpl' -->
       </a>
     </td>
   </tr>

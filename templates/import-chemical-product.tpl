@@ -37,7 +37,7 @@
 <fieldset class="import-data">
     <legend><!-- TMPL_VAR import-data-legend-lb -->
 	<a id="open-help-dialog" class="help-button">
-	    <i class="fa fa-question-circle" aria-hidden="true"></i>
+	  <!-- TMPL_INCLUDE 'question-button.tpl' -->
 	</a>
     </legend>
   <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/import-chem-prod/"
@@ -111,7 +111,7 @@
 	    <td class="operations">
 		<!-- edit chemical-product -->
 		<a href="<!-- TMPL_VAR update-link -->">
-		    <div class="edit-button">&nbsp;</div>
+		  <!-- TMPL_INCLUDE 'edit-button.tpl' -->
 		</a>
 	    </td>
 	</tr>

@@ -69,11 +69,8 @@
 	    </form>
 	</div>
 
-
 	<a href="<!-- TMPL_VAR delete-link -->">
-	  <div class="delete-button">
-	    &nbsp;
-	  </div>
+	  <!-- TMPL_INCLUDE 'delete-button.tpl' -->
 	</a>
       </td>
     </tr>

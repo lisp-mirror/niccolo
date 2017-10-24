@@ -36,9 +36,7 @@
     <td class="hazard-carcinogenic"><!-- TMPL_VAR carcinogenic --></td>
     <td class="hazard-operations">
       <a href="<!-- TMPL_VAR delete-link -->">
-      <div class="delete-button">
-	&nbsp;
-      </div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
 
       <script>
@@ -72,7 +70,7 @@
 
 	<!-- edit statement -->
 	<a href="<!-- TMPL_VAR update-link -->">
-	  <div class="edit-button">&nbsp;</div>
+	  <!-- TMPL_INCLUDE 'edit-button.tpl' -->
 	</a>
 
 

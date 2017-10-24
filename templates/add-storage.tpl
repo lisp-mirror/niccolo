@@ -116,9 +116,7 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
     <td class="storage-link">
       <!-- TMPL_IF has-storage-link -->
       <a href="<!-- TMPL_VAR storage-link -->" target="_blank" >
-	<div class="location-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'map-marker-button.tpl' -->
       </a>
       <!-- /TMPL_IF -->
     </td>
@@ -135,22 +133,18 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
     </td>
     <td class="storage-delete-link">
       <a href="<!-- TMPL_VAR delete-link -->">
-	<div class="delete-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
       <a href="<!-- TMPL_VAR location-add-link -->">
-	<div class="location-add-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'add-map-button.tpl' -->
       </a>
       <a href="<!-- TMPL_VAR update-storage-link -->">
-	<div class="edit-button">&nbsp;</div>
+	<!-- TMPL_INCLUDE 'edit-button.tpl' -->
       </a>
       <a>
-	<div class="gen-qrcode-button" onclick="drawQRcode('<!-- TMPL_VAR qr-string -->')" />
-	&nbsp;
-        </div>
+	<i class="fa fa-qrcode fa-2x table-button" aria-hidden="true"
+	   onclick="drawQRcode('<!-- TMPL_VAR qr-string -->')">
+	</i>
       </a>
     </td>
   </tr>

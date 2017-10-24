@@ -30,16 +30,12 @@
     </td>
     <td class="map-link">
       <a href="<!-- TMPL_VAR link -->" target="_blank">
-	<div class="link-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'ext-link-button.tpl' -->
       </a>
     </td>
     <td class="hazard-delete-link">
       <a href="<!-- TMPL_VAR delete-link -->">
-	<div class="delete-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
 
       <script>
@@ -60,7 +56,7 @@
 
       <a href="#"
 	 id="button-subst-map-file<!-- TMPL_VAR id -->">
-	<div class="add-map-file-button">&nbsp;</div>
+	<!-- TMPL_INCLUDE 'add-map-button.tpl' -->
       </a>
 
       <div
@@ -72,10 +68,10 @@
 	</form>
       </div>
       <a href="<!-- TMPL_VAR update-map-link -->">
-	<div class="edit-button">&nbsp;</div>
+	<!-- TMPL_INCLUDE 'edit-button.tpl' -->
       </a>
       <a href="<!-- TMPL_VAR sensors-map-link -->">
-	<div class="sensor-button">&nbsp;</div>
+	<i class="fa fa-thermometer fa-2x table-button" aria-hidden="true"></i>
       </a>
     </td>
   </tr>

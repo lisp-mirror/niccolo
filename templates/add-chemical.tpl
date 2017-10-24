@@ -103,7 +103,7 @@
       </td>
       <td class="chemical-op-link">
           <a href="<!-- TMPL_VAR delete-link -->">
-              <div class="delete-button">&nbsp;</div>
+            <!-- TMPL_INCLUDE 'delete-button.tpl' -->
           </a>
           <a href="<!-- TMPL_VAR assoc-haz-link -->">
               <div class="ghs-haz-button">&nbsp;</div>
@@ -184,7 +184,7 @@
 
         <!-- edit chemical -->
         <a href="<!-- TMPL_VAR update-chemical-link -->">
-          <div class="edit-button">&nbsp;</div>
+          <!-- TMPL_INCLUDE 'edit-button.tpl' -->
         </a>
 
       </td>

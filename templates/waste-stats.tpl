@@ -3,7 +3,7 @@
     <!-- TMPL_VAR legend-group-lb -->
 
       <a href="<!-- TMPL_VAR spreadsheet-url -->">
-	<i class="fa fa-download" aria-hidden="true"></i>
+	<!-- TMPL_INCLUDE 'download-button.tpl' -->
       </a>
 
 

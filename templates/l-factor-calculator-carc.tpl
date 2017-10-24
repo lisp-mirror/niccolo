@@ -45,20 +45,22 @@
 	 }).success(function( data ) {
 	     var info = JSON.parse(data);
 	     var tplView = {};
-	     var tpl     = "<tr>"                                                             +
-			   "<td>{{name}}</td>"                                                +
-			   "<td>{{protectiveDevice}}</td>"                                    +
-			   "<td>{{physicalState}}</td>"                                       +
-			   "<td>{{twork}}</td>"                                               +
-			   "<td>{{teb}}</td>"                                                 +
-			   "<td>{{quantityUsed}}</td>"                                        +
-			   "<td>{{usagePerDay}}</td>"                                         +
-			   "<td>{{usagePerYear}}</td>"                                        +
-			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>" +
-			   "<td >{{err}}</td>"                                                +
-			   "<td>"                                                             +
-			   "<div class= \"delete-button delete-row-button\">&nbsp;</div>"     +
-                           "</td>"                                                            +
+	     var tpl     = "<tr>"                                                               +
+			   "<td>{{name}}</td>"                                                  +
+			   "<td>{{protectiveDevice}}</td>"                                      +
+			   "<td>{{physicalState}}</td>"                                         +
+			   "<td>{{twork}}</td>"                                                 +
+			   "<td>{{teb}}</td>"                                                   +
+			   "<td>{{quantityUsed}}</td>"                                          +
+			   "<td>{{usagePerDay}}</td>"                                           +
+			   "<td>{{usagePerYear}}</td>"                                          +
+			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>"   +
+			   "<td >{{err}}</td>"                                                  +
+			   "<td>"                                                               +
+			   "<i class=\"fa fa-remove fa-2x table-button delete-row-button\""     +
+                           " aria-hidden=\"true\">"                                             +
+			   "</i>"                                                               +
+                           "</td>"                                                              +
 			   "</tr>";
 	     tplView.name             = obj.name;
 	     tplView.protectiveDevice = obj.protectiveDevice;
@@ -143,7 +145,7 @@
     <h3>
 	<!-- TMPL_VAR table-res-header -->
 	<a id="export-csv-button" class="help-button">
-	    <i class="fa fa-download" aria-hidden="true"></i>
+	    <!-- TMPL_INCLUDE 'download-button.tpl' -->
 	</a>
     </h3>
 

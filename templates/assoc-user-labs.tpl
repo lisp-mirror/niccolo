@@ -74,7 +74,7 @@
             <td class="user-lab-username-id"><!-- TMPL_VAR user-id-value --></td>
             <td class="user-lab-username"><!-- TMPL_VAR username --></td>
             <td class="user-lab-operations">
-              <i class="fa fa-file-text fa-2x toggle-labs" aria-hidden="true"></i>
+              <i class="fa fa-folder-open fa-2x toggle-labs" aria-hidden="true"></i>
               <form class ="form-assoc"
                     method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/assoc-user-lab/">
                     <input type="hidden"

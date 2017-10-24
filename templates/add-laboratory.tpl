@@ -25,9 +25,7 @@
     <td class="lab-owner"><!-- TMPL_VAR owner-user --></td>
     <td class="lab-operations">
       <a href="<!-- TMPL_VAR delete-link -->">
-      <div class="delete-button">
-	&nbsp;
-      </div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
     </td>
   </tr>

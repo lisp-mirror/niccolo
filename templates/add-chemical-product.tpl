@@ -292,7 +292,7 @@
   <h3>
     <!-- TMPL_VAR table-res-header -->
     <a id="export-csv-local-button" class="help-button">
-      <i class="fa fa-download" aria-hidden="true"></i>
+      <!-- TMPL_INCLUDE 'download-button.tpl' -->
     </a>
   </h3>
 
@@ -326,9 +326,7 @@
 	  <input name="<!-- TMPL_VAR checkbox-id -->" type="checkbox" />
 	</td>
 	<td class="chemp-id">
-	  <a href="<!-- TMPL_VAR barcode-link -->">
 	    <!-- TMPL_VAR chemp-id -->
-	  </a>
 	</td>
 	<td class="chemp-owner">
 	  <!-- TMPL_VAR owner-name -->
@@ -455,9 +453,7 @@
 	</td>
 	<td class="operations">
 	  <a href="<!-- TMPL_VAR delete-link -->">
-	    <div class="delete-button">
-	      &nbsp;
-	    </div>
+	    <!-- TMPL_INCLUDE 'delete-button.tpl' -->
 	  </a>
 	  <!-- TMPL_IF lending-user -->
 	  <a href="<!-- TMPL_VAR remove-lending-link -->">
@@ -467,15 +463,15 @@
 	  </a>
 	  <!-- /TMPL_IF -->
 	  <a href="<!-- TMPL_VAR gen-custom-label-link -->">
-	    <div class="tag-with-string-button">
-	      &nbsp;
-	    </div>
+	      <!-- TMPL_INCLUDE 'tags-button.tpl' -->
 	  </a>
 	  <!-- edit chemical-product -->
 	  <a href="<!-- TMPL_VAR update-link -->">
-	    <div class="edit-button">&nbsp;</div>
+	      <!-- TMPL_INCLUDE 'edit-button.tpl' -->
 	  </a>
-
+	  <a href="<!-- TMPL_VAR barcode-link -->">
+	      <!-- TMPL_INCLUDE 'barcode-button.tpl' -->
+	  </a>
 	</td>
       </tr>
       <!-- /TMPL_LOOP  -->

@@ -48,20 +48,16 @@
       <!-- TMPL_VAR address -->
     </td>
     <td class="build-link">
-      <div class="link-button">
-	<a href="<!-- TMPL_VAR link -->">
-	  &nbsp;
-	</a>
-      </div>
+      <a href="<!-- TMPL_VAR link -->">
+	<!-- TMPL_INCLUDE 'ext-link-button.tpl' -->
+      </a>
     </td>
     <td class="build-delete-link">
       <a href="<!-- TMPL_VAR delete-link -->">
-	<div class="delete-button">
-	  &nbsp;
-	</div>
+	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
       <a href="<!-- TMPL_VAR update-link -->">
-	<div class="edit-button">&nbsp;</div>
+	<!-- TMPL_INCLUDE 'edit-button.tpl' -->
       </a>
     </td>
   </tr>
