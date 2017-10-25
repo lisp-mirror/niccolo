@@ -186,7 +186,7 @@
 						 (_ "Laboratory id invalid"))
                                            (list name
 						 +sample-name-re+
-						 (_ "sample name invalid"))
+						 (_ "Sample name invalid"))
                                            (list (clean-string notes)
                                                  +free-text-re+
 						 (_ "Notes invalid"))

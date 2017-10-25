@@ -39,7 +39,7 @@
   (let ((res (single 'db:laboratory :id id)))
     (if res
 	(db:name res)
-	(_ "laboratory unknown"))))
+	(_ "Laboratory unknown"))))
 
 (defun adr-list ()
   (let ((raw (filter 'db:adr-code)))

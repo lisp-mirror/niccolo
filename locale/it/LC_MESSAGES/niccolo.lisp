@@ -3120,159 +3120,159 @@ status :TRANSLATED
 plurals NIL
 
  id "invalid id provided"
-translation ""
+translation "id inserito non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User ~s associed with: "
-translation ""
+translation "Utente ~s associato con:"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "User invalid"
-translation ""
+translation "Utente inserito non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Associate User to Laboratories"
-translation ""
+translation "Associare l'utente al laboratorio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Other registration number"
-translation ""
+translation "Altro numero di registrazione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Associate users and laboratories"
-translation ""
+translation "Associare utenti e laboratori"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage"
-translation ""
+translation "Gestisci"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Samples"
-translation ""
+translation "Campioni"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratories"
-translation ""
+translation "Laboratori"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Responsible person"
-translation ""
+translation "Persona responsabile"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage laboratory"
-translation ""
+translation "Gestisci laboratorio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new laboratory ~s"
-translation ""
+translation "Salvato nuovo laboratorio ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory already in the database"
-translation ""
+translation "Laboratorio già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory name  invalid"
-translation ""
+translation "Nome del laboratorio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample ~a not deleted. "
-translation ""
+translation "Campione non cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample ~a deleted. "
-translation ""
+translation "Campione ~a cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Successfully added samples"
-translation ""
+translation "Campione aggiunto con successo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample not deleted"
-translation ""
+translation "Campione non cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample ~a deleted"
-translation ""
+translation "Campione ~a cancellato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Samples saved"
-translation ""
+translation "Campione salvato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "You are not in charge of laboratory ~a"
-translation ""
+translation "Non sei il responsabile del laboratorio ~a"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Checkin date not valid"
-translation ""
+translation "Data di ingresso non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory not found"
-translation ""
+translation "Laboratorio non trovato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
- id "sample name invalid"
-translation ""
+ id "Sample name invalid"
+translation "Nome del campione non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory id invalid"
-translation ""
+translation "Id del laboratorio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Generate labels"
-translation ""
+translation "Genera etichette"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Height"
@@ -3282,104 +3282,104 @@ status :TRANSLATED
 plurals NIL
 
  id "Width"
-translation ""
+translation "Larghezza"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Draw barcode"
-translation ""
+translation "Disegna codice a barre"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Generate"
-translation ""
+translation "Genera"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Search samples"
-translation ""
+translation "Cerca campione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Checkout date"
-translation ""
+translation "Data di uscita"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Checkin date"
-translation ""
+translation "Data di ingresso"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Search sample"
-translation ""
+translation "Cerca campione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Add new sample"
-translation ""
+translation "Aggiungi nuovo campione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage Samples"
-translation ""
+translation "Gestisci campioni"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Sample"
-translation ""
+translation "Aggiorna campione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample updated"
-translation ""
+translation "Campione aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Sample not found"
-translation ""
+translation "Campione non trovato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Checkout date not properly formatted."
-translation ""
+translation "Data di uscita non propriamente specificata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
- id "laboratory unknown"
-translation ""
+ id "Laboratory unknown"
+translation "Laboratorio sconosciuto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory name invalid"
-translation ""
+translation "Nome del laboratorio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Height (mm)"
-translation ""
+translation "Altezza (mm)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Width (mm)"
-translation ""
+translation "Larghezza (mm)"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )
