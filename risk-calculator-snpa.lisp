@@ -74,7 +74,11 @@
      (loop for v in vals minimize (/ (vle-threshold     v)
                                      (vle-concentration v))))))
 
-(defparameter *t-factor-carc-table-snpa* (utils:load-values-discrete-ranges *working-temp-carc-snpa*))
+(defparameter *working-temp-carc-snpa*
+  (local-system-path #p"data/risk-snpa/working-temp-carc.xml"))
+
+(defparameter *t-factor-carc-table-snpa*
+  (utils:load-values-discrete-ranges *working-temp-carc-snpa*))
 
 (defun t-factor-carc-snpa (temp)
   (utils:get-value-discrete-range *t-factor-carc-table-snpa* temp))

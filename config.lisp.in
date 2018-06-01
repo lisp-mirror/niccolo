@@ -194,7 +194,7 @@
 
 ;; chemical risk config
 
-(defparameter *risk_phrases*         (local-system-path #p"data/risk/h.xml"))
+(defparameter *risk-phrases*         (local-system-path #p"data/risk/h.xml"))
 
 (defparameter *exposition-type*      (local-system-path #p"data/risk/exposition_type.xml"))
 

@@ -503,6 +503,8 @@
 	  +separate-collecting-substances+)
     (setf (gethash (_ "+closed-lifecycle+") *traslation-keys-table*)
 	  +closed-lifecycle+)
+    (setf (gethash (_ "+closed-system+") *traslation-keys-table*)
+	  +closed-system+)
     (setf (gethash (_ "+good-fume-cupboard-lifecycle+") *traslation-keys-table*)
 	  +good-fume-cupboard-lifecycle+)
     (setf (gethash (_ "+partially-fume-cupboard-lifecycle+") *traslation-keys-table*)
