@@ -53,25 +53,23 @@ plurals-form "Devices type ~a not found"
 status :TRANSLATED
 plurals NIL
 
-id "+yes+"
+ id "+yes+"
 translation "sì"
 plurals-form "+yes+"
 status :TRANSLATED
 plurals NIL
 
-id "+no+"
+ id "+no+"
 translation "no"
 plurals-form "+no+"
 status :TRANSLATED
 plurals NIL
 
-id "+waste-management-sampling+"
+ id "+waste-management-sampling+"
 translation "Gestione rifiuti/campioni"
 plurals-form "+waste-management-sampling+"
 status :TRANSLATED
 plurals NIL
-
-
 
  id "+inalation-el+"
 translation "Inalazione"
@@ -175,19 +173,19 @@ plurals-form "+tlv-ceiling+"
 status :TRANSLATED
 plurals NIL
 
-id "+oel-twa+"
+ id "+oel-twa+"
 translation "oel-twa"
 plurals-form "+oel-twa+"
 status :TRANSLATED
 plurals NIL
 
-id "+oel-stel+"
+ id "+oel-stel+"
 translation "oel-stel"
 plurals-form "+oel-stel+"
 status :TRANSLATED
 plurals NIL
 
-id "+mak+"
+ id "+mak+"
 translation "mak"
 plurals-form "+mak+"
 status :TRANSLATED
@@ -199,12 +197,11 @@ plurals-form "+almost-closed-system+"
 status :TRANSLATED
 plurals NIL
 
-id "+closed-opened-sometimes+"
+ id "+closed-opened-sometimes+"
 translation "Chiuso con aperture sporadiche"
 plurals-form "+closed-opened-sometimes+"
 status :TRANSLATED
 plurals NIL
-
 
  id "+matrix-inclusion+"
 translation "Inclusione in matrice"
@@ -224,7 +221,7 @@ plurals-form "+high-dispersion+"
 status :TRANSLATED
 plurals NIL
 
-id "+closed-system+"
+ id "+closed-system+"
 translation "Sistema chiuso"
 plurals-form "+closed-system+"
 status :TRANSLATED
@@ -266,19 +263,19 @@ plurals-form "+no-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 
-id "+good-fume-cupboard-rel+"
+ id "+good-fume-cupboard-rel+"
 translation "Cappa chimica funzionante (efficiente rispetto al pericolo)"
 plurals-form "+good-fume-cupboard-rel+"
 status :TRANSLATED
 plurals NIL
 
-id "+bad-fume-cupboard-rel+"
+ id "+bad-fume-cupboard-rel+"
 translation "Cappa chimica poco efficiente rispetto al pericolo"
 plurals-form "+bad-fume-cupboard-rel+"
 status :TRANSLATED
 plurals NIL
 
-id "+no-fume-cupboard-rel+"
+ id "+no-fume-cupboard-rel+"
 translation "Cappa chimica inefficiente/non utilizzata/inesistente"
 plurals-form "+no-fume-cupboard-rel+"
 status :TRANSLATED
@@ -296,7 +293,7 @@ plurals-form "+dpi-coat+"
 status :TRANSLATED
 plurals NIL
 
-id "+dpi-vest+"
+ id "+dpi-vest+"
 translation "Indumenti protettivi (Camice + pantaloni)"
 plurals-form "+dpi-coat+"
 status :TRANSLATED
@@ -320,7 +317,7 @@ plurals-form "+good-aspiration+"
 status :TRANSLATED
 plurals NIL
 
-id "+aspiration+"
+ id "+aspiration+"
 translation "Ventilazione forzata ambientale"
 plurals-form "+aspiration+"
 status :TRANSLATED
@@ -350,7 +347,7 @@ plurals-form "+specific-skills+"
 status :TRANSLATED
 plurals NIL
 
-id "+managing-chemical-compatibility+"
+ id "+managing-chemical-compatibility+"
 translation "Gestione controllata sostanze incompatibili"
 plurals-form "+managing-chemical-compatibility+"
 status :TRANSLATED
@@ -3468,5 +3465,107 @@ plurals NIL
 translation "Larghezza (mm)"
 plurals-form ""
 status :TRANSLATED
+plurals NIL
+
+ id "User ID"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Minumum qty?"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "The minimun quantity of this product, for weekly/daily necessity, is used in this laboratory"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Collective protection factors lb"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Quantity used (g or ml)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Chemical risk calculator (snpa)"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "vl-factor does not ends with a pair of number."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "vl-factors are not a list."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+inefficient-fume-cupboard+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+some-operations-with-good-fume-cupboard+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+all-operations-with-good-fume-cupboard+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+gas-vapours-fine-powder+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+liquid+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+crystals+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+solid-compact+"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "+gel+"
+translation "sì"
+plurals-form ""
+status :FUZZY
 plurals NIL
 )
