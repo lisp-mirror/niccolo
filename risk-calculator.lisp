@@ -32,18 +32,6 @@
 	  (push (_ "No \"H phrases\" found") *errors*)
 	  10.0)))
 
-(alexandria:define-constant +exposition-type-el-root+ "exposition_type"
-  :test #'equal)
-
-(alexandria:define-constant +inalation-el+ "inalation"
-  :test #'equal)
-
-(alexandria:define-constant +skin-possible+ "skin_possible"
-  :test #'equal)
-
-(alexandria:define-constant +skin-accidental+ "skin_accidental"
-  :test #'equal)
-
 (configuration-utils:define-conffile-reader (exposition-type (+exposition-type-el-root+ nil nil))
     inalation
   skin_possible
@@ -68,28 +56,6 @@
       (progn
 	(push (_ "Exposition type not specified") *errors*)
 	10.0)))
-
-(alexandria:define-constant +physical-state-el-root+ "physical_state"  :test #'equal)
-
-(alexandria:define-constant +m-r1+                   "m_r1"            :test #'equal)
-
-(alexandria:define-constant +q-r1+                   "q_r1"            :test #'equal)
-
-(alexandria:define-constant +m-r2+                   "m_r2"            :test #'equal)
-
-(alexandria:define-constant +q-r2+                   "q_r2"            :test #'equal)
-
-(alexandria:define-constant +liquid-gas+             "+liquid-gas+"    :test #'equal)
-
-(alexandria:define-constant +highly-volatile+        "highly_volatile" :test #'equal)
-
-(alexandria:define-constant +medium-volatile+        "medium_volatile" :test #'equal)
-
-(alexandria:define-constant +low-volatile+           "low_volatile"    :test #'equal)
-
-(alexandria:define-constant +powder+                 "powder"          :test #'equal)
-
-(alexandria:define-constant +solid+                  "solid"           :test #'equal)
 
 (configuration-utils:define-conffile-reader (physical-state (+physical-state-el-root+ nil nil))
     m_r1
@@ -145,16 +111,6 @@
      (push (format nil (_ "Physical state ~a not found") state) *errors*)
      0.0)))
 
-(alexandria:define-constant +exposition-time-el-root+ "exposition_time"
-  :test #'equal)
-
-(alexandria:define-constant +tlv-twa+ "TLV-TWA"
-   :test #'equal)
-(alexandria:define-constant +tlv-stel+ "TLV-STEL"
-  :test #'equal)
-(alexandria:define-constant +tlv-ceiling+ "TLV-Ceiling"
-  :test #'equal)
-
 (configuration-utils:define-conffile-reader (exposition-time (+exposition-time-el-root+ nil nil))
     tlv-twa
   tlv-stel
@@ -169,20 +125,6 @@
 	(progn
 	  (push (format nil (_ "Exposition time ~a not found") key) *errors*)
 	  0.0))))
-
-(alexandria:define-constant +usage-el-root+ "usage"
-  :test #'equal)
-
-(alexandria:define-constant +almost-closed-system+ "almost_closed_system"
-   :test #'equal)
-(alexandria:define-constant +matrix-inclusion+ "matrix_inclusion"
-  :test #'equal)
-
-(alexandria:define-constant +low-dispersion+ "low_dispersion"
-  :test #'equal)
-
-(alexandria:define-constant +high-dispersion+ "high_dispersion"
-  :test #'equal)
 
 (configuration-utils:define-conffile-reader (usage (+usage-el-root+ nil nil))
     almost_closed_system
@@ -199,24 +141,6 @@
 	(progn
 	  (push (format nil (_ "Usage ~a not found") key) *errors*)
 	  0.0))))
-
-(alexandria:define-constant +quantity-el+ "quantity"
-  :test #'equal)
-
-(alexandria:define-constant +segment-el+ "segment"
-  :test #'equal)
-
-(alexandria:define-constant +qmin-el+ "qmin"
-  :test #'equal)
-
-(alexandria:define-constant +qmax-el+ "qmax"
-  :test #'equal)
-
-(alexandria:define-constant +min-el+ "min"
-  :test #'equal)
-
-(alexandria:define-constant +max-el+ "max"
-  :test #'equal)
 
 (defun line-eqn(a b &optional (thresh 1e-5))
   "Calculate a bidimensional line equation crossing vector a and b.
@@ -276,17 +200,6 @@
       (let ((*quantity-table* *stock-table*))
 	(q-factor qty))))
 
-(alexandria:define-constant +work-type-root+ "work"
-  :test #'equal)
-
-(alexandria:define-constant +Maintenance+ "maintenance"
-   :test #'equal)
-
-(alexandria:define-constant +normal-job+ "normal_job"
-  :test #'equal)
-
-(alexandria:define-constant +cleaning+ "cleaning"
-  :test #'equal)
 
 (configuration-utils:define-conffile-reader (work (+work-type-root+ nil nil))
     maintenance
@@ -303,34 +216,6 @@
 	  (push (format nil (_ "Work type ~a not found") key) *errors*)
 	  0.0))))
 
-(alexandria:define-constant +devices-root+ "devices" :test #'equal)
-
-(alexandria:define-constant +good-fume-cupboard+ "good_fume_cupboard" :test #'equal)
-
-(alexandria:define-constant +bad-fume-cupboard+ "bad_fume_cupboard" :test #'equal)
-
-(alexandria:define-constant +no-fume-cupboard+ "no_fume_cupboard" :test #'equal)
-
-(alexandria:define-constant +written-instructions+ "written_instructions" :test #'equal)
-
-(alexandria:define-constant +dpi-coat+ "dpi_coat" :test #'equal)
-
-(alexandria:define-constant +goggles+ "goggles" :test #'equal)
-
-(alexandria:define-constant +gloves+ "gloves" :test #'equal)
-
-(alexandria:define-constant +good-aspiration+ "good_aspiration" :test #'equal)
-
-(alexandria:define-constant +bad-aspiration+ "bad_aspiration" :test #'equal)
-
-(alexandria:define-constant +no-aspiration+ "no_aspiration" :test #'equal)
-
-(alexandria:define-constant +other-manipulation-devices+ "other_manipulation_devices" :test #'equal)
-
-(alexandria:define-constant +specific-skills+ "specific_skills" :test #'equal)
-
-(alexandria:define-constant +separate-collecting-substances+ "separate_collecting_substances" :test #'equal)
-
 (configuration-utils:define-conffile-reader (devices (+devices-root+ nil nil))
     good_fume_cupboard
   bad_fume_cupboard
@@ -345,7 +230,6 @@
   other_manipulation_devices
   specific_skills
   separate_collecting_substances)
-
 
 (defparameter *devices-table* (read-devices-config config:*devices*))
 
@@ -363,7 +247,6 @@
 		  (* a
 		     (k-factor-extract b)))
 		keys :initial-value 1))))
-
 
 (defun k-factor-extract (key)
   (let ((usage (gethash key *devices-table*)))
@@ -412,21 +295,6 @@
 
 ;;;; carcinogenic
 
-(alexandria:define-constant +devices-carc-root+ "devices"
-  :test #'equal)
-
-(alexandria:define-constant +closed-lifecycle+ "closed_lifecycle"
-   :test #'equal)
-
-(alexandria:define-constant +good-fume-cupboard-lifecycle+ "good_fume_cupboard_lifecycle"
-  :test #'equal)
-
-(alexandria:define-constant +partially-fume-cupboard-lifecycle+ "partially_fume_cupboard_lifecycle"
-  :test #'equal)
-
-(alexandria:define-constant +no-fume-cupboard-lifecycle+ "no_fume_cupboard_lifecycle"
-  :test #'equal)
-
 (configuration-utils:define-conffile-reader (device-carc (+devices-carc-root+ nil nil))
     closed_lifecycle
     good_fume_cupboard_lifecycle
@@ -460,16 +328,6 @@
 
 (defparameter *physical-state-carc-table* (read-physical-state-carc-config config:*physical-state-carc*))
 
-(alexandria:define-constant +physical-state-carc+ "physical_state_carc" :test #'equal)
-
-(alexandria:define-constant +solid-compact-gel+ "solid_compact_gel" :test #'equal)
-
-(alexandria:define-constant +non-volatile-liquid-cristals+ "non_volatile_liquid_cristals"
-  :test #'equal)
-
-(alexandria:define-constant +fluid-powder-volatile-liquid+ "fluid_powder_volatile_liquid"
-  :test #'equal)
-
 (defun s-factor-carc-extract (key)
   (let ((s-fact (gethash key *physical-state-carc-table*)))
     (if (not (null s-fact))
@@ -487,12 +345,6 @@
       (progn
 	(push "Physical state invalid" *errors*)
 	10.0)))
-
-(alexandria:define-constant +working-temp+ "working_temp" :test #'equal)
-
-(alexandria:define-constant +threshold+ "threshold" :test #'equal)
-
-(alexandria:define-constant +value+ "value" :test #'equal)
 
 (defun read-threshold-value-xml (path root)
   (labels ((p-threshold (xmls)
@@ -528,6 +380,8 @@
 		     (funcall comp-int2 twork (* (nth i interval) teb)))
 	    (return-from main (nth i values)))))))
 
+
+;; TODO use utils:load-values-discrete-ranges
 (defun t-factor-carc (twork teb)
   (interval-get-value (first *working-temp-carc-table*) (second *working-temp-carc-table*)
 		      twork teb
@@ -539,6 +393,7 @@
 (defparameter *quantity-carc-table* (read-threshold-value-xml config:*quantity-carc*
 							      +quantity-el+))
 
+;; TODO use utils:load-values-discrete-ranges
 (defun q-factor-carc (quantity)
   (interval-get-value (first *quantity-carc-table*) (second *quantity-carc-table*)
 		      quantity 1
@@ -547,19 +402,13 @@
 		      :comp-int2 #'(lambda (q in i) (declare (ignore i))(<= q in))
 		      :comp-last #'(lambda (q in i) (declare (ignore i))(> q in))))
 
-(alexandria:define-constant +exposition-time+ "exposition_time"
-  :test #'equal)
-
 (configuration-utils:define-conffile-reader (exposition-time-carc (+exposition-time+ nil nil))
     value)
 
-(defparameter *exposition-carc-table* (read-exposition-time-carc-config
-				       config:*exposition-time-carc*))
+(defparameter *exposition-carc-table* (read-exposition-time-carc-config *exposition-time-carc*))
 
 (defun e-factor-carc (min)
   (/ min (string-utils:safe-parse-number (gethash +value+ *exposition-carc-table*))))
-
-(alexandria:define-constant +frequency+ "frequency" :test #'equal)
 
 (configuration-utils:define-conffile-reader (usage-freq-carc (+exposition-time+ nil nil))
     value)
@@ -568,8 +417,6 @@
 
 (defun f-factor-carc (days)
   (/ days (string-utils:safe-parse-number (gethash +value+ *frequency-carc-table*))))
-
-(alexandria:define-constant +frac-canc-l-carc+ 25/4)
 
 (defun l-factor-carc-i (protective-device physical-state twork teb quantity-used usage-per-day
 			usage-per-year)
@@ -608,15 +455,21 @@
     (setf (gethash (_ "+tlv-twa+") *traslation-keys-table*) +tlv-twa+)
     (setf (gethash (_ "+tlv-stel+") *traslation-keys-table*) +tlv-stel+)
     (setf (gethash (_ "+tlv-ceiling+") *traslation-keys-table*) +tlv-ceiling+)
+    (setf (gethash (_ "+oel-twa+") *traslation-keys-table*) +oel-twa+)
+    (setf (gethash (_ "+oel-stel+") *traslation-keys-table*) +oel-stel+)
+    (setf (gethash (_ "+mak+") *traslation-keys-table*)      +mak+)
+
     (setf (gethash (_ "+almost-closed-system+") *traslation-keys-table*)
 	  +almost-closed-system+)
     (setf (gethash (_ "+matrix-inclusion+") *traslation-keys-table*)
 	  +matrix-inclusion+)
     (setf (gethash (_ "+low-dispersion+") *traslation-keys-table*) +low-dispersion+)
     (setf (gethash (_ "+high-dispersion+") *traslation-keys-table*) +high-dispersion+)
-    (setf (gethash (_ "+Maintenance+") *traslation-keys-table*) +Maintenance+)
+    (setf (gethash (_ "+closed-opened-sometimes+") *traslation-keys-table*) +closed-opened-sometimes+)
+    (setf (gethash (_ "+maintenance+") *traslation-keys-table*) +Maintenance+)
     (setf (gethash (_ "+normal-job+") *traslation-keys-table*) +normal-job+)
     (setf (gethash (_ "+cleaning+") *traslation-keys-table*) +cleaning+)
+    (setf (gethash (_ "+waste-management-sampling+") *traslation-keys-table*) +waste-management-sampling+)
     (setf (gethash (_ "+good-fume-cupboard+") *traslation-keys-table*)
 	  +good-fume-cupboard+)
     (setf (gethash (_ "+bad-fume-cupboard+") *traslation-keys-table*)
@@ -631,6 +484,17 @@
     (setf (gethash (_ "+good-aspiration+") *traslation-keys-table*) +good-aspiration+)
     (setf (gethash (_ "+bad-aspiration+") *traslation-keys-table*) +bad-aspiration+)
     (setf (gethash (_ "+no-aspiration+") *traslation-keys-table*) +no-aspiration+)
+    (setf (gethash (_ "+aspiration+") *traslation-keys-table*) +aspiration+)
+    (setf (gethash (_ "+good-fume-cupboard-rel+") *traslation-keys-table*)
+	  +good-fume-cupboard-rel+)
+    (setf (gethash (_ "+bad-fume-cupboard-rel+") *traslation-keys-table*)
+	  +bad-fume-cupboard-rel+)
+    (setf (gethash (_ "+no-fume-cupboard-rel+") *traslation-keys-table*)
+	  +no-fume-cupboard-rel+)
+    (setf (gethash (_ "+dpi-vest+") *traslation-keys-table*) +dpi-vest+)
+    (setf (gethash (_ "+aspiration+") *traslation-keys-table*) +aspiration+)
+    (setf (gethash (_ "+managing-chemical-compatibility+") *traslation-keys-table*)
+          +managing-chemical-compatibility+)
     (setf (gethash (_ "+other-manipulation-devices+") *traslation-keys-table*)
 	  +other-manipulation-devices+)
     (setf (gethash (_ "+specific-skills+") *traslation-keys-table*)
@@ -650,7 +514,25 @@
     (setf (gethash (_ "+non-volatile-liquid-cristals+") *traslation-keys-table*)
 	  +non-volatile-liquid-cristals+)
     (setf (gethash (_ "+fluid-powder-volatile-liquid+") *traslation-keys-table*)
-	  +fluid-powder-volatile-liquid+))
+	  +fluid-powder-volatile-liquid+)
+    (setf (gethash (_ "+yes+") *traslation-keys-table*)
+	  +yes+)
+    (setf (gethash (_ "+no+") *traslation-keys-table*)
+	  +no+)
+    (setf (gethash (_ "+gel+")                      *traslation-keys-table*) +gel+)
+    (setf (gethash (_  "+solid-compact+")           *traslation-keys-table*) +solid-compact+)
+    (setf (gethash (_ "+crystals+")                 *traslation-keys-table*) +crystals+)
+    (setf (gethash (_ "+liquid+")                   *traslation-keys-table*) +liquid+)
+    (setf (gethash (_ "+gas-vapours-fine-powder+")  *traslation-keys-table*)
+          +gas-vapours-fine-powder+)
+    (setf (gethash (_ "+all-operations-with-good-fume-cupboard+")
+                   *traslation-keys-table*)
+          +all-operations-with-good-fume-cupboard+)
+    (setf (gethash (_ "+some-operations-with-good-fume-cupboard+")
+                   *traslation-keys-table*)
+          +some-operations-with-good-fume-cupboard+)
+    (setf (gethash (_ "+inefficient-fume-cupboard+") *traslation-keys-table*)
+          +inefficient-fume-cupboard+))
 
   (let ((cl-i18n:*translation-file-root* ""))
     (cl-i18n:load-language (local-system-path #p"locale/italian.lisp"))

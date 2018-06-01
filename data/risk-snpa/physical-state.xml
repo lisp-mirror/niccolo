@@ -1,0 +1,11 @@
+<physical_state>
+  <m_r1>2.01</m_r1>
+  <q_r1>9.81</q_r1>
+  <m_r2>5.3</m_r2>
+  <q_r2>43.3</q_r2>
+  <highly_volatile>1.8</highly_volatile>
+  <medium_volatile>1.4</medium_volatile>
+  <low_volatile>1.2</low_volatile>
+  <powder>1.1</powder>
+  <solid>0.5</solid>
+</physical_state>

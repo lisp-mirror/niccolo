@@ -1,0 +1,5 @@
+<devices>
+  <all_operations_with_good_fume_cupboard>  2</all_operations_with_good_fume_cupboard>
+  <some_operations_with_good_fume_cupboard> 5</some_operations_with_good_fume_cupboard>
+  <inefficient_fume_cupboard>              10</inefficient_fume_cupboard>
+</devices>

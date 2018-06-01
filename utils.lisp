@@ -272,7 +272,6 @@
 
 ;; pagination
 
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defparameter *alias-pagination* (make-hash-table :test 'equal)))
 
@@ -720,3 +719,26 @@
        (trivial-timeout:with-timeout (,timeout)
 	 ,@body)
      (error () nil)))
+
+;; ranges
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun load-values-discrete-ranges (file)
+    "file is a kee/value files see: configuration-utils:parse-simple-config"
+    (let* ((raw    (configuration-utils:parse-simple-config file))
+           (parsed (loop for i in raw collect
+                        (cons (string-utils:safe-parse-number (car i))
+                              (string-utils:safe-parse-number (cdr i)))))
+           (sorted (sort parsed #'(lambda (a b) (< (car a) (car b))))))
+      (append sorted
+              (list (cons  10000 -1000))))) ; the stopper
+
+  (defun get-value-discrete-range (ranges value)
+    "Ranges as list of (x . y)"
+    (flet ((extract-x (i)
+             (car (elt ranges i)))
+           (extract-y (i)
+             (cdr (elt ranges i))))
+      (do* ((ct     0                    (1+ ct))
+            (accum  (extract-x ct) (extract-x ct)))
+           ((>= accum value) (extract-y (1- ct)))))))

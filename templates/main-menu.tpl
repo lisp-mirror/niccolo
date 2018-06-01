@@ -61,20 +61,24 @@
 	  </a>
 	</li>
 	<li class="with-menu-item-anim">
-	  <a href="<!-- TMPL_VAR waste-stats -->">
-	    <!-- TMPL_VAR waste-stats-lbl -->
-	  </a>
-	</li>
-
-	<li class="with-menu-item-anim">
-	  <a href="<!-- TMPL_VAR l-factor-calculator -->">
-	    <!-- TMPL_VAR l-factor-calculator-lbl -->
-	  </a>
+	    <a href="<!-- TMPL_VAR waste-stats -->">
+	        <!-- TMPL_VAR waste-stats-lbl -->
+	    </a>
 	</li>
 	<li class="with-menu-item-anim">
-	  <a href="<!-- TMPL_VAR l-factor-calculator-carc -->">
-	    <!-- TMPL_VAR l-factor-calculator-carc-lbl -->
-	  </a>
+	    <a href="<!-- TMPL_VAR l-factor-calculator -->">
+	        <!-- TMPL_VAR l-factor-calculator-lbl -->
+	    </a>
+	</li>
+	<li class="with-menu-item-anim">
+	    <a href="<!-- TMPL_VAR l-factor-calculator-carc -->">
+	        <!-- TMPL_VAR l-factor-calculator-carc-lbl -->
+	    </a>
+	</li>
+        <li class="with-menu-item-anim">
+	    <a href="<!-- TMPL_VAR l-factor-calculator-snpa -->">
+	        <!-- TMPL_VAR l-factor-calculator-snpa-lbl -->
+	    </a>
 	</li>
 	<li class="with-menu-item-anim">
 	  <a href="<!-- TMPL_VAR store-classify-tree -->">

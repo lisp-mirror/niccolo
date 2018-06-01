@@ -203,6 +203,8 @@
 		      :waste-stats-lbl              (_ "Waste report")
 		      :l-factor-calculator          (restas:genurl 'l-factor)
 		      :l-factor-calculator-lbl      (_ "Chemical risk calculator")
+                      :l-factor-calculator-snpa     (restas:genurl 'risk-snpa.l-factor-snpa)
+		      :l-factor-calculator-snpa-lbl (_ "Chemical risk calculator (snpa)")
 		      :l-factor-calculator-carc     (restas:genurl 'l-factor-carc)
 		      :l-factor-calculator-carc-lbl (_ "Chemical risk calculator (carcinogenic)")
 		      :store-classify-tree (restas:genurl 'storing-classify)
@@ -285,6 +287,8 @@
   (initialize-ghs-pictograms-db)
   (initialize-adr-pictograms-db))
 
+(restas:mount-module risk-snpa (:restas.lab.l-factor-snpa))
+
 (defun main ()
   (init-ssl-client)
   (init-db-default-values)
@@ -295,10 +299,10 @@
   #+thread-support (init-sensors-thread)
   (to-log :info "Server starting")
   (restas:start '#:restas.lab
-		:acceptor-class 'lab-acceptor
-		:hostname config:+hostname+
-		:port config:+https-port+
-		:ssl-certificate-file config:*ssl-certfile*
-		:ssl-privatekey-file config:*ssl-key*
-		:ssl-privatekey-password config:+ssl-pass+)
+                :acceptor-class 'lab-acceptor
+                :hostname config:+hostname+
+                :port config:+https-port+
+                :ssl-certificate-file config:*ssl-certfile*
+                :ssl-privatekey-file config:*ssl-key*
+                :ssl-privatekey-password config:+ssl-pass+)
   (to-log :info "Server started"))

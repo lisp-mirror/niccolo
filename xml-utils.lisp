@@ -38,7 +38,8 @@
 			    (xmls:xmlrep-tag ,node)))))
 
 (defmacro with-tagmatch-if-else ((tag node else) &body body-then)
-  `(if (xmls:xmlrep-tagmatch ,tag ,node)
+  `(if (and ,node
+            (xmls:xmlrep-tagmatch ,tag ,node))
        (progn ,@body-then)
        (progn ,@else)))
 
@@ -56,6 +57,22 @@
 				(quote ,node)))))))
 
 (defun get-list-tags-value (xmls tag &optional (res-values '()))
-  (xml-utils:with-tagmatch-if-else (tag xmls ((list xmls (alexandria:flatten (reverse res-values)))))
+  (with-tagmatch-if-else (tag (first xmls) ((list xmls (alexandria:flatten (reverse res-values)))))
     (get-list-tags-value (rest xmls) tag
 			 (push (xmls:xmlrep-children (first xmls)) res-values))))
+
+
+(defmacro get-leaf ((tags path node) &body body)
+  (once-only ((the-node node))
+    (let ((child-pos (first path))
+          (rest-path (append (rest path)
+                             (list 0)))) ;; the text node
+    (if tags
+        `(with-tagmatch (,(first tags) ,the-node)
+           (handler-case
+               (get-leaf (,(rest tags)
+                           ,rest-path
+                           (elt (xmlrep-children ,the-node) ,child-pos)))
+             (error () nil)))
+        `(progn ,@body
+                ,the-node)))))

@@ -1,0 +1,18 @@
+<prop>
+  <record>
+    <key>
+      Yes
+    </key>
+    <value>
+      1
+    </value>
+  </record>
+  <record>
+    <key>
+      No
+    </key>
+    <value>
+      2
+    </value>
+  </record>
+</prop>

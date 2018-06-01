@@ -146,11 +146,38 @@ translation "tlv-ceiling"
 plurals-form "+tlv-ceiling+"
 status :TRANSLATED
 plurals NIL
+id "+oel-twa+"
+translation "oel-twa"
+plurals-form "+oel-twa+"
+status :TRANSLATED
+plurals NIL
+id "+oel-stel+"
+translation "oel-stel"
+plurals-form "+oel-stel+"
+status :TRANSLATED
+plurals NIL
+id "+mak+"
+translation "mak"
+plurals-form "+mak+"
+status :TRANSLATED
+plurals NIL
 id "+almost-closed-system+"
 translation "Sistema chiuso con possibili esposizioni"
 plurals-form "+almost-closed-system+"
 status :TRANSLATED
 plurals NIL
+id "+closed-system+"
+translation "Sistema chiuso"
+plurals-form "+closed-system+"
+status :TRANSLATED
+plurals NIL
+
+id "+closed-opened-sometimes+"
+translation "Chiuso con aperture sporadiche"
+plurals-form "+closed-opened-sometimes+"
+status :TRANSLATED
+plurals NIL
+
 id "+matrix-inclusion+"
 translation "Inclusione in matrice"
 plurals-form "+matrix-inclusion+"
@@ -166,9 +193,9 @@ translation "Uso con dispersione significativa"
 plurals-form "+high-dispersion+"
 status :TRANSLATED
 plurals NIL
-id "+Maintenance+"
+id "+maintenance+"
 translation "Manutenzione"
-plurals-form "+Maintenance+"
+plurals-form "+maintenance+"
 status :TRANSLATED
 plurals NIL
 id "+normal-job+"
@@ -179,6 +206,11 @@ plurals NIL
 id "+cleaning+"
 translation "Pulizia"
 plurals-form "+cleaning+"
+status :TRANSLATED
+plurals NIL
+id "+waste-management-sampling+"
+translation "Gestione rifiuti/campioni"
+plurals-form "+waste-management-sampling+"
 status :TRANSLATED
 plurals NIL
 id "+good-fume-cupboard+"
@@ -206,6 +238,11 @@ translation "Indumenti protettivi"
 plurals-form "+dpi-coat+"
 status :TRANSLATED
 plurals NIL
+id "+dpi-vest+"
+translation "Indumenti protettivi (Camice + pantaloni)"
+plurals-form "+dpi-coat+"
+status :TRANSLATED
+plurals NIL
 id "+goggles+"
 translation "Occhiali"
 plurals-form "+goggles+"
@@ -214,6 +251,11 @@ plurals NIL
 id "+gloves+"
 translation "Guanti"
 plurals-form "+gloves+"
+status :TRANSLATED
+plurals NIL
+id "+aspiration+"
+translation "Ventilazione forzata ambientale"
+plurals-form "+aspiration+"
 status :TRANSLATED
 plurals NIL
 id "+good-aspiration+"
@@ -244,6 +286,61 @@ plurals NIL
 id "+separate-collecting-substances+"
 translation "Raccolta separata acidi, basi, infiammabili"
 plurals-form "+separate-collecting-substances+"
+status :TRANSLATED
+plurals NIL
+id "+managing-chemical-compatibility+"
+translation "Gestione controllata sostanze incompatibili"
+plurals-form "+managing-chemical-compatibility+"
+status :TRANSLATED
+plurals NIL
+id "+yes+"
+translation "sì"
+plurals-form "+yes+"
+status :TRANSLATED
+plurals NIL
+id "+no+"
+translation "no"
+plurals-form "+no+"
+status :TRANSLATED
+plurals NIL
+id "+gel+"
+translation "gel"
+plurals-form "+gel+"
+status :TRANSLATED
+plurals NIL
+id "+solid-compact+"
+translation "Solido compatto"
+plurals-form "+solid-compact+"
+status :TRANSLATED
+plurals NIL
+id "+crystals+"
+translation "Cristalli"
+plurals-form "+crystals+"
+status :TRANSLATED
+plurals NIL
+id "+liquid+"
+translation "liquido"
+plurals-form "+liquid+"
+status :TRANSLATED
+plurals NIL
+id "+gas-vapours-fine-powder+"
+translation "gas/vapore/polvere fine"
+plurals-form "+gas-vapours-fine-powder+"
+status :TRANSLATED
+plurals NIL
+id "+all-operations-with-good-fume-cupboard+"
+translation "Operazioni tutte svolte sotto cappa efficiente (fare riferimento a rischio chimico)"
+plurals-form "+all-operations-with-good-fume-cupboard+"
+status :TRANSLATED
+plurals NIL
+id "+some-operations-with-good-fume-cupboard+"
+translation "Operazioni svolte solo parzialmente sotto cappa efficienti (esclusi i trasferimenti)"
+plurals-form "+some-operations-with-good-fume-cupboard+"
+status :TRANSLATED
+plurals NIL
+id "+inefficient-fume-cupboard+"
+translation "Utilizzo di cappa non efficiente"
+plurals-form "+inefficient-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 id "Choose table dimensions"
@@ -654,6 +751,21 @@ plurals NIL
 id "+no-fume-cupboard-lifecycle+"
 translation "Senza cappa"
 plurals-form "+no-fume-cupboard-lifecycle+"
+status :TRANSLATED
+plurals NIL
+id "+good-fume-cupboard-rel+"
+translation "Cappa chimica funzionante (efficiente rispetto al pericolo)"
+plurals-form "+good-fume-cupboard-rel+"
+status :TRANSLATED
+plurals NIL
+id "+bad-fume-cupboard-rel+"
+translation "Cappa chimica poco efficiente rispetto al pericolo"
+plurals-form "+bad-fume-cupboard-rel+"
+status :TRANSLATED
+plurals NIL
+id "+no-fume-cupboard-rel+"
+translation "Cappa chimica inefficiente/non utilizzata/inesistente"
+plurals-form "+no-fume-cupboard-rel+"
 status :TRANSLATED
 plurals NIL
 id "Carcinogenic risk valutation:"

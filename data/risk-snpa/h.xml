@@ -1,0 +1,1118 @@
+<phrases>
+  <label>
+    <phrase>
+      EUH001
+    </phrase>
+    <explanation>
+      Esplosivo allo stato secco
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH006
+    </phrase>
+    <explanation>
+      Esplosivo a contatto o senza contatto con l&#039;aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH014
+    </phrase>
+    <explanation>
+      Reagisce violentemente con l&#039;acqua
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH018
+    </phrase>
+    <explanation>
+      Durante l&#039;uso può formarsi una miscela vapore aria esplosiva/infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH019
+    </phrase>
+    <explanation>
+      Può formare perossidi esplosivi
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH029
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera un gas tossico
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH031
+    </phrase>
+    <explanation>
+      A contatto con acidi libera gas tossici
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH032
+    </phrase>
+    <explanation>
+      A contatto con acidi libera gas molto tossici
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH044
+    </phrase>
+    <explanation>
+      Rischio di esplosione per riscaldamento in ambiente confinato
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH059
+    </phrase>
+    <explanation>
+      Pericoloso per lo strato di ozono
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH066
+    </phrase>
+    <explanation>
+      L&#039;esposizione ripetuta può provocare secchezza o screpolature della pelle
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH070
+    </phrase>
+    <explanation>
+      Tossico per contatto oculare
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH071
+    </phrase>
+    <explanation>
+      Corrosivo per le vie respiratorie
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH201
+    </phrase>
+    <explanation>
+      Contiene piombo. Non utilizzare su oggetti che possono essere masticati o
+      succhiati dai bambini. Attenzione! Contiene piombo
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH201A
+    </phrase>
+    <explanation>
+      Attenzione! Contiene piombo
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH202 Cianoacrilato.
+    </phrase>
+    <explanation>
+      Pericolo. Incolla la pelle e gli occhi in pochi secondi Tenere fuori dalla portata dei bambini
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH203
+    </phrase>
+    <explanation>
+      Contiene cromo (VI). Può provocare una reazione allergica
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH204
+    </phrase>
+    <explanation>
+      Contiene isocianati. Può provocare una reazione allergica
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH205
+    </phrase>
+    <explanation>
+      Contiene componenti epossidici. Può provocare una reazione allergica
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH206
+    </phrase>
+    <explanation>
+      Attenzione! Non utilizzare in combinazione con altri prodotti Possono liberarsi gas
+      pericolosi (cloro)
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH207
+    </phrase>
+    <explanation>
+      Attenzione! Contiene cadmio. Durante l&#039;uso si sviluppano fumi pericolosi Leggere
+      le informazioni fornite dal fabbricante. Rispettare le disposizioni di sicurezza
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH208
+    </phrase>
+    <explanation>
+      Contiene &lt;denominazione della sostanza sensibilizzante&gt; Può provocare una
+      reazione allergica
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH209
+    </phrase>
+    <explanation>
+      Può diventare facilmente infiammabile durante l&#039;uso
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH209A
+    </phrase>
+    <explanation>
+      Può diventare infiammabile durante l&#039;uso
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH210
+    </phrase>
+    <explanation>
+      Scheda dati di sicurezza disponibile su richiesta
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      EUH401
+    </phrase>
+    <explanation>
+      Per evitare rischi per la salute umana e per l&#039;ambiente, seguire le istruzioni per l&#039;uso
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H200
+    </phrase>
+    <explanation>
+      Esplosivo instabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H201
+    </phrase>
+    <explanation>
+      Esplosivo; pericolo di esplosione di massa
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H202
+    </phrase>
+    <explanation>
+      Esplosivo; grave pericolo di proiezioni
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H203
+    </phrase>
+    <explanation>
+      Esplosivo; pericolo di incendio  di spostamento d&#039;aria o di proiezione
+    </explanation>
+    <points>
+      0.0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H204
+    </phrase>
+    <explanation>
+      Pericolo di incendio o di proiezione
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H205
+    </phrase>
+    <explanation>
+      Pericolo di esplosione di massa in caso di incendio
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H220
+    </phrase>
+    <explanation>
+      Gas altamente infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H221
+    </phrase>
+    <explanation>
+      Gas infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H222
+    </phrase>
+    <explanation>
+      Aerosol altamente infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H223
+    </phrase>
+    <explanation>
+      Aerosol infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H224
+    </phrase>
+    <explanation>
+      Liquido e vapori altamente infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H225
+    </phrase>
+    <explanation>
+      Liquido e vapori facilmente infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H226
+    </phrase>
+    <explanation>
+      Liquido e vapori infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H228
+    </phrase>
+    <explanation>
+      Solido infiammabile
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H229
+    </phrase>
+    <explanation>
+      Recipiente sotto pressione: può esplodere per riscaldamento
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H230
+    </phrase>
+    <explanation>
+      Può scoppiare anche in assenza di aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+    <label>
+    <phrase>
+      H231
+    </phrase>
+    <explanation>
+     Può scoppiare anche in assenza di aria, a elevata pressione e/o temperatura
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H240
+    </phrase>
+    <explanation>
+      Rischio di esplosione per riscaldamento
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H241
+    </phrase>
+    <explanation>
+      Rischio di incendio o di esplosione per riscaldamento
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H242
+    </phrase>
+    <explanation>
+      Rischio di incendio per riscaldamento
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H250
+    </phrase>
+    <explanation>
+      Spontaneamente infiammabile all&#039;aria
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H251
+    </phrase>
+    <explanation>
+      Autoriscaldante; può infiammarsi
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H252
+    </phrase>
+    <explanation>
+      Autoriscaldante in grandi quantità; può infiammarsi
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H260
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera gas infiammabili che possono infiammarsi spontaneamente
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H261
+    </phrase>
+    <explanation>
+      A contatto con l&#039;acqua libera gas infiammabili
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H270
+    </phrase>
+    <explanation>
+      Può provocare o aggravare un incendio; comburente
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H271
+    </phrase>
+    <explanation>
+      Può provocare un incendio o un esplosione; molto comburente
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H272
+    </phrase>
+    <explanation>
+      Può aggravare un incendio; comburente
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H280
+    </phrase>
+    <explanation>
+      Contiene gas sotto pressione; può esplodere se riscaldato
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H281
+    </phrase>
+    <explanation>
+      Può provocare ustioni o lesioni criogeniche
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H290
+    </phrase>
+    <explanation>
+      Può essere corrosivo per i metalli
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H300
+    </phrase>
+    <explanation>
+      Letale se ingerito
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H301
+    </phrase>
+    <explanation>
+      Tossico se ingerito
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H302
+    </phrase>
+    <explanation>
+      Nocivo se ingerito
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H304
+    </phrase>
+    <explanation>
+      Può essere letale in caso di ingestione e di penetrazione nelle vie respiratorie
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H310
+    </phrase>
+    <explanation>
+      Letale per contatto con la pelle
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H311
+    </phrase>
+    <explanation>
+      Tossico per contatto con la pelle
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H312
+    </phrase>
+    <explanation>
+      Nocivo per conttatto con la pelle
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H314
+    </phrase>
+    <explanation>
+      Provoca gravi ustioni cutanee e gravi lesioni oculari
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H315
+    </phrase>
+    <explanation>
+      Provoca irritazione cutanea
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H317
+    </phrase>
+    <explanation>
+      Può provocare una reazione allergica cutanea
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H318
+    </phrase>
+    <explanation>
+      Provoca gravi lesioni oculari
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H319
+    </phrase>
+    <explanation>
+      Provoca grave irritazione oculare
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H330
+    </phrase>
+    <explanation>
+      Letale se inalato
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H331
+    </phrase>
+    <explanation>
+      Tossico se inalato
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H332
+    </phrase>
+    <explanation>
+      Nocivo se inalato
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H334
+    </phrase>
+    <explanation>
+      Può provocare sintomi allergici o asmatici o difficoltà respiratorie se inalato
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H335
+    </phrase>
+    <explanation>
+      Può irritare le vie respiratorie
+    </explanation>
+    <points>
+      1.2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H336
+    </phrase>
+    <explanation>
+      Può provocare sonnolenza o vertigini
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H340
+    </phrase>
+    <explanation>
+      Può provocare alterazioni genetiche &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H341
+    </phrase>
+    <explanation>
+      Sospetto di provocare alterazioni genetiche &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      2.5
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H350
+    </phrase>
+    <explanation>
+      può provocare il cancro &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+    <label>
+    <phrase>
+      H350i
+    </phrase>
+    <explanation>
+      Può provocare il cancro se inalato.
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H351
+    </phrase>
+    <explanation>
+      Sospettato di provocare il cancro &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      3
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360
+    </phrase>
+    <explanation>
+      Può nuocere alla fertilità o al feto &lt;indicare l&#039;effetto specifico se noto&gt; &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360 Df
+    </phrase>
+    <explanation>
+      Può nuocere al feto. Sospettato di nuocere alla fertilità
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360 Fd
+    </phrase>
+    <explanation>
+      Può nuocere alla fertilità. Sospettato di nuocere al feto.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360D
+    </phrase>
+    <explanation>
+      Può nuocere al feto.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360F
+    </phrase>
+    <explanation>
+      Può nuocere alla fertilità.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H360FD
+    </phrase>
+    <explanation>
+      Può nuocere alla fertilità. Può nuocere al feto.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H361
+    </phrase>
+    <explanation>
+      Sospettato di nuocere alla fertilità o al feto &lt;indicare l&#039;effetto specifico se noto&gt; &lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H361d
+    </phrase>
+    <explanation>
+      Sospettato di nuocere alla al feto.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H361f
+    </phrase>
+    <explanation>
+      Sospettato di nuocere alla alla fertilità.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H361fd
+    </phrase>
+    <explanation>
+      Sospettato di nuocere alla alla fertilità. Sospettato di nuocere alla al feto.
+    </explanation>
+    <points>
+      2
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H362
+    </phrase>
+    <explanation>
+      Può essere nocivo per i lattanti allattati al seno
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H370
+    </phrase>
+    <explanation>
+      Provoca danni agli organi &lt;o indicare tutti gli organi interessati se noti&gt;&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      2.0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H371
+    </phrase>
+    <explanation>
+      Può provocare danni agli organi &lt;o indicare tutti gli organi interessati        se noti&gt;&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H372
+    </phrase>
+    <explanation>
+      Provoca danni agli organi&lt;o indicare tutti gli organi interessati        se noti&gt;in caso di esposizione prolungata o ripetuta&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H373
+    </phrase>
+    <explanation>
+      Può provocare danni agli organi&lt;o indicare tutti gli organi interessati        se noti&gt;in caso di esposizione prolungata o ripetuta&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
+    </explanation>
+    <points>
+      1.6
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H400
+    </phrase>
+    <explanation>
+      Molto tossico per gli organismi acquatici
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H410
+    </phrase>
+    <explanation>
+      Molto tossico per gli organismi acquatici con effetti di lunga durata
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H411
+    </phrase>
+    <explanation>
+      Tossico per gli organismi acquatici con effetti di lunga durata
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H412
+    </phrase>
+    <explanation>
+      Nocivo per gli organismi acquatici con effetti di lunga durata
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+  <label>
+    <phrase>
+      H413
+    </phrase>
+    <explanation>
+      Può essere nocivo per gli organismi acquatici con effetti di lunga durata
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+    <label>
+    <phrase>
+      H420
+    </phrase>
+    <explanation>
+      Nuoce alla salute pubblica e all'ambiente distruggendo l'ozono dello strato
+      superiore dell'atmosfera
+    </explanation>
+    <points>
+      0
+    </points>
+  </label>
+</phrases>

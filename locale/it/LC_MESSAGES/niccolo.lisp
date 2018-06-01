@@ -53,6 +53,26 @@ plurals-form "Devices type ~a not found"
 status :TRANSLATED
 plurals NIL
 
+id "+yes+"
+translation "sì"
+plurals-form "+yes+"
+status :TRANSLATED
+plurals NIL
+
+id "+no+"
+translation "no"
+plurals-form "+no+"
+status :TRANSLATED
+plurals NIL
+
+id "+waste-management-sampling+"
+translation "Gestione rifiuti/campioni"
+plurals-form "+waste-management-sampling+"
+status :TRANSLATED
+plurals NIL
+
+
+
  id "+inalation-el+"
 translation "Inalazione"
 plurals-form "+inalation-el+"
@@ -155,11 +175,36 @@ plurals-form "+tlv-ceiling+"
 status :TRANSLATED
 plurals NIL
 
+id "+oel-twa+"
+translation "oel-twa"
+plurals-form "+oel-twa+"
+status :TRANSLATED
+plurals NIL
+
+id "+oel-stel+"
+translation "oel-stel"
+plurals-form "+oel-stel+"
+status :TRANSLATED
+plurals NIL
+
+id "+mak+"
+translation "mak"
+plurals-form "+mak+"
+status :TRANSLATED
+plurals NIL
+
  id "+almost-closed-system+"
 translation "Sistema chiuso con possibili esposizioni"
 plurals-form "+almost-closed-system+"
 status :TRANSLATED
 plurals NIL
+
+id "+closed-opened-sometimes+"
+translation "Chiuso con aperture sporadiche"
+plurals-form "+closed-opened-sometimes+"
+status :TRANSLATED
+plurals NIL
+
 
  id "+matrix-inclusion+"
 translation "Inclusione in matrice"
@@ -179,9 +224,15 @@ plurals-form "+high-dispersion+"
 status :TRANSLATED
 plurals NIL
 
- id "+Maintenance+"
+id "+closed-system+"
+translation "Sistema chiuso"
+plurals-form "+closed-system+"
+status :TRANSLATED
+plurals NIL
+
+ id "+maintenance+"
 translation "Manutenzione"
-plurals-form "+Maintenance+"
+plurals-form "+maintenance+"
 status :TRANSLATED
 plurals NIL
 
@@ -215,6 +266,24 @@ plurals-form "+no-fume-cupboard+"
 status :TRANSLATED
 plurals NIL
 
+id "+good-fume-cupboard-rel+"
+translation "Cappa chimica funzionante (efficiente rispetto al pericolo)"
+plurals-form "+good-fume-cupboard-rel+"
+status :TRANSLATED
+plurals NIL
+
+id "+bad-fume-cupboard-rel+"
+translation "Cappa chimica poco efficiente rispetto al pericolo"
+plurals-form "+bad-fume-cupboard-rel+"
+status :TRANSLATED
+plurals NIL
+
+id "+no-fume-cupboard-rel+"
+translation "Cappa chimica inefficiente/non utilizzata/inesistente"
+plurals-form "+no-fume-cupboard-rel+"
+status :TRANSLATED
+plurals NIL
+
  id "+written-instructions+"
 translation "Istruzioni scritte"
 plurals-form "+written-instructions+"
@@ -223,6 +292,12 @@ plurals NIL
 
  id "+dpi-coat+"
 translation "Indumenti protettivi"
+plurals-form "+dpi-coat+"
+status :TRANSLATED
+plurals NIL
+
+id "+dpi-vest+"
+translation "Indumenti protettivi (Camice + pantaloni)"
 plurals-form "+dpi-coat+"
 status :TRANSLATED
 plurals NIL
@@ -242,6 +317,12 @@ plurals NIL
  id "+good-aspiration+"
 translation "Efficiente aspirazione"
 plurals-form "+good-aspiration+"
+status :TRANSLATED
+plurals NIL
+
+id "+aspiration+"
+translation "Ventilazione forzata ambientale"
+plurals-form "+aspiration+"
 status :TRANSLATED
 plurals NIL
 
@@ -266,6 +347,12 @@ plurals NIL
  id "+specific-skills+"
 translation "Formazione specifica"
 plurals-form "+specific-skills+"
+status :TRANSLATED
+plurals NIL
+
+id "+managing-chemical-compatibility+"
+translation "Gestione controllata sostanze incompatibili"
+plurals-form "+managing-chemical-compatibility+"
 status :TRANSLATED
 plurals NIL
 

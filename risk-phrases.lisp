@@ -49,7 +49,7 @@
 		  (xmls:xmlrep-children xmls-list))))))
     db))
 
-(defparameter *phrases-database* (load-db config:*risk_phrases*))
+(defparameter *phrases-database* (load-db config:*risk-phrases*))
 
 (defun get-points (key)
   (restart-case

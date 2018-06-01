@@ -62,7 +62,13 @@
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
   (html-template:escape-string string :test #'(lambda (char)
 						(or (find char "<>&'")
-						    (> (char-code char) 255)))))
+                                                    (> (char-code char) 255)))))
+
+(defun lines (l)
+  (cl-ppcre:split "\\n" l))
+
+(defun words (l)
+  (cl-ppcre:split "\\s" l))
 
 (defun ellipsize (string &key (len 15) (truncate-string "..."))
   "If \"string\"'s length is bigger than \"length\", cut the last

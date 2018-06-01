@@ -64,7 +64,7 @@
    :*insufficient-privileges-message*
    :*letter-header-text*
    :*waste-letter-body*
-   :*risk_phrases*
+   :*risk-phrases*
    :*exposition-type*
    :*physical-state*
    :*exposition-time*
@@ -76,8 +76,11 @@
    :*devices-carc*
    :*physical-state-carc*
    :*working-temp-carc*
+   :*working-temp-carc-snpa*
    :*quantity-carc*
    :*exposition-time-carc*
+   :*frequency-carc*
+   :*exposition-carc*
    :*frequency-carc*
    :_
    :n_))
@@ -167,15 +170,19 @@
    :with-attribute
    :get-list-tags-value
    :define-conffile-reader
-   :define-conffile-writer))
+   :define-conffile-writer
+   :get-leaf))
 
 (defpackage :configuration-utils
   (:use :cl
 	:alexandria
-	:xmls)
+        :xmls
+        :xml-utils)
   (:export
    :define-conffile-reader
-   :define-conffile-writer))
+   :define-conffile-writer
+   :parse-simple-config
+   :get-config-val))
 
 (defpackage :db
   (:use
@@ -395,6 +402,8 @@
    :find-filename-from-path
    :random-password
    :escape-csv-field
+   :words
+   :lines
    :escape-string-all-but-double-quotes
    :ellipsize
    :safe-parse-number))
@@ -592,7 +601,9 @@
    :open-log
    :to-log
    :log-and-mail
-   :with-http-ignored-errors))
+   :with-http-ignored-errors
+   :load-values-discrete-ranges
+   :get-value-discrete-range))
 
 (defpackage :i18n
   (:use
@@ -663,9 +674,93 @@
 	:parse-number
 	:config)
   (:export
+   :+yes+
+   :+no+
+   :+closed-opened-sometimes+
+   :+aspiration+
+   :+managing-chemical-compatibility+
+   :+good-fume-cupboard-rel+
+   :+bad-fume-cupboard-rel+
+   :+no-fume-cupboard-rel+
+   :+dpi-vest+
+   :+all-operations-with-good-fume-cupboard+
+   :+some-operations-with-good-fume-cupboard+
+   :+inefficient-fume-cupboard+
+   :+quantity-el+
+   :+frac-canc-l-carc-snpa+
    :*errors*
+   :*exposition-table*
+   :*physical-state-table*
+   :*exposition-time-table*
+   :*quantity-table*
+   :*usage-table*
+   :*work-table*
+   :*devices-table*
+   :*physical-state-carc-table*
+   :*quantity-carc-table*
+   :*device-carc-table*
+   :*exposition-carc-table*
+   :*frequency-carc-table*
+   :read-exposition-type-config
+   :read-physical-state-config
+   :read-exposition-time-carc-config
+   :read-usage-freq-carc-config
+   :get-graph-quantity
+   :*traslation-keys-table*
+   :read-threshold-value-xml
+   :untranslate
+   :r-factor
+   :t-factor
+   :s-factor
+   :e-factor
+   :u-factor
+   :q-factor
+   :a-factor
+   :k-factor
+   :s-factor-carc
+   :p-factor-carc-extract
+   :q-factor-carc
+   :e-factor-carc
+   :f-factor-carc
    :l-factor-i
    :l-factor-carc-i))
+
+(defpackage :risk-calculator-snpa
+  (:use :cl
+	:alexandria
+	:xmls
+	:parse-number
+	:config
+        :configuration-utils
+        :risk-calculator
+        :risk-phrases)
+  (:export
+   :l-factor-i-snpa
+   :l-factor-carc-i-snpa))
+
+(restas:define-module :restas.lab.l-factor-snpa
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :hunchentoot
+   :crane
+   :config
+   :constants
+   :validation
+   :string-utils
+   :db-utils
+   :utils
+   :views)
+  (:nicknames :l-fact-snpa)
+  (:export
+   :select-usage
+   :select-quantity-stocked
+   :select-work-type
+   :select-exp-time-type
+   :select-protection-factors
+   :l-factor-snpa
+   :l-factor-carc-snpa))
 
 (restas:define-module :restas.lab
   (:use
@@ -684,6 +779,10 @@
    :utils
    :views)
   (:export
+   :%select-builder
+   :with-authentication
+   :array-autocomplete-chemical-compound
+   :array-autocomplete-chemical-compound-id
    :render-logout-control
    :render-main-menu
    :search-chem-prod
@@ -693,7 +792,14 @@
    :+search-chem-building+
    :+search-chem-floor+
    :+search-chem-storage+
-   :+search-chem-shelf+))
+   :+search-chem-shelf+
+   ;; risk
+   :select-phys-state
+   :fetch-all-ghs
+   :sort-all-ghs-tpl
+   ;; urls
+   :ws-l-factor-i-snpa-url
+   :ws-l-factor-carc-i-snpa-url))
 
 (defpackage :federated-query
   (:use

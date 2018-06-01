@@ -102,6 +102,8 @@
 (defun %extract-parse (key bag &optional (default "1.0"))
   (string-utils:safe-parse-number (or (cdr (assoc key bag)) default)))
 
+;; risk calculator
+
 (define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
     (if  (tbnl:post-parameter "req")
@@ -142,6 +144,68 @@
 						     (%extract-parse :usage-per-day params)
 						     (%extract-parse :usage-per-year params))))
       (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
+
+
+;; risk calculator snpa
+
+(defun split-thresholds (param)
+  (let* ((lines   (lines param))
+         (entries (mapcar #'words lines)))
+    (loop
+       for entry  in entries
+       when (and (= (length entry) 3)
+                 (safe-parse-number (elt entry 1))
+                 (safe-parse-number (elt entry 2)))
+       collect
+         (list (clean-string (elt entry 0))
+               (safe-parse-number (elt entry 1))
+               (safe-parse-number (elt entry 2))))))
+
+(define-lab-route l-factor-i-snpa ("/ws/l-factor-snpa/" :method :post)
+  (with-authentication
+    (if  (tbnl:post-parameter "req")
+	 (progn
+	   (let* ((risk-calculator:*errors* '())
+                  (params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+                  (name    (cdr (assoc :name params)))
+		  (res (risk-calculator-snpa:l-factor-i-snpa (cdr (assoc :r-phrases params))
+                                                             (cdr (assoc :exposition-types params))
+                                                             (cadr (assoc :physical-state params))
+                                                             (%extract-parse :working-temp params)
+                                                             (%extract-parse :boiling-point params)
+                                                             (cadr (assoc :exposition-time-type
+                                                                          params))
+                                                             (%extract-parse :exposition-time
+                                                                             params)
+                                                             (cadr (assoc :usage params))
+                                                             (%extract-parse :quantity-used params)
+                                                             (%extract-parse :quantity-stocked
+                                                                             params)
+                                                             (cadr (assoc :work-type params))
+                                                             (cdr (assoc :protections-factor
+                                                                         params))
+                                                             (split-thresholds
+                                                              (cdr (assoc :safety-thresholds
+                                                                          params))))))
+             (utils:plist->json (list :name name :res res :err risk-calculator:*errors*))))
+	 (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
+
+(define-lab-route l-factor-carc-i-snpa ("/ws/l-factor-carc-snpa/" :method :post)
+  (with-authentication
+    (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+	   (name    (cdr (assoc :name params)))
+	   (risk-calculator:*errors* '())
+	   (results (risk-calculator:l-factor-carc-i (cdr (assoc :protective-device params))
+						     (cdr (assoc :physical-state params))
+						     (%extract-parse :twork params)
+						     (%extract-parse :teb params)
+						     (%extract-parse :quantity-used params)
+						     (%extract-parse :usage-per-day params)
+						     (%extract-parse :usage-per-year params))))
+      (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
+
+
+;; messages
 
 (define-lab-route ws-get-user-message ("/ws/user-messages/:id" :method :get)
   (with-authentication
@@ -366,3 +430,11 @@
 					      :fire      (db:fire-color      chem)
 					      :reactive  (db:reactive-color  chem)
 					      :corrosive (db:corrosive-color chem)))))))
+
+;; url utils
+
+(defun ws-l-factor-i-snpa-url ()
+  (restas:genurl 'l-factor-i-snpa))
+
+(defun ws-l-factor-carc-i-snpa-url ()
+  (restas:genurl 'l-factor-carc-i-snpa))

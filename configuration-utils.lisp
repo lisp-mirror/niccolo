@@ -60,3 +60,19 @@
 							     (xmls:make-xmlrep (string-downcase tag) :attribs nil
 									       :children (list value))))
 			    :indent t)))))))
+
+(defun parse-simple-config (file)
+  (with-open-file (stream file)
+    (let ((tree (xmls:parse stream)))
+      (do* ((i 0 (1+ i))
+            (key (get-leaf (("prop" "record" "key")   (i 0) tree))
+                 (get-leaf (("prop" "record" "key")   (i 0) tree)))
+            (val (get-leaf (("prop" "record" "value") (i 1) tree))
+                 (get-leaf (("prop" "record" "value") (i 1) tree)))
+            (res (list (cons key val)) (if key
+                                           (append res (list (cons key val)))
+                                           res)))
+           ((not key) res)))))
+
+(defun get-config-val (key config &key (test #'string-equal))
+  (cdr (assoc key config :test test)))

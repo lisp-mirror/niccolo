@@ -1,0 +1,13 @@
+<devices>
+  <good_fume_cupboard_rel>3</good_fume_cupboard_rel>
+  <bad_fume_cupboard_rel>2</bad_fume_cupboard_rel>
+  <no_fume_cupboard_rel>1</no_fume_cupboard_rel>
+  <written_instructions>2</written_instructions>
+  <dpi_vest>1.7</dpi_vest>
+  <goggles>2</goggles>
+  <gloves>1.3</gloves>
+  <aspiration>2.3</aspiration>
+  <other_manipulation_devices>1.3</other_manipulation_devices>
+  <specific_skills>2.3</specific_skills>
+  <managing_chemical_compatibility>1.5</managing_chemical_compatibility>
+</devices>
