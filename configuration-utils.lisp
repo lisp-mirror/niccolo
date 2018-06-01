@@ -20,46 +20,46 @@
   (alexandria:with-gensyms (results xmlslist path stream)
     (let ((funname (alexandria:format-symbol t "READ-~a-CONFIG" name)))
       `(defun ,funname (,path)
-	 (handler-bind ((file-error
-			 #'(lambda (e)
-			     (progn
-			       (with-open-file (,stream (file-error-pathname e)
-							:direction :output
-							:if-does-not-exist :create)
-				 (format ,stream (xmls:toxml '(,template-minimal nil)))
-				 (finish-output ,stream))
-			       (,funname ,path)
-			       (return-from ,funname nil)))))
-	   (with-open-file (,stream ,path :direction :input :if-does-not-exist :error)
-	     (if (> (file-length ,stream) 0)
-		 (progn
-		   (let ((,results (make-hash-table :test #'equalp))
-			 (,xmlslist (xmls:parse ,stream)))
-		     (setf ,xmlslist (xmls:xmlrep-children ,xmlslist))
-		     ,@(loop for i in tags collect
-			    `(progn
-			       (setf (gethash ,(string i) ,results)
-				     (xml-utils:with-tagmatch (,(string i) (first ,xmlslist))
-				       (first (xmls:xmlrep-children (first ,xmlslist)))))
-			       (setf ,xmlslist (rest ,xmlslist))))
-		     ,results))
-		 nil)))))))
+         (handler-bind ((file-error
+                         #'(lambda (e)
+                             (progn
+                               (with-open-file (,stream (file-error-pathname e)
+                                                        :direction :output
+                                                        :if-does-not-exist :create)
+                                 (format ,stream (xmls:toxml '(,template-minimal nil)))
+                                 (finish-output ,stream))
+                               (,funname ,path)
+                               (return-from ,funname nil)))))
+           (with-open-file (,stream ,path :direction :input :if-does-not-exist :error)
+             (if (> (file-length ,stream) 0)
+                 (progn
+                   (let ((,results (make-hash-table :test #'equalp))
+                         (,xmlslist (xmls:parse ,stream)))
+                     (setf ,xmlslist (xmls:xmlrep-children ,xmlslist))
+                     ,@(loop for i in tags collect
+                            `(progn
+                               (setf (gethash ,(string i) ,results)
+                                     (xml-utils:with-tagmatch (,(string i) (first ,xmlslist))
+                                       (first (xmls:xmlrep-children (first ,xmlslist)))))
+                               (setf ,xmlslist (rest ,xmlslist))))
+                     ,results))
+                 nil)))))))
 
 
 (defmacro define-conffile-writer (name root tags)
   (alexandria:with-gensyms (path values stream)
     (let ((funname (alexandria:format-symbol t "WRITE-~a-CONFIG" name)))
       `(defun ,funname (,path ,values)
-	 (with-open-file (,stream ,path :direction :output :if-does-not-exist :create
-				  :if-exists :supersede)
-	   (format ,stream (xmls:toxml
-			    (xmls:make-xmlrep ,root :attribs nil
-					      :children (loop
-							   for tag in (quote ,tags)
-							   for value in ,values collect
-							     (xmls:make-xmlrep (string-downcase tag) :attribs nil
-									       :children (list value))))
-			    :indent t)))))))
+         (with-open-file (,stream ,path :direction :output :if-does-not-exist :create
+                                  :if-exists :supersede)
+           (format ,stream (xmls:toxml
+                            (xmls:make-xmlrep ,root :attribs nil
+                                              :children (loop
+                                                           for tag in (quote ,tags)
+                                                           for value in ,values collect
+                                                             (xmls:make-xmlrep (string-downcase tag) :attribs nil
+                                                                               :children (list value))))
+                            :indent t)))))))
 
 (defun parse-simple-config (file)
   (with-open-file (stream file)

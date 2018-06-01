@@ -41,8 +41,8 @@
 
 (defmethod initialize-instance :after ((object json-deserializable) &key &allow-other-keys)
   (let ((prototype (make-instance 'prototype
-				  :lisp-package :federated-query
-				  :lisp-class   (class-name (class-of object)))))
+                                  :lisp-package :federated-query
+                                  :lisp-class   (class-name (class-of object)))))
     (setf (prototype object) prototype)))
 
 (defclass identified-by-key ()
@@ -74,19 +74,19 @@
     :accessor id)))
 
 (defun make-query (class request &key
-				   (id nil)
-				   (origin-host nil)
-				   (port nil)
-				   (request-type +query-chemical-product+))
+                                   (id nil)
+                                   (origin-host nil)
+                                   (port nil)
+                                   (request-type +query-chemical-product+))
   (make-instance class
-		 :id               (or id (next-query-id))
-		 :origin-host      (or origin-host +hostname+)
-		 :origin-host-port (or port (if (> +https-proxy-port+ 0)
-						+https-proxy-port+
-						+https-port+))
-		 :request-type (or request-type
-				   +query-chemical-product+)
-		 :request      request))
+                 :id               (or id (next-query-id))
+                 :origin-host      (or origin-host +hostname+)
+                 :origin-host-port (or port (if (> +https-proxy-port+ 0)
+                                                +https-proxy-port+
+                                                +https-port+))
+                 :request-type (or request-type
+                                   +query-chemical-product+)
+                 :request      request))
 
 (defclass query-response (json-deserializable identified-by-key)
   ((request-type
@@ -104,19 +104,19 @@
 
 (defun make-query-response (class query-id response &key (key +federated-query-key+))
   (make-instance class
-		 :key              key
-		 :id               query-id
-		 :response         response))
+                 :key              key
+                 :id               query-id
+                 :response         response))
 
 (defclass query-product (query) ())
 
 (defun make-query-product (request &key (id nil) (origin-host nil) (port nil))
   (make-query 'query-product
-	      request
-	      :id            id
-	      :origin-host   origin-host
-	      :port          port
-	      :request-type  +query-chemical-product+))
+              request
+              :id            id
+              :origin-host   origin-host
+              :port          port
+              :request-type  +query-chemical-product+))
 
 (defclass query-product-response (query-response) ())
 
@@ -127,11 +127,11 @@
 
 (defun make-query-chem-compound (request &key (id nil) (origin-host nil) (port nil))
   (make-query 'query-chem-compound
-	      request
-	      :id            id
-	      :origin-host   origin-host
-	      :port          port
-	      :request-type  +query-chemical-compound+))
+              request
+              :id            id
+              :origin-host   origin-host
+              :port          port
+              :request-type  +query-chemical-compound+))
 
 (defclass query-chem-compound-response (query-response) ())
 
@@ -147,22 +147,22 @@
 
 (defun make-visited-response (visited-flag id)
   (make-instance 'visited-response
-		 :id           id
-		 :response     visited-flag
-		 :request-type +query-node-visited+))
+                 :id           id
+                 :response     visited-flag
+                 :request-type +query-node-visited+))
 
 (defgeneric send-query (object node &key path))
 
 (defmethod send-query ((object query) node &key (path nil))
   (let ((uri (remote-uri (node-name node) (node-port node)
-			 (concatenate 'string +path-prefix+ path))))
+                         (concatenate 'string +path-prefix+ path))))
     (setf (key object) +federated-query-key+)
     (with-http-ignored-errors (+query-http-timeout+)
       (drakma:http-request uri
-			   :method :post
-			   :verify :required
-			   :parameters (list (cons +query-http-parameter-key+
-						   (obj->json-string object)))))))
+                           :method :post
+                           :verify :required
+                           :parameters (list (cons +query-http-parameter-key+
+                                                   (obj->json-string object)))))))
 
 (defmethod send-query ((object query-product) node &key (path +query-product-path+))
   (call-next-method object node :path path))
@@ -176,15 +176,15 @@
 (defgeneric send-response (object destination port &key path))
 
 (defmethod send-response ((object query-response) destination port
-			  &key (path +post-federated-query-results+))
+                          &key (path +post-federated-query-results+))
   (let ((uri (remote-uri destination port
-			 (concatenate 'string +path-prefix+ path))))
+                         (concatenate 'string +path-prefix+ path))))
     (with-http-ignored-errors (+query-http-timeout+)
       (drakma:http-request uri
-			   :method :post
-			   :verify :required
-			   :parameters (list (cons +query-http-response-key+
-						   (obj->json-string object)))))))
+                           :method :post
+                           :verify :required
+                           :parameters (list (cons +query-http-response-key+
+                                                   (obj->json-string object)))))))
 
 (defun federated-query (request)
   (loop for node in (all-nodes) do
@@ -193,22 +193,22 @@
 
 (defun federated-query-product (request &key (set-me-visited nil))
   (let* ((req (if (stringp request)
-		  (make-query-product request)
-		  request)))
+                  (make-query-product request)
+                  request)))
     (when set-me-visited
       (set-visited (id req)))
     (federated-query req)))
 
 (defun federated-query-chemical-hazard (request)
   (let* ((req (if (stringp request)
-		  (make-query-chem-compound request)
-		  request)))
+                  (make-query-chem-compound request)
+                  request)))
     (federated-query req)))
 
 (defun query-single-node (request node)
   (let* ((req-visited      (make-query-visited (id request)))
-	 (response-raw     (send-query req-visited node))
-	 (response-visited (and response-raw
-				(json-string->obj response-raw))))
+         (response-raw     (send-query req-visited node))
+         (response-visited (and response-raw
+                                (json-string->obj response-raw))))
     (when (and response-visited (not (fq:response response-visited)))
       (send-query request node))))

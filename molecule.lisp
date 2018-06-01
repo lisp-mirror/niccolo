@@ -76,7 +76,7 @@
 (defmacro with-check-atoms-limits ((atoms index) &body body)
   `(if (< ,index (length ,atoms))
        (progn
-	 ,@body)
+         ,@body)
        (error 'conditions:out-of-bounds :idx ,index :seq ,atoms)))
 
 (defmethod valence ((object molecule) atom-index)
@@ -93,13 +93,13 @@
   (with-accessors ((atoms atoms) (connections connections)) object
     (with-check-atoms-limits (atoms atom-index)
       (let* ((bonds       (remove +no-bond-matrix-value+
-				  (fm-row connections atom-index)
-				  :test #'=))
-	     (bonds-types (reduce #'(lambda (a b) (pushnew b a :test #'=))
-				  bonds
-				  :initial-value '())))
-	(loop for i in bonds-types collect
-	     (cons i (count i bonds :test #'=)))))))
+                                  (fm-row connections atom-index)
+                                  :test #'=))
+             (bonds-types (reduce #'(lambda (a b) (pushnew b a :test #'=))
+                                  bonds
+                                  :initial-value '())))
+        (loop for i in bonds-types collect
+             (cons i (count i bonds :test #'=)))))))
 
 (defstruct neighbour
   (atom)
@@ -109,11 +109,11 @@
   "Evaluate to  list ofa cons where car is the atom and cdr is the index in molecule's atom list"
   (with-accessors ((atoms atoms) (connections connections)) object
     (loop for row-ct from 0 below (fm-w connections) collect
-	 (let ((row (fm-row connections row-ct)))
-	   (loop
-	      for i from 0 by 1
-	      for bond in row when (> bond 0) collect
-		(make-neighbour :atom (elt atoms i) :index i))))))
+         (let ((row (fm-row connections row-ct)))
+           (loop
+              for i from 0 by 1
+              for bond in row when (> bond 0) collect
+                (make-neighbour :atom (elt atoms i) :index i))))))
 
 (defmethod first-near ((object molecule) index)
   (with-accessors ((atoms atoms) (connections connections)) object
@@ -126,64 +126,64 @@
 
 (defun group-by-bond (row)
   (let ((bond-types (do ((res    '())
-			 (source (copy-list row) (rest source)))
-			((null source) (remove 0 res :test #'=))
-		      (pushnew (first source) res :test #'=))))
+                         (source (copy-list row) (rest source)))
+                        ((null source) (remove 0 res :test #'=))
+                      (pushnew (first source) res :test #'=))))
     (loop for i in bond-types collect
-	 (cons i (count i row :test #'=)))))
+         (cons i (count i row :test #'=)))))
 
 (defun bonds-compatible-p (group group-index molecule molecule-index)
   (let ((group-bonds-grouped    (group-by-bond (fm-row (connections group)    group-index)))
-	(molecule-bonds-grouped (group-by-bond (fm-row (connections molecule) molecule-index))))
+        (molecule-bonds-grouped (group-by-bond (fm-row (connections molecule) molecule-index))))
     (loop for i in group-bonds-grouped do
-	 (if (assoc (car i) molecule-bonds-grouped)
-	     (let ((count-in-group    (cdr i))
-		   (count-in-molecule (cdr (assoc (car i) molecule-bonds-grouped))))
-	       (when (> count-in-group count-in-molecule)
-		 (return-from bonds-compatible-p nil)))
-	     (return-from bonds-compatible-p nil)))
+         (if (assoc (car i) molecule-bonds-grouped)
+             (let ((count-in-group    (cdr i))
+                   (count-in-molecule (cdr (assoc (car i) molecule-bonds-grouped))))
+               (when (> count-in-group count-in-molecule)
+                 (return-from bonds-compatible-p nil)))
+             (return-from bonds-compatible-p nil)))
     t))
 
 (defun first-near-compatible-p (group group-index molecule molecule-index)
   (let ((first-near-group (and (all-first-near group)
-			       (elt (all-first-near group)
-				    group-index)))
-	(first-near-molecule (and (all-first-near molecule)
-				  (elt (all-first-near molecule)
-				       molecule-index))))
+                               (elt (all-first-near group)
+                                    group-index)))
+        (first-near-molecule (and (all-first-near molecule)
+                                  (elt (all-first-near molecule)
+                                       molecule-index))))
     (loop for i from 0 below (length first-near-group) do
-	 (let ((count-group (count (neighbour-atom (elt first-near-group i))
-				   first-near-group
+         (let ((count-group (count (neighbour-atom (elt first-near-group i))
+                                   first-near-group
                                    :key #'neighbour-atom
-				   :test #'ch-atom=))
-	       (count-mol   (count (neighbour-atom (elt first-near-group i))
-				   first-near-molecule
+                                   :test #'ch-atom=))
+               (count-mol   (count (neighbour-atom (elt first-near-group i))
+                                   first-near-molecule
                                    :key #'neighbour-atom
-				   :test #'ch-atom=)))
-	   (when (< count-mol count-group)
-	     (return-from first-near-compatible-p nil))))
+                                   :test #'ch-atom=)))
+           (when (< count-mol count-group)
+             (return-from first-near-compatible-p nil))))
     t))
 
 (defun %pmatrix-calculate-element (group group-index molecule molecule-index)
   (if (and (<= (valence group    group-index)
-	       (valence molecule molecule-index))
-	   (string= (label (atom@ group     group-index))
-		    (label (atom@ molecule  molecule-index)))
-	   (bonds-compatible-p      group group-index molecule molecule-index)
-	   (first-near-compatible-p group group-index molecule molecule-index))
+               (valence molecule molecule-index))
+           (string= (label (atom@ group     group-index))
+                    (label (atom@ molecule  molecule-index)))
+           (bonds-compatible-p      group group-index molecule molecule-index)
+           (first-near-compatible-p group group-index molecule molecule-index))
       1
       0))
 
 (defun permutation-matrix (group molecule)
   (let* ((atom-count-group    (length (atoms group)))
-	 (atom-count-molecule (length (atoms molecule)))
-	 (res                 (make-fmatrix atom-count-group
-					    atom-count-molecule)))
+         (atom-count-molecule (length (atoms molecule)))
+         (res                 (make-fmatrix atom-count-group
+                                            atom-count-molecule)))
     (loop for r from 0 below atom-count-group do
-	 (loop for c from 0 below atom-count-molecule do
-	      (setf (fmref res r c)
-		    (%pmatrix-calculate-element group    r
-						molecule c))))
+         (loop for c from 0 below atom-count-molecule do
+              (setf (fmref res r c)
+                    (%pmatrix-calculate-element group    r
+                                                molecule c))))
     res))
 
 (defun %flat-adjacency (v r c)
@@ -194,7 +194,7 @@
 
 (defun translate-atoms-pmatrix (pmatrix atom-index access-fn)
   (position-if #'(lambda (a) (> a 0))
-	       (funcall access-fn pmatrix atom-index)))
+               (funcall access-fn pmatrix atom-index)))
 
 (defun translate-pm-alpha->beta (pmatrix atom-index)
   (translate-atoms-pmatrix pmatrix atom-index #'fm-row))
@@ -214,19 +214,19 @@
   (let ((res (fm* permutation-matrix (fm-transpose (fm* permutation-matrix beta)))))
     (fm-loop (res r c)
       (when (and (=  (fmref alpha r c) 1)
-		 (/= (fmref res   r c) 1))
-	(return-from isomorphic-p nil)))
+                 (/= (fmref res   r c) 1))
+        (return-from isomorphic-p nil)))
     ;; test bonds
     (loop for a-atom from 0 below (fm-h permutation-matrix) do
-	 (let ((a-bonds (bonds-alist connections-alpha a-atom))
-	       (b-atom  (translate-pm-alpha->beta permutation-matrix a-atom)))
-	   (loop for bond in a-bonds do
-		(let* ((b-atom-bond  (translate-pm-alpha->beta permutation-matrix (car bond)))
-		       (b-bonds      (bonds-alist connections-beta b-atom-bond)))
-		  (let ((bond-in-beta (assoc b-atom b-bonds)))
-		    (when (or (not bond-in-beta)
-			      (/=  (cdr bond-in-beta) (cdr bond)))
-		      (return-from isomorphic-p nil)))))))
+         (let ((a-bonds (bonds-alist connections-alpha a-atom))
+               (b-atom  (translate-pm-alpha->beta permutation-matrix a-atom)))
+           (loop for bond in a-bonds do
+                (let* ((b-atom-bond  (translate-pm-alpha->beta permutation-matrix (car bond)))
+                       (b-bonds      (bonds-alist connections-beta b-atom-bond)))
+                  (let ((bond-in-beta (assoc b-atom b-bonds)))
+                    (when (or (not bond-in-beta)
+                              (/=  (cdr bond-in-beta) (cdr bond)))
+                      (return-from isomorphic-p nil)))))))
     t))
 
 (defun prune (matrix group molecule)
@@ -254,31 +254,31 @@
 
 (defmethod subgraph-isomorphism ((group-alpha molecule) (molecule-beta molecule))
   (let ((permutation-matrix    (permutation-matrix group-alpha molecule-beta))
-	(alpha                 (fm-map (connections group-alpha)
-				       #'%flat-adjacency))
-	(beta                  (fm-map (connections molecule-beta)
-				       #'%flat-adjacency))
-	(results               '()))
+        (alpha                 (fm-map (connections group-alpha)
+                                       #'%flat-adjacency))
+        (beta                  (fm-map (connections molecule-beta)
+                                       #'%flat-adjacency))
+        (results               '()))
     (labels ((column-free-from-ones (matrix target-row column)
-	       (loop for r from 0 below (fm-h matrix) do
-		    (when (and (= (fmref matrix r column) 1)
-			       (< r target-row))
-		      (return-from column-free-from-ones nil)))
-	       t)
-	     (%subgraph-isomorphism (alpha beta perm-mat d)
-	       (if (< d (fm-h perm-mat)) ;; we are not in the last row
-		   (loop for i from 0 below (fm-w perm-mat) do
-			(when (= (fmref perm-mat d i) 1)
-			  (let ((pruned (prune perm-mat group-alpha molecule-beta)))
+               (loop for r from 0 below (fm-h matrix) do
+                    (when (and (= (fmref matrix r column) 1)
+                               (< r target-row))
+                      (return-from column-free-from-ones nil)))
+               t)
+             (%subgraph-isomorphism (alpha beta perm-mat d)
+               (if (< d (fm-h perm-mat)) ;; we are not in the last row
+                   (loop for i from 0 below (fm-w perm-mat) do
+                        (when (= (fmref perm-mat d i) 1)
+                          (let ((pruned (prune perm-mat group-alpha molecule-beta)))
                             (loop for j from 0 below (fm-w perm-mat) do
-				 (when (/= j i)
-				   (setf (fmref pruned d j) 0)))
-			    (when (column-free-from-ones pruned d i)
-			      (%subgraph-isomorphism alpha beta pruned (1+ d))))))
-		   (when (isomorphic-p alpha beta ;; reached max depth here
-				       (connections group-alpha) (connections molecule-beta)
-				       perm-mat)
-		     (push perm-mat results) ; maybe will be useful getting all matching some day :)
-		     (return-from subgraph-isomorphism t)))))
+                                 (when (/= j i)
+                                   (setf (fmref pruned d j) 0)))
+                            (when (column-free-from-ones pruned d i)
+                              (%subgraph-isomorphism alpha beta pruned (1+ d))))))
+                   (when (isomorphic-p alpha beta ;; reached max depth here
+                                       (connections group-alpha) (connections molecule-beta)
+                                       perm-mat)
+                     (push perm-mat results) ; maybe will be useful getting all matching some day :)
+                     (return-from subgraph-isomorphism t)))))
       (%subgraph-isomorphism alpha beta permutation-matrix 0)
       nil)))

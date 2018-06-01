@@ -28,7 +28,7 @@
 (defmacro define-nodes-list (&body body)
   `(progn
      ,@(loop for i in body collect
-	    `(push ,i *nodes*))))
+            `(push ,i *nodes*))))
 
 (defun init-nodes ()
   (setf *nodes* '())

@@ -33,7 +33,7 @@
 
 (defmacro gen-all-sample-select (&body where)
   `(select ((:as :sample.id            :sample-id)
-	    (:as :sample.name          :sample-name)
+            (:as :sample.name          :sample-name)
             (:as :sample.quantity      :quantity)
             (:as :sample.units         :units)
             (:as :sample.checkin-date  :checkin-date)
@@ -59,8 +59,8 @@
            (encoded-checkout-date (encode-datetime-string (getf row :checkout-date)))
            (decoded-checkout-date (decode-datetime-string encoded-checkout-date))
            (decoded-checkin-date  (decode-date-string     encoded-checkin-date))
-	   (gen-custom-label-link (restas:genurl 'gen-sample-custom-label
-						 :id (getf row :sample-id))))
+           (gen-custom-label-link (restas:genurl 'gen-sample-custom-label
+                                                 :id (getf row :sample-id))))
       (setf (elt raw rown)
             (concatenate 'list
                          row
@@ -68,9 +68,9 @@
                          (list :checkout-date-encoded  encoded-checkout-date)
                          (list :checkin-date-decoded   decoded-checkin-date)
                          (list :checkout-date-decoded  decoded-checkout-date)
-			 (list :shortened-notes        (string-utils:ellipsize (getf row :notes)))
+                         (list :shortened-notes        (string-utils:ellipsize (getf row :notes)))
                          (list :checkbox-id            (getf row :sample-id))
-			 (list :gen-custom-label-link  gen-custom-label-link)
+                         (list :gen-custom-label-link  gen-custom-label-link)
                          (if delete-link
                              (list :delete-link (restas:genurl delete-link
                                                                :id (getf row :sample-id)))
@@ -114,20 +114,20 @@
                              :errors errors
                              :infos  infos)
     (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
-	  (json-laboratory    (array-autocomplete-laboratory))
+          (json-laboratory    (array-autocomplete-laboratory))
           (json-laboratory-id (array-autocomplete-laboratory-id))
-	  (has-local-results-p (> (length data) 0)))
+          (has-local-results-p (> (length data) 0)))
       (html-template:fill-and-print-template #p"add-samples.tpl"
                                              (with-path-prefix
                                                  :add-new-sample-lb       (_ "Add new sample")
-						 :search-sample-legend-lb (_ "Search sample")
+                                                 :search-sample-legend-lb (_ "Search sample")
                                                  :sample-name-lb          (_ "Name")
                                                  :lab-name-lb             (_ "Laboratory")
                                                  :quantity-lb
                                                  (_ "Quantity (Mass or Volume)")
                                                  :units-lb                  (_ "Unit of measure")
                                                  :checkin-date-lb           (_ "Checkin date")
-						 :checkout-date-lb          (_ "Checkout date")
+                                                 :checkout-date-lb          (_ "Checkout date")
                                                  :item-count-lb             (_ "Item count")
                                                  :search-samples-legend-lb  (_ "Search samples")
                                                  :barcode-number-lb
@@ -155,8 +155,8 @@
                                                  :units                     +name-units+
                                                  :checkin-date              +name-checkin-date+
                                                  :count                     +name-count+
-						 :notes                     +name-notes+
-						 :sample-search-name
+                                                 :notes                     +name-notes+
+                                                 :sample-search-name
                                                  +name-sample-search-name+
                                                  :submit-massive-delete
                                                  +op-submit-massive-delete+
@@ -166,7 +166,7 @@
                                                  :checkbox-use-barcode      +name-use-barcode-label+
                                                  :json-laboratory           json-laboratory
                                                  :json-laboratory-id        json-laboratory-id
-						 :render-results-p          has-local-results-p
+                                                 :render-results-p          has-local-results-p
                                                  :data-table                data)
                                                :stream stream))))
 
@@ -182,25 +182,25 @@
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
                                            (list lab-id
-						 +pos-integer-re+
-						 (_ "Laboratory id invalid"))
+                                                 +pos-integer-re+
+                                                 (_ "Laboratory id invalid"))
                                            (list name
-						 +sample-name-re+
-						 (_ "Sample name invalid"))
+                                                 +sample-name-re+
+                                                 (_ "Sample name invalid"))
                                            (list (clean-string notes)
                                                  +free-text-re+
-						 (_ "Notes invalid"))
+                                                 (_ "Notes invalid"))
                                            (list quantity
-						 +pos-integer-re+
-						 (_ "Quantity invalid"))
+                                                 +pos-integer-re+
+                                                 (_ "Quantity invalid"))
                                            (list units
-						 +free-text-re+
-						 (_ "Units invalid")))))
+                                                 +free-text-re+
+                                                 (_ "Units invalid")))))
            (errors-msg-lab-not-found (when (and (not errors-msg-1))
-				       (with-id-valid-and-used 'db:laboratory lab-id
-							       (_ "Laboratory not found"))))
+                                       (with-id-valid-and-used 'db:laboratory lab-id
+                                                               (_ "Laboratory not found"))))
            (errors-msg-checkin-date  (when (not (date-validate-p checkin-date))
-				       (list (_ "Checkin date not valid"))))
+                                       (list (_ "Checkin date not valid"))))
            (error-not-own            (when (and (not errors-msg-1)
                                                 (not errors-msg-lab-not-found))
                                        (let ((lab (single 'db:laboratory :id lab-id)))
@@ -220,32 +220,32 @@
       (if (and user
                (not errors-msg))
           (let* ((sample (create 'db:chemical-sample
-				 :name          (gen-lab-temp-name lab-id name)
-				 :laboratory-id lab-id
-				 :quantity      quantity
-				 :units         units
-				 :checkin-date  (encode-datetime-string checkin-date)
-				 :checkout-date nil
-				 :notes         (clean-string notes))))
+                                 :name          (gen-lab-temp-name lab-id name)
+                                 :laboratory-id lab-id
+                                 :quantity      quantity
+                                 :units         units
+                                 :checkin-date  (encode-datetime-string checkin-date)
+                                 :checkout-date nil
+                                 :notes         (clean-string notes))))
             (save sample) ; useless?
-	    (setf (db:name sample) (gen-lab-actual-name lab-id name (db:id sample)))
-	    (save sample)
+            (setf (db:name sample) (gen-lab-actual-name lab-id name (db:id sample)))
+            (save sample)
             (values errors-msg success-msg sample))
-	  (values errors-msg success-msg nil)))))
+          (values errors-msg success-msg nil)))))
 
 (defun search-chemical-sample (id name)
   (let* ((data (if (not (string-empty-p id))
-		   (fetch-sample-by-id (%match-or-null id +barcode-id-re+)
-					'delete-sample
-					'update-chemical-sample)
-		   (fetch-sample  ""
-				  (%match-or-null name +free-text-re+)
-				  ""
-				  'delete-sample
-				  'update-chemical-sample)))
-	 (info-message (if data
-			   nil
-			   (list (_ "Your query returned no results")))))
+                   (fetch-sample-by-id (%match-or-null id +barcode-id-re+)
+                                        'delete-sample
+                                        'update-chemical-sample)
+                   (fetch-sample  ""
+                                  (%match-or-null name +free-text-re+)
+                                  ""
+                                  'delete-sample
+                                  'update-chemical-sample)))
+         (info-message (if data
+                           nil
+                           (list (_ "Your query returned no results")))))
     (manage-sample info-message nil :data data)))
 
 (define-lab-route search-sample ("/search-sample/" :method :get)
@@ -262,17 +262,17 @@
   (with-authentication
     (with-session-user (user)
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
-	(let ((to-trash (single 'db:chemical-sample :id (parse-integer id))))
-	  (db:with-owner-object (owner to-trash)
-	    (let ((owner-id (and owner (db:id owner))))
-	      (if (and to-trash
-		       owner-id
-		       (= (db:id user) owner-id))
-		  (progn
-		    (del to-trash)
-		    (manage-sample (list (format nil (_ "Sample ~a deleted") (db:name to-trash)))
-				   nil))
-		  (manage-sample nil (list (_ "Sample not deleted")))))))))))
+        (let ((to-trash (single 'db:chemical-sample :id (parse-integer id))))
+          (db:with-owner-object (owner to-trash)
+            (let ((owner-id (and owner (db:id owner))))
+              (if (and to-trash
+                       owner-id
+                       (= (db:id user) owner-id))
+                  (progn
+                    (del to-trash)
+                    (manage-sample (list (format nil (_ "Sample ~a deleted") (db:name to-trash)))
+                                   nil))
+                  (manage-sample nil (list (_ "Sample not deleted")))))))))))
 
 (defmethod db:generate-ps-custom-label ((product db:chemical-sample)
                                         &key
@@ -294,13 +294,13 @@
 (define-lab-route gen-sample-custom-label ("/sample-custom-label/:id" :method :get)
   (with-authentication
     (let* ((act-product-id (or (scan-to-strings +pos-integer-re+ id) +db-invalid-id+))
-	   (product        (single 'db:chemical-sample
-				   :id (parse-integer act-product-id))))
+           (product        (single 'db:chemical-sample
+                                   :id (parse-integer act-product-id))))
       (if product
-	  (progn
-	    (setf (header-out :content-type) +mime-postscript+)
-	    (db:generate-ps-custom-label product))
-	  (manage-chem-prod nil (list (_ "Failure")))))))
+          (progn
+            (setf (header-out :content-type) +mime-postscript+)
+            (db:generate-ps-custom-label product))
+          (manage-chem-prod nil (list (_ "Failure")))))))
 
 
 (define-lab-route add-sample ("/add-sample/" :method :get)
@@ -309,39 +309,39 @@
       (if (and (get-parameter +name-count+)
                (scan +pos-integer-re+ (get-parameter +name-count+)))
           (let ((errors (loop named add-loop repeat (parse-integer (get-parameter +name-count+)) do
-			     (multiple-value-bind (err success)
-				 (add-single-sample (get-parameter +name-lab-id+)
-						    (get-parameter +name-sample-name+)
-						    (get-parameter +name-quantity+)
-						    (get-parameter +name-units+)
-						    (get-parameter +name-notes+)
-						    (get-parameter +name-checkin-date+))
-			       (declare (ignore success))
-			       (when err
-				 (return-from add-loop err))))))
+                             (multiple-value-bind (err success)
+                                 (add-single-sample (get-parameter +name-lab-id+)
+                                                    (get-parameter +name-sample-name+)
+                                                    (get-parameter +name-quantity+)
+                                                    (get-parameter +name-units+)
+                                                    (get-parameter +name-notes+)
+                                                    (get-parameter +name-checkin-date+))
+                               (declare (ignore success))
+                               (when err
+                                 (return-from add-loop err))))))
             (if errors
                 (manage-sample nil errors)
                 (manage-sample (list (_ "Successfully added samples")) nil
-			       :data (fetch-sample-min-id max-id
-							  'delete-sample
-							  'update-chemical-sample))))
+                               :data (fetch-sample-min-id max-id
+                                                          'delete-sample
+                                                          'update-chemical-sample))))
           (manage-sample nil (list (_ "Item count must be a positive integer")))))))
 
 (define-lab-route others-op-chem-sample ("/others-op-chem-sample/" :method :post)
   (with-authentication
     (let ((all-ids (remove-if #'(lambda (a) (not (scan +pos-integer-re+ a)))
-			      (map 'list #'first (post-parameters*)))))
+                              (map 'list #'first (post-parameters*)))))
       (cond
-	((post-parameter +op-submit-gen-barcode+)
+        ((post-parameter +op-submit-gen-barcode+)
          (let ((w (safe-parse-number (post-parameter +name-w-label+) 80.0))
                (h (safe-parse-number (post-parameter +name-h-label+) 40.0))
                (use-barcode (post-parameter +name-use-barcode-label+)))
            (setf (header-out :content-type) +mime-postscript+)
            (render-many-sample-barcodes all-ids w h use-barcode)))
-	((post-parameter +op-submit-massive-delete+)
+        ((post-parameter +op-submit-massive-delete+)
          (massive-delete all-ids 'db:chemical-sample
                          (_ "Sample ~a deleted. ")
                          (_ "Sample ~a not deleted. ")
                          #'manage-sample))
-	(t
-	 (manage-sample nil nil :data nil))))))
+        (t
+         (manage-sample nil nil :data nil))))))

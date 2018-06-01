@@ -33,9 +33,9 @@
   `(if (xmls:xmlrep-tagmatch ,tag ,node)
        (progn ,@body)
        (error 'xml-no-matching-tag
-	      :text (format nil
-			    "Error in parsing scheme database, expecting ~s got ~s instead." ,tag
-			    (xmls:xmlrep-tag ,node)))))
+              :text (format nil
+                            "Error in parsing scheme database, expecting ~s got ~s instead." ,tag
+                            (xmls:xmlrep-tag ,node)))))
 
 (defmacro with-tagmatch-if-else ((tag node else) &body body-then)
   `(if (and ,node
@@ -47,19 +47,19 @@
   (alexandria:with-gensyms (value)
     `(let  ((,value (xmls:xmlrep-attrib-value ,att ,node nil)))
        (if (string/= ,value nil)
-	   (progn
-	     ,@body
-	     ,value)
-	   (error 'xml-no-such-attribute
-		  :text (format nil
-				"Error in parsing scheme database, no attribute ~s found in node ~a."
-				,att
-				(quote ,node)))))))
+           (progn
+             ,@body
+             ,value)
+           (error 'xml-no-such-attribute
+                  :text (format nil
+                                "Error in parsing scheme database, no attribute ~s found in node ~a."
+                                ,att
+                                (quote ,node)))))))
 
 (defun get-list-tags-value (xmls tag &optional (res-values '()))
   (with-tagmatch-if-else (tag (first xmls) ((list xmls (alexandria:flatten (reverse res-values)))))
     (get-list-tags-value (rest xmls) tag
-			 (push (xmls:xmlrep-children (first xmls)) res-values))))
+                         (push (xmls:xmlrep-children (first xmls)) res-values))))
 
 
 (defmacro get-leaf ((tags path node) &body body)

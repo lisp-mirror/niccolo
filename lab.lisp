@@ -22,30 +22,30 @@
 (defmacro gen-admissible-cookie-uri ((path) &body symbols)
   `(and
     ,@(loop for symbol in symbols collect
-	   `(not ,(if (stringp symbol)
-		      `(scan ,symbol ,path)
-		      `(scan (restas:genurl ',symbol) ,path))))))
+           `(not ,(if (stringp symbol)
+                      `(scan ,symbol ,path)
+                      `(scan (restas:genurl ',symbol) ,path))))))
 
 (defun admissible-cookie-redirect-p (path)
   (and (cookie-key-script-visited-validate path)
        (gen-admissible-cookie-uri (path)
-	 root-login
-	 logout
-	 change-pass
-	 actual-user-change-pass
-	 actual-admin-change-pass
-	 "user"
-	 "admin"
-	 "add"
-	 "/ws/"
-	 "assoc"
-	 "subst"
-	 "delete"
-	 "update")))
+         root-login
+         logout
+         change-pass
+         actual-user-change-pass
+         actual-admin-change-pass
+         "user"
+         "admin"
+         "add"
+         "/ws/"
+         "assoc"
+         "subst"
+         "delete"
+         "update")))
 
 (defmacro define-pagination-alias (a alias-to-a)
   `(setf (gethash (restas:genurl ,a) utils:*alias-pagination*)
-	 (restas:genurl ,alias-to-a)))
+         (restas:genurl ,alias-to-a)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (progn
@@ -61,26 +61,26 @@
 (defun manage-welcome ()
   (with-standard-html-frame (stream (_ "Welcome"))
     (html-template:fill-and-print-template #p"welcome.tpl"
-					   (with-path-prefix
-					       :num-msg
-					     (format nil (n_ "You have ~a message"
-							     "You have ~a message"
-							     (number-of-msg-sent-to-me))
-						     (number-of-msg-sent-to-me))
-					     :messages-url (restas:genurl 'user-messages))
-					   :stream stream)))
+                                           (with-path-prefix
+                                               :num-msg
+                                             (format nil (n_ "You have ~a message"
+                                                             "You have ~a message"
+                                                             (number-of-msg-sent-to-me))
+                                                     (number-of-msg-sent-to-me))
+                                             :messages-url (restas:genurl 'user-messages))
+                                           :stream stream)))
 
 (define-lab-route root ("/" :method :get)
   #+mini-cas
   (if (hunchentoot:parameter mini-cas:+query-ticket-key+)
       (progn
-	(check-with-cas-authenticate () nil)
-	(if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
-	    (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
-	    (restas:redirect 'root)))
+        (check-with-cas-authenticate () nil)
+        (if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
+            (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
+            (restas:redirect 'root)))
       (authenticate (nil nil)
-	(i18n:with-user-translation ((get-session-user-id))
-	  (manage-welcome))))
+        (i18n:with-user-translation ((get-session-user-id))
+          (manage-welcome))))
   #-mini-cas
   (authenticate (nil nil)
     (i18n:with-user-translation ((get-session-user-id))
@@ -89,8 +89,8 @@
 (define-lab-route root-login ("/login" :method :post)
   (with-authentication
     (if (admissible-cookie-redirect-p (tbnl:cookie-in +cookie-key-script-visited+))
-	(tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
-	(manage-welcome))))
+        (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
+        (manage-welcome))))
 
 (define-lab-route user-messages ("/messages" :method :get)
   (with-authentication
@@ -104,114 +104,114 @@
   (with-authentication
     (with-standard-html-frame (stream (_ "Classify"))
       (html-template:fill-and-print-template #p"classification-tree.tpl"
-					     (with-back-to-root '())
-					     :stream stream))))
+                                             (with-back-to-root '())
+                                             :stream stream))))
 
 (define-lab-route acknowledgment ("/acknowledgment" :method :get)
   (with-authentication
     (with-standard-html-frame (stream (_ "Acknowledgment"))
       (html-template:fill-and-print-template #p"acknowledgment.tpl"
-					     (with-back-to-root '())
-					     :stream stream))))
+                                             (with-back-to-root '())
+                                             :stream stream))))
 
 (define-lab-route legal ("/legal" :method :get)
   (with-authentication
     (with-standard-html-frame (stream (_ "Legal"))
       (html-template:fill-and-print-template #p"legal.tpl"
-					     (with-back-to-root '())
-					     :stream stream))))
+                                             (with-back-to-root '())
+                                             :stream stream))))
 (defun time-to-nyan ()
   (let ((decoded (multiple-value-list (get-decoded-time))))
     (and (= (elt decoded 4) 4)
-	 (= (elt decoded 3) 1))))
+         (= (elt decoded 3) 1))))
 
 (defun render-logout-control (stream)
   (let ((template (with-path-prefix
-  		      :session-username (format nil "(~a)"
-						(get-session-username))
-		      :logout-link      (with-session-user (user)
-					  (if user
-					      (restas:genurl 'logout)
-					      nil))
-		      :login-link       (with-session-user (user)
-					  (if (not user)
-					      #+mini-cas (cas-login-uri)
-					      #-mini-cas (restas:genurl 'logout)
-					      nil)))))
+                      :session-username (format nil "(~a)"
+                                                (get-session-username))
+                      :logout-link      (with-session-user (user)
+                                          (if user
+                                              (restas:genurl 'logout)
+                                              nil))
+                      :login-link       (with-session-user (user)
+                                          (if (not user)
+                                              #+mini-cas (cas-login-uri)
+                                              #-mini-cas (restas:genurl 'logout)
+                                              nil)))))
     (html-template:fill-and-print-template #p"logout-control.tpl"
-					   template
-					   :stream stream)))
+                                           template
+                                           :stream stream)))
 
 (defun render-main-menu (stream &key (use-animated-logo-p nil))
   (let ((template (with-path-prefix
-		      :has-nyan              (time-to-nyan) ;-)
-		      :use-animated-logo-p   use-animated-logo-p
-		      :safety-lbl            (_ "Safety")
-		      :manage-ghs-hazard     (restas:genurl 'ghs-hazard)
-		      :manage-ghs-hazard-lbl (_ "GHS Hazard Codes")
-		      :manage-ghs-precaution (restas:genurl 'ghs-precautionary)
-		      :manage-ghs-precaution-lbl (_ "GHS precautionary statements")
-		      :manage-cer            (restas:genurl 'cer)
-		      :manage-cer-lbl        (_ "CER codes")
-		      :manage-sensors        (restas:genurl 'sensor)
-		      :manage-sensors-lbl    (_ "Manage sensors")
-		      :manage-adr            (restas:genurl 'adr)
-		      :manage-adr-lbl        (_ "ADR codes")
-		      :manage-hp-waste-lbl   (_ "HP waste codes")
-		      :manage-hp-waste       (restas:genurl 'hp-waste)
-		      :manage-waste-phys-state-lbl  (_ "Waste physical state")
-		      :manage-waste-phys-state      (restas:genurl 'waste-phys-state)
-		      :manage-hp-waste              (restas:genurl 'hp-waste)
-		      :places-lbl                   (_ "Places")
-		      :manage-address               (restas:genurl 'address)
-		      :manage-address-lbl           (_ "Address")
-		      :manage-building              (restas:genurl 'building)
-		      :manage-building-lbl          (_ "Building")
-		      :manage-laboratories          (restas:genurl 'laboratory)
-		      :manage-laboratories-lbl      (_ "Laboratories")
-		      :manage-maps                  (restas:genurl 'plant-map)
-		      :manage-maps-lbl              (_ "Maps")
-		      :manage-storage               (restas:genurl 'storage)
-		      :manage-storage-lbl           (_ "Storage")
-		      :chemical-compounds-lbl       (_ "Chemical compound")
-		      :manage-chemicals             (restas:genurl 'chemical)
-		      :manage-chemicals-lbl         (_ "Compound")
-		      :chemical-products-lbl        (_ "Chemical products")
-		      :manage-chemical-products-lbl (_ "Managing")
-		      :manage-chemical-products     (restas:genurl 'chem-prod)
-		      :import-chemical-products-lbl (_ "Import")
-		      :import-chemical-products     (restas:genurl 'get-import-chem-prod)
-		      :samples-lbl                  (_ "Samples")
-		      :manage-samples-lbl           (_ "Manage")
-		      :manage-samples               (restas:genurl 'chem-sample)
-		      :users-lbl                    (_ "Users")
-		      :manage-user                  (restas:genurl 'user)
-		      :manage-user-lbl              (_ "Manage users")
-		      :manage-user-lab              (restas:genurl 'assoc-user-lab)
-		      :manage-user-lab-lbl          (_ "Associate users and laboratories")
-		      :user-messages-lb             (_ "Messages")
-		      :user-messages                (restas:genurl 'user-messages)
-		      :broadcast-messages-lb        (_ "Broadcast messages")
-		      :broadcast-messages           (restas:genurl 'broadcast-message)
-		      :user-preferences             (restas:genurl 'user-preferences)
-		      :user-preferences-lbl         (_ "User preferences")
-		      :change-password              (restas:genurl 'change-pass)
-		      :change-password-lbl          (_ "Change password")
-		      :waste-letter                 (restas:genurl 'waste-letter)
-		      :waste-letter-lbl             (_ "Hazardous waste form")
-		      :waste-stats                  (restas:genurl 'waste-statistics)
-		      :waste-stats-lbl              (_ "Waste report")
-		      :l-factor-calculator          (restas:genurl 'l-factor)
-		      :l-factor-calculator-lbl      (_ "Chemical risk calculator")
+                      :has-nyan              (time-to-nyan) ;-)
+                      :use-animated-logo-p   use-animated-logo-p
+                      :safety-lbl            (_ "Safety")
+                      :manage-ghs-hazard     (restas:genurl 'ghs-hazard)
+                      :manage-ghs-hazard-lbl (_ "GHS Hazard Codes")
+                      :manage-ghs-precaution (restas:genurl 'ghs-precautionary)
+                      :manage-ghs-precaution-lbl (_ "GHS precautionary statements")
+                      :manage-cer            (restas:genurl 'cer)
+                      :manage-cer-lbl        (_ "CER codes")
+                      :manage-sensors        (restas:genurl 'sensor)
+                      :manage-sensors-lbl    (_ "Manage sensors")
+                      :manage-adr            (restas:genurl 'adr)
+                      :manage-adr-lbl        (_ "ADR codes")
+                      :manage-hp-waste-lbl   (_ "HP waste codes")
+                      :manage-hp-waste       (restas:genurl 'hp-waste)
+                      :manage-waste-phys-state-lbl  (_ "Waste physical state")
+                      :manage-waste-phys-state      (restas:genurl 'waste-phys-state)
+                      :manage-hp-waste              (restas:genurl 'hp-waste)
+                      :places-lbl                   (_ "Places")
+                      :manage-address               (restas:genurl 'address)
+                      :manage-address-lbl           (_ "Address")
+                      :manage-building              (restas:genurl 'building)
+                      :manage-building-lbl          (_ "Building")
+                      :manage-laboratories          (restas:genurl 'laboratory)
+                      :manage-laboratories-lbl      (_ "Laboratories")
+                      :manage-maps                  (restas:genurl 'plant-map)
+                      :manage-maps-lbl              (_ "Maps")
+                      :manage-storage               (restas:genurl 'storage)
+                      :manage-storage-lbl           (_ "Storage")
+                      :chemical-compounds-lbl       (_ "Chemical compound")
+                      :manage-chemicals             (restas:genurl 'chemical)
+                      :manage-chemicals-lbl         (_ "Compound")
+                      :chemical-products-lbl        (_ "Chemical products")
+                      :manage-chemical-products-lbl (_ "Managing")
+                      :manage-chemical-products     (restas:genurl 'chem-prod)
+                      :import-chemical-products-lbl (_ "Import")
+                      :import-chemical-products     (restas:genurl 'get-import-chem-prod)
+                      :samples-lbl                  (_ "Samples")
+                      :manage-samples-lbl           (_ "Manage")
+                      :manage-samples               (restas:genurl 'chem-sample)
+                      :users-lbl                    (_ "Users")
+                      :manage-user                  (restas:genurl 'user)
+                      :manage-user-lbl              (_ "Manage users")
+                      :manage-user-lab              (restas:genurl 'assoc-user-lab)
+                      :manage-user-lab-lbl          (_ "Associate users and laboratories")
+                      :user-messages-lb             (_ "Messages")
+                      :user-messages                (restas:genurl 'user-messages)
+                      :broadcast-messages-lb        (_ "Broadcast messages")
+                      :broadcast-messages           (restas:genurl 'broadcast-message)
+                      :user-preferences             (restas:genurl 'user-preferences)
+                      :user-preferences-lbl         (_ "User preferences")
+                      :change-password              (restas:genurl 'change-pass)
+                      :change-password-lbl          (_ "Change password")
+                      :waste-letter                 (restas:genurl 'waste-letter)
+                      :waste-letter-lbl             (_ "Hazardous waste form")
+                      :waste-stats                  (restas:genurl 'waste-statistics)
+                      :waste-stats-lbl              (_ "Waste report")
+                      :l-factor-calculator          (restas:genurl 'l-factor)
+                      :l-factor-calculator-lbl      (_ "Chemical risk calculator")
                       :l-factor-calculator-snpa     (restas:genurl 'risk-snpa.l-factor-snpa)
-		      :l-factor-calculator-snpa-lbl (_ "Chemical risk calculator (snpa)")
-		      :l-factor-calculator-carc     (restas:genurl 'l-factor-carc)
-		      :l-factor-calculator-carc-lbl (_ "Chemical risk calculator (carcinogenic)")
-		      :store-classify-tree (restas:genurl 'storing-classify)
-		      :store-classify-tree-lbl   (_ "Chemical classifications for safe storage."))))
+                      :l-factor-calculator-snpa-lbl (_ "Chemical risk calculator (snpa)")
+                      :l-factor-calculator-carc     (restas:genurl 'l-factor-carc)
+                      :l-factor-calculator-carc-lbl (_ "Chemical risk calculator (carcinogenic)")
+                      :store-classify-tree (restas:genurl 'storing-classify)
+                      :store-classify-tree-lbl   (_ "Chemical classifications for safe storage."))))
     (html-template:fill-and-print-template #p"main-menu.tpl"
-					   template
-					   :stream stream)))
+                                           template
+                                           :stream stream)))
 
 ;; start the server
 
@@ -223,13 +223,13 @@
    :document-root            config:*default-www-root*))
 
 (defmethod tbnl:acceptor-status-message :around ((object lab-acceptor) http-status-code
-						 &key &allow-other-keys)
+                                                 &key &allow-other-keys)
   (if (= +http-not-found+ http-status-code)
       (call-next-method object
-			http-status-code
-			:error-code  http-status-code
-			:css-file    (read-file-into-string *default-css-abs-path*)
-			:path-prefix +path-prefix+)
+                        http-status-code
+                        :error-code  http-status-code
+                        :css-file    (read-file-into-string *default-css-abs-path*)
+                        :path-prefix +path-prefix+)
       (call-next-method)))
 
 (defun initialize-pictogram (class path)

@@ -25,148 +25,148 @@
 
 (defun all-ghs-hazard-code-select ()
   (query (select (( :as :h.id                         :id)
-		  ( :as :h.code                       :code)
-		  ( :as :h.explanation                :explanation)
-		  ( :as :h.carcinogenic               :carcinogenic)
-		  ( :as :ghs-pictogram.pictogram-file :pictogram))
-	   (from (:as :ghs-hazard-statement  :h))
-	   (left-join :ghs-pictogram   :on (:= :h.pictogram :ghs-pictogram.id)))))
+                  ( :as :h.code                       :code)
+                  ( :as :h.explanation                :explanation)
+                  ( :as :h.carcinogenic               :carcinogenic)
+                  ( :as :ghs-pictogram.pictogram-file :pictogram))
+           (from (:as :ghs-hazard-statement  :h))
+           (left-join :ghs-pictogram   :on (:= :h.pictogram :ghs-pictogram.id)))))
 
 (defun build-template-list-hazard-code (start-from data-count
                                         &key (delete-link nil) (update-link nil))
   (let ((raw (map 'list #'(lambda (row)
-			    (map 'list
-				 #'(lambda (cell)
-				     (if (symbolp cell)
-					 (make-keyword (string-upcase (symbol-name cell)))
-					 cell))
-				 row))
-		  (all-ghs-hazard-code-select))))
+                            (map 'list
+                                 #'(lambda (cell)
+                                     (if (symbolp cell)
+                                         (make-keyword (string-upcase (symbol-name cell)))
+                                         cell))
+                                 row))
+                  (all-ghs-hazard-code-select))))
     (do-rows (rown res)
-	(slice-for-pagination raw start-from data-count)
+        (slice-for-pagination raw start-from data-count)
       (let* ((row (elt res rown)))
-	(setf (getf row :pictogram)
-	      (if (stringp (getf row :pictogram))
-		  (pictogram->preview-path (getf row :pictogram)
-					   (concatenate 'string +images-url-path+
-							+ghs-pictogram-web-image-subdir+)
-					   :extension +pictogram-web-image-ext+)
-		  nil))
-	(setf (elt res rown)
-	      (nconc row
-		     (pictograms-template-struct)
-		     (if delete-link
-			 (list :delete-link (delete-uri delete-link row))
-			 nil)
-		     (if update-link
-			 (list :update-link (restas:genurl update-link :id (getf row :id)))
-			 nil)))))))
+        (setf (getf row :pictogram)
+              (if (stringp (getf row :pictogram))
+                  (pictogram->preview-path (getf row :pictogram)
+                                           (concatenate 'string +images-url-path+
+                                                        +ghs-pictogram-web-image-subdir+)
+                                           :extension +pictogram-web-image-ext+)
+                  nil))
+        (setf (elt res rown)
+              (nconc row
+                     (pictograms-template-struct)
+                     (if delete-link
+                         (list :delete-link (delete-uri delete-link row))
+                         nil)
+                     (if update-link
+                         (list :update-link (restas:genurl update-link :id (getf row :id)))
+                         nil)))))))
 
 
 (defun add-new-ghs-hazard-code (code expl carcenogenic &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (regexp-validate (list
-					 (list code +ghs-hazard-code-re+ (_ "GHS code invalid"))
-					 (list expl +free-text-re+ (_ "GHS phrase invalid"))
-					 (list expl +free-text-re+
-					       (_ "GHS Carcinogenic code invalid")))))
-	 (errors-msg-2 (when (not errors-msg-1)
-			 (unique-p-validate 'db:ghs-hazard-statement
-					    :code code
-					    (_ "GHS code already in the database"))))
-	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
-	 (success-msg (and (not errors-msg)
-			   (list (format nil (_ "Saved new GHS hazard statements: ~s - ~s")
-					 code expl)))))
+                                         (list code +ghs-hazard-code-re+ (_ "GHS code invalid"))
+                                         (list expl +free-text-re+ (_ "GHS phrase invalid"))
+                                         (list expl +free-text-re+
+                                               (_ "GHS Carcinogenic code invalid")))))
+         (errors-msg-2 (when (not errors-msg-1)
+                         (unique-p-validate 'db:ghs-hazard-statement
+                                            :code code
+                                            (_ "GHS code already in the database"))))
+         (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
+         (success-msg (and (not errors-msg)
+                           (list (format nil (_ "Saved new GHS hazard statements: ~s - ~s")
+                                         code expl)))))
     (when (not errors-msg)
       (let ((ghs (create 'db:ghs-hazard-statement
-			 :code         code
-			 :explanation  expl
-			 :carcinogenic carcenogenic
-			 :pictogram    +pictogram-id-none+)))
-	(save ghs)))
+                         :code         code
+                         :explanation  expl
+                         :carcinogenic carcenogenic
+                         :pictogram    +pictogram-id-none+)))
+        (save ghs)))
     (manage-ghs-hazard-code success-msg
-			    errors-msg
-			    :start-from start-from
-			    :data-count data-count)))
+                            errors-msg
+                            :start-from start-from
+                            :data-count data-count)))
 
 (defun manage-ghs-hazard-code (infos errors &key (start-from 0) (data-count 1))
   (let ((all-ghss (build-template-list-hazard-code (actual-pagination-start start-from)
                                                    (actual-pagination-count data-count)
-						   :delete-link  'delete-ghs-hazard
-						   :update-link  'update-hazard)))
+                                                   :delete-link  'delete-ghs-hazard
+                                                   :update-link  'update-hazard)))
     (multiple-value-bind (next-start prev-start)
-	(pagination-bounds (actual-pagination-start start-from)
+        (pagination-bounds (actual-pagination-start start-from)
                            (actual-pagination-count data-count)
                            'db:ghs-hazard-statement)
       (with-standard-html-frame (stream (_ "Manage GHS Hazard Statements")
-					:infos infos :errors errors)
-	(html-template:fill-and-print-template #p"add-hazard.tpl"
-					       (with-back-to-root
-						   (with-pagination-template
-						       (next-start
-							prev-start
-							(restas:genurl 'ghs-hazard))
-						     (with-path-prefix
-							 :code-lb           (_ "Code")
-							 :statement-lb      (_ "Statement")
-							 :carcinogenic-p-lb (_ "Carcinogenic?")
-							 :carcinogenic-lb
-							 (_ "Carcinogenic (according to IARC)")
-							 :operations-lb     (_ "Operations")
-							 :code              +name-ghs-hazard-code+
-							 :expl              +name-ghs-hazard-expl+
-							 :carcinogenic
-							 +name-ghs-hazard-carcinogenic+
-							 :next-start         next-start
-							 :prev-start         prev-start
-							 :data-table         all-ghss)))
-					       :stream stream)))))
+                                        :infos infos :errors errors)
+        (html-template:fill-and-print-template #p"add-hazard.tpl"
+                                               (with-back-to-root
+                                                   (with-pagination-template
+                                                       (next-start
+                                                        prev-start
+                                                        (restas:genurl 'ghs-hazard))
+                                                     (with-path-prefix
+                                                         :code-lb           (_ "Code")
+                                                         :statement-lb      (_ "Statement")
+                                                         :carcinogenic-p-lb (_ "Carcinogenic?")
+                                                         :carcinogenic-lb
+                                                         (_ "Carcinogenic (according to IARC)")
+                                                         :operations-lb     (_ "Operations")
+                                                         :code              +name-ghs-hazard-code+
+                                                         :expl              +name-ghs-hazard-expl+
+                                                         :carcinogenic
+                                                         +name-ghs-hazard-carcinogenic+
+                                                         :next-start         next-start
+                                                         :prev-start         prev-start
+                                                         :data-table         all-ghss)))
+                                               :stream stream)))))
 
 (define-lab-route ghs-hazard ("/ghs-hazard/" :method :get)
   (with-authentication
     (with-pagination (pagination-uri utils:*alias-pagination*)
       (manage-ghs-hazard-code nil nil
-			      :start-from (session-pagination-start pagination-uri
-								    utils:*alias-pagination*)
+                              :start-from (session-pagination-start pagination-uri
+                                                                    utils:*alias-pagination*)
                               :data-count (session-pagination-count pagination-uri
-								    utils:*alias-pagination*)))))
+                                                                    utils:*alias-pagination*)))))
 
 (define-lab-route add-ghs-hazard ("/add-ghs-hazard/" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri utils:*alias-pagination*)
-	  (add-new-ghs-hazard-code (get-parameter +name-ghs-hazard-code+)
-				   (get-parameter +name-ghs-hazard-expl+)
-				   (get-parameter +name-ghs-hazard-carcinogenic+)
-				   :start-from (session-pagination-start pagination-uri
-									 utils:*alias-pagination*)
-				   :data-count (session-pagination-count pagination-uri
-									 utils:*alias-pagination*)))
+        (with-pagination (pagination-uri utils:*alias-pagination*)
+          (add-new-ghs-hazard-code (get-parameter +name-ghs-hazard-code+)
+                                   (get-parameter +name-ghs-hazard-expl+)
+                                   (get-parameter +name-ghs-hazard-carcinogenic+)
+                                   :start-from (session-pagination-start pagination-uri
+                                                                         utils:*alias-pagination*)
+                                   :data-count (session-pagination-count pagination-uri
+                                                                         utils:*alias-pagination*)))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-ghs-hazard ("/delete-ghs-hazard/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(progn
-	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-	    (let ((to-trash (single 'db:ghs-hazard-statement :id id)))
-	      (when to-trash
-		(del (single 'db:ghs-hazard-statement :id id)))))
-	  (restas:redirect 'ghs-hazard))
+        (progn
+          (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+            (let ((to-trash (single 'db:ghs-hazard-statement :id id)))
+              (when to-trash
+                (del (single 'db:ghs-hazard-statement :id id)))))
+          (restas:redirect 'ghs-hazard))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route assoc-ghs-pictogram ("/assoc-ghs-pictogram/:id" :method :get)
   (with-authentication
     (with-admin-privileges
-	(with-pagination (pagination-uri utils:*alias-pagination*)
-	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-		     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
-						       +pos-integer-re+ "")))))
-	    (let ((h-code (single 'db:ghs-hazard-statement :id id))
-		  (pict   (single 'db:ghs-pictogram :id (get-parameter +pictogram-form-key+))))
-	      (when (and h-code
-			 pict)
-		(setf (db:pictogram h-code) (db:id pict))
-		(save h-code))))
-	  (restas:redirect 'ghs-hazard))
+        (with-pagination (pagination-uri utils:*alias-pagination*)
+          (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+                     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
+                                                       +pos-integer-re+ "")))))
+            (let ((h-code (single 'db:ghs-hazard-statement :id id))
+                  (pict   (single 'db:ghs-pictogram :id (get-parameter +pictogram-form-key+))))
+              (when (and h-code
+                         pict)
+                (setf (db:pictogram h-code) (db:id pict))
+                (save h-code))))
+          (restas:redirect 'ghs-hazard))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))

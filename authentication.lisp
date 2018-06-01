@@ -20,72 +20,72 @@
   (when (and uname password (single 'db:user :username uname))
     (let* ((user            (single  'db:user :username uname)))
       (if (db:chkpass user password)
-	  user
-	  nil))))
+          user
+          nil))))
 
 #+mini-cas
 (defmacro with-cas-parameters (&body body)
   `(let ((mini-cas:*server-host-name*   +cas-server-host-name+)
-	 (mini-cas:*server-path-prefix* +cas-server-path-prefix+)
-	 (mini-cas:*service-name*       +cas-service-name+))
+         (mini-cas:*server-path-prefix* +cas-server-path-prefix+)
+         (mini-cas:*service-name*       +cas-service-name+))
      ,@body))
 
 #+mini-cas
 (defun cas-login-uri ()
   (with-cas-parameters
       (with-output-to-string (stream nil)
-	(puri:render-uri (mini-cas:make-login-uri) stream))))
+        (puri:render-uri (mini-cas:make-login-uri) stream))))
 
 #+mini-cas
 (defmacro check-with-cas-authenticate (() (&body body))
   (with-gensyms (response username user)
     `(with-cas-parameters
        (multiple-value-bind (,response ,username)
-	   (mini-cas:service-validate (parameter mini-cas:+query-ticket-key+))
-	 (when ,response
-	   (let ((,user (single 'db:user :username ,username)))
-	     (if (and ,user
-		      (account-enabled-p ,user))
-		 (progn
-		   (setf (tbnl:session-value +user-session+)
-			 (user->user-session ,user :auth t))
-		   ,@body)
-		 (logout-user))))))))
+           (mini-cas:service-validate (parameter mini-cas:+query-ticket-key+))
+         (when ,response
+           (let ((,user (single 'db:user :username ,username)))
+             (if (and ,user
+                      (account-enabled-p ,user))
+                 (progn
+                   (setf (tbnl:session-value +user-session+)
+                         (user->user-session ,user :auth t))
+                   ,@body)
+                 (logout-user))))))))
 
 (defmacro authenticate ((uname password) &body body)
   (alexandria:with-gensyms (the-session the-user db-user)
     `(let* ((,the-session (tbnl:start-session))
-	    (,the-user (if ,the-session
-			   (tbnl:session-value +user-session+)
-			   nil)))
+            (,the-user (if ,the-session
+                           (tbnl:session-value +user-session+)
+                           nil)))
        (if ,the-session
-	   (if ,the-user
-	       (if (authorized-p ,the-user)
-		   (progn ,@body)
-		   (progn
-		     (render-login-form)
-		     (tbnl:remove-session ,the-session)))
-	       (let ((,db-user (authenticate-user ,uname ,password)))
-		 (if ,db-user
-		     (progn
-		       (setf (tbnl:session-value +user-session+)
-			     (user->user-session ,db-user :auth t))
-		       ,@body)
-		     (progn
-		       (render-login-form)))))
-	   (render-login-form)))))
+           (if ,the-user
+               (if (authorized-p ,the-user)
+                   (progn ,@body)
+                   (progn
+                     (render-login-form)
+                     (tbnl:remove-session ,the-session)))
+               (let ((,db-user (authenticate-user ,uname ,password)))
+                 (if ,db-user
+                     (progn
+                       (setf (tbnl:session-value +user-session+)
+                             (user->user-session ,db-user :auth t))
+                       ,@body)
+                     (progn
+                       (render-login-form)))))
+           (render-login-form)))))
 
 (defun logout-user ()
   (let* ((the-session (tbnl:start-session)))
     (unwind-protect
-	 (if the-session
-	     (tbnl:remove-session the-session)
-	     (to-log :warning "Logout error, session null."))
+         (if the-session
+             (tbnl:remove-session the-session)
+             (to-log :warning "Logout error, session null."))
       (set-cookie-script-visited "")
       #+mini-cas
       (with-cas-parameters
-	(restas:redirect (with-output-to-string (stream)
-			   (puri:render-uri (mini-cas:make-logout-uri) stream))))
+        (restas:redirect (with-output-to-string (stream)
+                           (puri:render-uri (mini-cas:make-logout-uri) stream))))
       #-mini-cas
       (restas:redirect (restas:genurl 'root)))))
 
@@ -98,14 +98,14 @@
   (with-standard-html-frame (stream "Welcome" :use-animated-logo-p t)
     #+mini-cas
     (html-template:fill-and-print-template #p"login-form.tpl"
-					   nil
-					   :stream stream)
+                                           nil
+                                           :stream stream)
     #-mini-cas
     (html-template:fill-and-print-template #p"login-form-no-cas.tpl"
-					   (with-path-prefix
-					       :login-name +auth-name-login-name+
-					       :login-pass +auth-name-login-password+)
-					   :stream stream)))
+                                           (with-path-prefix
+                                               :login-name +auth-name-login-name+
+                                               :login-pass +auth-name-login-password+)
+                                           :stream stream)))
 
 (define-lab-route logout ("/logout" :method :get)
   (authenticate (nil nil)
@@ -116,14 +116,14 @@
   "Check if user is authenticated, if true try to set the translation table"
   (with-gensyms (session-user)
     `(authenticate ((tbnl:parameter +auth-name-login-name+)
-		    (tbnl:parameter +auth-name-login-password+))
+                    (tbnl:parameter +auth-name-login-password+))
        (i18n:with-user-translation ((get-session-user-id))
-	 (with-session-user (,session-user)
-	   (if (and (account-enabled-p ,session-user)
-		    (check-origin-target))
-	       (progn
-		  ,@body)
-	       (logout-user)))))))
+         (with-session-user (,session-user)
+           (if (and (account-enabled-p ,session-user)
+                    (check-origin-target))
+               (progn
+                  ,@body)
+               (logout-user)))))))
 
 (defmacro with-admin-privileges (if-admin if-not)
   `(if (session-admin-p)
@@ -134,8 +134,8 @@
   (with-gensyms (user)
     `(with-session-user (,user)
        (if (<= (db:level ,user) ,level)
-	   ,passed
-	   ,not-passed))))
+           ,passed
+           ,not-passed))))
 
 (defmacro with-editor-or-above-privileges (passed not-passed)
   `(with-minimum-level (+editor-acl-level+)

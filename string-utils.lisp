@@ -20,7 +20,7 @@
 
 (defun string-empty-p (s)
     (or (null s)
-	(string= s "")))
+        (string= s "")))
 
 (defun base64-encode (raw-data)
   (cl-base64:usb8-array-to-base64-string raw-data))
@@ -41,19 +41,19 @@
   "UNIX only. Note: file without a proper extension will be ignored"
   (and (stringp path) ; ensure a string
        (multiple-value-bind (match registers)
-	   (cl-ppcre:scan-to-strings "/([^/]+)\\.\(.*)" path)
-	 (declare (ignore match))
-	 (when (and registers
-		    (> (length registers) 1))
-	   (concatenate 'string
-			(elt registers 0)
-			"."
-			(or extension
-			    (elt registers 1)))))))
+           (cl-ppcre:scan-to-strings "/([^/]+)\\.\(.*)" path)
+         (declare (ignore match))
+         (when (and registers
+                    (> (length registers) 1))
+           (concatenate 'string
+                        (elt registers 0)
+                        "."
+                        (or extension
+                            (elt registers 1)))))))
 
 (defun random-password (&optional (length 12))
   (coerce (loop repeat length collect (code-char (+ 33 (random 93))))
-	  'string))
+          'string))
 
 (defun escape-csv-field (field)
   (cl-ppcre:regex-replace-all "\"" field "\"\""))
@@ -61,7 +61,7 @@
 (defun escape-string-all-but-double-quotes (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
   (html-template:escape-string string :test #'(lambda (char)
-						(or (find char "<>&'")
+                                                (or (find char "<>&'")
                                                     (> (char-code char) 255)))))
 
 (defun lines (l)
@@ -77,9 +77,9 @@
   nil or the empty string."
   (let ((string-len (length string)))
     (if (<= string-len len)
-	string
-	(concatenate 'string (subseq string 0 len)
-		     truncate-string))))
+        string
+        (concatenate 'string (subseq string 0 len)
+                     truncate-string))))
 
 (defun safe-parse-number (n &optional (default 1))
   (handler-case

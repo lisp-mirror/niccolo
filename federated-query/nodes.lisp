@@ -31,7 +31,7 @@
 (defmacro define-nodes-list (&body body)
   `(progn
      ,@(loop for i in body collect
-	    `(push ,i *nodes*))))
+            `(push ,i *nodes*))))
 
 (defun init-nodes ()
   (setf *nodes* '())
@@ -44,7 +44,7 @@
 
 (defmethod find-node ((name vector))
   (find name *nodes* :key #'node-name
-	:test #'(lambda (a b) (equalp a (utils:get-host-by-name b)))))
+        :test #'(lambda (a b) (equalp a (utils:get-host-by-name b)))))
 
 (defun check-credentials (node-address key)
   (and (find-node node-address)
@@ -53,11 +53,11 @@
 (defmacro with-credentials ((name key) &body body)
   `(if (check-credentials ,name ,key)
        (progn
-	 ,@body)
+         ,@body)
        tbnl:+http-not-found+))
 
 (defmacro with-valid-key ((key) &body body)
   `(if (string= ,key +federated-query-key+)
        (progn
-	 ,@body)
+         ,@body)
        tbnl:+http-not-found+))

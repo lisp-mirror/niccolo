@@ -15,10 +15,10 @@
 
 (defpackage #:mini-cas
   (:use :cl
-	:alexandria
-	:cl-ppcre
-	:xmls
-	:drakma)
+        :alexandria
+        :cl-ppcre
+        :xmls
+        :drakma)
   (:export
    :+query-ticket-key+
    :*server-host-name*

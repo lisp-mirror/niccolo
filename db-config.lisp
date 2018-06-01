@@ -19,8 +19,8 @@
   (setup
    :migrations-directory (config:local-system-path #p"migrations/")
    :databases (list :main
-		    (list :type :sqlite3
-			  :name (uiop:unix-namestring (config:local-system-path #p"lab.db"))))
+                    (list :type :sqlite3
+                          :name (uiop:unix-namestring (config:local-system-path #p"lab.db"))))
    ;; use debug t for query printing
    :debug nil)
   (connect)

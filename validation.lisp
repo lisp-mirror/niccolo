@@ -74,24 +74,24 @@
 
 (defmacro unique-p-validate* (class unique-columns values-to-search-for error-message)
   `(and (query (select :*
-		 (from ,class)
-		 (where (:and ,@(loop
-				   for c in unique-columns
-				   for v in values-to-search-for collect
-				     `(:= ,c ,v))))))
-	(list ,error-message)))
+                 (from ,class)
+                 (where (:and ,@(loop
+                                   for c in unique-columns
+                                   for v in values-to-search-for collect
+                                     `(:= ,c ,v))))))
+        (list ,error-message)))
 
 (defmacro exists-with-different-id-validate (class id unique-columns
-					     values-to-search-for error-message)
+                                             values-to-search-for error-message)
   `(and (query (select :*
-		 (from ,class)
-		 (where (:and ,@(concatenate 'list
-					    (loop
-					       for c in unique-columns
-					       for v in values-to-search-for collect
-						 `(:= ,c ,v))
-					    `((:!= :id ,id)))))))
-	(list ,error-message)))
+                 (from ,class)
+                 (where (:and ,@(concatenate 'list
+                                            (loop
+                                               for c in unique-columns
+                                               for v in values-to-search-for collect
+                                                 `(:= ,c ,v))
+                                            `((:!= :id ,id)))))))
+        (list ,error-message)))
 
 (defun id-valid-and-used-p (class id)
   (and (null (regexp-validate (list (list id +pos-integer-re+ (_ "Id invalid")))))
@@ -100,11 +100,11 @@
 (defmacro with-id-valid-and-used (class id msg-not-exists)
   (with-gensyms (error-msg-not-integer error-msg-not-exists)
     `(let* ((,error-msg-not-integer (validation:regexp-validate (list (list ,id
-									    +pos-integer-re+
-									    (_ "Id invalid")))))
-	    (,error-msg-not-exists  (when (and (not ,error-msg-not-integer)
-					       (not (db-utils:object-exists-in-db-p ,class ,id)))
-				      ,msg-not-exists)))
+                                                                            +pos-integer-re+
+                                                                            (_ "Id invalid")))))
+            (,error-msg-not-exists  (when (and (not ,error-msg-not-integer)
+                                               (not (db-utils:object-exists-in-db-p ,class ,id)))
+                                      ,msg-not-exists)))
        (concatenate 'list ,error-msg-not-exists ,error-msg-not-integer))))
 
 
@@ -120,8 +120,8 @@
 (defun integer-positive-validate (v)
   (handler-case
       (let ((parsed (parse-integer v :junk-allowed nil)))
-	(and parsed
-	     (> parsed 0)))
+        (and parsed
+             (> parsed 0)))
     (error () nil)))
 
 (defun date-validate-p (d)
@@ -130,12 +130,12 @@
 (defun magic-validate-p (file magic)
   (if file
       (with-open-file (stream file
-			      :direction :input
-			      :if-does-not-exist nil
-			      :element-type '(unsigned-byte 8))
-	(and stream
-	     (> (file-length stream) (length magic))
-	     (equalp magic (loop repeat (length magic) collect (read-byte stream)))))
+                              :direction :input
+                              :if-does-not-exist nil
+                              :element-type '(unsigned-byte 8))
+        (and stream
+             (> (file-length stream) (length magic))
+             (equalp magic (loop repeat (length magic) collect (read-byte stream)))))
       nil))
 
 (defun png-validate-p (file)
@@ -155,8 +155,8 @@
 (defun integer-%-validate (v)
   (let ((parsed (parse-integer v :junk-allowed t)))
     (and parsed
-	 (>= parsed 0)
-	 (<= parsed 100))))
+         (>= parsed 0)
+         (<= parsed 100))))
 
 (defun cookie-key-script-visited-validate (s)
   (and s
@@ -166,10 +166,10 @@
 (defun user-level-validate-p (level &key (permit-admin nil))
   (and (integer-positive-validate level)
        (or permit-admin
-	   (> (parse-integer level) +admin-acl-level+))
+           (> (parse-integer level) +admin-acl-level+))
        (or (= (parse-integer level) +admin-acl-level+)
-	   (= (parse-integer level) +editor-acl-level+)
-	   (= (parse-integer level) +user-acl-level+))))
+           (= (parse-integer level) +editor-acl-level+)
+           (= (parse-integer level) +user-acl-level+))))
 
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))

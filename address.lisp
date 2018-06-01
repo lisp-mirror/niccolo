@@ -28,65 +28,65 @@
 
 (defun add-new-address (line-1 city zipcode link)
   (let* ((errors-msg-1 (concatenate 'list
-				    (regexp-validate (list (list line-1
-								 +free-text-re+
-								 (_ "Line-1 invalid"))
-							   (list city
-								 +free-text-re+
-								 (_ "City field invalid"))
-							   (list zipcode
-								 +free-text-re+
-								 (_ "Zipcode invalid"))))))
-	 (errors-msg-link (when (not (null link))
-			    (regexp-validate (list (list link
-							 +free-text-re+
-							 (_ "Link invalid"))))))
-	 (errors-msg-2  (when (and (all-null-p errors-msg-1 errors-msg-link)
-				   (single 'db:address
-					   :line-1  line-1
-					   :city    city
-					   :zipcode zipcode))
-			  (list (_ "Address already in the database"))))
-	 (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
-	 (success-msg (and (not errors-msg)
-			   (list (format nil
-					 (_ "Saved address: ~s - ~s ~s")
-					 line-1 zipcode city)))))
+                                    (regexp-validate (list (list line-1
+                                                                 +free-text-re+
+                                                                 (_ "Line-1 invalid"))
+                                                           (list city
+                                                                 +free-text-re+
+                                                                 (_ "City field invalid"))
+                                                           (list zipcode
+                                                                 +free-text-re+
+                                                                 (_ "Zipcode invalid"))))))
+         (errors-msg-link (when (not (null link))
+                            (regexp-validate (list (list link
+                                                         +free-text-re+
+                                                         (_ "Link invalid"))))))
+         (errors-msg-2  (when (and (all-null-p errors-msg-1 errors-msg-link)
+                                   (single 'db:address
+                                           :line-1  line-1
+                                           :city    city
+                                           :zipcode zipcode))
+                          (list (_ "Address already in the database"))))
+         (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
+         (success-msg (and (not errors-msg)
+                           (list (format nil
+                                         (_ "Saved address: ~s - ~s ~s")
+                                         line-1 zipcode city)))))
     (when (not errors-msg)
       (let ((address (create 'db:address
-			     :line-1 line-1
-			     :city city
-			     :zipcode zipcode
-			     :link (if (string-empty-p link)
-				       (generate-openstreetmap-link line-1 city)
-				       link))))
-	(save address)))
+                             :line-1 line-1
+                             :city city
+                             :zipcode zipcode
+                             :link (if (string-empty-p link)
+                                       (generate-openstreetmap-link line-1 city)
+                                       link))))
+        (save address)))
     (manage-address success-msg errors-msg)))
 
 (defun manage-address (infos errors)
   (let ((all-addresses (fetch-raw-template-list 'db:address
-						'(:id :line-1 :city :zipcode :link)
-						:delete-link 'delete-address
-						:additional-tpl
-						#'(lambda (row)
-						    (list
-						     :update-address-link
-						     (restas:genurl 'update-address
-								    :id (db:id row)))))))
+                                                '(:id :line-1 :city :zipcode :link)
+                                                :delete-link 'delete-address
+                                                :additional-tpl
+                                                #'(lambda (row)
+                                                    (list
+                                                     :update-address-link
+                                                     (restas:genurl 'update-address
+                                                                    :id (db:id row)))))))
     (with-standard-html-frame (stream (_ "Manage Address") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"add-address.tpl"
-					     (with-back-to-root
-					       (with-path-prefix
-						   :address-lb (_ "Address")
-						   :link-lb    (_ "Link")
-						   :operation-lb (_ "Operation")
-						   :zipcode-lb   (_ "Zipcode")
-						   :line-1 +name-address-line-1+
-						   :city +name-address-city+
-						   :zipcode +name-address-zipcode+
-						   :link    +name-address-link+
-						   :data-table all-addresses))
-					     :stream stream))))
+                                             (with-back-to-root
+                                               (with-path-prefix
+                                                   :address-lb (_ "Address")
+                                                   :link-lb    (_ "Link")
+                                                   :operation-lb (_ "Operation")
+                                                   :zipcode-lb   (_ "Zipcode")
+                                                   :line-1 +name-address-line-1+
+                                                   :city +name-address-city+
+                                                   :zipcode +name-address-zipcode+
+                                                   :link    +name-address-link+
+                                                   :data-table all-addresses))
+                                             :stream stream))))
 
 (define-lab-route address ("/address/" :method :get)
   (with-authentication
@@ -95,20 +95,20 @@
 (define-lab-route add-address ("/add-address/" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
-	  (add-new-address (get-parameter +name-address-line-1+)
-			   (get-parameter +name-address-city+)
-			   (get-parameter +name-address-zipcode+)
-			   (get-parameter +name-address-link+)))
+        (progn
+          (add-new-address (get-parameter +name-address-line-1+)
+                           (get-parameter +name-address-city+)
+                           (get-parameter +name-address-zipcode+)
+                           (get-parameter +name-address-link+)))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-address ("/delete-address/:id" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
-	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-	    (let ((to-trash (single 'db:address :id id)))
-	      (when to-trash
-		(del (single 'db:address :id id)))))
-	  (restas:redirect 'address))
+        (progn
+          (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+            (let ((to-trash (single 'db:address :id id)))
+              (when to-trash
+                (del (single 'db:address :id id)))))
+          (restas:redirect 'address))
       (manage-address nil (list *insufficient-privileges-message*)))))

@@ -27,112 +27,112 @@
 
 (defun fetch-single-building (id)
   (let ((raw (query
-	      (select ((:as :buil.id :bid)
-		       :buil.name
-		       (:as :add.line-1 :address)
-		       :add.city
-		       :add.zipcode
-		       (:as :add.link :address-link))
-		(from (:as :building :buil))
-		(left-join (:as :address :add) :on (:= :add.id :buil.address-id))
-		(where (:= :bid id))))))
+              (select ((:as :buil.id :bid)
+                       :buil.name
+                       (:as :add.line-1 :address)
+                       :add.city
+                       :add.zipcode
+                       (:as :add.link :address-link))
+                (from (:as :building :buil))
+                (left-join (:as :address :add) :on (:= :add.id :buil.address-id))
+                (where (:= :bid id))))))
     (and raw
-	 (let* ((row (elt raw 0))
-		(id      (getf row :|bid|))
-		(name    (getf row :|name|))
-		(address (concatenate 'string
-				      (getf row :|address|) " "
-				      (getf row :|city|)    " "
-				      (getf row :|zipcode|)))
-		(link    (getf row :|address-link|)))
-	   (list :id id :name name :address address :link link)))))
+         (let* ((row (elt raw 0))
+                (id      (getf row :|bid|))
+                (name    (getf row :|name|))
+                (address (concatenate 'string
+                                      (getf row :|address|) " "
+                                      (getf row :|city|)    " "
+                                      (getf row :|zipcode|)))
+                (link    (getf row :|address-link|)))
+           (list :id id :name name :address address :link link)))))
 
 (defun fetch-all-buildings (&optional (delete-link nil) (update-link nil))
   (let ((raw (query
-	      (select ((:as :buil.id :bid)
-		       :buil.name
-		       (:as :add.line-1 :address)
-		       :add.city
-		       :add.zipcode
-		       (:as :add.link :address-link))
-		(from (:as :building :buil))
-		(left-join (:as :address :add) :on (:= :add.id :buil.address-id))))))
+              (select ((:as :buil.id :bid)
+                       :buil.name
+                       (:as :add.line-1 :address)
+                       :add.city
+                       :add.zipcode
+                       (:as :add.link :address-link))
+                (from (:as :building :buil))
+                (left-join (:as :address :add) :on (:= :add.id :buil.address-id))))))
     (loop for row in raw collect
-	 (let ((id      (getf row :|bid|))
-	       (name    (getf row :|name|))
-	       (address (format nil "~a ~a ~a"
-				     (getf row :|address|)
-				     (getf row :|zipcode|)
-				     (getf row :|city|)))
-	       (link    (getf row :|address-link|)))
-	   (append
-	    (list :id id :name name :address address :link link)
-	     (when delete-link
-	       (list :delete-link (restas:genurl delete-link :id id)))
-	     (when update-link
-	       (list :update-link (restas:genurl update-link :id id))))))))
+         (let ((id      (getf row :|bid|))
+               (name    (getf row :|name|))
+               (address (format nil "~a ~a ~a"
+                                     (getf row :|address|)
+                                     (getf row :|zipcode|)
+                                     (getf row :|city|)))
+               (link    (getf row :|address-link|)))
+           (append
+            (list :id id :name name :address address :link link)
+             (when delete-link
+               (list :delete-link (restas:genurl delete-link :id id)))
+             (when update-link
+               (list :update-link (restas:genurl update-link :id id))))))))
 
 (gen-autocomplete-functions db:address db:build-complete-address)
 
 (defun manage-building (infos errors)
   (let ((all-buildings (fetch-all-buildings 'delete-building 'update-building-route)))
     (with-standard-html-frame (stream
-			       (_ "Manage Buildings")
-			       :errors errors
-			       :infos  infos)
+                               (_ "Manage Buildings")
+                               :errors errors
+                               :infos  infos)
       (let ((html-template:*string-modifier* #'identity)
-	    (json-addresses    (array-autocomplete-address))
-	    (json-addresses-id (array-autocomplete-address-id)))
-	(html-template:fill-and-print-template #p"add-building.tpl"
-					       (with-back-to-root
-						   (with-path-prefix
-						       :name-lb       (_ "Name")
-						       :address-lb    (_ "Address")
-						       :link-lb       (_ "Link")
-						       :operations-lb (_ "Operations")
-						       :id         +name-building-id+
-						       :name       +name-building-proper-name+
-						       :address    +name-building-address+
-						       :address-id +name-building-address-id+
-						       :link       +name-building-address-link+
-						       :json-addresses json-addresses
-						       :json-addresses-id json-addresses-id
-						       :data-table all-buildings))
-					       :stream stream)))))
+            (json-addresses    (array-autocomplete-address))
+            (json-addresses-id (array-autocomplete-address-id)))
+        (html-template:fill-and-print-template #p"add-building.tpl"
+                                               (with-back-to-root
+                                                   (with-path-prefix
+                                                       :name-lb       (_ "Name")
+                                                       :address-lb    (_ "Address")
+                                                       :link-lb       (_ "Link")
+                                                       :operations-lb (_ "Operations")
+                                                       :id         +name-building-id+
+                                                       :name       +name-building-proper-name+
+                                                       :address    +name-building-address+
+                                                       :address-id +name-building-address-id+
+                                                       :link       +name-building-address-link+
+                                                       :json-addresses json-addresses
+                                                       :json-addresses-id json-addresses-id
+                                                       :data-table all-buildings))
+                                               :stream stream)))))
 
 (defun add-new-building (name address-id)
   (let* ((errors-msg-1 (concatenate 'list
-				    (regexp-validate   (list
-							(list name
-							      +free-text-re+
-							      (_ "Name invalid"))))
-				    (regexp-validate (list
-						      (list address-id
-							    +pos-integer-re+
-							    (_ "Address invalid"))))))
-	 (errors-msg-address-not-found (when (and (not errors-msg-1)
-						  (not (single 'db:address :id address-id)))
-					 (list "Address not in the database")))
-	 (errors-msg-already-in-db (when (or (not errors-msg-1)
-					     (not errors-msg-address-not-found))
-				     (unique-p-validate* 'db:building
-							 (:name :address-id)
-							 (name  address-id)
-							 (_ "Building already in the database"))))
-	 (errors-msg (concatenate 'list
-				  errors-msg-1
-				  errors-msg-already-in-db
-				  errors-msg-address-not-found))
-	 (success-msg (and (not errors-msg)
-			   (list (format nil (_ "Saved building: ~s - ~s") name
-					 (db:build-complete-address
-					  (single 'db:address :id address-id)))))))
+                                    (regexp-validate   (list
+                                                        (list name
+                                                              +free-text-re+
+                                                              (_ "Name invalid"))))
+                                    (regexp-validate (list
+                                                      (list address-id
+                                                            +pos-integer-re+
+                                                            (_ "Address invalid"))))))
+         (errors-msg-address-not-found (when (and (not errors-msg-1)
+                                                  (not (single 'db:address :id address-id)))
+                                         (list "Address not in the database")))
+         (errors-msg-already-in-db (when (or (not errors-msg-1)
+                                             (not errors-msg-address-not-found))
+                                     (unique-p-validate* 'db:building
+                                                         (:name :address-id)
+                                                         (name  address-id)
+                                                         (_ "Building already in the database"))))
+         (errors-msg (concatenate 'list
+                                  errors-msg-1
+                                  errors-msg-already-in-db
+                                  errors-msg-address-not-found))
+         (success-msg (and (not errors-msg)
+                           (list (format nil (_ "Saved building: ~s - ~s") name
+                                         (db:build-complete-address
+                                          (single 'db:address :id address-id)))))))
     (when (not errors-msg)
       (let ((building (create 'db:building
-			      :name name
-			      :address-id address-id)))
+                              :name name
+                              :address-id address-id)))
 
-	(save building)))
+        (save building)))
     (manage-building success-msg errors-msg)))
 
 (define-lab-route building ("/building/" :method :get)
@@ -142,18 +142,18 @@
 (define-lab-route add-building ("/add-building/" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
-	  (add-new-building (get-parameter +name-building-proper-name+)
-			    (get-parameter +name-building-address-id+)))
+        (progn
+          (add-new-building (get-parameter +name-building-proper-name+)
+                            (get-parameter +name-building-address-id+)))
       (manage-building nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-building ("/delete-building/:id" :method :get)
   (with-authentication
     (with-editor-or-above-privileges
-	(progn
-	  (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-	    (let ((to-trash (single 'db:building :id id)))
-	      (when to-trash
-		(del (single 'db:building :id id)))))
-	  (restas:redirect 'building))
+        (progn
+          (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
+            (let ((to-trash (single 'db:building :id id)))
+              (when to-trash
+                (del (single 'db:building :id id)))))
+          (restas:redirect 'building))
       (manage-building nil (list *insufficient-privileges-message*)))))

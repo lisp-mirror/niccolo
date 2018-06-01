@@ -37,17 +37,17 @@
 
 (defun keywordize-query-results (raw)
   (map 'list #'(lambda (row)
-		 (map 'list
-		      #'(lambda (cell)
-			  (if (symbolp cell)
-			      (make-keyword (string-upcase (symbol-name cell)))
-			      cell))
-		      row))
+                 (map 'list
+                      #'(lambda (cell)
+                          (if (symbolp cell)
+                              (make-keyword (string-upcase (symbol-name cell)))
+                              cell))
+                      row))
        raw))
 
 (defun get-max-id (table)
   (or (second (dbi:fetch (query-low-level (format nil "select max (id) from \"~a\"" table)
-					  crane:*default-db*)))
+                                          crane:*default-db*)))
       0))
 
 (defun object-exists-in-db-p (class id)
@@ -64,12 +64,12 @@
 
 (defun count-all (class)
   (second (first (crane:query (select ((:as (:count :*) :ct))
-				(from class))))))
+                                (from class))))))
 
 (defun get-column-from-id (id re object column-fn &key (default ""))
   (let ((obj-db (single object :id (if (scan-to-strings re id)
-				       (parse-integer id)
-				       +db-invalid-id-number+))))
+                                       (parse-integer id)
+                                       +db-invalid-id-number+))))
     (if obj-db
-	(funcall column-fn obj-db)
-	default)))
+        (funcall column-fn obj-db)
+        default)))

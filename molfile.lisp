@@ -68,61 +68,61 @@
 
   (defun tokenizer (stream)
     (labels ((%read-line ()
-	       (let ((raw (read-line stream nil nil)))
-		 (and raw
-		      (string-trim '(#\Return) raw)))))
+               (let ((raw (read-line stream nil nil)))
+                 (and raw
+                      (string-trim '(#\Return) raw)))))
       (let ((line nil)
-	    (lex  nil))
-	#'(lambda ()
-	    (if *stop*
-		(values nil nil)
-		(progn
-		  (when (not line)
-		    (setf line (%read-line)
-			  lex  (lexer line)))
-		  (labels ((next-token ()
-			     (multiple-value-bind (symbol value)
-				 (funcall lex)
-			       (if symbol
-				   (values symbol value)
-				   (progn
-				     (setf line (%read-line)
-					   lex  (lexer line))
-				     (if line
-					 (next-token)
-					 (values nil nil)))))))
-		    (multiple-value-bind (a b)
-			(next-token)
-		      ;;(format t "~s ~s~%" a b)
-		      (values a b)))))))))
+            (lex  nil))
+        #'(lambda ()
+            (if *stop*
+                (values nil nil)
+                (progn
+                  (when (not line)
+                    (setf line (%read-line)
+                          lex  (lexer line)))
+                  (labels ((next-token ()
+                             (multiple-value-bind (symbol value)
+                                 (funcall lex)
+                               (if symbol
+                                   (values symbol value)
+                                   (progn
+                                     (setf line (%read-line)
+                                           lex  (lexer line))
+                                     (if line
+                                         (next-token)
+                                         (values nil nil)))))))
+                    (multiple-value-bind (a b)
+                        (next-token)
+                      ;;(format t "~s ~s~%" a b)
+                      (values a b)))))))))
 
   (defun yy-parse-count-line (&rest params)
     (if (string/= (lastcar params) +magic-number+)
-	(error (format nil "Wrong magic number ~a" (lastcar params)))
-	(let ((atoms-count  (first params)))
-	  (setf (connections *parsed-mol-file*)
-		(make-fmatrix atoms-count atoms-count))))
+        (error (format nil "Wrong magic number ~a" (lastcar params)))
+        (let ((atoms-count  (first params)))
+          (setf (connections *parsed-mol-file*)
+                (make-fmatrix atoms-count atoms-count))))
     params)
 
   (defun yy-parse-atom-spec (&rest params)
     (let ((x      (elt params 0))
-	  (y      (elt params 1))
-	  (z      (elt params 2))
-	  (label  (elt params 4))
-	  (charge (translate-charge (elt params 6))))
+          (y      (elt params 1))
+          (z      (elt params 2))
+          (label  (elt params 4))
+          (charge (translate-charge (elt params 6))))
       (vector-push-extend (make-instance 'ch-atom
-					 :x      x
-					 :y      y
-					 :z      z
-					 :label  label
-					 :charge charge)
-			  (atoms *parsed-mol-file*))))
+                                         :x      x
+                                         :y      y
+                                         :z      z
+                                         :label  label
+                                         :charge charge)
+                          (atoms *parsed-mol-file*))))
 
   (defun yy-parse-bond-spec (&rest params)
     (with-accessors ((connections connections)) *parsed-mol-file*
       (let ((a-idx     (elt params 0))
-	    (b-idx     (elt params 1))
-	    (bond-type (elt params 2)))
+            (b-idx     (elt params 1))
+            (bond-type (elt params 2)))
       (setf (fmref (connections *parsed-mol-file*) (1- a-idx) (1- b-idx)) bond-type)
       (setf (fmref (connections *parsed-mol-file*) (1- b-idx) (1- a-idx)) bond-type))))
 
@@ -130,14 +130,14 @@
     (:print-derives-epsilon t)
     (:start-symbol molfile)
     (:terminals (integer-block empty-integer-block
-			       float-block   empty-float-block
-			       atom-label    magic-number
-			       single-space  mass-difference
+                               float-block   empty-float-block
+                               atom-label    magic-number
+                               single-space  mass-difference
                                junk mend property))
     (molfile    (count-line atom-block bond-block properties))
     (count-line
      (atom-count bond-count atom-list-count obsolete chiral-flag stext-count obsolete obsolete
-		 obsolete obsolete additional-properties-count magic-number #'yy-parse-count-line))
+                 obsolete obsolete additional-properties-count magic-number #'yy-parse-count-line))
     (atom-block
      (atom-spec)
      (atom-spec atom-block))
@@ -146,11 +146,11 @@
      (bond-spec bond-block))
     (bond-spec
      (first-atom second-atom bond-type bond-stereo ignored bond-topology reacting-center-status
-		 #'yy-parse-bond-spec))
+                 #'yy-parse-bond-spec))
     (atom-spec
      (x y z single-space atom-label mass-difference charge stereo-par hydrogen-count
-	stereo-care valence h0 ignored ignored atom-atom-mapping inversion/retention exact-change
-	#'yy-parse-atom-spec))
+        stereo-care valence h0 ignored ignored atom-atom-mapping inversion/retention exact-change
+        #'yy-parse-atom-spec))
     (properties
      property
      (property properties)
@@ -186,14 +186,14 @@
 (defun parse-mdl (mol-in-memory)
   (handler-case
       (with-input-from-string (stream mol-in-memory)
-	(and
-	 (read-line stream nil nil)
-	 (read-line stream nil nil)
-	 (read-line stream nil nil)
-	 (let ((*parsed-mol-file* (make-instance 'molecule))
-	       (*atoms-count*     -1)
-	       (*bonds-count*     -1))
-	   (progn
-	     (yacc:parse-with-lexer (tokenizer stream) *parser*)
-	     *parsed-mol-file*))))
+        (and
+         (read-line stream nil nil)
+         (read-line stream nil nil)
+         (read-line stream nil nil)
+         (let ((*parsed-mol-file* (make-instance 'molecule))
+               (*atoms-count*     -1)
+               (*bonds-count*     -1))
+           (progn
+             (yacc:parse-with-lexer (tokenizer stream) *parser*)
+             *parsed-mol-file*))))
     (error () nil)))

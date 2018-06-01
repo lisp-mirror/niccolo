@@ -17,24 +17,24 @@
 
 (defun json-all-storage-long-desc ()
   (let ((raw (query
-	      (select (:storage.id
-		       (:as :storage.name :stname)
-		       :storage.floor-number
-		       :building.name
-		       :address.line-1
-		       :address.city)
-		(from :storage)
-		(left-join :building :on (:= :building.id :storage.building-id))
-		(left-join :address :on  (:= :address.id  :building.address-id))
-		(order-by  :storage.id)))))
+              (select (:storage.id
+                       (:as :storage.name :stname)
+                       :storage.floor-number
+                       :building.name
+                       :address.line-1
+                       :address.city)
+                (from :storage)
+                (left-join :building :on (:= :building.id :storage.building-id))
+                (left-join :address :on  (:= :address.id  :building.address-id))
+                (order-by  :storage.id)))))
     (values
      (obj->json-string
       (loop for i in raw collect (obj->json-string (getf i :|id|))))
      (obj->json-string
       (loop for i in raw collect
-	   (format nil "~a, ~a ~a ~a ~a"
-		   (getf i :|stname|)
-		   (getf i :|name|)
-		   (getf i :|line-1|)
-		   (getf i :|city|)
-		   (getf i :|floor-number|)))))))
+           (format nil "~a, ~a ~a ~a ~a"
+                   (getf i :|stname|)
+                   (getf i :|name|)
+                   (getf i :|line-1|)
+                   (getf i :|city|)
+                   (getf i :|floor-number|)))))))

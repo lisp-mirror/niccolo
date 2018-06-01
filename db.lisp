@@ -368,7 +368,7 @@
 (defmethod owner-user-db-object ((object chemical-sample))
   (let ((lab (single 'laboratory :id (laboratory-id object))))
     (and lab
-	 (owner-user-db-object lab))))
+         (owner-user-db-object lab))))
 
 (deftable message ()
   (sender

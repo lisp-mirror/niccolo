@@ -23,7 +23,7 @@
 
   (defmethod local-system-path ((path string))
     (asdf:system-relative-pathname  +program-name+
-				   (uiop:parse-unix-namestring path)))
+                                   (uiop:parse-unix-namestring path)))
 
   (defmethod local-system-path ((path pathname))
     (asdf:system-relative-pathname  +program-name+ path)))
@@ -97,10 +97,10 @@
 (define-constant +cas-server-path-prefix+  ""    :test #'string=)
 
 (define-constant +cas-service-name+        (concatenate 'string
-							"https://"
-							+hostname+
-							+path-prefix+
-							"/")
+                                                        "https://"
+                                                        +hostname+
+                                                        +path-prefix+
+                                                        "/")
   :test #'string=)
 
 ;; smtp config
@@ -200,7 +200,7 @@
 
 (defparameter *physical-state*       (local-system-path #p"data/risk/physical_state.xml"))
 
-(defparameter *exposition-time*	     (local-system-path #p"data/risk/exposition_time.xml"))
+(defparameter *exposition-time*      (local-system-path #p"data/risk/exposition_time.xml"))
 
 (defparameter *usage*                (local-system-path #p"data/risk/usage.xml"))
 

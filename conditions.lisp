@@ -21,7 +21,7 @@
     :initarg :text
     :reader text))
   (:report (lambda (condition stream)
-	     (format stream "~a" (text condition))))
+             (format stream "~a" (text condition))))
   (:documentation "Error that set text"))
 
 (define-condition not-implemented-error (text-error)

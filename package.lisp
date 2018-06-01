@@ -161,9 +161,9 @@
 
 (defpackage :xml-utils
   (:use :cl
-	:alexandria
-	:xmls
-	:parse-number)
+        :alexandria
+        :xmls
+        :parse-number)
   (:export
    :with-tagmatch
    :with-tagmatch-if-else
@@ -175,7 +175,7 @@
 
 (defpackage :configuration-utils
   (:use :cl
-	:alexandria
+        :alexandria
         :xmls
         :xml-utils)
   (:export
@@ -652,9 +652,9 @@
 
 (defpackage :risk-phrases
   (:use :cl
-	:xmls
-	:xml-utils
-	:parse-number)
+        :xmls
+        :xml-utils
+        :parse-number)
   (:export
    :+phrases-el+
    :+label-el+
@@ -669,10 +669,10 @@
 
 (defpackage :risk-calculator
   (:use :cl
-	:alexandria
-	:xmls
-	:parse-number
-	:config)
+        :alexandria
+        :xmls
+        :parse-number
+        :config)
   (:export
    :+yes+
    :+no+
@@ -727,10 +727,10 @@
 
 (defpackage :risk-calculator-snpa
   (:use :cl
-	:alexandria
-	:xmls
-	:parse-number
-	:config
+        :alexandria
+        :xmls
+        :parse-number
+        :config
         :configuration-utils
         :risk-calculator
         :risk-phrases)
