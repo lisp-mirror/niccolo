@@ -78,7 +78,7 @@ already installed and ASDF configured  (but you should install all the
 7. cd niccolo
 8. autoreconf -fiv
 9. ./configure
-10. bash ./quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
+10. cd ~/lisp && bash niccolo/quick_quicklisp.sh (the script will download and install most of the libraries, also will help you to configure ASDF);
 11. clone [[https://notabug.org/cage/crane/][this version of crane]] in  ~/quicklisp/local-projects;
 12. checkout branch sqlite for crane
 13. cd ~/quicklisp/dists/quicklisp/software/cl-gd-0.6.1
