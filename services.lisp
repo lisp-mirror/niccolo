@@ -195,15 +195,14 @@
     (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
            (name    (cdr (assoc :name params)))
            (risk-calculator:*errors* '())
-           (results (risk-calculator:l-factor-carc-i (cdr (assoc :protective-device params))
-                                                     (cdr (assoc :physical-state params))
-                                                     (%extract-parse :twork params)
-                                                     (%extract-parse :teb params)
-                                                     (%extract-parse :quantity-used params)
-                                                     (%extract-parse :usage-per-day params)
-                                                     (%extract-parse :usage-per-year params))))
+           (results (risk-calculator-snpa:l-factor-carc-i-snpa
+                     (cdr (assoc :physical-state params))
+                     (%extract-parse :twork params)
+                     (cadr (assoc :protective-device params))
+                     (%extract-parse :quantity-used params)
+                     (%extract-parse :usage-per-day params)
+                     (%extract-parse :usage-per-year params))))
       (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
-
 
 ;; messages
 

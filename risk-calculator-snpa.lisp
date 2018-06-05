@@ -93,7 +93,6 @@
 
 (configuration-utils:define-conffile-reader
     (collective-protect-carc-snpa (+physical_state_carc+ nil nil))
-
     all_operations_with_good_fume_cupboard
   some_operations_with_good_fume_cupboard
   inefficient_fume_cupboard)

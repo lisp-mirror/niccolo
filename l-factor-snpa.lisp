@@ -71,12 +71,20 @@
                               "+partially-fume-cupboard-lifecycle+"
                               "+no-fume-cupboard-lifecycle+"))
 
+(defun select-prot-devices-carc ()
+  (restas.lab:%select-builder :protective-device
+                              "+all-operations-with-good-fume-cupboard+"
+                              "+some-operations-with-good-fume-cupboard+"
+                              "+inefficient-fume-cupboard+"))
+
 (defun select-phys-state-carc ()
   (restas.lab:%select-builder :phys-state
-                              "+solid-compact-gel+"
-                              "+non-volatile-liquid-cristals+"
-                              "+fluid-powder-volatile-liquid+"))
-
+                              "+gel+"
+                              "+solid-compact+"
+                              "+crystals+"
+                              "+matrix-inclusion+"
+                              "+liquid+"
+                              "+gas-vapours-fine-powder+"))
 
 (define-lab-route l-factor-snpa ("/l-factor-calculator-snpa/" :method :get)
   (restas.lab:with-authentication
@@ -142,7 +150,6 @@
                                  :protective-devices-lb     (_ "Protective devices")
                                  :physical-states-lb        (_ "Physical state")
                                  :working-temp-lb           (_ "Working temperature (°C)")
-                                 :boiling-point-lb          (_ "Boiling point (°C)")
                                  :quantity-used-lb          (_ "Quantity used (g)")
                                  :usage-per-day-lb          (_ "Usage per day (min.)")
                                  :usage-per-year-lb         (_ "Usage per year (days)")
@@ -154,9 +161,9 @@
                                  :errors-lb                 (_ "Errors")
                                  :json-chemicals            json-chemical
                                  :json-chemicals-id         json-chemical-id
-                                 :option-protective-devices (select-prot-devices)
+                                 :option-protective-devices (select-prot-devices-carc)
                                  :option-phys-states        (select-phys-state-carc)))))
-      (with-standard-html-frame (stream "Risk Calculator, carcinogenic" :errors nil :infos nil)
-        (html-template:fill-and-print-template #p"l-factor-calculator-carc.tpl"
+      (with-standard-html-frame (stream (_ "Risk Calculator, carcinogenic") :errors nil :infos nil)
+        (html-template:fill-and-print-template #p"l-factor-calculator-carc-snpa.tpl"
                                                template
                                                :stream stream)))))

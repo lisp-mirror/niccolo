@@ -3522,50 +3522,50 @@ status :UNTRANSLATED
 plurals NIL
 
  id "+inefficient-fume-cupboard+"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Utilizzo di cappa non efficiente"
+plurals-form "Utilizzo di cappa non efficiente"
+status :TRANSLATED
 plurals NIL
 
  id "+some-operations-with-good-fume-cupboard+"
-translation ""
-plurals-form ""
+translation "Operazioni svolte solo parzialmente sotto cappa efficienti (esclusi i trasferimenti)"
+plurals-form "Operazioni svolte solo parzialmente sotto cappa efficienti (esclusi i trasferimenti)"
 status :UNTRANSLATED
 plurals NIL
 
  id "+all-operations-with-good-fume-cupboard+"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Operazioni tutte svolte sotto cappa efficiente (fare riferimento a rischio chimico)"
+plurals-form "Operazioni tutte svolte sotto cappa efficiente (fare riferimento a rischio chimico)"
+status :TRANSLATED
 plurals NIL
 
  id "+gas-vapours-fine-powder+"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "gas/vapore/polvere fine"
+plurals-form "gas/vapore/polvere fine"
+status :TRANSLATED
 plurals NIL
 
  id "+liquid+"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "liquido"
+plurals-form "liquido"
+status :TRANSLATED
 plurals NIL
 
  id "+crystals+"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "cristalli"
+plurals-form "cristalli"
+status :TRANSLATED
 plurals NIL
 
  id "+solid-compact+"
-translation ""
+translation "solido compatto"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "+gel+"
-translation "sì"
+translation "gel"
 plurals-form ""
-status :FUZZY
+status :TRANSLATED
 plurals NIL
 )

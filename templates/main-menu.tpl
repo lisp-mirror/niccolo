@@ -80,7 +80,12 @@
 	        <!-- TMPL_VAR l-factor-calculator-snpa-lbl -->
 	    </a>
 	</li>
-	<li class="with-menu-item-anim">
+        <li class="with-menu-item-anim">
+	    <a href="<!-- TMPL_VAR l-factor-calculator-carc-snpa -->">
+	        <!-- TMPL_VAR l-factor-calculator-carc-snpa-lbl -->
+	    </a>
+	</li>
+        <li class="with-menu-item-anim">
 	  <a href="<!-- TMPL_VAR store-classify-tree -->">
 	    <!-- TMPL_VAR store-classify-tree-lbl -->
 	  </a>

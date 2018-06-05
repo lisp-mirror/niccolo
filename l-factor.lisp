@@ -125,7 +125,7 @@
                                  :option-usages             (select-usage)
                                  :option-work-types         (select-work-type)
                                  :option-protection-factors (select-protection-factors)))))
-      (with-standard-html-frame (stream "Risk Calculator" :errors nil :infos nil)
+      (with-standard-html-frame (stream (_ "Risk Calculator") :errors nil :infos nil)
         (html-template:fill-and-print-template #p"l-factor-calculator.tpl"
                                                template
                                                :stream stream)))))
@@ -157,7 +157,7 @@
                                  :json-chemicals-id         json-chemical-id
                                  :option-protective-devices (select-prot-devices)
                                  :option-phys-states        (select-phys-state-carc)))))
-      (with-standard-html-frame (stream "Risk Calculator, carcinogenic" :errors nil :infos nil)
+      (with-standard-html-frame (stream (_ "Risk Calculator, carcinogenic") :errors nil :infos nil)
         (html-template:fill-and-print-template #p"l-factor-calculator-carc.tpl"
                                                template
                                                :stream stream)))))
