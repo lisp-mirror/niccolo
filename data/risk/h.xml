@@ -590,7 +590,7 @@
       provoca danni agli organi &lt;o indicare tutti gli organi interessati se noti&gt;&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
     </explanation>
     <points>
-      0.0 
+      2
     </points>
   </label>
   <label>
@@ -601,7 +601,7 @@
       può provocare danni agli organi &lt;o indicare tutti gli organi interessati        se noti&gt;&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
     </explanation>
     <points>
-      0.0
+      1.6
     </points>
   </label>
   <label>
@@ -612,7 +612,7 @@
       provoca danni agli organi&lt;o indicare tutti gli organi interessati        se noti&gt;in caso di esposizione prolungata o ripetuta&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
     </explanation>
     <points>
-      0.0
+      1.6
     </points>
   </label>
   <label>
@@ -623,7 +623,7 @@
       può provocare danni agli organi&lt;o indicare tutti gli organi interessati        se noti&gt;in caso di esposizione prolungata o ripetuta&lt;indicare la via di esposizione se è accertato che nessun altra via di esposizione comporta il medesimo pericolo&gt;
     </explanation>
     <points>
-      0.0
+      1.6
     </points>
   </label>
   <label>
@@ -832,7 +832,7 @@
       Contiene piombo. Non utilizzare su oggetti che possono essere masticati o succhiati dai bambini. Attenzione! Contiene piombo
     </explanation>
     <points>
-      2
+      1.6
     </points>
   </label>
   <label>
@@ -917,7 +917,7 @@
       EUH209/209A
     </phrase>
     <explanation>
-      può diventare facilmente infiammabile durante l&#039;uso. può diventare infiammabile durante l&#039;uso 
+      può diventare facilmente infiammabile durante l&#039;uso. può diventare infiammabile durante l&#039;uso
     </explanation>
     <points>
       1.6

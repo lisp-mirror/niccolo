@@ -605,7 +605,7 @@
       Contiene gas sotto pressione; può esplodere se riscaldato
     </explanation>
     <points>
-      2
+      0
     </points>
   </label>
   <label>
@@ -660,7 +660,7 @@
       Nocivo se ingerito
     </explanation>
     <points>
-      2
+      1.6
     </points>
   </label>
   <label>
@@ -792,7 +792,7 @@
       Nocivo se inalato
     </explanation>
     <points>
-      2
+      1.6
     </points>
   </label>
   <label>
