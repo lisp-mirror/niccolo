@@ -1,9 +1,10 @@
 dnl niccolo': a chemicals inventory
 dnl Copyright (C) 2016  Universita' degli Studi di Palermo
 
-dnl This program is free software: you can redistribute it and/or modify
-dnl it under the terms of the GNU General Public License as published by
-dnl the Free Software Foundation, version 3 of the License.
+dnl This  program is  free software:  you can  redistribute it  and/or
+dnl modify it  under the terms  of the  GNU General Public  License as
+dnl published  by  the Free  Software  Foundation,  version 3  of  the
+dnl License, or (at your option) any later version.
 
 dnl This program is distributed in the hope that it will be useful,
 dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
