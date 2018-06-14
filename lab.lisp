@@ -162,7 +162,6 @@
                       :manage-hp-waste       (restas:genurl 'hp-waste)
                       :manage-waste-phys-state-lbl   (_ "Waste physical state")
                       :manage-waste-phys-state       (restas:genurl 'waste-phys-state)
-                      :manage-hp-waste               (restas:genurl 'hp-waste)
                       :places-lbl                    (_ "Places")
                       :manage-address                (restas:genurl 'address)
                       :manage-address-lbl            (_ "Address")

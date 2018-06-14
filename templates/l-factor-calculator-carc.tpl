@@ -29,6 +29,7 @@
 	 }
 
 	 var obj                = {};
+         obj.labName            = $( "#lab-name" ).val().trim();
 	 obj.name               = $( "#chem-name" ).val().trim();
 	 obj.protectiveDevice   = extractSelected($( "#protective-devices" ));
 	 obj.physicalState      = extractSelected($( "#physical-states" ));
@@ -46,6 +47,7 @@
 	     var info = JSON.parse(data);
 	     var tplView = {};
 	     var tpl     = "<tr>"                                                               +
+                           "<td>{{labName}}</td>"                                               +
 			   "<td>{{name}}</td>"                                                  +
 			   "<td>{{protectiveDevice}}</td>"                                      +
 			   "<td>{{physicalState}}</td>"                                         +
@@ -62,6 +64,7 @@
 			   "</i>"                                                               +
                            "</td>"                                                              +
 			   "</tr>";
+             tplView.labName          = obj.labName;
 	     tplView.name             = obj.name;
 	     tplView.protectiveDevice = obj.protectiveDevice;
 	     tplView.physicalState    = obj.physicalState;
@@ -101,6 +104,9 @@
 
 <form onclick="return false;">
     <div id="dialog-sum" title="Total"></div>
+
+    <label for="lab-name"><!-- TMPL_VAR lab-name-lb --></label>
+    <input type="text" id="lab-name" value=""/>
 
     <label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
     <input id="chem-id" type="hidden" name="" />
@@ -159,7 +165,9 @@
 
 <table id="results" class="sortable">
     <tr>
-
+        <th>
+	    <!-- TMPL_VAR lab-name-lb -->
+	</th>
 	<th>
 	    <!-- TMPL_VAR chem-name-lb -->
 	</th>

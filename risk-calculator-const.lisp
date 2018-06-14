@@ -88,6 +88,10 @@
 
 (define-constant +devices-root+                      "devices"                        :test #'equal)
 
+(define-constant +physical-state-carc-el-root+       "physical_state_carc"            :test #'equal)
+
+(define-constant +devices-collective-el-root+        "devices"                        :test #'equal)
+
 (define-constant +good-fume-cupboard+                "good_fume_cupboard"             :test #'equal)
 
 (define-constant +bad-fume-cupboard+                 "bad_fume_cupboard"              :test #'equal)

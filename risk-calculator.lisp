@@ -322,7 +322,7 @@
           (push (_ "Protective device not specified")  *errors*)
           10.0)))
 
-(configuration-utils:define-conffile-reader (physical-state-carc (+physical_state_carc+ nil nil))
+(configuration-utils:define-conffile-reader (physical-state-carc (+physical-state-carc-el-root+ nil nil))
     solid_compact_gel
     non_volatile_liquid_cristals
     fluid_powder_volatile_liquid)

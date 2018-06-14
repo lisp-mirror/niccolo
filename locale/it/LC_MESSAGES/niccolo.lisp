@@ -3468,57 +3468,51 @@ status :TRANSLATED
 plurals NIL
 
  id "User ID"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Identificativo utente"
+plurals-form "Identificativo utente"
+status :TRANSLATED
 plurals NIL
 
  id "Minumum qty?"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
-plurals NIL
-
- id "Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Min. quantità"
+plurals-form "Min. quantità"
+status :TRANSLATED
 plurals NIL
 
  id "The minimun quantity of this product, for weekly/daily necessity, is used in this laboratory"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "La minima quantità per questo prodotto, necessaria per un uso giornaliero o settimanale, usato in questo laboratorio"
+plurals-form  "La minima quantità per questo prodotto, necessaria per un uso giornaliero o settimanale, usato in questo laboratorio"
+status :TRANSLATED
 plurals NIL
 
- id "Collective protection factors lb"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+ id "Collective protection factors"
+translation "Mezzi di protezione collettiva"
+plurals-form "Mezzi di protezione collettiva"
+status :TRANSLATED
 plurals NIL
 
  id "Quantity used (g or ml)"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Quantità utilizzata"
+plurals-form "Quantità utilizzata"
+status :TRANSLATED
 plurals NIL
 
  id "Chemical risk calculator (snpa)"
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "Calcolo rischio chimico (snpa)"
+plurals-form "Calcolo rischio chimico (snpa)"
+status :TRANSLATED
 plurals NIL
 
  id "vl-factor does not ends with a pair of number."
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "vl-factor non termina con una coppia di numeri"
+plurals-form "vl-factor non termina con una coppia di numeri"
+status :TRANSLATED
 plurals NIL
 
  id "vl-factors are not a list."
-translation ""
-plurals-form ""
-status :UNTRANSLATED
+translation "vl-factors non e' una lista"
+plurals-form "vl-factors non e' una lista"
+status :TRANSLATED
 plurals NIL
 
  id "+inefficient-fume-cupboard+"
@@ -3530,7 +3524,7 @@ plurals NIL
  id "+some-operations-with-good-fume-cupboard+"
 translation "Operazioni svolte solo parzialmente sotto cappa efficienti (esclusi i trasferimenti)"
 plurals-form "Operazioni svolte solo parzialmente sotto cappa efficienti (esclusi i trasferimenti)"
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "+all-operations-with-good-fume-cupboard+"
@@ -3565,6 +3559,30 @@ plurals NIL
 
  id "+gel+"
 translation "gel"
+plurals-form "gel"
+status :TRANSLATED
+plurals NIL
+
+ id "Risk Calculator, carcinogenic"
+translation "Calcolatore rischio chimico per i cancerogeni"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Safety threshold. Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))"
+translation "Limite di sicurezza. Formato: una linea per ogni voce così composta: nome limite concentrazione (separati da uno spazio). La concentrazione deve essere indicata come frazione massa/massa."
+plurals-form "Limite di sicurezza. Formato: una linea per ogni voce così composta: nome limite concentrazione (separati da uno spazio). La concentrazione deve essere indicata come frazione massa/massa."
+status :TRANSLATED
+plurals NIL
+
+ id "Risk Calculator"
+translation "Calcolo del rischio chimico"
+plurals-form "Calcolo del rischio chimico"
+status :TRANSLATED
+plurals NIL
+
+ id "Chemical risk calculator (snpa, carcinogenic)"
+translation "Calcolo del rischio chimico cancerogeni (snpa)"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

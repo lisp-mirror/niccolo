@@ -84,7 +84,9 @@
 (defun t-factor-carc-snpa (temp)
   (utils:get-value-discrete-range *t-factor-carc-table-snpa* temp))
 
-(configuration-utils:define-conffile-reader (physical-state-carc-snpa (+physical_state_carc+ nil nil))
+(configuration-utils:define-conffile-reader (physical-state-carc-snpa (+physical-state-carc-el-root+
+                                                                       nil
+                                                                       nil))
     gel
   solid_compact
   crystals
@@ -93,7 +95,7 @@
   gas_vapours_fine_powder)
 
 (configuration-utils:define-conffile-reader
-    (collective-protect-carc-snpa (+physical_state_carc+ nil nil))
+    (collective-protect-carc-snpa (+devices-collective-el-root+ nil nil))
     all_operations_with_good_fume_cupboard
   some_operations_with_good_fume_cupboard
   inefficient_fume_cupboard)

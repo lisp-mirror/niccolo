@@ -55,7 +55,7 @@
 
 (defun select-work-type ()
   (%select-builder :work-type
-                   "+Maintenance+"
+                   "+maintenance+"
                    "+normal-job+"
                    "+cleaning+"))
 
@@ -97,6 +97,7 @@
            (template     (with-back-to-root
                              (with-path-prefix
                                  :service-link              service-link
+                                 :lab-name-lb               (_ "Laboratory")
                                  :chem-name-lb              (_ "Chemical name")
                                  :h-phrase-lb               (_ "H phrase")
                                  :exposition-types-lb       (_ "Exposition types")
@@ -140,6 +141,7 @@
            (template     (with-back-to-root
                              (with-path-prefix
                                  :service-link              service-link
+                                 :lab-name-lb               (_ "Laboratory")
                                  :chem-name-lb              (_ "Chemical name")
                                  :protective-devices-lb     (_ "Protective devices")
                                  :physical-states-lb        (_ "Physical state")

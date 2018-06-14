@@ -26,7 +26,12 @@
                                (with-open-file (,stream (file-error-pathname e)
                                                         :direction :output
                                                         :if-does-not-exist :create)
-                                 (format ,stream (xmls:toxml '(,template-minimal nil)))
+                                 (format ,stream
+                                         (xmls:toxml (xmls:make-xmlrep ,(first  template-minimal)
+                                                                       :attribs
+                                                                       ,(second template-minimal)
+                                                                       :children
+                                                                       ,(third template-minimal))))
                                  (finish-output ,stream))
                                (,funname ,path)
                                (return-from ,funname nil)))))

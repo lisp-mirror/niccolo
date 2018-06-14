@@ -675,6 +675,12 @@
         :parse-number
         :config)
   (:export
+   :+devices-root+
+   :+exposition-time-el-root+
+   :+physical-state-carc-el-root+
+   :+devices-collective-el-root+
+   :+work-type-root+
+   :+usage-el-root+
    :+yes+
    :+no+
    :+closed-opened-sometimes+

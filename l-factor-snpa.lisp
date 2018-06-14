@@ -96,6 +96,7 @@
            (template     (with-back-to-root
                              (with-path-prefix
                                  :service-link              service-link
+                                 :lab-name-lb               (_ "Laboratory")
                                  :chem-name-lb              (_ "Chemical name")
                                  :h-phrase-lb               (_ "H phrase")
                                  :exposition-types-lb       (_ "Exposition types")
@@ -108,10 +109,10 @@
                                  :quantity-used-lb          (_ "Quantity used (g or ml)")
                                  :work-type-lb              (_ "Work type")
                                  :collective-protection-factors-lb
-                                 (_ "Collective protection factors lb")
+                                 (_ "Collective protection factors")
                                  :quantity-stocked-minimum-lb
                                  (_ "The minimun quantity of this product, for weekly/daily necessity, is used in this laboratory")
-                                 :safety-thresholds-lb      (_ "Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))")
+                                 :safety-thresholds-lb      (_ "Safety threshold. Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))")
                                  :safety-threshold-lb       (_ "Safety threshold")
                                  :results-lb                (_ "Results")
                                  :table-res-header          (_ "Results")
@@ -132,7 +133,7 @@
                                  :option-usages             (l-fact-snpa:select-usage)
                                  :option-work-types         (l-fact-snpa:select-work-type)
                                  :option-protection-factors (l-fact-snpa:select-protection-factors)))))
-      (with-standard-html-frame (stream "Risk Calculator" :errors nil :infos nil)
+      (with-standard-html-frame (stream (_ "Risk Calculator") :errors nil :infos nil)
         (html-template:fill-and-print-template #p"l-factor-calculator-snpa.tpl"
                                                template
                                                :stream stream)))))
@@ -147,6 +148,7 @@
            (template     (with-back-to-root
                              (with-path-prefix
                                  :service-link              service-link
+                                 :lab-name-lb               (_ "Laboratory")
                                  :chem-name-lb              (_ "Chemical name")
                                  :protective-devices-lb     (_ "Protective devices")
                                  :physical-states-lb        (_ "Physical state")
