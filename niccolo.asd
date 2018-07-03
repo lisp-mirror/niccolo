@@ -108,6 +108,7 @@
                (:file "chemical-product")
                (:file "update-chemical-product")
                (:file "laboratory")
+               (:file "update-laboratory")
                (:file "assoc-user-lab")
                (:file "sample")
                (:file "update-sample")

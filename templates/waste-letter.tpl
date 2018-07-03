@@ -74,28 +74,40 @@
 
   <input id="target-cer-id" type="hidden" name="<!-- TMPL_VAR cer-id -->" />
 
-  <label for="target-cer">CER</label>
+  <label for="target-cer"
+         class="input-autocomplete-label">
+      CER
+  </label>
   <span class="ui-widget">
-    <input type="text" id="target-cer"/>
+      <input type="text" id="target-cer"/>
   </span>
 
   <input id="target-phys-id" type="hidden" name="<!-- TMPL_VAR phys-id -->" />
 
-  <label for="target-phys"><!-- TMPL_VAR waste-physical-state-lb --></label>
+  <label for="target-phys"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR waste-physical-state-lb -->
+  </label>
   <span class="ui-widget">
       <input type="text" id="target-phys"/>
   </span>
 
   <input id="target-building-id" type="hidden" name="<!-- TMPL_VAR building-id -->" />
 
-  <label for="target-building"><!-- TMPL_VAR building-lb --></label>
+  <label for="target-building"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR building-lb -->
+  </label>
   <span class="ui-widget">
       <input type="text" id="target-building"/>
   </span>
 
   <input id="target-laboratory-id" type="hidden" name="<!-- TMPL_VAR lab-id -->" />
 
-  <label for="lab-no"><!-- TMPL_VAR laboratory-lb --></label>
+  <label for="lab-no"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR laboratory-lb -->
+  </label>
   <span class="ui-widget">
       <input type="text" id="target-laboratory"/>
   </span>

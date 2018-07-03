@@ -25,7 +25,10 @@
 	 type="text"
 	 value="<!-- TMPL_VAR name-value -->"
 	 name="<!-- TMPL_VAR name -->" />
-  <label for="target-building"><!-- TMPL_VAR building-lb --></label>
+  <label for="target-building"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR building-lb -->
+  </label>
   <input id="target-building-id" type="hidden"
 	 value="<!-- TMPL_VAR building-id-value -->"
 	 name="<!-- TMPL_VAR building-id -->" />

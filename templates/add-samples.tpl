@@ -8,8 +8,6 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/get-get.js"></script>
 
-<script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
-
 <script src="<!-- TMPL_VAR path-prefix -->/js/table2csv.js"></script>
 
 <script>
@@ -67,7 +65,10 @@
 	<label for="name"><!-- TMPL_VAR sample-name-lb --></label>
 	<input id="name" type="text" name="<!-- TMPL_VAR sample-name -->" />
 
-	<label for="target-labs"><!-- TMPL_VAR lab-name-lb --></label>
+	<label for="target-labs"
+               class="input-autocomplete-label">
+            <!-- TMPL_VAR lab-name-lb -->
+        </label>
 	<input id="target-labs-id" type="hidden" name="<!-- TMPL_VAR labs-id -->" />
 	<span class="ui-widget">
 	    <input type="text" id="target-labs"/>

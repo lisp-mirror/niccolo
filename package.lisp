@@ -253,6 +253,7 @@
    :ghs-p
    :ghs-h
    :laboratory
+   :complete-name
    :chemical-product
    :validity-date
    :expire-date

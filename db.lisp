@@ -323,6 +323,8 @@
   (name
    :type text
    :nullp nil)
+  (complete-name
+   :type text)
   (owner
    :type integer
    :foreign (user :restrict :cascade)))

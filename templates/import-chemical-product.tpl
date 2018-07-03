@@ -42,7 +42,10 @@
     </legend>
   <form method="POST" ACTION="<!-- TMPL_VAR path-prefix -->/import-chem-prod/"
 	enctype="multipart/form-data">
-      <label for="target-building"><!-- TMPL_VAR building-lb --></label>
+      <label for="target-building"
+             class="input-autocomplete-label">
+          <!-- TMPL_VAR building-lb -->
+      </label>
       <input id="target-building-id" type="hidden" name="<!-- TMPL_VAR building-id -->" />
       <span class="ui-widget">
 	  <input type="text" id="target-building"/>

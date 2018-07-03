@@ -39,7 +39,7 @@
 (defun lab-id->name (id)
   (let ((res (single 'db:laboratory :id id)))
     (if res
-        (db:name res)
+        (format nil "~a[~a]" (db:complete-name res) (db:name res))
         (_ "Laboratory unknown"))))
 
 (defun adr-list ()
@@ -84,7 +84,8 @@
       (html-template:fill-and-print-template #p"waste-letter.tpl"
                                              (with-back-to-root
                                                  (with-path-prefix
-                                                     :name-lb            (_ "Name")
+                                                     :name-lb
+                                                      (_ "Name of the waste producer")
                                                      :building-lb        (_ "Building")
                                                      :laboratory-lb      (_ "Laboratory")
                                                      :weight-lb          (_ "Weight (Kg)")

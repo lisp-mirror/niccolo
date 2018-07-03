@@ -18,7 +18,9 @@
 <h3 class="compound-name"><!-- TMPL_VAR compound-name --></h3>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-prec/">
-  <label for="target-prec"><!-- TMPL_VAR name-lb --></label>
+    <label for="target-prec"  class="input-autocomplete-label">
+        <!-- TMPL_VAR name-lb -->
+    </label>
   <input id="target-compound-id" type="hidden" name="<!-- TMPL_VAR prec-compound-id -->"
 	 value="<!-- TMPL_VAR value-prec-compound-id -->"/>
   <input id="target-preccode-id" type="hidden" name="<!-- TMPL_VAR prec-code-id -->" />

@@ -18,7 +18,10 @@
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-building/">
   <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
-  <label for="target-address"><!-- TMPL_VAR address-lb --></label>
+  <label for="target-address"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR address-lb -->
+  </label>
   <input id="target-address-id" type="hidden" name="<!-- TMPL_VAR address-id -->" />
   <span class="ui-widget">
     <input type="text" id="target-address"/>

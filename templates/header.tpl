@@ -14,79 +14,87 @@
   <link rel="stylesheet" href="<!-- TMPL_VAR path-prefix -->/css/font-awesome-4.6.3/css/font-awesome.min.css">
 </head>
 <body>
-<script>
-  $(function() {
-      $( document ).tooltip({
-	  position: {
-	      my: "left bottom",
-              at: "left top"
-	  }
-      });
+    <script>
+     $(function() {
+         $( document ).tooltip({
+	     position: {
+	         my: "left bottom",
+                 at: "left top"
+	     }
+         });
 
-      function setClassesUi (){
-	  $("legend").addClass("ui-widget-header ui-state-default ui-corner-all");
-	  $("th").addClass("ui-widget-header ui-state-active");
-	  $("fieldset").addClass("ui-corner-all");
-	  $(".info-message").addClass("ui-state-highlight ui-corner-all");
-	  $(".error-message").addClass("ui-state-error ui-corner-all");
-      }
+         function appendAutocompleteSign (v) {
+             let data = '<sup class="sup-tip">' +
+                        '<span class="fa fa-search" aria-hidden="true"></span></sup>';
+             $(v).append(data);
+         }
 
 
-      let activeAccordionIndexKey = 'activeAccordionIndex';
-
-      function setAccordionActiveIndex (v){
-	  sessionStorage.setItem(activeAccordionIndexKey, v);
-      }
-
-      function getAccordionActiveIndex (){
-	  let parsed = parseInt(sessionStorage.getItem(activeAccordionIndexKey));
-	  if (!isNaN(sessionStorage.getItem(activeAccordionIndexKey))){
-	      return parsed;
-	  } else {
-	      return null;
-	  }
-      }
+         function setClassesUi (){
+	     $("legend").addClass("ui-widget-header ui-state-default ui-corner-all");
+	     $("th").addClass("ui-widget-header ui-state-active");
+	     $("fieldset").addClass("ui-corner-all");
+	     $(".info-message").addClass("ui-state-highlight ui-corner-all");
+	     $(".error-message").addClass("ui-state-error ui-corner-all");
+             appendAutocompleteSign($('.input-autocomplete-label'));
+         }
 
 
-      $("button").button();
-      $("input:submit").button();
-      $("input:button").button();
-      $("select").not("[multiple]").selectmenu();
-      $("#accordion-menu").accordion({
-	  activate   : function( event, ui ) {
-	      var index = jQuery("#accordion-menu").find(".ui-accordion-header-active").index() / 2;
-	      setAccordionActiveIndex (index);
-	  },
-	  header     : "li.menu-level-1",
-	  heightStyle: "content",
-	  collapsible: true,
-	  autoHeight : true,
-          active     : getAccordionActiveIndex() != null ? getAccordionActiveIndex() : false
+         let activeAccordionIndexKey = 'activeAccordionIndex';
 
-      }).css('width', '200pt');
+         function setAccordionActiveIndex (v){
+	     sessionStorage.setItem(activeAccordionIndexKey, v);
+         }
 
-      setClassesUi();
-
-      $(".with-attention-scale-anim").mouseover(function() {
-	  $(this).removeClass("anim-scale-down-2x");
-	  $(this).addClass("anim-scale-up-2x");
-      });
-
-      $(".with-attention-scale-anim").mouseout(function() {
-	  $(this).removeClass("anim-scale-up-2x");
-	  $(this).addClass("anim-scale-down-2x");
-      });
-
-      $(".with-menu-item-anim").mouseover(function() {
-	  $(this).removeClass("anim-menu-attention-out");
-	  $(this).addClass("anim-menu-attention-get");
-      });
-
-      $(".with-menu-item-anim").mouseout(function() {
-	  $(this).removeClass("anim-menu-attention-get");
-	  $(this).addClass("anim-menu-attention-out");
-      });
+         function getAccordionActiveIndex (){
+	     let parsed = parseInt(sessionStorage.getItem(activeAccordionIndexKey));
+	     if (!isNaN(sessionStorage.getItem(activeAccordionIndexKey))){
+	         return parsed;
+	     } else {
+	         return null;
+	     }
+         }
 
 
-  });
-</script>
+         $("button").button();
+         $("input:submit").button();
+         $("input:button").button();
+         $("select").not("[multiple]").selectmenu();
+         $("#accordion-menu").accordion({
+	     activate   : function( event, ui ) {
+	         var index = jQuery("#accordion-menu").find(".ui-accordion-header-active").index() / 2;
+	         setAccordionActiveIndex (index);
+	     },
+	     header     : "li.menu-level-1",
+	     heightStyle: "content",
+	     collapsible: true,
+	     autoHeight : true,
+             active     : getAccordionActiveIndex() != null ? getAccordionActiveIndex() : false
+
+         }).css('width', '200pt');
+
+         setClassesUi();
+
+         $(".with-attention-scale-anim").mouseover(function() {
+	     $(this).removeClass("anim-scale-down-2x");
+	     $(this).addClass("anim-scale-up-2x");
+         });
+
+         $(".with-attention-scale-anim").mouseout(function() {
+	     $(this).removeClass("anim-scale-up-2x");
+	     $(this).addClass("anim-scale-down-2x");
+         });
+
+         $(".with-menu-item-anim").mouseover(function() {
+	     $(this).removeClass("anim-menu-attention-out");
+	     $(this).addClass("anim-menu-attention-get");
+         });
+
+         $(".with-menu-item-anim").mouseout(function() {
+	     $(this).removeClass("anim-menu-attention-get");
+	     $(this).addClass("anim-menu-attention-out");
+         });
+
+
+     });
+    </script>

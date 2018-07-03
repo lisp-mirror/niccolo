@@ -24,14 +24,16 @@
 
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-assoc-chem-haz/">
-  <label for="target-haz"><!-- TMPL_VAR name-lb --></label>
-  <input id="target-compound-id" type="hidden" name="<!-- TMPL_VAR haz-compound-id -->"
-	 value="<!-- TMPL_VAR value-haz-compound-id -->"/>
-  <input id="target-hazcode-id" type="hidden" name="<!-- TMPL_VAR haz-code-id -->" />
-  <span class="ui-widget">
-    <input type="text" id="target-haz"/>
-  </span>
-  <input type="submit" />
+    <label for="target-haz"  class="input-autocomplete-label">
+        <!-- TMPL_VAR name-lb -->
+    </label>
+    <input id="target-compound-id" type="hidden" name="<!-- TMPL_VAR haz-compound-id -->"
+	   value="<!-- TMPL_VAR value-haz-compound-id -->"/>
+    <input id="target-hazcode-id" type="hidden" name="<!-- TMPL_VAR haz-code-id -->" />
+    <span class="ui-widget">
+        <input type="text" id="target-haz"/>
+    </span>
+    <input type="submit" />
 </form>
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->

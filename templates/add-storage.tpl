@@ -84,7 +84,10 @@ function createQRcode(text, typeNumber, errorCorrectLevel) {
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-storage/">
   <label for="name-text"><!-- TMPL_VAR name-lb --></label>
   <input id="name-text" type="text" name="<!-- TMPL_VAR name -->" />
-  <label for="target-building"><!-- TMPL_VAR building-lb --></label>
+  <label for="target-building"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR building-lb -->
+  </label>
   <input id="target-building-id" type="hidden" name="<!-- TMPL_VAR building-id -->" />
   <span class="ui-widget">
     <input type="text" id="target-building"/>

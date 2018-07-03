@@ -576,6 +576,7 @@
                                                         (delete-link nil)
                                                         (disable-link nil)
                                                         (enable-link  nil)
+                                                        (update-link  nil)
                                                         (additional-tpl nil))
   (let ((raw (filter what)))
     (loop for data in raw collect
@@ -593,6 +594,9 @@
            (when enable-link
              (push (restas:genurl enable-link :id (db:id data)) plist)
              (push :enable-link plist))
+           (when update-link
+             (push (restas:genurl update-link :id (db:id data)) plist)
+             (push :update-link plist))
            (when additional-tpl
              (if (functionp additional-tpl)
                  (setf plist (concatenate 'list plist (funcall additional-tpl data)))

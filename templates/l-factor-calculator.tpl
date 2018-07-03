@@ -136,7 +136,10 @@
     <label for="lab-name"><!-- TMPL_VAR lab-name-lb --></label>
     <input type="text" id="lab-name" value=""/>
 
-    <label for="chem-name"><!-- TMPL_VAR chem-name-lb --></label>
+    <label for="chem-name"
+           class="input-autocomplete-label">
+        <!-- TMPL_VAR chem-name-lb -->
+    </label>
     <input id="chem-id" type="hidden" name="" />
     <span class="ui-widget">
 	<input type="text" id="chem-name" value=""/>

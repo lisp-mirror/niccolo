@@ -3481,7 +3481,7 @@ plurals NIL
 
  id "The minimun quantity of this product, for weekly/daily necessity, is used in this laboratory"
 translation "La minima quantità per questo prodotto, necessaria per un uso giornaliero o settimanale, usato in questo laboratorio"
-plurals-form  "La minima quantità per questo prodotto, necessaria per un uso giornaliero o settimanale, usato in questo laboratorio"
+plurals-form "La minima quantità per questo prodotto, necessaria per un uso giornaliero o settimanale, usato in questo laboratorio"
 status :TRANSLATED
 plurals NIL
 
@@ -3585,5 +3585,65 @@ plurals NIL
 translation "Calcolo del rischio chimico cancerogeni (snpa)"
 plurals-form ""
 status :TRANSLATED
+plurals NIL
+
+ id "Name of the waste producer"
+translation "Nome del produttore del rifiuto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Complete name"
+translation "Nome completo"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory complete name already in the database"
+translation "Nome completo del laboratorio gia' inserito nel database"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory name already in the database"
+translation "Nome del laboratorio gia' inserito nel database"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory complete name invalid"
+translation "Nome completo del laboratorio non valido"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update laboratory"
+translation "Aggiornato il laboratorio"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "This laboratory does not exists in database."
+translation "Questo laboratorio non e' presente nel database"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory ~s updated"
+translation "Laboratorio ~s aggiornato"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "laboratory already in the database with different ID"
+translation "laboratorio gia' inserito nel database con un ID differente"
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Laboratory does not exists in database"
+translation "il laboratorio non esiste nel database"
+plurals-form ""
+status :UNTRANSLATED
 plurals NIL
 )

@@ -16,29 +16,41 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-lab-id+                   "id"          :test #'string=)
+(define-constant +name-lab-id+                   "id"            :test #'string=)
 
-(define-constant +name-lab-name+                 "name"        :test #'string=)
+(define-constant +name-lab-name+                 "name"          :test #'string=)
 
-(define-constant +name-lab-owner+                "resp"        :test #'string=)
+(define-constant +name-lab-complete-name+        "complete-name" :test #'string=)
 
-(gen-autocomplete-functions db:laboratory db:name)
+(define-constant +name-lab-owner+                "resp"          :test #'string=)
 
-(defun add-new-laboratory (name &key (start-from 0) (data-count 1))
+(gen-autocomplete-functions db:laboratory db:complete-name)
+
+(defun add-new-laboratory (name complete-name &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (regexp-validate (list
                                          (list name +laboratory-name-re+
                                                (_ "Laboratory name invalid")))))
-         (errors-msg-2 (when (not errors-msg-1)
+         (errors-msg-2 (regexp-validate (list
+                                         (list complete-name +free-text-re+
+                                               (_ "Laboratory complete name invalid")))))
+         (errors-msg-3 (when (and (not errors-msg-1)
+                                  (not errors-msg-2))
                          (unique-p-validate 'db:laboratory
-                                            :name
-                                            name
-                                            (_ "Laboratory already in the database"))))
-         (errors-msg  (concatenate 'list errors-msg-1 errors-msg-2))
+                                            :name name
+                                            (_ "Laboratory name already in the database"))))
+         (errors-msg-4 (when (and (not errors-msg-1)
+                                  (not errors-msg-2)
+                                  (not errors-msg-3))
+                         (unique-p-validate 'db:laboratory
+                                            :complete-name complete-name
+                                            (_ "Laboratory complete name already in the database"))))
+         (errors-msg  (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-3 errors-msg-4))
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Saved new laboratory ~s") name)))))
     (when (not errors-msg)
       (let ((lab (create 'db:laboratory
-                         :name name)))
+                         :name          name
+                         :complete-name complete-name)))
         (save lab)))
     (manage-laboratory success-msg
                        errors-msg
@@ -47,8 +59,9 @@
 
 (defun manage-laboratory (infos errors &key (start-from 0) (data-count 1))
   (let ((all-labs (fetch-raw-template-list 'db:laboratory
-                                           '(:id :name :owner)
+                                           '(:id :name :owner :complete-name)
                                            :delete-link 'delete-laboratory
+                                           :update-link 'update-laboratory
                                            :additional-tpl
                                            #'(lambda (lab)
                                                (when (and lab
@@ -70,15 +83,16 @@
                                                         prev-start
                                                         (restas:genurl 'laboratory))
                                                      (with-path-prefix
-                                                         :name-lb       (_ "Name")
-                                                         :owner-lb
-                                                         (_ "Responsible person")
-                                                         :operations-lb (_ "Operations")
-                                                         :name         +name-lab-name+
-                                                         :owner        +name-lab-owner+
-                                                         :next-start   next-start
-                                                         :prev-start   prev-start
-                                                         :data-table   all-labs)))
+                                                         :name-lb          (_ "Name")
+                                                         :complete-name-lb (_ "Complete name")
+                                                         :owner-lb         (_ "Responsible person")
+                                                         :operations-lb    (_ "Operations")
+                                                         :name             +name-lab-name+
+                                                         :complete-name    +name-lab-complete-name+
+                                                         :owner            +name-lab-owner+
+                                                         :next-start       next-start
+                                                         :prev-start       prev-start
+                                                         :data-table       all-labs)))
                                                :stream stream)))))
 
 (define-lab-route laboratory ("/laboratory/" :method :get)
@@ -95,6 +109,7 @@
     (with-editor-or-above-privileges
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-laboratory (get-parameter +name-lab-name+)
+                              (get-parameter +name-lab-complete-name+)
                               :start-from (session-pagination-start pagination-uri
                                                                     utils:*alias-pagination*)
                               :data-count (session-pagination-count pagination-uri

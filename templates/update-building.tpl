@@ -24,7 +24,10 @@
 	 type="text"
 	 value="<!-- TMPL_VAR name-value -->"
 	 name="<!-- TMPL_VAR name -->" />
-  <label for="target-address"><!-- TMPL_VAR address-lb --></label>
+  <label for="target-address"
+         class="input-autocomplete-label">
+      <!-- TMPL_VAR address-lb -->
+  </label>
   <input id="target-address-id" type="hidden"
 	 value="<!-- TMPL_VAR address-id-value -->"
 	 name="<!-- TMPL_VAR address-id -->" />

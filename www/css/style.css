@@ -83,6 +83,10 @@ input[type=checkbox] {
     display: inline;
 }
 
+.chem-prod-add-searh-wrapper {
+    width: 60%;
+}
+
 .other-ops-chem-prod  input[type=submit] {
     min-width:    150pt;
     margin-left:  auto;
@@ -379,21 +383,21 @@ fieldset.map-image-fieldset  {
 }
 
 fieldset.add-new-chem-prod  {
-    width:  200pt;
+    width:  33%;
     float:  left;
     margin:   5pt;
     height: 370pt;
 }
 
 fieldset.search-chem-prod  {
-    width:  200pt;
+    width:  33%;
     margin:   5pt;
     height: 370pt;
     float:  left;
 }
 
 fieldset.other-ops-chem-prod  {
-    width:  200pt;
+    width:  33%;
     margin:   5pt;
     height: 370pt;
 }
@@ -738,6 +742,11 @@ td {
     cursor:              pointer;
     animation:           fade-in 0.5s ease-out both;
 
+}
+
+.sup-tip {
+    color:     #0F99C0;
+    font-size: 60%
 }
 
 .help-button {
