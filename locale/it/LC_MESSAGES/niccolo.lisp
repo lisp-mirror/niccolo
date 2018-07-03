@@ -3596,54 +3596,54 @@ plurals NIL
  id "Complete name"
 translation "Nome completo"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory complete name already in the database"
 translation "Nome completo del laboratorio gia' inserito nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory name already in the database"
 translation "Nome del laboratorio gia' inserito nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory complete name invalid"
 translation "Nome completo del laboratorio non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update laboratory"
 translation "Aggiornato il laboratorio"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "This laboratory does not exists in database."
 translation "Questo laboratorio non e' presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory ~s updated"
 translation "Laboratorio ~s aggiornato"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "laboratory already in the database with different ID"
 translation "laboratorio gia' inserito nel database con un ID differente"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Laboratory does not exists in database"
 translation "il laboratorio non esiste nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )

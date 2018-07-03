@@ -32,7 +32,7 @@
                                                  (:name :complete-name)
                                                  (name  complete-name)
                                                  (_ "laboratory already in the database with different ID"))))
-           (errors-msg  (concatenate 'list errors-msg-1 errors-msg-2))
+           (errors-msg  (concatenate 'list errors-msg-1 errors-msg-2 errors-msg-unique))
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Laboratory ~s updated") name)))))
       (if (not errors-msg)
