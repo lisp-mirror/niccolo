@@ -3646,4 +3646,10 @@ translation "il laboratorio non esiste nel database"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Confirm operation?"
+translation "Confermi l'operazione?"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

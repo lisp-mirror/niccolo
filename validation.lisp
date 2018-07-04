@@ -146,7 +146,7 @@
   (magic-validate-p file '(#x25 #x50 #x44 #x46)))
 
 (defun sdf-validate-p (filepath)
-  (molfile:parse-mdl (read-file-into-string filepath)))
+  (molfile:parse-mdl-catch-errors (read-file-into-string filepath)))
 
 (define-constant +other-cid-re+ "^([A-Z]){1,}-[0-9]+-[0-9]+-[0-9]+$" :test #'string=)
 

@@ -407,6 +407,7 @@
    :words
    :lines
    :escape-string-all-but-double-quotes
+   :add-slashes
    :ellipsize
    :safe-parse-number))
 
@@ -446,7 +447,8 @@
    :math-utils
    :molecule)
   (:export
-   :parse-mdl))
+   :parse-mdl
+   :parse-mdl-catch-errors))
 
 (defpackage :ps-utils
   (:use

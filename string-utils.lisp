@@ -65,6 +65,9 @@
                                                 (or (find char "<>&'")
                                                     (> (char-code char) 255)))))
 
+(defun add-slashes (s)
+  (cl-ppcre:regex-replace-all "[\\\\\"']" s "\\\\\\&"))
+
 (defun lines (l)
   (cl-ppcre:split "\\n" l))
 

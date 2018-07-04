@@ -384,12 +384,13 @@
                   (restas:genurl 'assoc-registration-waste-message)))
             (setf (elt raw rown)
                   (nconc row
-                         (list :decoded-sent-time    (decode-datetime-string (getf row :sent-time)))
-                         (list :delete-link          delete-link)
+                         (list :decoded-sent-time     (decode-datetime-string (getf row :sent-time)))
+                         (list :delete-link           delete-link)
                          (list :close-w-success-link  close-w-success-link)
                          (list :close-w-failure-link  close-w-failure-link)
                          (list :assoc-reg-number-link assoc-registration-number-link)
                          (list :admin-p               (session-admin-p))
+                         (list :confirm-msg-lb        (add-slashes (_ "Confirm operation?")))
                          (children-template (getf row :msg-id))))))
         raw))))
 

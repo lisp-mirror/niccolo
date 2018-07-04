@@ -229,13 +229,13 @@
                                                     (list := :shelf shelf)
                                                     (list := 1 1))))))))
     (when struct-file
-      (let ((group (molfile:parse-mdl (read-file-into-string struct-file))))
+      (let ((group (molfile:parse-mdl-catch-errors (read-file-into-string struct-file))))
         (when group
           (setf raw
                 (remove-if-not #'(lambda (a)
-                                   (let ((molecule (molfile:parse-mdl (getf a
-                                                                            :|chem-struct|
-                                                                            ""))))
+                                   (let ((molecule (molfile:parse-mdl-catch-errors (getf a
+                                                                                         :|chem-struct|
+                                                                                         ""))))
                                      (and molecule
                                           (molecule:subgraph-isomorphism group molecule))))
                                raw)))))

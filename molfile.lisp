@@ -42,7 +42,7 @@
    (return (values 'integer-block (parse-integer $@))))
   ("M  END"
    (return (values 'mend $@)))
-  ("^(A|M|S|V)  .+"
+  ("^(A|M|S +SKP|V [0-9]+)  .+"
    (return (values 'property $@)))
   ("([a-z,A-Z,\\*,#]{3})|([a-z,A-Z,\\*,#]{2}\\p{White_Space}{1})|([a-z,A-Z,\\*,#]{1}\\p{White_Space}{2})"
    (return (values 'atom-label (string-trim '(#\space) $@))))
@@ -185,16 +185,19 @@
     (magic-number)))
 
 (defun parse-mdl (mol-in-memory)
+  (with-input-from-string (stream mol-in-memory)
+    (and
+     (read-line stream nil nil)
+     (read-line stream nil nil)
+     (read-line stream nil nil)
+     (let ((*parsed-mol-file* (make-instance 'molecule))
+           (*atoms-count*     -1)
+           (*bonds-count*     -1))
+       (progn
+         (yacc:parse-with-lexer (tokenizer stream) *parser*)
+         *parsed-mol-file*)))))
+
+(defun parse-mdl-catch-errors (mol-in-memory)
   (handler-case
-      (with-input-from-string (stream mol-in-memory)
-        (and
-         (read-line stream nil nil)
-         (read-line stream nil nil)
-         (read-line stream nil nil)
-         (let ((*parsed-mol-file* (make-instance 'molecule))
-               (*atoms-count*     -1)
-               (*bonds-count*     -1))
-           (progn
-             (yacc:parse-with-lexer (tokenizer stream) *parser*)
-             *parsed-mol-file*))))
+      (parse-mdl mol-in-memory)
     (error () nil)))

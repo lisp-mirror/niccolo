@@ -291,7 +291,7 @@
    :nullp t))
 
 (defmethod print-object ((object chemical-product) stream)
-  (format stream "~a (~a)" (name (single 'chemical-product :id (compound object))) (id object)))
+  (format stream "~a (~a)" (name (single 'chemical-compound :id (compound object))) (id object)))
 
 (deftable chemical-compound-preferences ()
   (owner
