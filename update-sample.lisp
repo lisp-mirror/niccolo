@@ -16,9 +16,10 @@
 
 (in-package :restas.lab)
 
-(defun update-sample (id quantity units new-checkout-date notes)
-  (let* ((clean-notes     (clean-string notes))
-         (errors-checkout (if (or (string-empty-p new-checkout-date)
+(defun update-sample (id quantity units new-checkout-date notes description compliantp)
+  (let* ((clean-notes       (clean-string notes))
+         (clean-description (clean-string description))
+         (errors-checkout   (if (or (string-empty-p new-checkout-date)
                                   (date-validate-p new-checkout-date))
                               nil
                               (list (_ "Checkout date not properly formatted."))))
@@ -49,6 +50,10 @@
     (if (not errors-msg)
         (let* ((sample (single 'db:chemical-sample :id id)))
           (setf (db:checkout-date sample) (encode-datetime-string new-checkout-date)
+                (db:description   sample) clean-description
+                ;; note: no need to check input as 'encode-compliantp
+                ;; just check for non-nil
+                (db:compliantp    sample) (encode-compliantp compliantp)
                 (db:quantity      sample) quantity
                 (db:units         sample) units
                 (db:notes         sample) clean-notes)
@@ -57,7 +62,9 @@
         (manage-update-sample id success-msg errors-msg))))
 
 (defun manage-update-sample (id infos errors)
-  (let ((new-sample (and id (single 'db:chemical-sample :id (parse-integer id)))))
+  (let* ((new-sample (and id (single 'db:chemical-sample :id (parse-integer id))))
+         (decoded-compliantp (and new-sample
+                                  (decode-compliantp (db:compliantp new-sample)))))
     (with-standard-html-frame (stream (_ "Update Sample")
                                       :infos infos
                                       :errors errors)
@@ -67,18 +74,24 @@
                                                    :checkout-date-lb (_ "Checkout date")
                                                    :quantity-lb      (_ "Quantity (Mass or Volume)")
                                                    :units-lb         (_ "Unit of measure")
-                                                   :notes-lb          (_ "Notes")
+                                                   :notes-lb         (_ "Notes")
+                                                   :compliantp-lb    (_ "Compliant?")
+                                                   :description-lb   (_ "Description")
                                                    :id               (and id
                                                                           (db:id new-sample))
                                                    :notes            +name-notes+
                                                    :checkout-date    +name-checkout-date+
                                                    :quantity         +name-quantity+
                                                    :units            +name-units+
-                                                   :quantity-value   (and id
+                                                   :compliantp-name  +name-sample-compliantp+
+                                                   :description      +name-sample-description+
+                                                   :quantity-value     (and id
                                                                           (db:quantity new-sample))
-                                                   :units-value      (and id
+                                                   :units-value        (and id
                                                                           (db:units new-sample))
-                                                   :notes-value      (db:notes new-sample)
+                                                   :notes-value        (db:notes new-sample)
+                                                   :description-value  (db:description new-sample)
+                                                   :decoded-compliantp decoded-compliantp
                                                    :checkout-date-value
                                                    (decode-date-string
                                                     (db:checkout-date new-sample))))
@@ -94,12 +107,17 @@
               (if (and to-update
                        owner-id
                        (= (db:id user) owner-id))
-                  (let ((new-checkout (get-parameter +name-checkout-date+))
-                        (new-quantity (get-parameter +name-quantity+))
-                        (new-units    (get-parameter +name-units+))
-                        (new-notes    (get-parameter +name-notes+)))
+                  (let ((new-checkout    (get-parameter +name-checkout-date+))
+                        (new-quantity    (get-parameter +name-quantity+))
+                        (new-units       (get-parameter +name-units+))
+                        (new-description (get-parameter +name-sample-description+))
+                        (new-compliantp  (get-parameter +name-sample-compliantp+))
+                        (new-notes       (get-parameter +name-notes+)))
                     (if new-notes
-                        (update-sample id new-quantity new-units new-checkout new-notes)
+                        (update-sample id new-quantity new-units new-checkout
+                                       new-notes
+                                       new-description
+                                       new-compliantp)
                         (manage-update-sample id nil nil)))
                   (manage-update-sample id
                                         nil

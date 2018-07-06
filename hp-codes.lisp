@@ -100,7 +100,7 @@
 
 (define-lab-route add-hp-waste ("/add-hp-waste/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (add-new-hp-waste-code (get-parameter +name-hp-waste-code+)
                                    (get-parameter +name-hp-waste-expl+)))
@@ -108,7 +108,7 @@
 
 (define-lab-route delete-hp-waste ("/delete-hp-waste/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:hp-waste-code :id id)))
@@ -119,7 +119,7 @@
 
 (define-lab-route assoc-hp-pictogram ("/assoc-hp-pictogram/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)

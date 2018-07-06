@@ -738,6 +738,19 @@ td {
     vertical-align: bottom;
 }
 
+.table-marker-yes {
+    animation:      fade-in 0.5s ease-out both;
+    color:          #0F99C0;
+    vertical-align: bottom;
+}
+
+.table-marker-no {
+    animation:      fade-in 0.5s ease-out both;
+    color:          #000000;
+    vertical-align: bottom;
+}
+
+
 .edit-button {
     cursor:              pointer;
     animation:           fade-in 0.5s ease-out both;
@@ -946,37 +959,53 @@ table.waste-stats th {
     cursor: pointer;
 }
 
+textarea.add-sample-description {
+    width: 90%;
+    height: 100px;
+}
+
+textarea.add-sample-notes {
+    width:  90%;
+    height: 100px;
+}
+
+
 fieldset.add-new-sample  {
-    width:  200pt;
+    width:  33%;
     float:  left;
     margin:   5pt;
-    height: 390pt;
+    height: 580pt;
 }
 
 
 fieldset.search-new-sample  {
     width:  200pt;
     margin:   5pt;
-    height: 390pt;
+    height: 580pt;
     float:  left;
-}
-
-
-#textarea-update-sample {
-    width:  512pt;
-    height: 256pt;
-}
-
-.other-ops-chem-sample  input[type=submit] {
-    min-width:    150pt;
-    margin-left:  auto;
-    margin-right: auto;
 }
 
 fieldset.other-ops-chem-sample  {
     width:  200pt;
     margin:   5pt;
-    height: 390pt;
+    height: 580pt;
+}
+
+.update-sample-notes {
+    width:  512pt;
+    height: 256pt;
+}
+
+.update-sample-description {
+    width:  512pt;
+    height: 256pt;
+}
+
+
+.other-ops-chem-sample  input[type=submit] {
+    min-width:    150pt;
+    margin-left:  auto;
+    margin-right: auto;
 }
 
 

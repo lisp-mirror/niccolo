@@ -297,7 +297,7 @@
 
   (define-lab-route add-sensor ("/add-sensor/" :method :get)
     (with-authentication
-      (with-admin-privileges
+      (with-admin-credentials
           (with-pagination (pagination-uri utils:*alias-pagination*)
             (add-new-sensor (get-parameter +name-sensor-description+)
                             (get-parameter +name-sensor-address+)
@@ -312,7 +312,7 @@
 
   (define-lab-route delete-sensor ("/delete-sensor/:id" :method :get)
     (with-authentication
-      (with-admin-privileges
+      (with-admin-credentials
           (with-pagination (pagination-uri utils:*alias-pagination*)
             (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
               (let ((to-trash (single 'db:sensor :id id)))
@@ -323,7 +323,7 @@
 
   (define-lab-route assoc-sensor-map ("/assoc-sensor-map/:mid/:sid" :method :get)
     (with-authentication
-      (with-admin-privileges
+      (with-admin-credentials
           (bt:with-recursive-lock-held (lock)
             (progn
               (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
@@ -459,7 +459,7 @@
 
   (define-lab-route update-sensor-route ("/update-sensor/:id" :method :get)
     (with-authentication
-      (with-admin-privileges
+      (with-admin-credentials
           (progn
             (let ((new-description (get-parameter +name-sensor-description+))
                   (new-address     (get-parameter +name-sensor-address+))

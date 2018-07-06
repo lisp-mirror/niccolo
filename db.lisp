@@ -361,6 +361,12 @@
   (units
    :type text
    :nullp nil)
+  (description
+   :type text
+   :nullp nil)
+  (compliantp
+   :type integer
+   :nullp nil)
   (notes
    :type text
    :nullp t))

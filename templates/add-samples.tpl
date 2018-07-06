@@ -79,14 +79,23 @@
 	<label for="units"><!-- TMPL_VAR units-lb --></label>
 	<input id="units" type="text" name="<!-- TMPL_VAR units -->" />
 
+        <label for="add-sample-compliant-checkbox"><!-- TMPL_VAR compliantp-lb --></label>
+        <input type="checkbox"
+               id="add-sample-compliant-checkbox"
+               name="<!-- TMPL_VAR compliantp-name -->">
+
 	<label for="checkin-date"><!-- TMPL_VAR checkin-date-lb --></label>
 	<input id="checkin-date" type="text" name="<!-- TMPL_VAR checkin-date -->" />
 
 	<label for="count"><!-- TMPL_VAR item-count-lb --></label>
 	<input id="count" type="text" name="<!-- TMPL_VAR count -->" />
 
+        <label for="textarea-add-sample-description"><!-- TMPL_VAR  description-lb --></label>
+	<textarea id ="textarea-add-sample-description" class="add-sample-description"
+		  name="<!-- TMPL_VAR description -->"></textarea>
+
 	<label for="textarea-add-sample"><!-- TMPL_VAR  notes-lb --></label>
-	<textarea id ="textarea-add-sample" class="textarea-add-sample"
+	<textarea id ="textarea-add-sample" class="add-sample-notes"
 		  name="<!-- TMPL_VAR notes -->"></textarea>
 
 	<input id="submit-add" type="submit" />
@@ -161,6 +170,8 @@
 		<th class="sample-checkin-date-hd"><!-- TMPL_VAR checkin-date-lb --></th>
 		<th class="sample-checkout-date-hd"><!-- TMPL_VAR checkout-date-lb --></th>
 		<th class="sample-notes-hd"><!-- TMPL_VAR notes-lb --></th>
+                <th class="sample-description-hd"><!-- TMPL_VAR description-lb --></th>
+                <th class="sample-compliant-hd"><!-- TMPL_VAR compliantp-lb --></th>
 		<th class="sample-operations"><!-- TMPL_VAR operations-lb --></th>
 	    </tr>
 	</thead>
@@ -177,7 +188,7 @@
 		    <!-- TMPL_VAR sample-name -->
 		</td>
 		<td class="sample-lab-name">
-		    <!-- TMPL_VAR lab-name -->
+		    <!-- TMPL_VAR lab-complete-name -->
 		</td>
 		<td class="sample-qty">
 		    <!-- TMPL_VAR quantity -->
@@ -193,6 +204,16 @@
 		</td>
 		<td class="sample-notes">
 		    <!-- TMPL_VAR shortened-notes -->
+		</td>
+                <td class="sample-description">
+		    <!-- TMPL_VAR shortened-description -->
+		</td>
+                <td class="sample-compliant">
+                    <!-- TMPL_IF decoded-compliantp -->
+                    <span class="fa fa-check table-marker-yes" aria-hidden="true"></span>
+                    <!-- TMPL_ELSE -->
+                    <span class="fa fa-close table-marker-no" aria-hidden="true"></span>
+                    <!-- /TMPL_IF  -->
 		</td>
 		<td class="operations">
 		    <a href="<!-- TMPL_VAR delete-link -->">

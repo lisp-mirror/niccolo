@@ -137,7 +137,7 @@
 
 (define-lab-route add-adr ("/add-adr/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-adr-code (get-parameter +name-adr-code-class+)
                             (get-parameter +name-adr-uncode+)
@@ -150,7 +150,7 @@
 
 (define-lab-route delete-adr ("/delete-adr/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:adr-code :id id)))
@@ -161,7 +161,7 @@
 
 (define-lab-route assoc-adr-pictogram ("/assoc-adr-pictogram/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)

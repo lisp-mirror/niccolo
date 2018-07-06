@@ -42,7 +42,7 @@
      (from :waste-message)
      (inner-join :message :on (:and (:= :message.id :waste-message.message)
                                     (:= :message.status ,status)
-                                    (:= :message.recipient (admin-id))))
+                                    (:= :message.recipient (waste-manager-id))))
      (inner-join :building :on (:= :building.id :waste-message.building-id))
      (inner-join :address  :on (:= :address.id  :building.address-id))
      (inner-join :cer-code :on (:= :cer-code.id :waste-message.cer-code-id))
@@ -327,14 +327,14 @@
 
 (define-lab-route waste-statistics ("/print-waste-stats/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-waste-manager-credentials
         (print-waste-statistic nil nil)
       (print-messages (list *insufficient-privileges-message*) nil))))
 
 (define-lab-route waste-statistics-spreadsheet ("/print-waste-stats/:status/:last-year/:registered-only"
                                                 :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-waste-manager-credentials
         (let* ((print-last-year-p (> (integer-validate last-year :default 0)
                                      0))
                (status-raw        (integer-validate status :default -1))

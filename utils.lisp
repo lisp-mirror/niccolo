@@ -435,6 +435,14 @@
                                           (session-pagination-count ,uri ,alias-hashtable))))
        ,@body)))
 
+(defun default-pagination-start (pagination-uri)
+  (session-pagination-start pagination-uri
+                            *alias-pagination*))
+
+(defun default-pagination-count (pagination-uri)
+  (session-pagination-count pagination-uri
+                            *alias-pagination*))
+
 ;; net addresses
 
 ;; net dns

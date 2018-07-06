@@ -389,7 +389,7 @@
                          (list :close-w-success-link  close-w-success-link)
                          (list :close-w-failure-link  close-w-failure-link)
                          (list :assoc-reg-number-link assoc-registration-number-link)
-                         (list :admin-p               (session-admin-p))
+                         (list :admin-p               (session-waste-manager-p))
                          (list :confirm-msg-lb        (add-slashes (_ "Confirm operation?")))
                          (children-template (getf row :msg-id))))))
         raw))))
@@ -439,7 +439,6 @@
                          (list :admin-p (session-admin-p))
                          (children-template (getf row :msg-id))))))
         raw))))
-
 
 (defun fetch-all-chemicals-by-users (id)
   (keywordize-query-results
@@ -725,7 +724,7 @@
 
 (defun reply-to (id subject body)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-or-waste-manager-credentials
         (let* ((error-no-id (regexp-validate (list (list id
                                                          +integer-re+
                                                          (_ "Invalid message ID provided")))))
@@ -765,7 +764,7 @@
 
 (defun close-w-status-message (id status)
   (with-authentication
-    (with-admin-privileges
+    (with-waste-manager-credentials
         (let* ((error-no-id (regexp-validate (list (list id
                                                          +integer-re+
                                                          (_ "Invalid message ID provided")))))
@@ -814,7 +813,7 @@
                                            error-no-id
                                            error-no-message)
                               nil)))
-         (print-messages (list *insufficient-privileges-message*) nil))))
+         (print-messages (list (_ "This operation is available for waste manager only.")) nil))))
 
 (define-lab-route close-w-success-message ("/close-success-message/:id" :method :get)
   (close-w-status-message id +msg-status-closed-success+))
@@ -824,7 +823,7 @@
 
 (define-lab-route assoc-registration-waste-message ("/assoc-reg-waste/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-waste-manager-credentials
         (let* ((error-reg (regexp-validate (list (list (get-parameter +name-registration-num+)
                                                        +waste-registration-number-re+
                                                        (_ "Registration number format invalid")))))
@@ -875,7 +874,7 @@
                                nil))
               (t
                (print-messages (list (_ "Generic error")) nil)))))
-      (manage-chem nil (list *insufficient-privileges-message*)))))
+      (manage-chem nil (list (_ "This operation is available for waste manager only."))))))
 
 (defun send-broadcast-message (subject body)
   (let* ((actual-subject (strip-tags subject))
@@ -915,7 +914,7 @@
 
 (define-lab-route broadcast-message ("/broadcast-message/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (if (and (get-parameter +name-broadcast-msg-subject+)
                  (get-parameter +name-broadcast-msg-body+))
             (send-broadcast-message (get-parameter +name-broadcast-msg-subject+)

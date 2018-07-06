@@ -105,6 +105,7 @@
                (:file "storage")
                (:file "update-storage")
                (:file "user")
+               (:file "update-user")
                (:file "chemical-product")
                (:file "update-chemical-product")
                (:file "laboratory")

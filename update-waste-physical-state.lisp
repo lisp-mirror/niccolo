@@ -64,7 +64,7 @@
 
 (define-lab-route update-waste-phys-state ("/update-waste-phys-state/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (let ((new-expl     (get-parameter +name-waste-phys-state-expl+)))
             (if new-expl

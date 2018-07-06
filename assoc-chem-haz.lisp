@@ -163,7 +163,7 @@
 
 (define-lab-route add-assoc-chem-haz ("/add-assoc-chem-haz/" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
 	(progn
 	  (add-new-assoc-chem-haz (get-parameter +name-hazcode-id+)
 				  (get-parameter +name-haz-compound-id+)))
@@ -171,7 +171,7 @@
 
 (define-lab-route delete-assoc-chem-haz ("/delete-assoc-chem-haz/:id/:id-chem" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
 	(progn
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
@@ -185,7 +185,7 @@
 (define-lab-route remove-haz-code-from-chem ("/remove-haz-code-from-chem/:id-haz/:id-chem"
 					     :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
 	(progn
 	  (when (and (not (regexp-validate (list (list id-haz  +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))

@@ -106,7 +106,7 @@
 
 (define-lab-route add-laboratory ("/add-laboratory/" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-laboratory (get-parameter +name-lab-name+)
                               (get-parameter +name-lab-complete-name+)
@@ -118,7 +118,7 @@
 
 (define-lab-route delete-laboratory ("/delete-laboratory/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:laboratory :id id)))

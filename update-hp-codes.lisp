@@ -72,7 +72,7 @@
 
 (define-lab-route update-hp-waste ("/update-hp-waste/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (let ((new-code     (get-parameter +name-hp-waste-code+))
                 (new-expl     (get-parameter +name-hp-waste-expl+)))

@@ -126,9 +126,15 @@
                   ,@body)
                (logout-user)))))))
 
-(defmacro with-admin-privileges (if-admin if-not)
+(defmacro with-admin-credentials (if-admin if-not)
   `(if (session-admin-p)
        ,if-admin
+       ,if-not))
+
+(defmacro with-admin-or-waste-manager-credentials (if-passed if-not)
+  `(if (or (session-admin-p)
+           (session-waste-manager-p))
+       ,if-passed
        ,if-not))
 
 (defmacro with-minimum-level ((level) passed not-passed)
@@ -138,7 +144,14 @@
            ,passed
            ,not-passed))))
 
-(defmacro with-editor-or-above-privileges (passed not-passed)
+(defmacro with-editor-or-above-credentials (passed not-passed)
   `(with-minimum-level (+editor-acl-level+)
      ,passed
      ,not-passed))
+
+(defmacro with-waste-manager-credentials (passed not-passed)
+  (with-gensyms (user)
+    `(with-session-user (,user)
+       (if (= (db:level ,user) +waste-manager-acl-level+)
+           ,passed
+           ,not-passed))))

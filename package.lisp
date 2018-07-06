@@ -98,6 +98,7 @@
    :+admin-acl-level+
    :+user-acl-level+
    :+editor-acl-level+
+   :+waste-manager-acl-level+
    :+user-account-enabled+
    :+user-session+
    :+auth-name-login-name+
@@ -275,6 +276,7 @@
    :user-to
    :product
    :chemical-sample
+   :compliantp
    :laboratory-id
    :checkin-date
    :checkout-date
@@ -524,8 +526,10 @@
    :get-session-user-id
    :admin-id
    :admin-user
+   :waste-manager-id
    :get-session-level
    :session-admin-p
+   :session-waste-manager-p
    :account-enabled-p))
 
 (defpackage :utils
@@ -558,6 +562,8 @@
    :path-prefix-tpl
    :with-path-prefix
    :with-pagination-template
+   :default-pagination-start
+   :default-pagination-count
    :with-back-uri
    :with-back-to-root
    :alist->query-uri

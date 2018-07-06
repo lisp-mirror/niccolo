@@ -72,7 +72,7 @@
 
 (define-lab-route update-precautionary ("/update-p/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (let ((new-code     (get-parameter +name-ghs-precautionary-code+))
                 (new-expl     (get-parameter +name-ghs-precautionary-expl+)))

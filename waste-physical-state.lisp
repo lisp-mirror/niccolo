@@ -87,14 +87,14 @@
 
 (define-lab-route add-waste-phys-state ("/add-waste-phys-state/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (add-new-waste-phys-state (get-parameter +name-waste-phys-state-expl+)))
       (manage-waste-phys-state nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-waste-phys-state ("/delete-waste-phys-state/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:waste-physical-state :id id)))

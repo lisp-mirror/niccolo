@@ -74,8 +74,17 @@
 (defun admin-id ()
   (db:id (admin-user)))
 
+(defun waste-manager-id ()
+  (db:id (waste-manager-user)))
+
+(defun user-level (level)
+  (single 'db:user :level level))
+
 (defun admin-user ()
-  (single 'db:user :level +admin-acl-level+))
+  (user-level +admin-acl-level+))
+
+(defun waste-manager-user ()
+  (user-level +waste-manager-acl-level+))
 
 (defun get-session-level ()
   (if (and (tbnl:start-session)
@@ -86,6 +95,9 @@
 
 (defun session-admin-p ()
   (= (db:level (tbnl:session-value +user-session+)) +admin-acl-level+))
+
+(defun session-waste-manager-p ()
+  (= (db:level (tbnl:session-value +user-session+)) +waste-manager-acl-level+))
 
 (defgeneric account-enabled-p (user))
 

@@ -190,7 +190,7 @@
 
 (define-lab-route add-chemical ("/add-chemical/" :method :post)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (let ((name            (tbnl:post-parameter +name-chem-proper-name+))
                 (cid             (tbnl:post-parameter +name-chem-cid+))
@@ -205,7 +205,7 @@
 
 (define-lab-route delete-chemical ("/delete-chemical/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:chemical-compound :id id)))
@@ -216,8 +216,8 @@
 
 (define-lab-route subst-msds ("/subst-msds/:id" :method :post)
   (with-authentication
-    (with-editor-or-above-privileges
-        (progn
+    (with-editor-or-above-credentials
+        (with-pagination (pagination-uri utils:*alias-pagination*)
           (let ((has-not-errors  (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                                       (get-post-filename +name-chem-msds-data+)
                                       (pdf-validate-p (get-post-filename +name-chem-msds-data+))))
@@ -236,32 +236,37 @@
                         (save updated-chem)
                         (manage-chem success-msg nil))
                       (manage-chem nil error-not-found)))
-                (manage-chem nil error-general))))
+                (manage-chem nil error-general
+                             :start-from (default-pagination-start pagination-uri)
+                             :data-count (default-pagination-count pagination-uri)))))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route subst-struct-file ("/subst-struct-file/:id" :method :post)
   (with-authentication
-    (with-editor-or-above-privileges
-        (progn
-          (let ((has-not-errors  (and (integer-positive-validate id)
-                                      (get-post-filename +name-chem-struct-data+)
-                                      (sdf-validate-p (get-post-filename +name-chem-struct-data+))))
-                (success-msg     (list (_ "Structure uploaded")))
-                (error-general   (list (_ "Structure not uploaded")))
-                (error-not-found (list (format nil
-                                               (_ "Structure not uploaded, chemical (id: ~a) not found")
-                                               id))))
-            (if has-not-errors
-                (let ((struct-file  (get-post-filename +name-chem-struct-data+))
-                      (updated-chem (single 'db:chemical-compound :id id)))
-                  (if updated-chem
-                      (progn
-                        (setf (db:structure-file updated-chem)
-                              (read-file-into-string struct-file))
-                        (save updated-chem)
-                        (manage-chem success-msg nil))
-                      (manage-chem nil error-not-found)))
-                (manage-chem nil error-general))))
+    (with-editor-or-above-credentials
+        (with-pagination (pagination-uri utils:*alias-pagination*)
+          (progn
+            (let ((has-not-errors  (and (integer-positive-validate id)
+                                        (get-post-filename +name-chem-struct-data+)
+                                        (sdf-validate-p (get-post-filename +name-chem-struct-data+))))
+                  (success-msg     (list (_ "Structure uploaded")))
+                  (error-general   (list (_ "Structure not uploaded")))
+                  (error-not-found (list (format nil
+                                                 (_ "Structure not uploaded, chemical (id: ~a) not found")
+                                                 id))))
+              (if has-not-errors
+                  (let ((struct-file  (get-post-filename +name-chem-struct-data+))
+                        (updated-chem (single 'db:chemical-compound :id id)))
+                    (if updated-chem
+                        (progn
+                          (setf (db:structure-file updated-chem)
+                                (read-file-into-string struct-file))
+                          (save updated-chem)
+                          (manage-chem success-msg nil))
+                        (manage-chem nil error-not-found)))
+                  (manage-chem nil error-general
+                               :start-from (default-pagination-start pagination-uri)
+                               :data-count (default-pagination-count pagination-uri))))))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
 (defun %toggle-color (id color-fn)
@@ -277,7 +282,7 @@
 
 (define-lab-route toggle-haz-diamond-haz ("/toggle-blue/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (%toggle-color id 'db:haz-color)
           (restas:redirect 'chemical))
@@ -285,7 +290,7 @@
 
 (define-lab-route toggle-haz-diamond-fire ("/toggle-red/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (%toggle-color id 'db:fire-color)
           (restas:redirect 'chemical))
@@ -293,7 +298,7 @@
 
 (define-lab-route toggle-haz-diamond-corrosive ("/toggle-yellow/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (%toggle-color id 'db:corrosive-color)
           (restas:redirect 'chemical))
@@ -301,7 +306,7 @@
 
 (define-lab-route toggle-haz-diamond-reactive ("/toggle-green/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (%toggle-color id 'db:reactive-color)
           (restas:redirect 'chemical))

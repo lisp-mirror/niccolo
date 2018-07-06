@@ -2555,7 +2555,7 @@ plurals-form ""
 status :TRANSLATED
 plurals NIL
 
- id "Shortage threshold non valid (must be a positive integer"
+ id "Shortage threshold not valid (must be a positive integer)"
 translation "Minima disponibilità del prodotto: valore non valido (deve essere un intero positivo)."
 plurals-form ""
 status :TRANSLATED
@@ -2879,7 +2879,7 @@ plurals-form ""
 status :TRANSLATED
 plurals NIL
 
- id "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance"
+ id "WARNING: this adr code is associed with radioactive substance. Contact the technical staff for assistance"
 translation "Attenzione: il codice indicato e' associato alle sostanze radioattive. Contattare i tecnici per assistenza."
 plurals-form ""
 status :TRANSLATED
@@ -3649,6 +3649,54 @@ plurals NIL
 
  id "Confirm operation?"
 translation "Confermi l'operazione?"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Edit user"
+translation "Modifica i parametri dell'utente"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Updated username: ~s"
+translation "Aggiuonato nome utente"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Username not in the database"
+translation "Questo nome utente non e' presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "User does not exists in database."
+translation "Questo utente non e' presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Updated user: ~s"
+translation "Aggiornato l'utente ~s"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Is not possible to change email when CAS is used, please contact your local IT staff for any question"
+translation "Non e' possibile cambiare la propria email quando si usa il CAS, contattare i tecnici per l'assistenza"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "This operation is available for waste manager only."
+translation "Questa operazione e' disponibile solo per il responsabile della gestione dei rifiuti."
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Compliant?"
+translation "Conformità?"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

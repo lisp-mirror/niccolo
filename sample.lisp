@@ -16,21 +16,33 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-sample-id+                  "id"          :test #'string=)
+(define-constant +name-sample-id+                  "id"           :test #'string=)
 
-(define-constant +name-sample-name+                "sname"       :test #'string=)
+(define-constant +name-sample-name+                "sname"        :test #'string=)
 
-(define-constant +name-checkin-date+               "chkin-date"  :test #'string=)
+(define-constant +name-sample-description+         "sdescription" :test #'string=)
 
-(define-constant +name-checkout-date+              "chkout-date" :test #'string=)
+(define-constant +name-sample-compliantp+          "compliant"    :test #'string=)
 
-(define-constant +name-sample-search-name+         "sname"       :test #'string=)
+(define-constant +name-checkin-date+               "chkin-date"   :test #'string=)
 
-(define-constant +name-use-barcode-label+          "chkbox-w"    :test #'string=)
+(define-constant +name-checkout-date+              "chkout-date"  :test #'string=)
 
-(define-constant +name-h-label+                    "h-label"     :test #'string=)
+(define-constant +name-sample-search-name+         "sname"        :test #'string=)
 
-(define-constant +name-w-label+                    "w-label"     :test #'string=)
+(define-constant +name-use-barcode-label+          "chkbox-w"     :test #'string=)
+
+(define-constant +name-h-label+                    "h-label"      :test #'string=)
+
+(define-constant +name-w-label+                    "w-label"      :test #'string=)
+
+(defun encode-compliantp (c)
+  (if c
+      1
+      0))
+
+(defun decode-compliantp (c)
+  (= c 1))
 
 (defmacro gen-all-sample-select (&body where)
   `(select ((:as :sample.id            :sample-id)
@@ -40,10 +52,13 @@
             (:as :sample.checkin-date  :checkin-date)
             (:as :sample.checkout-date :checkout-date)
             (:as :sample.notes         :notes)
+            (:as :sample.description   :description)
+            (:as :sample.compliantp    :compliantp)
             (:as :user.username        :owner-name)
             (:as :user.id              :owner-id)
             (:as :lab.id               :lab-id)
-            (:as :lab.name             :lab-name))
+            (:as :lab.name             :lab-name)
+            (:as :lab.complete-name    :lab-complete-name))
      (from (:as :chemical-sample :sample))
      (left-join (:as :laboratory :lab) :on (:= :sample.laboratory-id :lab.id))
      (left-join :user                  :on (:= :lab.owner            :user.id))
@@ -70,6 +85,9 @@
                          (list :checkin-date-decoded   decoded-checkin-date)
                          (list :checkout-date-decoded  decoded-checkout-date)
                          (list :shortened-notes        (string-utils:ellipsize (getf row :notes)))
+                         (list :shortened-description
+                               (string-utils:ellipsize (getf row :description)))
+                         (list :decoded-compliantp     (decode-compliantp (getf row :compliantp)))
                          (list :checkbox-id            (getf row :sample-id))
                          (list :gen-custom-label-link  gen-custom-label-link)
                          (if delete-link
@@ -130,6 +148,8 @@
                                                  :checkin-date-lb           (_ "Checkin date")
                                                  :checkout-date-lb          (_ "Checkout date")
                                                  :item-count-lb             (_ "Item count")
+                                                 :description-lb            (_ "Description")
+                                                 :compliantp-lb             (_ "Compliant?")
                                                  :search-samples-legend-lb  (_ "Search samples")
                                                  :barcode-number-lb
                                                  (_ "Barcode number (ID)")
@@ -157,6 +177,8 @@
                                                  :checkin-date              +name-checkin-date+
                                                  :count                     +name-count+
                                                  :notes                     +name-notes+
+                                                 :description               +name-sample-description+
+                                                 :compliantp-name           +name-sample-compliantp+
                                                  :sample-search-name
                                                  +name-sample-search-name+
                                                  :submit-massive-delete
@@ -179,7 +201,7 @@
   "note: no error check"
   (format nil "~a~a" (db:name (single 'db:laboratory :id lab-id)) prefix))
 
-(defun add-single-sample (lab-id name quantity units notes checkin-date)
+(defun add-single-sample (lab-id name quantity units description compliantp notes checkin-date)
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
                                            (list lab-id
@@ -196,7 +218,10 @@
                                                  (_ "Quantity invalid"))
                                            (list units
                                                  +free-text-re+
-                                                 (_ "Units invalid")))))
+                                                 (_ "Units invalid"))
+                                           (list description
+                                                 +free-text-re+
+                                                 (_ "Description invalid")))))
            (errors-msg-lab-not-found (when (and (not errors-msg-1))
                                        (with-id-valid-and-used 'db:laboratory lab-id
                                                                (_ "Laboratory not found"))))
@@ -222,6 +247,8 @@
                (not errors-msg))
           (let* ((sample (create 'db:chemical-sample
                                  :name          (gen-lab-temp-name lab-id name)
+                                 :compliantp    (encode-compliantp compliantp)
+                                 :description   description
                                  :laboratory-id lab-id
                                  :quantity      quantity
                                  :units         units
@@ -315,6 +342,8 @@
                                                     (get-parameter +name-sample-name+)
                                                     (get-parameter +name-quantity+)
                                                     (get-parameter +name-units+)
+                                                    (get-parameter +name-sample-description+)
+                                                    (get-parameter +name-sample-compliantp+)
                                                     (get-parameter +name-notes+)
                                                     (get-parameter +name-checkin-date+))
                                (declare (ignore success))

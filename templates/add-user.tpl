@@ -9,8 +9,8 @@
 
   <label for="login-name"><!-- TMPL_VAR password-lb --></label>
   <input id="login-password" type="password"
-	 name="<!-- TMPL_VAR login-pass -->"
-	 value="<!-- TMPL_VAR password-value -->">
+         name="<!-- TMPL_VAR login-pass -->"
+         value="<!-- TMPL_VAR password-value -->">
   <label for="levels-select"><!-- TMPL_VAR levels-options-lb --></label>
   <select id="levels-select" name="<!-- TMPL_VAR levels-select -->">
     <option value="-1"></option>
@@ -18,7 +18,7 @@
     <option value="<!-- TMPL_VAR level -->"><!-- TMPL_VAR expl --></option>
     <!-- /TMPL_LOOP  -->
   </select>
-  <input id="login-submit" type="submit" value="Add user">
+  <input id="login-submit" type="submit">
 </form>
 
 <table class="sortable user-list">
@@ -56,22 +56,26 @@
 
     <td class="delete-link">
       <a href="<!-- TMPL_VAR delete-link -->">
-	<!-- TMPL_INCLUDE 'delete-button.tpl' -->
+        <!-- TMPL_INCLUDE 'delete-button.tpl' -->
       </a>
 
       <!-- TMPL_IF active-p -->
       <a href="<!-- TMPL_VAR disable-link -->">
-	<div class="prohibition-button">
-	  &nbsp;
-	</div>
+        <div class="prohibition-button">
+          &nbsp;
+        </div>
+      </a>
+      <!-- edit statement -->
+      <a href="<!-- TMPL_VAR update-link -->">
+          <!-- TMPL_INCLUDE 'edit-button.tpl' -->
       </a>
       <!-- /TMPL_IF -->
 
       <!-- TMPL_UNLESS active-p -->
       <a href="<!-- TMPL_VAR enable-link -->">
-	<div class="activate-button">
-	  &nbsp;
-	</div>
+        <div class="activate-button">
+          &nbsp;
+        </div>
       </a>
       <!-- /TMPL_UNLESS -->
     </td>
