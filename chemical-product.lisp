@@ -185,11 +185,12 @@
 (defun fetch-expired-products ()
   (with-session-user (user)
     (let* ((expiration-date (next-expiration-date))
-           (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
-                                                                        (where
-                                                                         (:and
-                                                                          (:= :chemp.owner (db:id user))
-                                                                          (:< :expire-date expiration-date))))))))
+           (expired-raw (query (gen-all-prod-select
+                                 (where
+                                  (:and
+                                   (:= :chemp.owner (db:id user))
+                                   (:< :expire-date expiration-date))))))
+           (expired     (build-template-list-chemical-prod expired-raw)))
       expired)))
 
 (defun fetch-validity-expired-products ()

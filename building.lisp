@@ -81,7 +81,7 @@
                                (_ "Manage Buildings")
                                :errors errors
                                :infos  infos)
-      (let ((html-template:*string-modifier* #'identity)
+      (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
             (json-addresses    (array-autocomplete-address))
             (json-addresses-id (array-autocomplete-address-id)))
         (html-template:fill-and-print-template #p"add-building.tpl"

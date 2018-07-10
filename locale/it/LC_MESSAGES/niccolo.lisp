@@ -3700,4 +3700,118 @@ translation "Conformità?"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Manage persons"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Persons"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Search messages"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Official ID"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Surname"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Manage Person"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Saved new person: ~s - ~s"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person already in the database"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Organization"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Surname invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person  invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Update Person"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "person does not exists in database."
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person updated"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person already in the database with different ID"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person does not exists in database"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "person not found"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
+
+ id "Person invalid"
+translation ""
+plurals-form ""
+status :UNTRANSLATED
+plurals NIL
 )

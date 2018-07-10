@@ -17,7 +17,7 @@
 (in-package :string-utils)
 
 (defun clean-string (s)
-  (regex-replace-all "[;\\\"'=<>&]" s ""))
+  (regex-replace-all "[;\\\"'=<>&]" (validation:strip-tags s) ""))
 
 (defun string-empty-p (s)
     (or (null s)
@@ -59,10 +59,23 @@
 (defun escape-csv-field (field)
   (cl-ppcre:regex-replace-all "\"" field "\"\""))
 
+;; TODO: use a  macro
 (defun escape-string-all-but-double-quotes (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
   (html-template:escape-string string :test #'(lambda (char)
                                                 (or (find char "<>&'")
+                                                    (> (char-code char) 255)))))
+
+(defun escape-string-all-but-single-quotes (string)
+  "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus single quotes."
+  (html-template:escape-string string :test #'(lambda (char)
+                                                (or (find char "<>&\"")
+                                                    (> (char-code char) 255)))))
+
+(defun escape-string-all-but-ampersand (string)
+  "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus ampersand."
+  (html-template:escape-string string :test #'(lambda (char)
+                                                (or (find char "<>'\"")
                                                     (> (char-code char) 255)))))
 
 (defun add-slashes (s)

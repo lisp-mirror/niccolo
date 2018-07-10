@@ -117,6 +117,11 @@ textarea {
     animation: software-logo-in 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
+.text-highlighted {
+    background: yellow;
+    color:      red;
+}
+
 .chemp-name-hd {
     min-width: 100pt;
 }
@@ -974,21 +979,21 @@ fieldset.add-new-sample  {
     width:  33%;
     float:  left;
     margin:   5pt;
-    height: 580pt;
+    height: 620pt;
 }
 
 
 fieldset.search-new-sample  {
     width:  200pt;
     margin:   5pt;
-    height: 580pt;
+    height: 620pt;
     float:  left;
 }
 
 fieldset.other-ops-chem-sample  {
     width:  200pt;
     margin:   5pt;
-    height: 580pt;
+    height: 620pt;
 }
 
 .update-sample-notes {
@@ -1000,7 +1005,6 @@ fieldset.other-ops-chem-sample  {
     width:  512pt;
     height: 256pt;
 }
-
 
 .other-ops-chem-sample  input[type=submit] {
     min-width:    150pt;

@@ -46,6 +46,7 @@
 
 (defmacro gen-all-sample-select (&body where)
   `(select ((:as :sample.id            :sample-id)
+            (:as :sample.person-id     :person-id)
             (:as :sample.name          :sample-name)
             (:as :sample.quantity      :quantity)
             (:as :sample.units         :units)
@@ -56,12 +57,14 @@
             (:as :sample.compliantp    :compliantp)
             (:as :user.username        :owner-name)
             (:as :user.id              :owner-id)
+            (:as :person.id            :person-id)
             (:as :lab.id               :lab-id)
             (:as :lab.name             :lab-name)
             (:as :lab.complete-name    :lab-complete-name))
      (from (:as :chemical-sample :sample))
      (left-join (:as :laboratory :lab) :on (:= :sample.laboratory-id :lab.id))
      (left-join :user                  :on (:= :lab.owner            :user.id))
+     (left-join :person                :on (:= :sample.person-id     :person.id))
      ,@where))
 
 (defun build-template-list-samples (raw
@@ -75,6 +78,8 @@
            (encoded-checkout-date (encode-datetime-string (getf row :checkout-date)))
            (decoded-checkout-date (decode-datetime-string encoded-checkout-date))
            (decoded-checkin-date  (decode-date-string     encoded-checkin-date))
+           (decoded-person        (db:build-description   (single 'db:person
+                                                                  :id (getf row :person-id))))
            (gen-custom-label-link (restas:genurl 'gen-sample-custom-label
                                                  :id (getf row :sample-id))))
       (setf (elt raw rown)
@@ -84,6 +89,7 @@
                          (list :checkout-date-encoded  encoded-checkout-date)
                          (list :checkin-date-decoded   decoded-checkin-date)
                          (list :checkout-date-decoded  decoded-checkout-date)
+                         (list :person-description     decoded-person)
                          (list :shortened-notes        (string-utils:ellipsize (getf row :notes)))
                          (list :shortened-description
                                (string-utils:ellipsize (getf row :description)))
@@ -135,6 +141,8 @@
     (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
           (json-laboratory    (array-autocomplete-laboratory))
           (json-laboratory-id (array-autocomplete-laboratory-id))
+          (json-person        (array-autocomplete-person))
+          (json-person-id     (array-autocomplete-person-id))
           (has-local-results-p (> (length data) 0)))
       (html-template:fill-and-print-template #p"add-samples.tpl"
                                              (with-path-prefix
@@ -150,6 +158,7 @@
                                                  :item-count-lb             (_ "Item count")
                                                  :description-lb            (_ "Description")
                                                  :compliantp-lb             (_ "Compliant?")
+                                                 :person-lb                 (_ "Person")
                                                  :search-samples-legend-lb  (_ "Search samples")
                                                  :barcode-number-lb
                                                  (_ "Barcode number (ID)")
@@ -177,8 +186,10 @@
                                                  :checkin-date              +name-checkin-date+
                                                  :count                     +name-count+
                                                  :notes                     +name-notes+
-                                                 :description               +name-sample-description+
+                                                 :description
+                                                 +name-sample-description+
                                                  :compliantp-name           +name-sample-compliantp+
+                                                 :person-id                 +name-person-id+
                                                  :sample-search-name
                                                  +name-sample-search-name+
                                                  :submit-massive-delete
@@ -189,6 +200,8 @@
                                                  :checkbox-use-barcode      +name-use-barcode-label+
                                                  :json-laboratory           json-laboratory
                                                  :json-laboratory-id        json-laboratory-id
+                                                 :json-person               json-person
+                                                 :json-person-id            json-person-id
                                                  :render-results-p          has-local-results-p
                                                  :data-table                data)
                                                :stream stream))))
@@ -201,7 +214,8 @@
   "note: no error check"
   (format nil "~a~a" (db:name (single 'db:laboratory :id lab-id)) prefix))
 
-(defun add-single-sample (lab-id name quantity units description compliantp notes checkin-date)
+(defun add-single-sample (lab-id name quantity units description compliantp notes
+                          checkin-date person-id)
   (with-session-user (user)
     (let* ((errors-msg-1 (regexp-validate (list
                                            (list lab-id
@@ -221,7 +235,10 @@
                                                  (_ "Units invalid"))
                                            (list description
                                                  +free-text-re+
-                                                 (_ "Description invalid")))))
+                                                 (_ "Description invalid"))
+                                           (list person-id
+                                                 +pos-integer-re+
+                                                 (_ "Person  invalid")))))
            (errors-msg-lab-not-found (when (and (not errors-msg-1))
                                        (with-id-valid-and-used 'db:laboratory lab-id
                                                                (_ "Laboratory not found"))))
@@ -254,6 +271,7 @@
                                  :units         units
                                  :checkin-date  (encode-datetime-string checkin-date)
                                  :checkout-date nil
+                                 :person-id     person-id
                                  :notes         (clean-string notes))))
             (save sample) ; useless?
             (setf (db:name sample) (gen-lab-actual-name lab-id name (db:id sample)))
@@ -345,7 +363,8 @@
                                                     (get-parameter +name-sample-description+)
                                                     (get-parameter +name-sample-compliantp+)
                                                     (get-parameter +name-notes+)
-                                                    (get-parameter +name-checkin-date+))
+                                                    (get-parameter +name-checkin-date+)
+                                                    (get-parameter +name-person-id+))
                                (declare (ignore success))
                                (when err
                                  (return-from add-loop err))))))

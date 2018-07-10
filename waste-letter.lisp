@@ -72,7 +72,7 @@
                              (_ "Hazardous waste form")
                              :errors errors
                              :infos  infos)
-    (let ((html-template:*string-modifier* #'identity)
+    (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
           (json-cer         (array-autocomplete-cer-code))
           (json-cer-id      (array-autocomplete-cer-code-id))
           (json-building    (array-autocomplete-building))
@@ -145,7 +145,7 @@
             (lab-id->name lab-id)
             actual-address
             weight
-            body
+            (validation:strip-tags body)
             cer
             (letter-adr-codes adrs)
             (letter-hp-codes hps)

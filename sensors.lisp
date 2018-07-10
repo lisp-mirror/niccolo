@@ -424,7 +424,7 @@
                         #'manage-update-sensor))
 
   (defun manage-update-sensor (id infos errors)
-    (let* ((html-template:*string-modifier* #'identity)
+    (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
            (new-sensor (and id
                             (object-exists-in-db-p 'db:sensor id)))
            (template   (with-back-uri (sensor)

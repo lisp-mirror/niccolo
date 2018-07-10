@@ -16,7 +16,7 @@
 
 (in-package :restas.lab)
 
-(defun update-sample (id quantity units new-checkout-date notes description compliantp)
+(defun update-sample (id quantity units new-checkout-date notes description compliantp person-id)
   (let* ((clean-notes       (clean-string notes))
          (clean-description (clean-string description))
          (errors-checkout   (if (or (string-empty-p new-checkout-date)
@@ -37,14 +37,24 @@
                                                (list quantity
                                                      +pos-integer-re+
                                                      (_ "Quantity invalid"))
+                                                (list person-id
+                                                     +pos-integer-re+
+                                                     (_ "Person invalid"))
                                                (list units
                                                      +free-text-re+
                                                      (_ "Units invalid")))))
+         (error-person-not-found (when (all-not-null-p errors-checkout
+                                                       errors-msg-id
+                                                       errors-msg-exists
+                                                       errors-msg-generic)
+                                   (with-id-valid-and-used 'db:person person-id
+                                                           (_ "person not found"))))
          (errors-msg (concatenate 'list
                                   errors-checkout
                                   errors-msg-id
                                   errors-msg-exists
-                                  errors-msg-generic))
+                                  errors-msg-generic
+                                  error-person-not-found))
          (success-msg (and (not errors-msg)
                            (list (_ "Sample updated")))))
     (if (not errors-msg)
@@ -56,15 +66,25 @@
                 (db:compliantp    sample) (encode-compliantp compliantp)
                 (db:quantity      sample) quantity
                 (db:units         sample) units
-                (db:notes         sample) clean-notes)
+                (db:notes         sample) clean-notes
+                (db:person-id     sample) person-id)
           (save sample)
           (manage-update-sample (and success-msg id) success-msg errors-msg))
         (manage-update-sample id success-msg errors-msg))))
 
 (defun manage-update-sample (id infos errors)
-  (let* ((new-sample (and id (single 'db:chemical-sample :id (parse-integer id))))
+  (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
+         (new-sample (and (safe-parse-number id nil)
+                          (single 'db:chemical-sample :id (parse-integer id))))
          (decoded-compliantp (and new-sample
-                                  (decode-compliantp (db:compliantp new-sample)))))
+                                  (decode-compliantp (db:compliantp new-sample))))
+         (json-person        (array-autocomplete-person))
+         (json-person-id     (array-autocomplete-person-id))
+         (person-object      (and (safe-parse-number id nil)
+                                  (single 'db:person
+                                          :id (db:person-id new-sample))))
+         (person-description (and person-object
+                                  (db:build-description person-object))))
     (with-standard-html-frame (stream (_ "Update Sample")
                                       :infos infos
                                       :errors errors)
@@ -77,6 +97,7 @@
                                                    :notes-lb         (_ "Notes")
                                                    :compliantp-lb    (_ "Compliant?")
                                                    :description-lb   (_ "Description")
+                                                   :person-lb                 (_ "Person")
                                                    :id               (and id
                                                                           (db:id new-sample))
                                                    :notes            +name-notes+
@@ -85,13 +106,19 @@
                                                    :units            +name-units+
                                                    :compliantp-name  +name-sample-compliantp+
                                                    :description      +name-sample-description+
+                                                   :person-id        +name-person-id+
                                                    :quantity-value     (and id
                                                                           (db:quantity new-sample))
                                                    :units-value        (and id
                                                                           (db:units new-sample))
                                                    :notes-value        (db:notes new-sample)
                                                    :description-value  (db:description new-sample)
+                                                   :person-id-value     (db:id person-object)
                                                    :decoded-compliantp decoded-compliantp
+                                                   :json-person        json-person
+                                                   :json-person-id     json-person-id
+                                                   :person-description-value
+                                                   person-description
                                                    :checkout-date-value
                                                    (decode-date-string
                                                     (db:checkout-date new-sample))))
@@ -112,12 +139,14 @@
                         (new-units       (get-parameter +name-units+))
                         (new-description (get-parameter +name-sample-description+))
                         (new-compliantp  (get-parameter +name-sample-compliantp+))
-                        (new-notes       (get-parameter +name-notes+)))
+                        (new-notes       (get-parameter +name-notes+))
+                        (new-person-id   (get-parameter +name-person-id+)))
                     (if new-notes
                         (update-sample id new-quantity new-units new-checkout
                                        new-notes
                                        new-description
-                                       new-compliantp)
+                                       new-compliantp
+                                       new-person-id)
                         (manage-update-sample id nil nil)))
                   (manage-update-sample id
                                         nil

@@ -75,7 +75,7 @@
  			       :errors errors
  			       :infos  infos)
 
-      (let* ((html-template:*string-modifier* #'identity)
+      (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
 	     (json-addresses    (array-autocomplete-ghs-hazard-statement))
 	     (json-addresses-id (array-autocomplete-ghs-hazard-statement-id))
 	     (template          (with-back-uri (chemical)

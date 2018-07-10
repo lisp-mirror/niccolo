@@ -67,7 +67,7 @@
                                :errors errors
                                :infos  infos)
 
-      (let ((html-template:*string-modifier* #'identity)
+      (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
             (json-addresses    (array-autocomplete-ghs-precautionary-statement))
             (json-addresses-id (array-autocomplete-ghs-precautionary-statement-id)))
         (html-template:fill-and-print-template #p"assoc-chem-prec.tpl"

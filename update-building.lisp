@@ -61,7 +61,7 @@
                       #'manage-update-building))
 
 (defun manage-update-building (id infos errors)
-  (let* ((html-template:*string-modifier* #'identity)
+  (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
          (json-addresses    (array-autocomplete-address))
          (json-addresses-id (array-autocomplete-address-id))
          (new-building (and id

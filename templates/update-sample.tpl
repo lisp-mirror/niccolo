@@ -1,5 +1,15 @@
 <script>
+
  $(function() {
+     var availablePerson = <!-- TMPL_VAR json-person -->;
+     var availableId     = <!-- TMPL_VAR json-person-id -->;
+     $( "#target-person" ).autocomplete({
+         source: availablePerson ,
+         select: function( event, ui ) {
+             var idx = $.inArray(ui.item.label, availablePerson);
+             $("#target-person-id").val(availableId[idx]);
+         }
+     });
      $( "#checkout-date" ).datepicker({dateFormat : "yy-mm-dd"});
      $( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
      $( "#opening-package-date" ).datepicker({dateFormat : "yy-mm-dd"});
@@ -12,6 +22,15 @@
     <label for="update-chemical-id">ID</label>
     <input type="text" id="update-chemical-id" value="<!-- TMPL_VAR id -->"
            disabled="true"/>
+
+    <label for="target-person" class="input-autocomplete-label">
+        <!-- TMPL_VAR person-lb -->
+    </label>
+    <input id="target-person-id" type="hidden" name="<!-- TMPL_VAR person-id -->" />
+    <span class="ui-widget">
+        <input type="text" id="target-person"
+               value="<!-- TMPL_VAR person-description-value -->" />
+    </span>
 
     <label for="add-sample-compliant-checkbox"><!-- TMPL_VAR compliantp-lb --></label>
     <input type="checkbox"    id="add-sample-compliant-checkbox"

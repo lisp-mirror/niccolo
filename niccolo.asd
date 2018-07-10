@@ -85,6 +85,8 @@
                (:file "update-address")
                (:file "building")
                (:file "update-building")
+               (:file "person")
+               (:file "update-person")
                (:file "ghs-haz")
                (:file "update-ghs-hazard")
                (:file "ghs-precautionary")

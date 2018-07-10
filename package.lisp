@@ -209,7 +209,6 @@
    :name
    :address-id
    :storage
-   :name
    :building-id
    :floor-number
    :map-id
@@ -276,6 +275,7 @@
    :user-to
    :product
    :chemical-sample
+   :person-id
    :compliantp
    :laboratory-id
    :checkin-date
@@ -313,7 +313,11 @@
    :secret
    :last-access-time
    :last-value
-   :script-file))
+   :script-file
+   :person
+   :surname
+   :organization
+   :official-id))
 
 (defpackage :validation
   (:use
@@ -409,6 +413,8 @@
    :words
    :lines
    :escape-string-all-but-double-quotes
+   :escape-string-all-but-ampersand
+   :escape-string-all-but-single-quotes
    :add-slashes
    :ellipsize
    :safe-parse-number))

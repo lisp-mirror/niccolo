@@ -65,7 +65,7 @@
                       #'manage-update-storage))
 
 (defun manage-update-storage (id infos errors)
-  (let* ((html-template:*string-modifier* #'identity)
+  (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
          (json-buildings    (array-autocomplete-building))
          (json-buildings-id (array-autocomplete-building-id))
          (new-storage       (and id
