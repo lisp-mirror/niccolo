@@ -185,11 +185,12 @@
 (defun fetch-expired-products ()
   (with-session-user (user)
     (let* ((expiration-date (next-expiration-date))
-           (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
-                                                                        (where
-                                                                         (:and
-                                                                          (:= :chemp.owner (db:id user))
-                                                                          (:< :expire-date expiration-date))))))))
+           (expired-raw (query (gen-all-prod-select
+                                 (where
+                                  (:and
+                                   (:= :chemp.owner (db:id user))
+                                   (:< :expire-date expiration-date))))))
+           (expired     (build-template-list-chemical-prod expired-raw)))
       expired)))
 
 (defun fetch-validity-expired-products ()
@@ -771,7 +772,7 @@
   (with-authentication
     (with-session-user (user)
       (let* ((errors-shortage-not-int  (when (not (integer-positive-validate shortage))
-                                         (list (_ "Shortage threshold non valid (must be a positive integer"))))
+                                         (list (_ "Shortage threshold not valid (must be a positive integer)"))))
              (errors-msg-chem-not-found (when (and (not errors-shortage-not-int)
                                                    (not (single 'db:chemical-compound
                                                                 :id id)))

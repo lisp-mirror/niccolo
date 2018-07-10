@@ -97,7 +97,7 @@
 
 (define-lab-route update-chemical ("/update-chemical/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (let ((new-name      (get-parameter +name-chem-proper-name+))
                 (new-cid       (get-parameter +name-chem-cid+))

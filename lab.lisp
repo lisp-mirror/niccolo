@@ -20,7 +20,7 @@
 
 (define-constant +name-ghs-precautionary-code+ "code" :test #'string=)
 
-(defmacro gen-admissible-cookie-uri ((path) &body symbols)
+(defmacro gen-inadmissible-cookie-uri ((path) &body symbols)
   `(and
     ,@(loop for symbol in symbols collect
            `(not ,(if (stringp symbol)
@@ -29,7 +29,7 @@
 
 (defun admissible-cookie-redirect-p (path)
   (and (cookie-key-script-visited-validate path)
-       (gen-admissible-cookie-uri (path)
+       (gen-inadmissible-cookie-uri (path)
          root-login
          logout
          change-pass
@@ -57,6 +57,7 @@
     (define-pagination-alias 'add-adr               'adr)
     (define-pagination-alias 'add-ghs-precautionary 'ghs-precautionary)
     (define-pagination-alias 'add-storage           'storage)
+    (define-pagination-alias 'add-person            'person)
     (define-pagination-alias 'add-chemical          'chemical)))
 
 (defun manage-welcome ()
@@ -93,13 +94,16 @@
         (tbnl:redirect (tbnl:cookie-in +cookie-key-script-visited+))
         (manage-welcome))))
 
-(define-lab-route user-messages ("/messages" :method :get)
+(define-lab-route user-messages ("/messages/" :method :get)
   (with-authentication
     (with-session-user (user)
-      (create-expiration-messages (fetch-expired-products))
-      (create-validity-expired-messages (fetch-validity-expired-products))
-      (create-shortage-messages (shortage-products-list (db:id user)))
-      (print-messages nil nil))))
+      (let* ((raw-query (get-parameter +name-msg-search-query+))
+             (query (and (not (string-utils:string-empty-p raw-query))
+                         (clean-string raw-query))))
+        (create-expiration-messages (fetch-expired-products))
+        (create-validity-expired-messages (fetch-validity-expired-products))
+        (create-shortage-messages (shortage-products-list (db:id user)))
+        (print-messages nil nil :query query)))))
 
 (define-lab-route storing-classify ("/storage-classify/" :method :get)
   (with-authentication
@@ -201,6 +205,9 @@
                       :waste-letter-lbl              (_ "Hazardous waste form")
                       :waste-stats                   (restas:genurl 'waste-statistics)
                       :waste-stats-lbl               (_ "Waste report")
+                      :persons-lbl                   (_ "Persons")
+                      :manage-person-lbl             (_ "Manage persons")
+                      :manage-person                 (restas:genurl 'person)
                       :l-factor-calculator           (restas:genurl 'l-factor)
                       :l-factor-calculator-lbl       (_ "Chemical risk calculator")
                       :l-factor-calculator-snpa      (restas:genurl 'risk-snpa.l-factor-snpa)

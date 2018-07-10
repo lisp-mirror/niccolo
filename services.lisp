@@ -379,7 +379,7 @@
 
 (define-lab-route display-sensor-log-graph ("/ws/sensor-log-graph/:id")
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (let* ((error-valid-id (regexp-validate (list
                                                    (list id +pos-integer-re+ "Errors"))))
                (error-not-exists (if (and (null error-valid-id)

@@ -72,7 +72,7 @@
                              (_ "Hazardous waste form")
                              :errors errors
                              :infos  infos)
-    (let ((html-template:*string-modifier* #'identity)
+    (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
           (json-cer         (array-autocomplete-cer-code))
           (json-cer-id      (array-autocomplete-cer-code-id))
           (json-building    (array-autocomplete-building))
@@ -145,7 +145,7 @@
             (lab-id->name lab-id)
             actual-address
             weight
-            body
+            (validation:strip-tags body)
             cer
             (letter-adr-codes adrs)
             (letter-hp-codes hps)
@@ -239,7 +239,7 @@
                ;; message for admin
                (admin-message (send-user-message (make-instance 'db:waste-message)
                                                  (get-session-user-id)
-                                                 (admin-id)
+                                                 (waste-manager-id)
                                                  (_ "Waste production")
                                                  msg-text
                                                  :parent-message nil
@@ -384,7 +384,7 @@
           (if (find-if #'(lambda (a) (scan +adr-code-radioactive+ (db:code-class a))) all-adrs)
               (ps:draw-text-confined-in-box doc
                                             font
-                                            (_ "WARNING: this adr code is associed with radioactive substance. Contact the techincal staff for assistance")
+                                            (_ "WARNING: this adr code is associed with radioactive substance. Contact the technical staff for assistance")
                                             +page-margin-left+
                                             (- y (* box-h 2))
                                             box-w

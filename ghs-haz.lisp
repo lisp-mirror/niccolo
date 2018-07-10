@@ -134,7 +134,7 @@
 
 (define-lab-route add-ghs-hazard ("/add-ghs-hazard/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-ghs-hazard-code (get-parameter +name-ghs-hazard-code+)
                                    (get-parameter +name-ghs-hazard-expl+)
@@ -147,7 +147,7 @@
 
 (define-lab-route delete-ghs-hazard ("/delete-ghs-hazard/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:ghs-hazard-statement :id id)))
@@ -158,7 +158,7 @@
 
 (define-lab-route assoc-ghs-pictogram ("/assoc-ghs-pictogram/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)

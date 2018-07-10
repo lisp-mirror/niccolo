@@ -258,6 +258,26 @@
   (language
    :type text))
 
+(deftable person ()
+  (address-id
+    :type integer
+    :foreign (address :restrict :cascade))
+   (name
+    :type text
+    :nullp nil)
+   (surname
+    :type text
+    :nullp nil)
+   (organization
+    :type text
+    :nullp nil)
+   (official-id
+    :type text
+    :nullp nil))
+
+(defmethod build-description ((object person))
+  (format nil "~a ~a, ~a" (name object) (surname object) (organization object)))
+
 (deftable chemical-product ()
   (compound
    :type integer
@@ -347,6 +367,9 @@
 (deftable chemical-sample ()
   (name
    :type text)
+  (person-id
+   :type integer
+   :foreign (person :restrict :cascade))
   (laboratory-id
    :type integer
    :foreign (laboratory :restrict :cascade))
@@ -360,6 +383,12 @@
    :nullp nil)
   (units
    :type text
+   :nullp nil)
+  (description
+   :type text
+   :nullp nil)
+  (compliantp
+   :type integer
    :nullp nil)
   (notes
    :type text

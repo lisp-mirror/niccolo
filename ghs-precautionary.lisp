@@ -99,7 +99,7 @@
 
 (define-lab-route add-ghs-precautionary ("/add-ghs-precautionary/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-ghs-precautionary-code (get-parameter +name-ghs-precautionary-code+)
                                           (get-parameter +name-ghs-precautionary-expl+)
@@ -111,7 +111,7 @@
 
 (define-lab-route delete-ghs-precautionary ("/delete-ghs-precautionary/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:ghs-precautionary-statement :id id)))

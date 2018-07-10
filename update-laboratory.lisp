@@ -71,7 +71,7 @@
 
 (define-lab-route update-laboratory ("/update-laboratory/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (let ((new-name          (get-parameter +name-lab-name+))
                 (new-complete-name (get-parameter +name-lab-complete-name+)))

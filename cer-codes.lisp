@@ -82,7 +82,7 @@
 
 (define-lab-route add-cer ("/add-cer/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (add-new-cer-code (get-parameter +name-cer-code+)
                             (get-parameter +name-cer-expl+)
@@ -94,7 +94,7 @@
 
 (define-lab-route delete-cer ("/delete-cer/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:cer-code :id id)))

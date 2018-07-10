@@ -65,7 +65,7 @@
                       #'manage-update-storage))
 
 (defun manage-update-storage (id infos errors)
-  (let* ((html-template:*string-modifier* #'identity)
+  (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
          (json-buildings    (array-autocomplete-building))
          (json-buildings-id (array-autocomplete-building-id))
          (new-storage       (and id
@@ -102,7 +102,7 @@
 
 (define-lab-route update-storage-route ("/update-storage/:id" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (let ((new-name        (get-parameter +name-storage-proper-name+))
                 (new-building-id (get-parameter +name-storage-building-id+))

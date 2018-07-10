@@ -57,8 +57,8 @@
       (html-template:fill-and-print-template #p"update-ghs-hazard.tpl"
                                              (with-back-uri (ghs-hazard)
                                                (with-path-prefix
-                                                   :code-lb (_ "Code")
-                                                   :statement-lb (_ "Statement")
+                                                   :code-lb           (_ "Code")
+                                                   :statement-lb      (_ "Statement")
                                                    :carcinogenic-p-lb (_ "Carcinogenic?")
                                                    :id         (and id
                                                                     (db:id new-haz))
@@ -76,7 +76,7 @@
 
 (define-lab-route update-hazard ("/update-h/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (let ((new-code     (get-parameter +name-ghs-hazard-code+))
                 (new-expl     (get-parameter +name-ghs-hazard-expl+))

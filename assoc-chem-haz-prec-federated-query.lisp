@@ -42,7 +42,7 @@
                              (_ "Associate security statements to chemical compound")
                              :errors errors
                              :infos  infos)
-    (let* ((html-template:*string-modifier* #'identity)
+    (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
            (template          (with-back-uri (chemical)
                                 (with-path-prefix
                                     :name-lb               (_ "Name")

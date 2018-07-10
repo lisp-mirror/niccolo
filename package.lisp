@@ -98,6 +98,7 @@
    :+admin-acl-level+
    :+user-acl-level+
    :+editor-acl-level+
+   :+waste-manager-acl-level+
    :+user-account-enabled+
    :+user-session+
    :+auth-name-login-name+
@@ -208,7 +209,6 @@
    :name
    :address-id
    :storage
-   :name
    :building-id
    :floor-number
    :map-id
@@ -275,6 +275,8 @@
    :user-to
    :product
    :chemical-sample
+   :person-id
+   :compliantp
    :laboratory-id
    :checkin-date
    :checkout-date
@@ -311,7 +313,11 @@
    :secret
    :last-access-time
    :last-value
-   :script-file))
+   :script-file
+   :person
+   :surname
+   :organization
+   :official-id))
 
 (defpackage :validation
   (:use
@@ -407,6 +413,8 @@
    :words
    :lines
    :escape-string-all-but-double-quotes
+   :escape-string-all-but-ampersand
+   :escape-string-all-but-single-quotes
    :add-slashes
    :ellipsize
    :safe-parse-number))
@@ -524,8 +532,10 @@
    :get-session-user-id
    :admin-id
    :admin-user
+   :waste-manager-id
    :get-session-level
    :session-admin-p
+   :session-waste-manager-p
    :account-enabled-p))
 
 (defpackage :utils
@@ -558,6 +568,8 @@
    :path-prefix-tpl
    :with-path-prefix
    :with-pagination-template
+   :default-pagination-start
+   :default-pagination-count
    :with-back-uri
    :with-back-to-root
    :alist->query-uri

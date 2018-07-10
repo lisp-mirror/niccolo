@@ -67,7 +67,7 @@
                                :errors errors
                                :infos  infos)
 
-      (let ((html-template:*string-modifier* #'identity)
+      (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
             (json-addresses    (array-autocomplete-ghs-precautionary-statement))
             (json-addresses-id (array-autocomplete-ghs-precautionary-statement-id)))
         (html-template:fill-and-print-template #p"assoc-chem-prec.tpl"
@@ -133,7 +133,7 @@
 
 (define-lab-route add-assoc-chem-prec ("/add-assoc-chem-prec/" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (add-new-assoc-chem-prec (get-parameter +name-preccode-id+)
                                    (get-parameter +name-prec-compound-id+)))
@@ -141,7 +141,7 @@
 
 (define-lab-route delete-assoc-chem-prec ("/delete-assoc-chem-prec/:id/:id-chem" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
@@ -155,7 +155,7 @@
 (define-lab-route remove-prec-code-from-chem ("/remove-prec-code-from-chem/:id-prec/:id-chem"
                                               :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (progn
           (when (and (not (regexp-validate (list (list id-prec  +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))

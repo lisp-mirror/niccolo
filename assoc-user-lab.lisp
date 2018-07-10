@@ -96,7 +96,7 @@
 
 (define-lab-route assoc-user-lab ("/assoc-user-lab/" :method :get)
   (with-authentication
-    (with-editor-or-above-privileges
+    (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (let ((infos  nil)
                 (errors nil))

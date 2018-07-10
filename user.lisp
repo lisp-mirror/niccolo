@@ -37,18 +37,22 @@
 (define-constant +name-user-level+                "level"             :test #'string=)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defparameter *admin-acl-level-expl*  "Administrator")
+  (defparameter *admin-acl-level-expl*         "Administrator")
 
-  (defparameter *editor-acl-level-expl* "Editor")
+  (defparameter *editor-acl-level-expl*        "Editor")
 
-  (defparameter *user-acl-level-expl*   "User")
+  (defparameter *user-acl-level-expl*          "User")
+
+  (defparameter *waste-manager-acl-level-expl* "Waste manager")
 
   (define-constant +template-decode-acl+ (list (list :level +admin-acl-level+
                                                      :expl  *admin-acl-level-expl*)
                                                (list :level +editor-acl-level+
                                                      :expl  *editor-acl-level-expl*)
                                                (list :level +user-acl-level+
-                                                     :expl  *user-acl-level-expl*))
+                                                     :expl  *user-acl-level-expl*)
+                                               (list :level +waste-manager-acl-level+
+                                                     :expl  *waste-manager-acl-level-expl*))
     :test #'equalp))
 
 (defun add-new-user (name email password level)
@@ -63,8 +67,7 @@
                                                      +email-re+
                                                      (_ "Email invalid")))))
          (errors-msg-already-in-db  (when (and (not errors-msg-invalid)
-                                               (single 'db:user
-                                                       :username name))
+                                               (single 'db:user :username name))
                                       (list (_ "Username already in the database"))))
          (errors-level-invalid      (if (not (user-level-validate-p level))
                                         (list (_ "User level not allowed"))
@@ -204,7 +207,13 @@
                                                      '(:username :email :account-enabled :level)
                                                      :delete-link 'delete-user
                                                      :disable-link 'disable-user
-                                                     :enable-link  'enable-user)))
+                                                     :enable-link  'enable-user
+                                                     :additional-tpl
+                                                     #'(lambda (row)
+                                                         (list
+                                                          :update-link
+                                                          (restas:genurl 'edit-user
+                                                                         :id (db:id row)))))))
          (template  (with-path-prefix
                         :name-lb           (_ "Name")
                         :password-lb       (_ "Password")
@@ -253,7 +262,11 @@
       (values infos errors))))
 
 (defun change-email (new-email)
+  #+mini-cas (declare (ignore new-email))
   (with-authentication
+    #+mini-cas
+    (values nil (list (_ "Is not possible to change email when CAS is used, please contact your local IT staff for any question")))
+    #-mini-cas
     (let ((infos   '())
           (errors  '())
           (user-id (get-session-user-id)))
@@ -290,13 +303,13 @@
 
 (define-lab-route user ("/user/" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (manage-user nil nil)
       (manage-address nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route add-user ("/add-user/" :method :post)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (add-new-user (post-parameter +name-user-name+)
                       (post-parameter +name-user-email+)
                       (post-parameter +name-user-password+)
@@ -337,7 +350,7 @@
 
 (define-lab-route delete-user ("/delete-user/:id" :method :get)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((to-trash (single 'db:user :id id)))
@@ -348,7 +361,7 @@
 
 (defun %set-user-account-status (id new-status)
   (with-authentication
-    (with-admin-privileges
+    (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
             (let ((user (single 'db:user :id id)))
