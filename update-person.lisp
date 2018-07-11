@@ -19,23 +19,33 @@
 (defun update-person (id name surname organization official-id address-id)
   (let* ((errors-msg-1 (concatenate 'list
                                     (regexp-validate (list
-                                         (list name
-                                               +free-text-re+
-                                               (_ "Name invalid"))
-                                         (list surname
-                                               +free-text-re+
-                                               (_ "Surname invalid"))
-                                         (list organization
-                                               +free-text-re+
-                                               (_ "Organization"))))))
+                                                      (list id
+                                                            +pos-integer-re+
+                                                            (_ "ID invalid"))
+                                                      (list address-id
+                                                            +pos-integer-re+
+                                                            (_ "Address id invalid"))
+                                                      (list name
+                                                            +free-text-re+
+                                                            (_ "Name invalid"))
+                                                      (list surname
+                                                            +free-text-re+
+                                                            (_ "Surname invalid"))
+                                                      (list organization
+                                                            +free-text-re+
+                                                            (_ "Organization"))
+                                                      (list official-id
+                                                            +free-text-re+
+                                                            (_ "Official id"))))))
          (errors-msg-2  (when (and (not errors-msg-1)
                                    (not (object-exists-in-db-p 'db:person id)))
                           (list (_ "Person does not exists in database"))))
          (errors-msg-address-not-found (when (and (not errors-msg-1)
                                                   (not (single 'db:address :id address-id)))
                                          (list (_ "Address not in the database"))))
-         (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
-                              (exists-with-different-id-validate 'db:building
+         (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2
+                                              errors-msg-address-not-found)
+                              (exists-with-different-id-validate 'db:person
                                                                  id
                                                                  (:name :surname :organization)
                                                                  (name  surname  organization)

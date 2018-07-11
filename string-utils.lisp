@@ -59,24 +59,23 @@
 (defun escape-csv-field (field)
   (cl-ppcre:regex-replace-all "\"" field "\"\""))
 
-;; TODO: use a  macro
+(defmacro gen-escape-function (bag)
+  `(html-template:escape-string string :test #'(lambda (char)
+                                                 (or (find char ,bag)
+                                                     (> (char-code char) 255)))))
+
 (defun escape-string-all-but-double-quotes (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
-  (html-template:escape-string string :test #'(lambda (char)
-                                                (or (find char "<>&'")
-                                                    (> (char-code char) 255)))))
+  (gen-escape-function "<>&'"))
+
 
 (defun escape-string-all-but-single-quotes (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus single quotes."
-  (html-template:escape-string string :test #'(lambda (char)
-                                                (or (find char "<>&\"")
-                                                    (> (char-code char) 255)))))
+  (gen-escape-function "<>&\""))
 
 (defun escape-string-all-but-ampersand (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus ampersand."
-  (html-template:escape-string string :test #'(lambda (char)
-                                                (or (find char "<>'\"")
-                                                    (> (char-code char) 255)))))
+  (gen-escape-function "<>'\""))
 
 (defun add-slashes (s)
   (cl-ppcre:regex-replace-all "[\\\\\"']" s "\\\\\\&"))
@@ -88,10 +87,10 @@
   (cl-ppcre:split "\\s" l))
 
 (defun ellipsize (string &key (len 15) (truncate-string "..."))
-  "If \"string\"'s length is bigger than \"length\", cut the last
-  characters out. Also replaces the last characters of the shortened
-  string for the omission string. It defaults to \"...\", but can be
-  nil or the empty string."
+  "If  \"string\"'s  length  is  bigger than  \"len\",  cut  the  last
+  characters out.  Also replaces the  last character of  the shortened
+  string with truncate-string. It defaults  to \"...\", but can be nil
+  or the empty string."
   (let ((string-len (length string)))
     (if (<= string-len len)
         string
