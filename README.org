@@ -88,48 +88,48 @@ already installed and ASDF configured  (but you should install all the
 17. put your ssl certificate in ssl/
 18. edit config.lisp
 
-#+BEGIN_SRC lisp
+  #+BEGIN_SRC lisp
 
-(define-constant +path-prefix+ "/niccolo" :test #'string=)
+  (define-constant +path-prefix+ "/niccolo" :test #'string=)
 
-;; ssl
+  ;; ssl
 
-(define-constant +hostname+   "xxxxxxxxx" :test #'string=)
+  (define-constant +hostname+   "xxxxxxxxx" :test #'string=)
 
-(defparameter *ssl-certfile* (asdf:system-relative-pathname :lab #p"ssl/xxx.pem"))
+  (defparameter *ssl-certfile* (asdf:system-relative-pathname :lab #p"ssl/xxx.pem"))
 
-(defparameter *ssl-key* (asdf:system-relative-pathname :lab #p"ssl/xxxx.pem"))
+  (defparameter *ssl-key* (asdf:system-relative-pathname :lab #p"ssl/xxxx.pem"))
 
-(define-constant +ssl-pass+   "xxxxxx" :test #'string=)
+  (define-constant +ssl-pass+   "xxxxxx" :test #'string=)
 
-#+END_SRC
+  #+END_SRC
 
-18. Optional, configure this section for email notifications.
+19. Optional, configure this section for email notifications.
 
-#+BEGIN_SRC lisp
-  ;; smtp config
+    #+BEGIN_SRC lisp
+    ;; smtp config
 
-  ;; you want  actually to use mail  notification? Set this value  to a
-  ;; non nil value ('t' for example).
-  (define-constant +use-smtp+            nil                 :test #'eq)
+    ;; you want  actually to use mail  notification? Set this value  to a
+    ;; non nil value ('t' for example).
+    (define-constant +use-smtp+            nil                 :test #'eq)
 
-  (define-constant +smtp-host+           "localhost"         :test #'string=)
+    (define-constant +smtp-host+           "localhost"         :test #'string=)
 
-  (define-constant +smtp-from-address+   "noreply@localhost" :test #'string=)
+    (define-constant +smtp-from-address+   "noreply@localhost" :test #'string=)
 
-  (define-constant +smtp-port-address+   465                 :test #'=)
+    (define-constant +smtp-port-address+   465                 :test #'=)
 
-  ;; '() for no authentication
-  (define-constant +smtp-autentication+  '("username" "password") :test #'equalp)
+    ;; '() for no authentication
+    (define-constant +smtp-autentication+  '("username" "password") :test #'equalp)
 
-  ;; use nil for no ssl
-  (define-constant +smtp-ssl+             t                       :test #'string=)
+    ;; use nil for no ssl
+    (define-constant +smtp-ssl+             t                       :test #'string=)
 
-  (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
+    (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
 
-#+END_SRC
+    #+END_SRC
 
-19. Optional (but *strongly not* recommended), use federated-query
+20. Optional (but *strongly not* recommended), use federated-query
 
     A  niccolo server  can  federate with  other software's  instances
     (i.e. other servers  running the same software) to  share parts of
@@ -141,7 +141,7 @@ already installed and ASDF configured  (but you should install all the
     *It is not recommended to  enable federated query except for study
     or testing purposes*
 
-#+BEGIN_SRC lisp
+    #+BEGIN_SRC lisp
 
     (define-constant +federated-query-enabled+     nil              :test #'string=)
 
@@ -149,41 +149,41 @@ already installed and ASDF configured  (but you should install all the
 
     (define-constant +federated-query-key+       "/yGHgfè%a6s!"     :test #'string=)
 
-#+END_SRC
+    #+END_SRC
 
     furthermore you need to specify a nodes file named 'nodes-list.expr'
 
-#+BEGIN_SRC lisp
+    #+BEGIN_SRC lisp
 
     (in-package :federated-query)
 
     (define-nodes-list
       (define-node "nome of the federated host" 8443))
 
-#+END_SRC
+    #+END_SRC
 
-20. Optional (but *strongly* recommended), use CAS autentication
+21. Optional (but *strongly* recommended), use CAS autentication
 
-#+BEGIN_SRC lisp
-;; cas config
+    #+BEGIN_SRC lisp
+    ;; cas config
 
-(define-constant +cas-server-host-name+    "" :test #'string=)
+    (define-constant +cas-server-host-name+    "" :test #'string=)
 
-(define-constant +cas-server-path-prefix+  ""    :test #'string=)
-#+END_SRC
+    (define-constant +cas-server-path-prefix+  ""    :test #'string=)
+    #+END_SRC
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
-21. Optional (but *strongly* recommended)
+22. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
-#+BEGIN_SRC lisp
-(define-constant +https-proxy-port+ -1 :test #'=)
-#+END_SRC
+    #+BEGIN_SRC lisp
+    (define-constant +https-proxy-port+ -1 :test #'=)
+    #+END_SRC
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 
-22. Sensors and data logger
+23. Sensors and data logger
 
     The directory  sensors/temp and  sensors/gas contains  two loggers
     for  arduino compatible  with  the protocol  implemented for  this
@@ -205,13 +205,15 @@ already installed and ASDF configured  (but you should install all the
       + Software
         - the arduino IDE
 
-23. sh 'start_server.sh' (or sh 'start_server-cas.sh' if you are using  [[CAS authentication]])
+24. =sh 'start_server.sh'= (or =sh 'start_server-cas.sh'=
+    if you are using  [[CAS authentication][the CAS authentication protocol]])
 
-24. point your browser to
-    https://\+hostname\+:(\+https-poxy-port\+|\+https-port\+)/\+path-prefix\+/add-admin/
-    where \+hostname\+  and \+path-prefix\+ are the values  of the variables setted  in point
+25. point your browser to
+    =https://+hostname+:(+https-poxy-port+|+https-port+)/+path-prefix+/add-admin/=
+    where =+hostname+=  and =+path-prefix+= are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the
-    internet (\+https-poxy-port\+ or \+https-port\+) to generate the administrator account.
+    internet (=+https-poxy-port+= or =+https-port+=) to generate the administrator account.
+
 
 * Authentication
  Niccolo comes with two kinds of autenthication mechanisms.
