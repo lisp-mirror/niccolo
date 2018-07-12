@@ -78,9 +78,9 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (let ((new-code     (get-parameter +name-ghs-hazard-code+))
-                (new-expl     (get-parameter +name-ghs-hazard-expl+))
-                (new-carc     (get-parameter +name-ghs-hazard-carcinogenic+)))
+          (let ((new-code     (get-clean-parameter +name-ghs-hazard-code+))
+                (new-expl     (get-clean-parameter +name-ghs-hazard-expl+))
+                (new-carc     (get-clean-parameter +name-ghs-hazard-carcinogenic+)))
             (if (and new-code
                      new-expl
                      new-carc)

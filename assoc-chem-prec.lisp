@@ -135,8 +135,8 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (add-new-assoc-chem-prec (get-parameter +name-preccode-id+)
-                                   (get-parameter +name-prec-compound-id+)))
+          (add-new-assoc-chem-prec (get-clean-parameter +name-preccode-id+)
+                                   (get-clean-parameter +name-prec-compound-id+)))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-assoc-chem-prec ("/delete-assoc-chem-prec/:id/:id-chem" :method :get)

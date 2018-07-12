@@ -101,8 +101,8 @@
   (with-authentication
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-ghs-precautionary-code (get-parameter +name-ghs-precautionary-code+)
-                                          (get-parameter +name-ghs-precautionary-expl+)
+          (add-new-ghs-precautionary-code (get-clean-parameter +name-ghs-precautionary-code+)
+                                          (get-clean-parameter +name-ghs-precautionary-expl+)
                                           :start-from (session-pagination-start pagination-uri
                                                                                 utils:*alias-pagination*)
                                           :data-count

@@ -185,11 +185,11 @@
           (if (and to-update
                    (or (session-admin-p)
                        (= (db:id user) (parse-integer owner))))
-              (let ((new-expire   (get-parameter +name-expire-date+))
-                    (new-validity (get-parameter +name-validity-date+))
-                    (new-opening  (get-parameter +name-opening-date+))
-                    (new-quantity (get-parameter +name-quantity+))
-                    (new-units    (get-parameter +name-units+)))
+              (let ((new-expire   (get-clean-parameter +name-expire-date+))
+                    (new-validity (get-clean-parameter +name-validity-date+))
+                    (new-opening  (get-clean-parameter +name-opening-date+))
+                    (new-quantity (get-clean-parameter +name-quantity+))
+                    (new-units    (get-clean-parameter +name-units+)))
                 (if (and new-expire
                          new-validity)
                     (update-chem-prod id new-quantity new-units new-validity new-expire new-opening)

@@ -73,8 +73,8 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (let ((new-name          (get-parameter +name-lab-name+))
-                (new-complete-name (get-parameter +name-lab-complete-name+)))
+          (let ((new-name          (get-clean-parameter +name-lab-name+))
+                (new-complete-name (get-clean-parameter +name-lab-complete-name+)))
             (if (and new-name
                      new-complete-name)
                 (update-lab id new-name new-complete-name)

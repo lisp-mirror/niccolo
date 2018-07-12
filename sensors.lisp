@@ -299,11 +299,11 @@
     (with-authentication
       (with-admin-credentials
           (with-pagination (pagination-uri utils:*alias-pagination*)
-            (add-new-sensor (get-parameter +name-sensor-description+)
-                            (get-parameter +name-sensor-address+)
-                            (get-parameter +name-sensor-path+)
-                            (get-parameter +name-sensor-secret-name+)
-                            (get-parameter +name-sensor-script+)
+            (add-new-sensor (get-clean-parameter +name-sensor-description+)
+                            (get-clean-parameter +name-sensor-address+)
+                            (get-clean-parameter +name-sensor-path+)
+                            (get-clean-parameter +name-sensor-secret-name+)
+                            (get-clean-parameter +name-sensor-script+)
                             :start-from (session-pagination-start pagination-uri
                                                                   utils:*alias-pagination*)
                             :data-count (session-pagination-count pagination-uri
@@ -326,8 +326,8 @@
       (with-admin-credentials
           (bt:with-recursive-lock-held (lock)
             (progn
-              (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
-                     (y (get-parameter (format nil "~a.y" +map-image-coord-name+)))
+              (let* ((x (get-clean-parameter (format nil "~a.x" +map-image-coord-name+)))
+                     (y (get-clean-parameter (format nil "~a.y" +map-image-coord-name+)))
                      (errors-msg-1 (concatenate 'list
                                                 (regexp-validate (list
                                                                   (list mid
@@ -461,11 +461,11 @@
     (with-authentication
       (with-admin-credentials
           (progn
-            (let ((new-description (get-parameter +name-sensor-description+))
-                  (new-address     (get-parameter +name-sensor-address+))
-                  (new-path        (get-parameter +name-sensor-path+))
-                  (new-secret      (get-parameter +name-sensor-secret-name+))
-                  (new-script      (get-parameter +name-sensor-script+)))
+            (let ((new-description (get-clean-parameter +name-sensor-description+))
+                  (new-address     (get-clean-parameter +name-sensor-address+))
+                  (new-path        (get-clean-parameter +name-sensor-path+))
+                  (new-secret      (get-clean-parameter +name-sensor-secret-name+))
+                  (new-script      (get-clean-parameter +name-sensor-script+)))
               (if (and new-description
                        new-address
                        new-path

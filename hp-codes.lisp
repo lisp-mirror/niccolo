@@ -102,8 +102,8 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (add-new-hp-waste-code (get-parameter +name-hp-waste-code+)
-                                   (get-parameter +name-hp-waste-expl+)))
+          (add-new-hp-waste-code (get-clean-parameter +name-hp-waste-code+)
+                                 (get-clean-parameter +name-hp-waste-expl+)))
       (manage-hp-waste-code nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-hp-waste ("/delete-hp-waste/:id" :method :get)
@@ -122,10 +122,10 @@
     (with-admin-credentials
         (progn
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-                     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
+                     (not (regexp-validate (list (list (get-clean-parameter +pictogram-form-key+)
                                                        +pos-integer-re+ "")))))
             (let ((h-code (single 'db:hp-waste-code :id id))
-                  (pict   (single 'db:ghs-pictogram :id (get-parameter +pictogram-form-key+))))
+                  (pict   (single 'db:ghs-pictogram :id (get-clean-parameter +pictogram-form-key+))))
               (when (and h-code
                          pict)
                 (setf (db:pictogram h-code) (db:id pict))

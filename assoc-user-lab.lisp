@@ -102,7 +102,7 @@
                 (errors nil))
             (when (get-parameter-non-nil-p +name-user-lab-user-id+)
               (multiple-value-bind (infos-from-add error-from-add)
-                  (add-assoc-user-lab (get-parameter +name-user-lab-user-id+)
+                  (add-assoc-user-lab (get-clean-parameter +name-user-lab-user-id+)
                                       (filter-all-get-params +name-labs-name+))
                 (setf infos  infos-from-add
                       errors error-from-add)))

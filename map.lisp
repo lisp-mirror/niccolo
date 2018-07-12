@@ -158,7 +158,7 @@
   (with-authentication
       (with-editor-or-above-credentials
           (progn
-            (let ((description (tbnl:post-parameter +name-map-description+))
+            (let ((description (post-clean-parameter +name-map-description+))
                   (filename    (get-post-filename +name-map-data+)))
               (add-new-map filename description)))
         (manage-map nil (list *insufficient-privileges-message*)))))

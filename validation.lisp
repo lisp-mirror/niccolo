@@ -31,7 +31,7 @@
 
 (define-constant +barcode-id-re+             "^[0-9][0-9]*$"                     :test #'string=)
 
-(define-constant +free-text-re+              "^[^;\\\"'<>&]+$"                   :test #'string=)
+(define-constant +free-text-re+              "^[^;\\\"<>&]+$"                    :test #'string=)
 
 (define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
   :test #'string=)

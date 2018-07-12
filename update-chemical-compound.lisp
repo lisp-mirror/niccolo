@@ -99,9 +99,9 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let ((new-name      (get-parameter +name-chem-proper-name+))
-                (new-cid       (get-parameter +name-chem-cid+))
-                (new-other-cid (get-parameter +name-chem-other-cid+)))
+          (let ((new-name      (get-clean-parameter +name-chem-proper-name+))
+                (new-cid       (get-clean-parameter +name-chem-cid+))
+                (new-other-cid (get-clean-parameter +name-chem-other-cid+)))
             (if (and new-name
                      new-cid)
                 (update-chem id new-name new-cid new-other-cid)

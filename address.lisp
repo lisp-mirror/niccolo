@@ -97,10 +97,10 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (add-new-address (get-parameter +name-address-line-1+)
-                           (get-parameter +name-address-city+)
-                           (get-parameter +name-address-zipcode+)
-                           (get-parameter +name-address-link+)))
+          (add-new-address (get-clean-parameter +name-address-line-1+)
+                           (get-clean-parameter +name-address-city+)
+                           (get-clean-parameter +name-address-zipcode+)
+                           (get-clean-parameter +name-address-link+)))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-address ("/delete-address/:id" :method :get)

@@ -144,8 +144,8 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (add-new-building (get-parameter +name-building-proper-name+)
-                            (get-parameter +name-building-address-id+)))
+          (add-new-building (get-clean-parameter +name-building-proper-name+)
+                            (get-clean-parameter +name-building-address-id+)))
       (manage-building nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-building ("/delete-building/:id" :method :get)

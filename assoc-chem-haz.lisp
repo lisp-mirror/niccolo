@@ -165,8 +165,8 @@
   (with-authentication
     (with-editor-or-above-credentials
 	(progn
-	  (add-new-assoc-chem-haz (get-parameter +name-hazcode-id+)
-				  (get-parameter +name-haz-compound-id+)))
+	  (add-new-assoc-chem-haz (get-clean-parameter +name-hazcode-id+)
+				  (get-clean-parameter +name-haz-compound-id+)))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-assoc-chem-haz ("/delete-assoc-chem-haz/:id/:id-chem" :method :get)

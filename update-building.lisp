@@ -95,8 +95,8 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let ((new-name       (get-parameter +name-building-proper-name+))
-                (new-address-id (get-parameter +name-building-address-id+)))
+          (let ((new-name       (get-clean-parameter +name-building-proper-name+))
+                (new-address-id (get-clean-parameter +name-building-address-id+)))
             (if (and new-name
                      new-address-id)
                 (update-building id new-name new-address-id)

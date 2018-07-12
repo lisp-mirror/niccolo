@@ -296,8 +296,8 @@
 
 (define-lab-route search-sample ("/search-sample/" :method :get)
   (with-authentication
-    (if (get-parameter +name-sample-search-name+)
-        (search-chemical-sample "" (get-parameter +name-sample-search-name+))
+    (if (get-clean-parameter +name-sample-search-name+)
+        (search-chemical-sample "" (get-clean-parameter +name-sample-search-name+))
         (manage-sample nil nil))))
 
 (define-lab-route chem-sample ("/samples/" :method :get)
@@ -352,19 +352,19 @@
 (define-lab-route add-sample ("/add-sample/" :method :get)
   (with-authentication
     (let ((max-id (get-max-id "chemical-sample")))
-      (if (and (get-parameter +name-count+)
-               (scan +pos-integer-re+ (get-parameter +name-count+)))
-          (let ((errors (loop named add-loop repeat (parse-integer (get-parameter +name-count+)) do
+      (if (and (get-clean-parameter +name-count+)
+               (scan +pos-integer-re+ (get-clean-parameter +name-count+)))
+          (let ((errors (loop named add-loop repeat (parse-integer (get-clean-parameter +name-count+)) do
                              (multiple-value-bind (err success)
-                                 (add-single-sample (get-parameter +name-lab-id+)
-                                                    (get-parameter +name-sample-name+)
-                                                    (get-parameter +name-quantity+)
-                                                    (get-parameter +name-units+)
-                                                    (get-parameter +name-sample-description+)
-                                                    (get-parameter +name-sample-compliantp+)
-                                                    (get-parameter +name-notes+)
-                                                    (get-parameter +name-checkin-date+)
-                                                    (get-parameter +name-person-id+))
+                                 (add-single-sample (get-clean-parameter +name-lab-id+)
+                                                    (get-clean-parameter +name-sample-name+)
+                                                    (get-clean-parameter +name-quantity+)
+                                                    (get-clean-parameter +name-units+)
+                                                    (get-clean-parameter +name-sample-description+)
+                                                    (get-clean-parameter +name-sample-compliantp+)
+                                                    (get-clean-parameter +name-notes+)
+                                                    (get-clean-parameter +name-checkin-date+)
+                                                    (get-clean-parameter +name-person-id+))
                                (declare (ignore success))
                                (when err
                                  (return-from add-loop err))))))
@@ -379,15 +379,15 @@
 (define-lab-route others-op-chem-sample ("/others-op-chem-sample/" :method :post)
   (with-authentication
     (let ((all-ids (remove-if #'(lambda (a) (not (scan +pos-integer-re+ a)))
-                              (map 'list #'first (post-parameters*)))))
+                              (map 'list #'first (post-clean-parameters*)))))
       (cond
-        ((post-parameter +op-submit-gen-barcode+)
-         (let ((w (safe-parse-number (post-parameter +name-w-label+) 80.0))
-               (h (safe-parse-number (post-parameter +name-h-label+) 40.0))
-               (use-barcode (post-parameter +name-use-barcode-label+)))
+        ((post-clean-parameter +op-submit-gen-barcode+)
+         (let ((w (safe-parse-number (post-clean-parameter +name-w-label+) 80.0))
+               (h (safe-parse-number (post-clean-parameter +name-h-label+) 40.0))
+               (use-barcode (post-clean-parameter +name-use-barcode-label+)))
            (setf (header-out :content-type) +mime-postscript+)
            (render-many-sample-barcodes all-ids w h use-barcode)))
-        ((post-parameter +op-submit-massive-delete+)
+        ((post-clean-parameter +op-submit-massive-delete+)
          (massive-delete all-ids 'db:chemical-sample
                          (_ "Sample ~a deleted. ")
                          (_ "Sample ~a not deleted. ")

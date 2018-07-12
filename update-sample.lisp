@@ -134,13 +134,13 @@
               (if (and to-update
                        owner-id
                        (= (db:id user) owner-id))
-                  (let ((new-checkout    (get-parameter +name-checkout-date+))
-                        (new-quantity    (get-parameter +name-quantity+))
-                        (new-units       (get-parameter +name-units+))
-                        (new-description (get-parameter +name-sample-description+))
-                        (new-compliantp  (get-parameter +name-sample-compliantp+))
-                        (new-notes       (get-parameter +name-notes+))
-                        (new-person-id   (get-parameter +name-person-id+)))
+                  (let ((new-checkout    (get-clean-parameter +name-checkout-date+))
+                        (new-quantity    (get-clean-parameter +name-quantity+))
+                        (new-units       (get-clean-parameter +name-units+))
+                        (new-description (get-clean-parameter +name-sample-description+))
+                        (new-compliantp  (get-clean-parameter +name-sample-compliantp+))
+                        (new-notes       (get-clean-parameter +name-notes+))
+                        (new-person-id   (get-clean-parameter +name-person-id+)))
                     (if new-notes
                         (update-sample id new-quantity new-units new-checkout
                                        new-notes

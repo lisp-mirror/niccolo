@@ -136,9 +136,9 @@
   (with-authentication
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-ghs-hazard-code (get-parameter +name-ghs-hazard-code+)
-                                   (get-parameter +name-ghs-hazard-expl+)
-                                   (get-parameter +name-ghs-hazard-carcinogenic+)
+          (add-new-ghs-hazard-code (get-clean-parameter +name-ghs-hazard-code+)
+                                   (get-clean-parameter +name-ghs-hazard-expl+)
+                                   (get-clean-parameter +name-ghs-hazard-carcinogenic+)
                                    :start-from (session-pagination-start pagination-uri
                                                                          utils:*alias-pagination*)
                                    :data-count (session-pagination-count pagination-uri
@@ -161,10 +161,10 @@
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-                     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
+                     (not (regexp-validate (list (list (get-clean-parameter +pictogram-form-key+)
                                                        +pos-integer-re+ "")))))
             (let ((h-code (single 'db:ghs-hazard-statement :id id))
-                  (pict   (single 'db:ghs-pictogram :id (get-parameter +pictogram-form-key+))))
+                  (pict   (single 'db:ghs-pictogram :id (get-clean-parameter +pictogram-form-key+))))
               (when (and h-code
                          pict)
                 (setf (db:pictogram h-code) (db:id pict))

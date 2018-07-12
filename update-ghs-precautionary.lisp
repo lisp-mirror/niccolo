@@ -74,8 +74,8 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (let ((new-code     (get-parameter +name-ghs-precautionary-code+))
-                (new-expl     (get-parameter +name-ghs-precautionary-expl+)))
+          (let ((new-code     (get-clean-parameter +name-ghs-precautionary-code+))
+                (new-expl     (get-clean-parameter +name-ghs-precautionary-expl+)))
             (if (and new-code
                      new-expl)
                 (update-prec id new-code new-expl)

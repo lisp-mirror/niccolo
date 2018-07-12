@@ -66,7 +66,7 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (let ((new-expl     (get-parameter +name-waste-phys-state-expl+)))
+          (let ((new-expl     (get-clean-parameter +name-waste-phys-state-expl+)))
             (if new-expl
                 (update-waste-physical-state id new-expl)
                 (prepare-for-update-waste-phys-state id))))

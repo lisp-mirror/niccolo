@@ -104,9 +104,9 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let ((new-name        (get-parameter +name-storage-proper-name+))
-                (new-building-id (get-parameter +name-storage-building-id+))
-                (new-floor       (get-parameter +name-storage-floor+)))
+          (let ((new-name        (get-clean-parameter +name-storage-proper-name+))
+                (new-building-id (get-clean-parameter +name-storage-building-id+))
+                (new-floor       (get-clean-parameter +name-storage-floor+)))
             (if (and new-name
                      new-building-id
                      new-floor)

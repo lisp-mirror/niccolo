@@ -188,9 +188,9 @@
   (with-authentication
     (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-storage (get-parameter +name-storage-proper-name+)
-                           (get-parameter +name-storage-building-id+)
-                           (get-parameter +name-storage-floor+)
+          (add-new-storage (get-clean-parameter +name-storage-proper-name+)
+                           (get-clean-parameter +name-storage-building-id+)
+                           (get-clean-parameter +name-storage-floor+)
                            :start-from (session-pagination-start pagination-uri
                                                                  utils:*alias-pagination*)
                            :data-count (session-pagination-count pagination-uri
@@ -212,8 +212,8 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let* ((x (get-parameter (format nil "~a.x" +map-image-coord-name+)))
-                 (y (get-parameter (format nil "~a.y" +map-image-coord-name+)))
+          (let* ((x (get-clean-parameter (format nil "~a.x" +map-image-coord-name+)))
+                 (y (get-clean-parameter (format nil "~a.y" +map-image-coord-name+)))
                  (errors-msg-1 (concatenate 'list
                                             (regexp-validate (list
                                                               (list mid

@@ -84,12 +84,12 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (if (all-not-null-p (get-parameter +name-user-name+)
-                              (get-parameter +name-user-email+)
-                              (get-parameter +name-user-level+))
+          (if (all-not-null-p (get-clean-parameter +name-user-name+)
+                              (get-clean-parameter +name-user-email+)
+                              (get-clean-parameter +name-user-level+))
               (update-user id
-                           (get-parameter +name-user-name+)
-                           (get-parameter +name-user-email+)
-                           (get-parameter +name-user-level+))
+                           (get-clean-parameter +name-user-name+)
+                           (get-clean-parameter +name-user-email+)
+                           (get-clean-parameter +name-user-level+))
               (prepare-for-update-user id)))
       (manage-address nil (list *insufficient-privileges-message*)))))

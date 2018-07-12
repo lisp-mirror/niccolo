@@ -852,16 +852,16 @@
 (define-lab-route assoc-registration-waste-message ("/assoc-reg-waste/" :method :get)
   (with-authentication
     (with-waste-manager-credentials
-        (let* ((error-reg (regexp-validate (list (list (get-parameter +name-registration-num+)
+        (let* ((error-reg (regexp-validate (list (list (get-clean-parameter +name-registration-num+)
                                                        +waste-registration-number-re+
                                                        (_ "Registration number format invalid")))))
 
-               (error-msg-id (regexp-validate (list (list (get-parameter +name-id-message+)
+               (error-msg-id (regexp-validate (list (list (get-clean-parameter +name-id-message+)
                                                           +integer-re+
                                                           (_ "Id not valid")))))
                (message      (and (null error-reg)
                                   (null error-msg-id)
-                                  (get-column-from-id (get-parameter +name-id-message+)
+                                  (get-column-from-id (get-clean-parameter +name-id-message+)
                                                       +pos-integer-re+
                                                       'db:waste-message
                                                       #'identity
@@ -874,20 +874,20 @@
                     (typep message 'db:waste-message)
                     (null  (db:registration-number message))
                     (string= (db:status wrapper-message) +msg-status-closed-success+))
-               (setf (db:registration-number message) (get-parameter +name-registration-num+))
+               (setf (db:registration-number message) (get-clean-parameter +name-registration-num+))
                (save message)
                (reply-to (format nil "~a" (db:id wrapper-message))
                          (format nil
                                  (_ "Added registration number ~a")
-                                 (get-parameter +name-registration-num+))
+                                 (get-clean-parameter +name-registration-num+))
                          (format nil
                                  (_ "The registration number ~s has been attached to your message:  ~3%~a")
-                                 (get-parameter +name-registration-num+)
+                                 (get-clean-parameter +name-registration-num+)
                                  (db:text wrapper-message)))
                (print-messages nil
                                (list (format nil
                                              (_ "The registration number ~s has been attached to message: ~a")
-                                             (get-parameter +name-registration-num+)
+                                             (get-clean-parameter +name-registration-num+)
                                              (db:id wrapper-message)))))
               ((and wrapper-message
                     (typep message 'db:waste-message)
@@ -943,9 +943,9 @@
 (define-lab-route broadcast-message ("/broadcast-message/" :method :get)
   (with-authentication
     (with-admin-credentials
-        (if (and (get-parameter +name-broadcast-msg-subject+)
-                 (get-parameter +name-broadcast-msg-body+))
-            (send-broadcast-message (get-parameter +name-broadcast-msg-subject+)
-                                    (get-parameter +name-broadcast-msg-body+))
+        (if (and (get-clean-parameter +name-broadcast-msg-subject+)
+                 (get-clean-parameter +name-broadcast-msg-body+))
+            (send-broadcast-message (get-clean-parameter +name-broadcast-msg-subject+)
+                                    (get-clean-parameter +name-broadcast-msg-body+))
             (manage-broadcast-message nil nil))
       (manage-broadcast-message nil (list *insufficient-privileges-message*)))))

@@ -97,7 +97,7 @@
 (define-lab-route user-messages ("/messages/" :method :get)
   (with-authentication
     (with-session-user (user)
-      (let* ((raw-query (get-parameter +name-msg-search-query+))
+      (let* ((raw-query (get-clean-parameter +name-msg-search-query+))
              (query (and (not (string-utils:string-empty-p raw-query))
                          (clean-string raw-query))))
         (create-expiration-messages (fetch-expired-products))

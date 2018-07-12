@@ -87,7 +87,8 @@ already installed and ASDF configured  (but you should install all the
 16. make
 17. put your ssl certificate in ssl/
 18. edit config.lisp
-    #+BEGIN_SRC lisp
+
+#+BEGIN_SRC lisp
 
 (define-constant +path-prefix+ "/niccolo" :test #'string=)
 
@@ -101,11 +102,11 @@ already installed and ASDF configured  (but you should install all the
 
 (define-constant +ssl-pass+   "xxxxxx" :test #'string=)
 
-   #+END_SRC
+#+END_SRC
 
 18. Optional, configure this section for email notifications.
 
-   #+BEGIN_SRC lisp
+#+BEGIN_SRC lisp
   ;; smtp config
 
   ;; you want  actually to use mail  notification? Set this value  to a
@@ -126,7 +127,7 @@ already installed and ASDF configured  (but you should install all the
 
   (define-constant +smtp-subject-mail-prefix+  "[niccolo] "       :test #'string=)
 
-   #+END_SRC
+#+END_SRC
 
 19. Optional (but *strongly not* recommended), use federated-query
 
@@ -140,7 +141,7 @@ already installed and ASDF configured  (but you should install all the
     *It is not recommended to  enable federated query except for study
     or testing purposes*
 
-    #+BEGIN_SRC lisp
+#+BEGIN_SRC lisp
 
     (define-constant +federated-query-enabled+     nil              :test #'string=)
 
@@ -148,37 +149,37 @@ already installed and ASDF configured  (but you should install all the
 
     (define-constant +federated-query-key+       "/yGHgfè%a6s!"     :test #'string=)
 
-    #+END_SRC
+#+END_SRC
 
     furthermore you need to specify a nodes file named 'nodes-list.expr'
 
-    #+BEGIN_SRC lisp
+#+BEGIN_SRC lisp
 
     (in-package :federated-query)
 
     (define-nodes-list
       (define-node "nome of the federated host" 8443))
 
-    #+END_SRC
+#+END_SRC
 
 20. Optional (but *strongly* recommended), use CAS autentication
 
-   #+BEGIN_SRC lisp
+#+BEGIN_SRC lisp
 ;; cas config
 
 (define-constant +cas-server-host-name+    "" :test #'string=)
 
 (define-constant +cas-server-path-prefix+  ""    :test #'string=)
-   #+END_SRC
+#+END_SRC
 
    you need to compile mini-cas library to use this feature see: [[CAS authentication]] below.
 
 21. Optional (but *strongly* recommended)
     If you plan to put niccolo behind a reverse proxy (and we recommend to do so) also set:
 
-   #+BEGIN_SRC lisp
+#+BEGIN_SRC lisp
 (define-constant +https-proxy-port+ -1 :test #'=)
-   #+END_SRC
+#+END_SRC
 
     to the actual port (usually 443) where your http server is listening on the internet/intranet.
 

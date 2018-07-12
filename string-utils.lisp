@@ -16,8 +16,13 @@
 
 (in-package :string-utils)
 
-(defun clean-string (s)
-  (regex-replace-all "[;\\\"'=<>&]" (validation:strip-tags s) ""))
+(defgeneric clean-string (s))
+
+(defmethod clean-string ((s string))
+  (regex-replace-all "[;\\\"=<>&]" (validation:strip-tags s) ""))
+
+(defmethod clean-string (s)
+  s)
 
 (defun string-empty-p (s)
     (or (null s)

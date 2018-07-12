@@ -310,10 +310,10 @@
 (define-lab-route add-user ("/add-user/" :method :post)
   (with-authentication
     (with-admin-credentials
-        (add-new-user (post-parameter +name-user-name+)
-                      (post-parameter +name-user-email+)
-                      (post-parameter +name-user-password+)
-                      (post-parameter +name-user-level+))
+        (add-new-user (post-clean-parameter +name-user-name+)
+                      (post-clean-parameter +name-user-email+)
+                      (post-clean-parameter +name-user-password+)
+                      (post-clean-parameter +name-user-level+))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route add-admin-user ("/add-admin/" :method :get)
@@ -338,15 +338,15 @@
 
 (define-lab-route actual-user-change-pass ("/actual-user-change-pass/" :method :post)
   (with-authentication
-    (change-password (post-parameter +name-user-old-password+)
-                     (post-parameter +name-user-password+)
-                     (post-parameter +name-user-password-2+))))
+    (change-password (post-clean-parameter +name-user-old-password+)
+                     (post-clean-parameter +name-user-password+)
+                     (post-clean-parameter +name-user-password-2+))))
 
 (define-lab-route actual-admin-change-pass ("/actual-admin-change-pass/" :method :post)
-  (add-admin-password (post-parameter +name-user-name+)
-                      (post-parameter +name-user-email+)
-                      (post-parameter +name-user-password+)
-                      (post-parameter +name-user-password-2+)))
+  (add-admin-password (post-clean-parameter +name-user-name+)
+                      (post-clean-parameter +name-user-email+)
+                      (post-clean-parameter +name-user-password+)
+                      (post-clean-parameter +name-user-password-2+)))
 
 (define-lab-route delete-user ("/delete-user/:id" :method :get)
   (with-authentication
@@ -399,13 +399,13 @@
 (define-lab-route user-change-locale ("/user-change-locale/" :method :post)
   (with-authentication
     (multiple-value-bind (infos errors)
-        (change-locale (tbnl:post-parameter +name-pref-locale+))
+        (change-locale (post-clean-parameter +name-pref-locale+))
       (print-preferences-forms infos errors))))
 
 (define-lab-route user-change-email ("/user-change-email/" :method :post)
   (with-authentication
     (multiple-value-bind (infos errors)
-        (change-email (tbnl:post-parameter +name-pref-email+))
+        (change-email (post-clean-parameter +name-pref-email+))
       (print-preferences-forms infos errors))))
 
 

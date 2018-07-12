@@ -554,6 +554,10 @@
    :filter-all-post-params
    :get-parameter-non-nil-p
    :get-post-filename
+   :get-clean-parameter
+   :get-clean-parameters*
+   :post-clean-parameter
+   :post-clean-parameters*
    :source-origin-header
    :target-origin-header
    :check-origin-target

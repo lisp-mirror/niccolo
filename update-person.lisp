@@ -122,11 +122,11 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let ((new-name         (get-parameter +name-person-name+))
-                (new-surname      (get-parameter +name-person-surname+))
-                (new-address-id   (get-parameter +name-person-address-id+))
-                (new-organization (get-parameter +name-person-organization+))
-                (new-official-id  (get-parameter +name-person-official-id+)))
+          (let ((new-name         (get-clean-parameter +name-person-name+))
+                (new-surname      (get-clean-parameter +name-person-surname+))
+                (new-address-id   (get-clean-parameter +name-person-address-id+))
+                (new-organization (get-clean-parameter +name-person-organization+))
+                (new-official-id  (get-clean-parameter +name-person-official-id+)))
             (if (all-not-null-p new-name
                                 new-surname
                                 new-address-id

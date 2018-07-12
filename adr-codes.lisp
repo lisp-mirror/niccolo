@@ -139,9 +139,9 @@
   (with-authentication
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-adr-code (get-parameter +name-adr-code-class+)
-                            (get-parameter +name-adr-uncode+)
-                            (get-parameter +name-adr-expl+)
+          (add-new-adr-code (get-clean-parameter +name-adr-code-class+)
+                            (get-clean-parameter +name-adr-uncode+)
+                            (get-clean-parameter +name-adr-expl+)
                             :start-from (session-pagination-start pagination-uri
                                                                   utils:*alias-pagination*)
                             :data-count (session-pagination-count pagination-uri
@@ -164,10 +164,10 @@
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-                     (not (regexp-validate (list (list (get-parameter +pictogram-form-key+)
+                     (not (regexp-validate (list (list (get-clean-parameter +pictogram-form-key+)
                                                        +pos-integer-re+ "")))))
             (let ((adr-code (single 'db:adr-code :id id))
-                  (pict     (single 'db:adr-pictogram :id (get-parameter +pictogram-form-key+))))
+                  (pict     (single 'db:adr-pictogram :id (get-clean-parameter +pictogram-form-key+))))
               (when (and adr-code
                          pict)
                 (setf (db:pictogram adr-code) (db:id pict))

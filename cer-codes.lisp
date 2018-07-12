@@ -84,8 +84,8 @@
   (with-authentication
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-cer-code (get-parameter +name-cer-code+)
-                            (get-parameter +name-cer-expl+)
+          (add-new-cer-code (get-clean-parameter +name-cer-code+)
+                            (get-clean-parameter +name-cer-expl+)
                             :start-from (session-pagination-start pagination-uri
                                                                   utils:*alias-pagination*)
                             :data-count (session-pagination-count pagination-uri

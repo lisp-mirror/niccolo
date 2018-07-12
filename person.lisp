@@ -166,11 +166,11 @@
   (with-authentication
     (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-person (get-parameter +name-person-name+)
-                          (get-parameter +name-person-surname+)
-                          (get-parameter +name-person-organization+)
-                          (get-parameter +name-person-official-id+)
-                          (get-parameter +name-person-address-id+)
+          (add-new-person (get-clean-parameter +name-person-name+)
+                          (get-clean-parameter +name-person-surname+)
+                          (get-clean-parameter +name-person-organization+)
+                          (get-clean-parameter +name-person-official-id+)
+                          (get-clean-parameter +name-person-address-id+)
                           :start-from (session-pagination-start pagination-uri
                                                                 utils:*alias-pagination*)
                           :data-count (session-pagination-count pagination-uri

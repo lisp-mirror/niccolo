@@ -108,8 +108,8 @@
   (with-authentication
     (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (add-new-laboratory (get-parameter +name-lab-name+)
-                              (get-parameter +name-lab-complete-name+)
+          (add-new-laboratory (get-clean-parameter +name-lab-name+)
+                              (get-clean-parameter +name-lab-complete-name+)
                               :start-from (session-pagination-start pagination-uri
                                                                     utils:*alias-pagination*)
                               :data-count (session-pagination-count pagination-uri

@@ -89,7 +89,7 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (add-new-waste-phys-state (get-parameter +name-waste-phys-state-expl+)))
+          (add-new-waste-phys-state (get-clean-parameter +name-waste-phys-state-expl+)))
       (manage-waste-phys-state nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route delete-waste-phys-state ("/delete-waste-phys-state/:id" :method :get)

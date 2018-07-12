@@ -60,10 +60,10 @@
 
 (define-lab-route ws-ghs-h-reverse-lookup ("/ws/GHS-h-reverse-lookup/" :method :get)
   (with-authentication
-    (let* ((error-msg (regexp-validate (list (list (get-parameter +name-haz-code+)
+    (let* ((error-msg (regexp-validate (list (list (get-clean-parameter +name-haz-code+)
                                                    +ghs-hazard-code-re+
                                                    (_ "Chemical compound id invalid")))))
-           (code      (single 'db:ghs-hazard-statement :code (get-parameter +name-haz-code+))))
+           (code      (single 'db:ghs-hazard-statement :code (get-clean-parameter +name-haz-code+))))
       (if (and (not error-msg)
                code)
           (obj->json-string (db:id code))
@@ -71,11 +71,11 @@
 
 (define-lab-route ws-ghs-p-reverse-lookup ("/ws/GHS-p-reverse-lookup/" :method :get)
   (with-authentication
-    (let* ((error-msg (regexp-validate (list (list (get-parameter +name-prec-code+)
+    (let* ((error-msg (regexp-validate (list (list (get-clean-parameter +name-prec-code+)
                                                    +ghs-precautionary-code-re+
                                                    (_ "Chemical compound id invalid")))))
            (code      (single 'db:ghs-precautionary-statement
-                              :code (get-parameter +name-prec-code+))))
+                              :code (get-clean-parameter +name-prec-code+))))
       (if (and (not error-msg)
                code)
           (obj->json-string (db:id code))
@@ -107,9 +107,9 @@
 
 (define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
-    (if  (tbnl:post-parameter "req")
+    (if  (post-clean-parameter "req")
          (progn
-           (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+           (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
                   (risk-calculator:*errors* '())
                   (name    (cdr (assoc :name params)))
                   (results (risk-calculator:l-factor-i (cdr (assoc :r-phrases params))
@@ -134,7 +134,7 @@
 
 (define-lab-route l-factor-carc-i ("/ws/l-factor-carc/" :method :post)
   (with-authentication
-    (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+    (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
            (name    (cdr (assoc :name params)))
            (risk-calculator:*errors* '())
            (results (risk-calculator:l-factor-carc-i (cdr (assoc :protective-device params))
@@ -164,10 +164,10 @@
 
 (define-lab-route l-factor-i-snpa ("/ws/l-factor-snpa/" :method :post)
   (with-authentication
-    (if  (tbnl:post-parameter "req")
+    (if  (post-clean-parameter "req")
          (progn
            (let* ((risk-calculator:*errors* '())
-                  (params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+                  (params  (json:decode-json-from-string (post-clean-parameter "req")))
                   (name    (cdr (assoc :name params)))
                   (res (risk-calculator-snpa:l-factor-i-snpa (cdr (assoc :r-phrases params))
                                                              (cdr (assoc :exposition-types params))
@@ -193,7 +193,7 @@
 
 (define-lab-route l-factor-carc-i-snpa ("/ws/l-factor-carc-snpa/" :method :post)
   (with-authentication
-    (let* ((params  (json:decode-json-from-string (tbnl:post-parameter "req")))
+    (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
            (name    (cdr (assoc :name params)))
            (risk-calculator:*errors* '())
            (results (risk-calculator-snpa:l-factor-carc-i-snpa
@@ -233,9 +233,9 @@
   "This service is reponsible for accepting a federated query.
    The client is another federated node."
   (with-federated-query-enabled
-    (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+    (let ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
       (if query
-          (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+          (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (let* ((products-query (gen-all-prod-select (where
                                                          (:like :chem-name
                                                                 (prepare-for-sql-like (fq:request query))))))
@@ -268,9 +268,9 @@
   "This service is reponsible for accepting a federated query.
    The client is another federated node."
   (with-federated-query-enabled
-    (let ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+    (let ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
       (if query
-          (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+          (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (let* ((serialized-results (hazard-compound-summary-json (fq:request query)
                                                                      :other-pairs
                                                                      (list :host +hostname+)))
@@ -298,7 +298,7 @@
   "This service accepts and save the results of a query product from remote node.
    The local node is the one that has has started the query."
   (with-federated-query-enabled
-    (let ((response (json-string->obj (tbnl:post-parameter +query-http-response-key+))))
+    (let ((response (json-string->obj (post-clean-parameter +query-http-response-key+))))
       (if response
           (fq:with-valid-key ((fq:key response))
             (when (fq:id response)
@@ -306,8 +306,8 @@
               (to-log :info
                       "received product-query ~a from ~a. -> ~a"
                       (fq:id response)
-                      (get-host-by-address (address-string->vector (tbnl:remote-addr*)))
-                      (tbnl:post-parameter +query-http-response-key+)))
+                      (get-host-by-address (address-string->vector (remote-addr*)))
+                      (post-clean-parameter +query-http-response-key+)))
 
             +http-ok+)
           +http-not-found+))))
@@ -315,13 +315,13 @@
 (define-lab-route ws-query-visited (+query-visited+ :method :post)
   "This service return true if this node has been visited before for this query-id"
   (with-federated-query-enabled
-    (let* ((query (json-string->obj (tbnl:post-parameter +query-http-parameter-key+))))
+    (let* ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
       (if query
-          (fq:with-credentials ((address-string->vector (tbnl:remote-addr*)) (fq:key query))
+          (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (to-log :info
                     "received visited query ~a from ~a."
                     (fq:id query)
-                    (get-host-by-address (address-string->vector (tbnl:remote-addr*))))
+                    (get-host-by-address (address-string->vector (remote-addr*))))
             (let* ((query-id  (and query    (fq:id query)))
                    (visited-p (and query-id (fq:set-visited query-id))))
               (obj->json-string (fq:make-visited-response visited-p query-id))))
@@ -332,14 +332,14 @@
    Usually this is used from ajax calls"
   (with-federated-query-enabled
     (with-authentication
-      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+      (let ((errors (regexp-validate (list (list (get-clean-parameter +query-http-parameter-key+)
                                                  +federated-query-product-re+
                                                  (_ "no"))
-                                           (list (tbnl:get-parameter +query-http-parameter-key+)
+                                           (list (get-clean-parameter +query-http-parameter-key+)
                                                  +free-text-re+
                                                  (_ "free text validation failed"))))))
         (if (not errors)
-            (fq:federated-query-product (tbnl:get-parameter +query-http-parameter-key+)
+            (fq:federated-query-product (get-clean-parameter +query-http-parameter-key+)
                                         :set-me-visited t)
             +http-not-found+)))))
 
@@ -350,14 +350,14 @@
    Usually this is used from ajax calls"
   (with-federated-query-enabled
     (with-authentication
-      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+      (let ((errors (regexp-validate (list (list (get-clean-parameter +query-http-parameter-key+)
                                                  +federated-query-id-re+
                                                  (_ "no"))
-                                           (list (tbnl:get-parameter +query-http-parameter-key+)
+                                           (list (get-clean-parameter +query-http-parameter-key+)
                                                  +free-text-re+
                                                  (_ "free text validation failed"))))))
         (if (not errors)
-            (fq:get-serialized-results (tbnl:get-parameter +query-http-parameter-key+))
+            (fq:get-serialized-results (get-clean-parameter +query-http-parameter-key+))
             +http-not-found+)))))
 
 (define-lab-route ws-federated-query-compound-hazard ("/ws/fq-chem-haz" :method :get)
@@ -365,14 +365,14 @@
    Usually this is used from ajax calls"
   (with-federated-query-enabled
     (with-authentication
-      (let ((errors (regexp-validate (list (list (tbnl:get-parameter +query-http-parameter-key+)
+      (let ((errors (regexp-validate (list (list (get-clean-parameter +query-http-parameter-key+)
                                                  +federated-query-product-re+
                                                  (_ "no"))
-                                           (list (tbnl:get-parameter +query-http-parameter-key+)
+                                           (list (get-clean-parameter +query-http-parameter-key+)
                                                  +free-text-re+
                                                  (_ "free text validation failed"))))))
         (if (not errors)
-            (fq:federated-query-chemical-hazard (tbnl:get-parameter +query-http-parameter-key+))
+            (fq:federated-query-chemical-hazard (get-clean-parameter +query-http-parameter-key+))
             +http-not-found+)))))
 
 ;;;; graph

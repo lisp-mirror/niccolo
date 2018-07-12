@@ -74,8 +74,8 @@
   (with-authentication
     (with-admin-credentials
         (progn
-          (let ((new-code     (get-parameter +name-hp-waste-code+))
-                (new-expl     (get-parameter +name-hp-waste-expl+)))
+          (let ((new-code     (get-clean-parameter +name-hp-waste-code+))
+                (new-expl     (get-clean-parameter +name-hp-waste-expl+)))
             (if (and new-code
                      new-expl)
                 (update-hp-waste-code id new-code new-expl)

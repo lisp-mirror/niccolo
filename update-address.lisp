@@ -92,10 +92,10 @@
   (with-authentication
     (with-editor-or-above-credentials
         (progn
-          (let ((new-line-1   (get-parameter +name-address-line-1+))
-                (new-city     (get-parameter +name-address-city+))
-                (new-zipcode  (get-parameter +name-address-zipcode+))
-                (new-link     (get-parameter +name-address-link+)))
+          (let ((new-line-1   (get-clean-parameter +name-address-line-1+))
+                (new-city     (get-clean-parameter +name-address-city+))
+                (new-zipcode  (get-clean-parameter +name-address-zipcode+))
+                (new-link     (get-clean-parameter +name-address-link+)))
             (if (all-not-null-p new-line-1
                                 new-city
                                 new-zipcode

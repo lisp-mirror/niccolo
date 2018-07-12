@@ -100,22 +100,38 @@
 
 ;; web/tbnl
 
+(defun get-clean-parameter (key)
+  (string-utils:clean-string (get-parameter key)))
+
+(defun get-clean-parameters* (&optional (request *request*))
+  (mapcar #'(lambda (a) (cons (car a)
+                              (string-utils:clean-string (cdr a))))
+          (get-parameters* request)))
+
+(defun post-clean-parameter (key)
+  (string-utils:clean-string (post-clean-parameter key)))
+
+(defun post-clean-parameters* (&optional (request *request*))
+  (mapcar #'(lambda (a) (cons (car a)
+                              (string-utils:clean-string (cdr a))))
+          (post-clean-parameters* request)))
+
 (defun filter-params (key params &key (test-remove #'string=))
   (mapcar #'cdr (remove-if-not #'(lambda (a) (funcall test-remove (car a) key))
                                  params)))
 
 (defun filter-all-get-params (key &key (test-remove #'string=))
-  (filter-params key (tbnl:get-parameters*) :test-remove test-remove))
+  (filter-params key (get-clean-parameters*) :test-remove test-remove))
 
 (defun filter-all-post-params (key &key (test-remove #'string=))
-  (filter-params key (tbnl:post-parameters*) :test-remove test-remove))
+  (filter-params key (post-clean-parameters*) :test-remove test-remove))
 
 (defun get-parameter-non-nil-p (param)
-  (tbnl:get-parameter param))
+  (get-clean-parameter param))
 
 (defun get-post-filename (name)
-  (and (> (length (tbnl:post-parameter name)) 2)
-       (elt (tbnl:post-parameter name) 0)))
+  (and (> (length (post-clean-parameter name)) 2)
+       (elt (post-clean-parameter name) 0)))
 
 (defun source-origin-header ()
   "Fallback to referrer if origin is not present"
@@ -419,8 +435,8 @@
 (defmacro with-pagination ((uri alias-hashtable) &body body)
   (with-gensyms (page-modification-move page-modification-change-window)
     `(let ((,uri (tbnl:script-name*))
-           (,page-modification-move          (get-parameter +name-op-pagination+))
-           (,page-modification-change-window (get-parameter +name-count-pagination+)))
+           (,page-modification-move          (get-clean-parameter +name-op-pagination+))
+           (,page-modification-change-window (get-clean-parameter +name-count-pagination+)))
        (when ,page-modification-change-window
          (if (string= ,page-modification-change-window +name-count-pagination-inc+)
              (session-pagination-count-increase ,uri ,alias-hashtable)

@@ -192,9 +192,9 @@
   (with-authentication
     (with-editor-or-above-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
-          (let ((name            (tbnl:post-parameter +name-chem-proper-name+))
-                (cid             (tbnl:post-parameter +name-chem-cid+))
-                (other-cid       (tbnl:post-parameter +name-chem-other-cid+))
+          (let ((name            (post-clean-parameter +name-chem-proper-name+))
+                (cid             (post-clean-parameter +name-chem-cid+))
+                (other-cid       (post-clean-parameter +name-chem-other-cid+))
                 (msds-filename   (get-post-filename +name-chem-msds-data+))
                 (struct-filename (get-post-filename +name-chem-struct-data+)))
             (add-new-chem name msds-filename struct-filename cid other-cid
