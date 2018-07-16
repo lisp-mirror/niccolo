@@ -3702,116 +3702,116 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage persons"
-translation ""
+translation "Responsabile"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Persons"
-translation ""
+translation "Persone"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Search messages"
-translation ""
+translation "Cerca messaggi"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Official ID"
-translation ""
+translation "ID ufficiale"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Surname"
-translation ""
+translation "Cognome"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Manage Person"
-translation ""
+translation "Gestisci le persone"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Saved new person: ~s - ~s"
-translation ""
+translation "Registrata nuova persona: ~s - ~s"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person already in the database"
-translation ""
+translation "Persona già presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Organization"
-translation ""
+translation "Organizzazione"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Surname invalid"
-translation ""
+translation "Cognome non valido"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person  invalid"
-translation ""
+translation "Persona non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person"
-translation ""
+translation "Persona"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Update Person"
-translation ""
+translation "Aggiorna persona"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "person does not exists in database."
-translation ""
+translation "La persona non è presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person updated"
-translation ""
+translation "Persona aggiornata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person already in the database with different ID"
-translation ""
+translation "Persona già presente nel database con altro ID"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
- id "Person does not exists in database"
-translation ""
+ id "Person does not exist in database"
+translation "Persona non presente nel database"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "person not found"
-translation ""
+translation "Persona non trovata"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 
  id "Person invalid"
-translation ""
+translation "Persona non valida"
 plurals-form ""
-status :UNTRANSLATED
+status :TRANSLATED
 plurals NIL
 )
