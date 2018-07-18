@@ -176,3 +176,6 @@
 
 (defun strip-tags (s)
   (sanitize:clean s +no-html-tags-at-all+))
+
+(defun strip-tags-relaxed (s)
+  (sanitize:clean s +html-tags-text-minimal-formatting+))

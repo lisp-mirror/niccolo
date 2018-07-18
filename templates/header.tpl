@@ -3,15 +3,27 @@
     <head>
         <meta charset="utf-8">
         <title><!-- TMPL_VAR title --></title>
-        <link rel="icon" type="image/vnd.microsoft.icon" href="<!-- TMPL_VAR path-prefix -->/images/favicon.ico" />
+        <link rel="icon" type="image/vnd.microsoft.icon"
+              href="<!-- TMPL_VAR path-prefix -->/images/favicon.ico" />
+        <!-- css -->
+        <!-- fonts -->
+        <link rel="stylesheet"
+              href="<!-- TMPL_VAR path-prefix -->/css/font-awesome-4.6.3/css/font-awesome.min.css">
+        <!-- jquery -->
         <link rel="stylesheet" href="<!-- TMPL_VAR jquery-ui-css -->" />
+        <!-- pell -->
+        <link rel="stylesheet" href="<!-- TMPL_VAR path-prefix -->/css/pell.css">
+        <!-- animation -->
         <link rel="stylesheet" href="<!-- TMPL_VAR anim-css -->" />
+        <!-- local -->
         <link rel="stylesheet" type="text/css" href="<!-- TMPL_VAR css-file -->" />
+        <!-- js -->
         <script src="<!-- TMPL_VAR jquery -->"></script>
         <script src="<!-- TMPL_VAR jquery-ui -->"></script>
         <script src="<!-- TMPL_VAR sugar -->"></script>
         <script src="<!-- TMPL_VAR mustache -->"></script>
-        <link rel="stylesheet" href="<!-- TMPL_VAR path-prefix -->/css/font-awesome-4.6.3/css/font-awesome.min.css">
+        <script src="<!-- TMPL_VAR pell -->"></script>
+
     </head>
     <body>
         <script>

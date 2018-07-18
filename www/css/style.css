@@ -310,6 +310,11 @@ table.expiration-messages .message {
     text-align: justify;
 }
 
+table.user-messages .message {
+    text-align: justify;
+}
+
+
 table.user-messages {
     margin-top:    5pt;
     margin-bottom: 5pt;
@@ -324,6 +329,8 @@ td.user-message-reply-row {
 td.user-message-reply-row table {
     margin-left: 1%;
 }
+
+
 
 td.user-message-reply-row a{
     text-decoration: none;
@@ -1010,6 +1017,14 @@ fieldset.other-ops-chem-sample  {
     min-width:    150pt;
     margin-left:  auto;
     margin-right: auto;
+}
+
+/*
+ * pell
+ */
+
+#editor-dump {
+    display: none;
 }
 
 

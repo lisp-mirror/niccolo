@@ -165,7 +165,7 @@
       (dolist (hp-id hp-ids)
         (create 'db:waste-message-hp
                 :waste-message (db:id waste-msg)
-                :hp-code-id   hp-id))
+                :hp-code-id    hp-id))
       msg)))
 
 (defun number-of-msg-sent-to-me ()
@@ -905,14 +905,13 @@
       (manage-chem nil (list (_ "This operation is available for waste manager only."))))))
 
 (defun send-broadcast-message (subject body)
-  (let* ((actual-subject (strip-tags subject))
-         (actual-body    (strip-tags body))
-         (errors (regexp-validate (list (list actual-subject
-                                              +free-text-re+
-                                              (_ "Subject invalid"))
-                                        (list actual-body
-                                              +free-text-re+
-                                              (_ "Body invalid"))))))
+  (let* ((actual-subject (strip-tags         subject))
+         (actual-body    (strip-tags-relaxed body))
+         (error-subject  (when (string-empty-p actual-subject)
+                           (list (_ "Subject invalid"))))
+         (error-body     (when (string-empty-p actual-body)
+                           (list (_ "Body invalid"))))
+         (errors         (append error-subject error-body)))
     (if (not errors)
         (progn
           (dolist (user (filter 'db:user))
@@ -945,7 +944,7 @@
     (with-admin-credentials
         (if (and (get-clean-parameter +name-broadcast-msg-subject+)
                  (get-clean-parameter +name-broadcast-msg-body+))
-            (send-broadcast-message (get-clean-parameter +name-broadcast-msg-subject+)
-                                    (get-clean-parameter +name-broadcast-msg-body+))
+            (send-broadcast-message (get-clean-parameter         +name-broadcast-msg-subject+)
+                                    (get-clean-parameter-relaxed +name-broadcast-msg-body+))
             (manage-broadcast-message nil nil))
       (manage-broadcast-message nil (list *insufficient-privileges-message*)))))

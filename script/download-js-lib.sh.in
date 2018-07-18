@@ -31,6 +31,10 @@ SUGAR_URL="https://raw.githubusercontent.com/andrewplummer/Sugar/2.0.0/dist/suga
 
 MUSTACHE_URL="https://raw.githubusercontent.com/janl/mustache.js/master/mustache.js"
 
+PELL_JS_URL="https://raw.githubusercontent.com/jaredreich/pell/master/dist/pell.js"
+
+PELL_CSS_URL="https://raw.githubusercontent.com/jaredreich/pell/master/dist/pell.css"
+
 #sugar.js
 
 @WGET@ $SUGAR_URL -P $NICCOLO_DIR/www/js/
@@ -38,6 +42,12 @@ MUSTACHE_URL="https://raw.githubusercontent.com/janl/mustache.js/master/mustache
 # mustache
 
 @WGET@ $SUGAR_URL -P $NICCOLO_DIR/www/js/
+
+# pell
+
+@WGET@ $PELL_JS_URL -P $NICCOLO_DIR/www/js/
+
+@WGET@ $PELL_CSS_URL -P $NICCOLO_DIR/www/css/
 
 #  jquery and jquery ui
 

@@ -142,6 +142,7 @@
    :+name-op-pagination-inc+
    :+name-op-pagination-dec+
    :+no-html-tags-at-all+
+   :+html-tags-text-minimal-formatting+
    :+cookie-key-script-visited+
    :+query-product-path+
    :+query-compound-hazard-path+
@@ -348,6 +349,7 @@
    :cookie-key-script-visited-validate
    :user-level-validate-p
    :strip-tags
+   :strip-tags-relaxed
    :+ghs-hazard-code-re+
    :+ghs-precautionary-code-re+
    :+hp-waste-code-re+
@@ -555,6 +557,7 @@
    :get-parameter-non-nil-p
    :get-post-filename
    :get-clean-parameter
+   :get-clean-parameter-relaxed
    :get-clean-parameters*
    :post-clean-parameter
    :post-clean-parameters*

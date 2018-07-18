@@ -103,6 +103,9 @@
 (defun get-clean-parameter (key)
   (string-utils:clean-string (get-parameter key)))
 
+(defun get-clean-parameter-relaxed (key)
+  (validation:strip-tags-relaxed (get-parameter key)))
+
 (defun get-clean-parameters* (&optional (request *request*))
   (mapcar #'(lambda (a) (cons (car a)
                               (string-utils:clean-string (cdr a))))
@@ -556,6 +559,8 @@
                                                                       :path "sugar.js")
                                                 :mustache (restas:genurl 'restas.lab::-js-.route
                                                                          :path "mustache.js")
+                                                :pell     (restas:genurl 'restas.lab::-js-.route
+                                                                         :path "pell.js")
                                                 :title    ,title)
                                             :stream ,stream)
      (restas.lab:render-logout-control stream)

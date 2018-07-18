@@ -145,7 +145,7 @@
             (lab-id->name lab-id)
             actual-address
             weight
-            (validation:strip-tags body)
+            (validation:strip-tags-relaxed body)
             cer
             (letter-adr-codes adrs)
             (letter-hp-codes hps)
@@ -450,13 +450,13 @@
 (define-lab-route write-waste-letter ("/write-waste-letter/" :method :get)
   (with-authentication
     (multiple-value-bind (results has-errors-p)
-        (generate-letter (get-clean-parameter +name-waste-user-name+)
-                         (get-clean-parameter +name-waste-lab-id+)
-                         (get-clean-parameter +name-waste-building-id+)
-                         (get-clean-parameter +name-waste-weight+)
-                         (get-clean-parameter +name-waste-cer-id+)
-                         (get-clean-parameter +name-waste-phys-id+)
-                         (get-clean-parameter +name-waste-description+)
+        (generate-letter (get-clean-parameter         +name-waste-user-name+)
+                         (get-clean-parameter         +name-waste-lab-id+)
+                         (get-clean-parameter         +name-waste-building-id+)
+                         (get-clean-parameter         +name-waste-weight+)
+                         (get-clean-parameter         +name-waste-cer-id+)
+                         (get-clean-parameter         +name-waste-phys-id+)
+                         (get-clean-parameter-relaxed +name-waste-description+)
                          (collect-all-adr (get-clean-parameters*))
                          (collect-all-hp  (get-clean-parameters*)))
       (if (not has-errors-p)

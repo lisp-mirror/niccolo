@@ -125,6 +125,10 @@
 
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
 
+(sanitize:define-sanitize-mode +html-tags-text-minimal-formatting+
+    :elements ("b" "i" "u" "strike" "h1" "h2" "p" "ol" "ul" "li" "hr")
+    :attributes ())
+
 ;; federated query
 
 (define-constant +query-product-path+              "/ws/fq-query-product"    :test #'string=)

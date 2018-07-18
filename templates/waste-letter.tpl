@@ -144,10 +144,18 @@
 
   <div>
     <div><label for="textarea-note-waste"><!-- TMPL_VAR description-lb --></label></div>
-    <textarea id="textarea-note-waste" name="<!-- TMPL_VAR description -->"></textarea>
+
+
+    <div id="editor-body-message"></div>
+
+    <textarea id="editor-dump" name="<!-- TMPL_VAR description -->"></textarea>
+
     <input type="submit" />
   </div>
 
 </form>
+
+<script src="<!-- TMPL_VAR path-prefix -->/js/pell-init.js"></script>
+
 
 <!-- TMPL_INCLUDE 'back-button.tpl' -->

@@ -4,10 +4,15 @@
 
   <div>
     <div><label for="textarea-body-message"><!-- TMPL_VAR body-lb --></label></div>
-    <textarea id="textarea-body-message"
-	      cols='70' rows='30'
-	      name="<!-- TMPL_VAR body -->"></textarea>
+    <div id="editor-body-message">
+    </div>
+
+    <textarea id="editor-dump"
+              name="<!-- TMPL_VAR body -->"></textarea>
+
     <input type="submit" />
   </div>
 
 </form>
+
+<script src="<!-- TMPL_VAR path-prefix -->/js/pell-init.js"></script>
