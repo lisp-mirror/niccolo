@@ -246,7 +246,7 @@ already installed and ASDF configured  (but you should install all the
   without or with CAS authentication respectively.
 * BUGS
 
-  Please send bug report to cage at katamail dot com
+  Please send bug report to cage-dev at twistfold dot it
 
 ** Known bugs
 - federated query works only in sbcl.
@@ -263,11 +263,11 @@ already installed and ASDF configured  (but you should install all the
 
   Although any efforts  has  been  put to  make  the  list of  credits
   exaustive,  errors are  always possible.  Please send  correction to
-  cage at katamail dot com.
+  cage-dev at twistfold dot it.
 
 * Contributing
   Any  help  is  appreciated. Please send a message to
-  cage at katamail dot com.
+  cage-dev at twistfold dot it.
 
 * NO WARRANTY
 
