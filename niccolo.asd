@@ -16,7 +16,7 @@
 
 (asdf:defsystem :niccolo
   :description "Chemicals inventory"
-  :author "cage <cage@katamail.com>"
+  :author "cage"
   :version "1.0.0-RC1"
   :license "GPLv3"
   :depends-on (#-asdf3 :uiop
