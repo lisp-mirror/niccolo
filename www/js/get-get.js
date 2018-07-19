@@ -4,9 +4,28 @@
 //Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 //https://creativecommons.org/licenses/by-sa/3.0/
 
+function urlize (s) {
+    if (s) {
+        return s;
+    } else {
+        return window.location.href;
+    }
+}
+
+
+function getParameterExists (url) {
+    url = urlize(url);
+    return url.match("\\?[^=]+=");
+}
+
+function getFragment (url) {
+    url = urlize(url);
+    return url.match("#.+$");
+}
+
 
 function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
+    url = urlize(url);
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);

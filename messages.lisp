@@ -709,7 +709,7 @@
   (single 'db:waste-message :message (db:id message)))
 
 (defun waste-message-deletable-p (user message)
-  (and (waste-message-p message) ;; yes, the message is linked to a waste request
+  (and (waste-message-p message)         ;; yes, the message is linked to a waste request
        (waste-message-expired-p message) ;; and yes the message is older than a year
        (= (db:id user) (db:recipient message))))
 
@@ -717,10 +717,8 @@
                                 (deletable-p-fn #'(lambda (user message)
                                                     (if (waste-message-p message)
                                                         (waste-message-deletable-p user message)
-                                                        (if (= (db:id user)
-                                                               (db:recipient message))
-                                                            t
-                                                            (session-admin-p))))))
+                                                        (= (db:id user)
+                                                           (db:recipient message))))))
   (with-session-user (user)
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
       (let ((to-trash (single 'db:message :id (parse-integer id))))

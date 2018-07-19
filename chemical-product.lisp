@@ -59,8 +59,9 @@
         (query (list (cons "image_size" (if (eq size :small) "small" "large")))))
     (puri:render-uri (make-instance 'puri:uri
                                     :scheme :https
-                                    :host +pubchem-host+ :path path
-                                    :query (alist->query-uri query))
+                                    :host   +pubchem-host+
+                                    :path   path
+                                    :query  (alist->query-uri query))
                      nil)))
 
 (defmacro gen-all-prod-select (&body where)
@@ -549,8 +550,7 @@
                                         (list owner +pos-integer-re+ "no"))))
         (let ((to-trash (single 'db:chemical-product :id (parse-integer id))))
           (if (and to-trash
-                   (or (session-admin-p)
-                       (= (db:id user) (parse-integer owner))))
+                   (= (db:id user) (parse-integer owner)))
               (progn
                 (del to-trash)
                 (manage-chem-prod (list (_ "Product deleted")) nil))

@@ -183,8 +183,7 @@
                                         (list owner +pos-integer-re+ "no"))))
         (let ((to-update (single 'db:chemical-product :id (parse-integer id))))
           (if (and to-update
-                   (or (session-admin-p)
-                       (= (db:id user) (parse-integer owner))))
+                   (= (db:id user) (parse-integer owner)))
               (let ((new-expire   (get-clean-parameter +name-expire-date+))
                     (new-validity (get-clean-parameter +name-validity-date+))
                     (new-opening  (get-clean-parameter +name-opening-date+))

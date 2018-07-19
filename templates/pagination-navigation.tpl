@@ -1,3 +1,15 @@
+<script src="<!-- TMPL_VAR path-prefix -->/js/get-get.js"></script>
+
+<script>
+ // Shorthand for $( document ).ready()
+ $(function() {
+     if(getParameterByName("<!-- TMPL_VAR  pagination-count-name -->")){
+         $("body, html").animate($( document ).height());
+     }
+ });
+</script>
+
+
 <!-- TMPL_IF prev-start -->
 <div>
   <form class="with-attention-scale-anim" id="pagination-minus" method="GET"
@@ -46,7 +58,7 @@
 	   value="<!-- TMPL_VAR pagination-less-items -->" />
     <a href="#"
        onclick="document.forms['pagination-less-items'].submit();">
-      <i class="fa fa-minus-square" aria-hidden="true"></i>
+        <i class="fa fa-minus-square" aria-hidden="true"></i>
     </a>
   </form>
 </div>

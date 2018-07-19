@@ -112,12 +112,12 @@
           (get-parameters* request)))
 
 (defun post-clean-parameter (key)
-  (string-utils:clean-string (post-clean-parameter key)))
+  (string-utils:clean-string (post-parameter key)))
 
 (defun post-clean-parameters* (&optional (request *request*))
   (mapcar #'(lambda (a) (cons (car a)
                               (string-utils:clean-string (cdr a))))
-          (post-clean-parameters* request)))
+          (post-parameters* request)))
 
 (defun filter-params (key params &key (test-remove #'string=))
   (mapcar #'cdr (remove-if-not #'(lambda (a) (funcall test-remove (car a) key))
