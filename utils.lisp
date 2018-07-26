@@ -114,6 +114,9 @@
 (defun post-clean-parameter (key)
   (string-utils:clean-string (post-parameter key)))
 
+(defun post-parameter-notags (key)
+  (validation:strip-tags (post-parameter key)))
+
 (defun post-clean-parameters* (&optional (request *request*))
   (mapcar #'(lambda (a) (cons (car a)
                               (string-utils:clean-string (cdr a))))
@@ -709,6 +712,16 @@
     #'(lambda (a)
         (local-time:timestamp< (encode-datetime-string (getf a :sent-time))
                                jan))))
+
+(defgeneric format-time (object &rest format))
+
+(defmethod format-time ((object local-time:timestamp) &rest format)
+  (format-time* object format))
+
+(defgeneric format-time* (object format))
+
+(defmethod format-time* ((object local-time:timestamp) format)
+  (local-time:format-timestring nil object :format format))
 
 ;; mail
 

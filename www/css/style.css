@@ -250,6 +250,14 @@ td.chemp-haz-diamond img {
     min-width:  60%;
 }
 
+.remove-functionality-overlay {
+    font-family: Mono;
+    transform:   rotate(45deg);
+    color:       rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    font-size:   150%;
+}
+
 .button-back-navigation {
     min-width:   150pt;
 }
@@ -300,6 +308,21 @@ td.chemp-haz-diamond img {
 .error-message li{
 
 }
+
+table.waste-messages th {
+    min-width: 50pt;
+}
+
+
+table.waste-messages {
+    margin-top:    5pt;
+    margin-bottom: 5pt;
+}
+
+table.waste-messages .message {
+    text-align: justify;
+}
+
 
 table.expiration-messages {
     margin-top:    5pt;

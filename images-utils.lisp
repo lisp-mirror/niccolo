@@ -25,19 +25,19 @@
            ,@body
            (cl-gd:write-png-to-stream ,stream))))))
 
-(define-constant +graph-x-offset+         0.1  :test #'=)
+(define-constant +graph-x-offset+         0.1   :test #'=)
 
-(define-constant +graph-y-offset+         0.1  :test #'=)
+(define-constant +graph-y-offset+         0.13  :test #'=)
 
-(define-constant +tic-h+                 -5    :test #'=)
+(define-constant +tic-h+                 -5     :test #'=)
 
-(define-constant +big-tic-h+             -8    :test #'=)
+(define-constant +big-tic-h+             -8     :test #'=)
 
 (define-constant +graph-point-radius+     0.007 :test #'=)
 
-(define-constant +default-graph-w+     1366    :test #'=)
+(define-constant +default-graph-w+     1366     :test #'=)
 
-(define-constant +default-graph-h+      768    :test #'=)
+(define-constant +default-graph-h+      768     :test #'=)
 
 (defun coord->norm (a max)
   (clamp (/ a max) 0.0 1.0))
@@ -101,10 +101,34 @@
                         :filled nil
                         :color contour))))))
 
-(defun draw-graph-x-axis (&key (tics-number 10) (major 2) (tics-label '("12:00" "01:00" "02:00")))
+(defun ttf-font-path ()
+  (make-pathname :directory (namestring (config:local-system-path +data-path+))
+                 :name      +default-ttf-font-name+
+                 :type      "ttf"))
+
+(defun find-x-label-sizes (label acceptable-h &optional (font-size 30))
+  (flet ((get-h (rect)
+           (- (elt rect 2) (elt rect 0))))
+    (let* ((font-name     (ttf-font-path))
+           (angle         0)
+           (sizes         (cl-gd:draw-freetype-string 0
+                                                      0
+                                                      label
+                                                      :point-size  font-size
+                                                      :font-name   font-name
+                                                      :do-not-draw t
+                                                      :angle       angle)))
+      (if (<= (get-h sizes) acceptable-h)
+          font-size
+          (find-x-label-sizes label acceptable-h (decf font-size 1.0))))))
+
+(defun draw-graph-x-axis (&key
+                            (font-size 30.0)
+                            (tics-number 10)
+                            (major 2)
+                            (tics-label '("12:00" "01:00" "02:00")))
   (with-allocated-color (color 0 0 0)
-    (let ((untransformed-w (cl-gd:image-width))
-          (untransformed-h (cl-gd:image-height)))
+    (let ((untransformed-w (cl-gd:image-width)))
       (with-normalized-draw (0.0 0.0)
         (cl-gd:draw-line 0
                          0
@@ -128,12 +152,16 @@
                (if (and (or (= (rem m major) 0)
                             (< (length tics-label) 100))
                         (< label-index (length tics-label)))
-                   (cl-gd:draw-string 0
-                                      (- (norm->coord +graph-y-offset+ untransformed-h))
-                                      (elt tics-label label-index)
-                                      :font :medium-bold
-                                      :up t
-                                      :color color))))))))
+                   (let* ((render-string (elt tics-label label-index))
+                          (font-name     (ttf-font-path))
+                          (angle         (- (/ pi 2))))
+                     (cl-gd:draw-freetype-string (- +tic-h+)
+                                                 +tic-h+
+                                                 render-string
+                                                 :point-size font-size
+                                                 :font-name  font-name
+                                                 :angle      angle
+                                                 :color      color)))))))))
 
 (defun %fractional-part (a magn)
   (multiple-value-bind (i f)
@@ -182,8 +210,7 @@
                            (major 2)
                            (tics-label '("0.00" "2.00" "4.00" "6.00" "8.00" "10.00")))
   (with-allocated-color (color 0 0 0)
-    (let* ((untransformed-w (cl-gd:image-width))
-           (untransformed-h (cl-gd:image-height))
+    (let* ((untransformed-h (cl-gd:image-height))
            (actual-y-label  (scale-y-axis tics-label tics-number))
            (tic-step        (/ 1.0 (1- (length actual-y-label)))))
       (with-normalized-draw (0.0 0.0)
@@ -205,12 +232,28 @@
                                 0
                                 :color color)
                (if (= (rem m major) 0)
-                   (cl-gd:draw-string (- (norm->coord +graph-x-offset+ untransformed-w))
-                                      0
-                                      (format nil "~,2f" label)
-                                      :font :medium-bold
-                                      :up nil
-                                      :color color))))))))
+                   (let* ((render-string (format nil "~,2f" label))
+                          (font-name     (ttf-font-path))
+                          (angle         0)
+                          (font-size     12)
+                          (label-size    (cl-gd:draw-freetype-string 0
+                                                                     0
+                                                                     render-string
+                                                                     :do-not-draw t
+                                                                     :point-size  font-size
+                                                                     :font-name   font-name
+                                                                     :angle       angle
+                                                                     :color       color)))
+
+                     (cl-gd:draw-freetype-string (math-utils:add-epsilon-rel (- (elt label-size 0)
+                                                                                (elt label-size 2))
+                                                                             0.1)
+                                                 0
+                                                 render-string
+                                                 :point-size font-size
+                                                 :font-name  font-name
+                                                 :angle      angle
+                                                 :color      color)))))))))
 
 (defun draw-graph (xs ys &optional
                            (y-tics-number 20)
@@ -223,19 +266,23 @@
         (let* ((actual-y-range (scale-y-axis ys y-tics-number))
                (max-y          (reduce #'max actual-y-range))
                (min-y          (reduce #'min actual-y-range))
-               (x-step   (/ 1.0 (length xs)))
-               (slope    (/ 1.0 (- max-y min-y)))
-               (q        (- (* slope min-y)))
-               (norm-y   (map 'vector
-                              #'(lambda (a) (+ (* slope
-                                                  (string-utils:safe-parse-number a))
-                                               q))
-                              ys))
-               (norm-x   xs))
-          (fill-bg 255 255 255)
+               (x-step         (/ 1.0 (length xs)))
+               (slope          (/ 1.0 (- max-y min-y)))
+               (q              (- (* slope min-y)))
+               (norm-y         (map 'vector
+                                    #'(lambda (a) (+ (* slope
+                                                        (string-utils:safe-parse-number a))
+                                                     q))
+                                    ys))
+               (norm-x          xs)
+               (bottom-gap-size (* 0.8 (norm->coord +graph-y-offset+ +default-graph-h+)))
+               (min-x-label-fontsize (loop for i in norm-x minimize
+                                          (find-x-label-sizes i bottom-gap-size))))
+          (fill-bg 240 240 240)
           (draw-graph-x-axis :tics-number (length xs)
                              :major       (max 1 (truncate (/ (length xs) 10)))
-                             :tics-label  norm-x)
+                             :tics-label  norm-x
+                             :font-size   min-x-label-fontsize)
           (draw-graph-y-axis :tics-number y-tics-number
                              :major       major-tic
                              :tics-label  ys)

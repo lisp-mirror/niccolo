@@ -110,6 +110,7 @@
    :+image-unknown-struct-path+
    :+letter-header+
    :+default-font-name+
+   :+default-ttf-font-name+
    :+header-image-export-height+
    :+header-image-export-width+
    :+pictogram-web-image-ext+
@@ -318,7 +319,13 @@
    :person
    :surname
    :organization
-   :official-id))
+   :official-id
+   :chemical-usage-tracking
+   :chemical-id
+   :chemical-tracking-data
+   :tracking-id
+   :track-date
+   :track-type))
 
 (defpackage :validation
   (:use
@@ -393,7 +400,13 @@
    :fm-map
    :fm-flat-copy
    :fm-transpose
-   :fm*))
+   :fm*
+   :*default-epsilon*
+   :with-epsilon
+   :add-epsilon-rel
+   :epsilon<=
+   :epsilon>=
+   :epsilon=))
 
 (defpackage :string-utils
   (:use
@@ -560,6 +573,7 @@
    :get-clean-parameter-relaxed
    :get-clean-parameters*
    :post-clean-parameter
+   :post-parameter-notags
    :post-clean-parameters*
    :source-origin-header
    :target-origin-header
@@ -618,6 +632,8 @@
    :timestamp-compare-desc
    :timestamp-compare-asc
    :remove-old-waste-stats
+   :format-time
+   :format-time*
    :send-email
    :init-hashtable-equalp
    :temp-filename

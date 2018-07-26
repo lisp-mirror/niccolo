@@ -10,7 +10,7 @@
 <h3> <!-- TMPL_VAR waste-messages-hd-lb --></h3>
 
 <!-- TMPL_LOOP messages -->
-<table class="expiration-messages">
+<table class="waste-messages">
     <thead>
         <tr>
             <th class="id-hd">ID</th>

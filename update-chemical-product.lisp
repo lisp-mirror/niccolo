@@ -105,6 +105,8 @@
                   (db:quantity               new-chem) (parse-integer quantity)
                   (db:units                  new-chem) units)
             (save new-chem)
+            (when (chemical-tracked-p id (db:id user))
+              (tracking-add-record-qty (db:id user) (db:compound new-chem)))
             (let ((parent-messages (concatenate 'list
                                                 (fetch-expired-messages-linked-to-product (db:id new-chem))
                                                 (fetch-validity-expired-messages-linked-to-product (db:id new-chem)))))

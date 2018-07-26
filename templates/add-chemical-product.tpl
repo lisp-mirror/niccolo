@@ -409,6 +409,17 @@
 	      </a>
 	      <span class="parent-subscript">]</span>
 	    </sub>
+            <!-- TMPL_IF chemical-tracked-p -->
+            <div>
+                <sub>
+                    <span class="parent-subscript">[</span>
+                    <a target="_blank" href="<!-- TMPL_VAR tracking-link -->">
+	                <!-- TMPL_INCLUDE 'chart-button.tpl' -->
+                    </a>
+                    <span class="parent-subscript">]</span>
+	        </sub>
+            </div>
+            <!-- /TMPL_IF -->
 	  </div>
 	</td>
 	<td class="chemp-thumb-name">
@@ -483,6 +494,16 @@
 	  <a href="<!-- TMPL_VAR barcode-link -->">
 	      <!-- TMPL_INCLUDE 'barcode-button.tpl' -->
 	  </a>
+          <!-- TMPL_UNLESS chemical-tracked-p -->
+          <a href="<!-- TMPL_VAR add-tracking-link -->">
+	      <!-- TMPL_INCLUDE 'chart-button.tpl' -->
+          </a>
+          <!-- /TMPL_UNLESS -->
+          <!-- TMPL_IF chemical-tracked-p -->
+          <a href="<!-- TMPL_VAR remove-tracking-link -->">
+	      <!-- TMPL_INCLUDE 'remove-chart-button.tpl' -->
+          </a>
+          <!-- /TMPL_IF -->
 	</td>
       </tr>
       <!-- /TMPL_LOOP  -->

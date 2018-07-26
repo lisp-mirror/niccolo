@@ -107,9 +107,9 @@
 
 (define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
-    (if  (post-clean-parameter "req")
+    (if  (post-parameter-notags "req")
          (progn
-           (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
+           (let* ((params  (json:decode-json-from-string (post-parameter-notags "req")))
                   (risk-calculator:*errors* '())
                   (name    (cdr (assoc :name params)))
                   (results (risk-calculator:l-factor-i (cdr (assoc :r-phrases params))
@@ -134,7 +134,7 @@
 
 (define-lab-route l-factor-carc-i ("/ws/l-factor-carc/" :method :post)
   (with-authentication
-    (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
+    (let* ((params  (json:decode-json-from-string (post-parameter-notags "req")))
            (name    (cdr (assoc :name params)))
            (risk-calculator:*errors* '())
            (results (risk-calculator:l-factor-carc-i (cdr (assoc :protective-device params))
@@ -164,10 +164,10 @@
 
 (define-lab-route l-factor-i-snpa ("/ws/l-factor-snpa/" :method :post)
   (with-authentication
-    (if  (post-clean-parameter "req")
+    (if  (post-parameter-notags "req")
          (progn
            (let* ((risk-calculator:*errors* '())
-                  (params  (json:decode-json-from-string (post-clean-parameter "req")))
+                  (params  (json:decode-json-from-string (post-parameter-notags "req")))
                   (name    (cdr (assoc :name params)))
                   (res (risk-calculator-snpa:l-factor-i-snpa (cdr (assoc :r-phrases params))
                                                              (cdr (assoc :exposition-types params))
@@ -193,7 +193,7 @@
 
 (define-lab-route l-factor-carc-i-snpa ("/ws/l-factor-carc-snpa/" :method :post)
   (with-authentication
-    (let* ((params  (json:decode-json-from-string (post-clean-parameter "req")))
+    (let* ((params  (json:decode-json-from-string (post-parameter-notags "req")))
            (name    (cdr (assoc :name params)))
            (risk-calculator:*errors* '())
            (results (risk-calculator-snpa:l-factor-carc-i-snpa
@@ -233,7 +233,7 @@
   "This service is reponsible for accepting a federated query.
    The client is another federated node."
   (with-federated-query-enabled
-    (let ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
+    (let ((query (json-string->obj (post-parameter-notags +query-http-parameter-key+))))
       (if query
           (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (let* ((products-query (gen-all-prod-select (where
@@ -268,7 +268,7 @@
   "This service is reponsible for accepting a federated query.
    The client is another federated node."
   (with-federated-query-enabled
-    (let ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
+    (let ((query (json-string->obj (post-parameter-notags +query-http-parameter-key+))))
       (if query
           (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (let* ((serialized-results (hazard-compound-summary-json (fq:request query)
@@ -298,7 +298,7 @@
   "This service accepts and save the results of a query product from remote node.
    The local node is the one that has has started the query."
   (with-federated-query-enabled
-    (let ((response (json-string->obj (post-clean-parameter +query-http-response-key+))))
+    (let ((response (json-string->obj (post-parameter-notags +query-http-response-key+))))
       (if response
           (fq:with-valid-key ((fq:key response))
             (when (fq:id response)
@@ -307,7 +307,7 @@
                       "received product-query ~a from ~a. -> ~a"
                       (fq:id response)
                       (get-host-by-address (address-string->vector (remote-addr*)))
-                      (post-clean-parameter +query-http-response-key+)))
+                      (post-parameter-notags +query-http-response-key+)))
 
             +http-ok+)
           +http-not-found+))))
@@ -315,7 +315,7 @@
 (define-lab-route ws-query-visited (+query-visited+ :method :post)
   "This service return true if this node has been visited before for this query-id"
   (with-federated-query-enabled
-    (let* ((query (json-string->obj (post-clean-parameter +query-http-parameter-key+))))
+    (let* ((query (json-string->obj (post-parameter-notags +query-http-parameter-key+))))
       (if query
           (fq:with-credentials ((address-string->vector (remote-addr*)) (fq:key query))
             (to-log :info

@@ -54,6 +54,11 @@
 
 (gen-autocomplete-functions db:chemical-compound db:name)
 
+(defun chem-prod->chem-compound (id)
+  (when (object-exists-in-db-p 'db:chemical-product (safe-parse-number id -1))
+    (let ((prod (single 'db:chemical-product :id (safe-parse-number id -1))))
+      (single 'db:chemical-compound :id (db:compound prod)))))
+
 (defun make-pubchem-2d (cid &key (size :small))
   (let ((path  (format nil "/rest/pug/compound/cid/~a/PNG" cid))
         (query (list (cons "image_size" (if (eq size :small) "small" "large")))))
@@ -130,8 +135,16 @@
                                  (actual-image-unknown-struct-path)))
            (haz-diamond-url  (restas:genurl 'display-hazard-diamond :id (getf row :chem-id)))
            (remove-loan-link (restas:genurl 'remove-loan :id (getf row :chemp-id)))
-           (lending-user  (fetch-loan (getf row :chemp-id)))
+           (lending-user     (fetch-loan (getf row :chemp-id)))
            (gen-custom-label-link  (restas:genurl 'gen-custom-label :id (getf row :chemp-id)))
+           (add-tracking-link      (restas:genurl 'add-chemical-tracking
+                                                  :id-product (getf row :chemp-id)))
+           (remove-tracking-link   (restas:genurl 'remove-chemical-tracking
+                                                  :id-product (getf row :chemp-id)))
+           (tracking-link          (restas:genurl 'tracking-chem-prod
+                                                  :id-product (getf row :chemp-id)))
+           (chemical-tracked-p     (chemical-tracked-p (getf row :chemp-id)
+                                                       (getf row :owner-id)))
            (encoded-expire-date    (encode-datetime-string (getf row :expire-date)))
            (encoded-validity-date  (encode-datetime-string (getf row :validity-date)))
            (encoded-opening-date   (encode-datetime-string (getf row :opening-date)))
@@ -139,41 +152,46 @@
            (decoded-validity-date  (decode-datetime-string encoded-validity-date))
            (decoded-opening-date   (decode-date-string     encoded-opening-date)))
       (setf (elt raw rown)
-            (nconc row
-                   (list :storage-link
-                         (if (not (eq (getf row :storage-map-id) :nil))
-                             (gen-map-storage-link (getf row :storage-map-id)
-                                                   (getf row :storage-s-coord)
-                                                   (getf row :storage-t-coord))
-                             nil))
-                   (list :expire-date-encoded          encoded-expire-date)
-                   (list :validity-date-encoded        encoded-validity-date)
-                   (list :expire-date-decoded          decoded-expire-date)
-                   (list :validity-date-decoded        decoded-validity-date)
-                   (list :opening-package-date-decoded decoded-opening-date)
-                   (list :building-link                building-link)
-                   (list :ghs-haz-link                 ghs-haz-link)
-                   (list :ghs-prec-link                ghs-prec-link)
-                   (list :msds-link                    msds-link)
-                   (list :barcode-link                 barcode-link)
-                   (list :thumbnail-link               thumbnail-link)
-                   (list :structure-link               structure-link)
-                   (list :checkbox-id                  (getf row :chemp-id))
-                   (list :chem-cid-exists              (not (eq (getf row :chem-cid) :nil)))
-                   (list :lending-user                 lending-user)
-                   (list :remove-lending-link          remove-loan-link)
-                   (list :gen-custom-label-link        gen-custom-label-link)
-                   (list :haz-diamond-url              haz-diamond-url)
-                   (if delete-link
-                       (list :delete-link (restas:genurl delete-link
-                                                         :id    (getf row :chemp-id)
-                                                         :owner (getf row :owner-id)))
-                       nil)
-                   (if update-link
-                       (list :update-link (restas:genurl update-link
-                                                         :id    (getf row :chemp-id)
-                                                         :owner (getf row :owner-id)))
-                       nil)))))
+            (concatenate 'list
+                         row
+                         (list :storage-link
+                               (if (not (eq (getf row :storage-map-id) :nil))
+                                   (gen-map-storage-link (getf row :storage-map-id)
+                                                         (getf row :storage-s-coord)
+                                                         (getf row :storage-t-coord))
+                                   nil))
+                         (list :expire-date-encoded          encoded-expire-date)
+                         (list :validity-date-encoded        encoded-validity-date)
+                         (list :expire-date-decoded          decoded-expire-date)
+                         (list :validity-date-decoded        decoded-validity-date)
+                         (list :opening-package-date-decoded decoded-opening-date)
+                         (list :building-link                building-link)
+                         (list :ghs-haz-link                 ghs-haz-link)
+                         (list :ghs-prec-link                ghs-prec-link)
+                         (list :msds-link                    msds-link)
+                         (list :barcode-link                 barcode-link)
+                         (list :thumbnail-link               thumbnail-link)
+                         (list :structure-link               structure-link)
+                         (list :checkbox-id                  (getf row :chemp-id))
+                         (list :chem-cid-exists              (not (eq (getf row :chem-cid) :nil)))
+                         (list :lending-user                 lending-user)
+                         (list :remove-lending-link          remove-loan-link)
+                         (list :gen-custom-label-link        gen-custom-label-link)
+                         (list :add-tracking-link            add-tracking-link)
+                         (list :remove-tracking-link         remove-tracking-link)
+                         (list :tracking-link                tracking-link)
+                         (list :haz-diamond-url              haz-diamond-url)
+                         (list :chemical-tracked-p           chemical-tracked-p)
+                         (if delete-link
+                             (list :delete-link (restas:genurl delete-link
+                                                               :id    (getf row :chemp-id)
+                                                               :owner (getf row :owner-id)))
+                             nil)
+                         (if update-link
+                             (list :update-link (restas:genurl update-link
+                                                               :id    (getf row :chemp-id)
+                                                               :owner (getf row :owner-id)))
+                             nil)))))
   raw)
 
 (defun fetch-loan (product-id)

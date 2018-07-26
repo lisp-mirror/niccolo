@@ -536,3 +536,25 @@
   (t-coord
    :type integer
    :nullp nil))
+
+(deftable chemical-usage-tracking ()
+  (user-id
+   :type integer
+   :foreign (user :cascade :cascade))
+  (chemical-id
+   :type integer
+   :foreign (chemical-compound :cascade :cascade)))
+
+(deftable chemical-tracking-data ()
+  (tracking-id
+   :type integer
+   :foreign (chemical-usage-tracking :cascade :cascade))
+  (track-date
+   :type timestamp
+   :nullp nil)
+  (track-type
+   :type integer
+   :nullp nil)
+  (data
+   :type text
+   :nullp nil))

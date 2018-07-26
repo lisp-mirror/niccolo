@@ -109,6 +109,7 @@
                (:file "user")
                (:file "update-user")
                (:file "chemical-product")
+               (:file "chemical-product-tracking")
                (:file "update-chemical-product")
                (:file "laboratory")
                (:file "update-laboratory")

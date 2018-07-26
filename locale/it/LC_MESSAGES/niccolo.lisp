@@ -3702,7 +3702,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage persons"
-translation "Responsabile"
+translation "Gestisci contatti"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3811,6 +3811,24 @@ plurals NIL
 
  id "Person invalid"
 translation "Persona non valida"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Track chemical usage of: ~s"
+translation "Tracciato dell'uso della specie: ~s "
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Official id"
+translation "ID ufficiale"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Person does not exists in database"
+translation "Persona non presente nel database"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

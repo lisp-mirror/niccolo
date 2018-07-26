@@ -67,6 +67,8 @@
 
 (define-constant +default-font-name+              "font"                     :test #'string=)
 
+(define-constant +default-ttf-font-name+          "font"                     :test #'string=)
+
 (define-constant +pictogram-web-image-ext+        "png"                      :test #'string=)
 
 (define-constant +ghs-pictogram-web-image-subdir+ "ghs-pictograms/"          :test #'string=)

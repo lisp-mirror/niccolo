@@ -120,3 +120,23 @@
                            (fm-row lhs r)
                            (fm-column rhs c)))))
      res))
+
+(defparameter *default-epsilon* 1e-7)
+
+(defmacro with-epsilon ((epsilon) &body body)
+  `(let ((*default-epsilon* ,epsilon))
+     ,@body))
+
+(defun add-epsilon-rel (v &optional (epsilon *default-epsilon*))
+  (+ v (* epsilon v)))
+
+(defun epsilon<= (a b &optional (epsilon *default-epsilon*))
+  (or (<= a b)
+      (epsilon= a b epsilon)))
+
+(defun epsilon>= (a b &optional (epsilon *default-epsilon*))
+  (or (>= a b)
+      (epsilon= a b epsilon)))
+
+(defun epsilon= (a b &optional (epsilon *default-epsilon*))
+  (and (<= (- b epsilon) a (+ b epsilon))))
