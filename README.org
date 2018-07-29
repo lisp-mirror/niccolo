@@ -214,7 +214,6 @@ already installed and ASDF configured  (but you should install all the
     19, also specify  the actual port your server is  listening on the
     internet (=+https-poxy-port+= or =+https-port+=) to generate the administrator account.
 
-
 * Authentication
  Niccolo comes with two kinds of autenthication mechanisms.
 
