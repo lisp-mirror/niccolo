@@ -113,7 +113,7 @@
                                  "Manage Storage Places"
                                  :errors errors
                                  :infos  infos)
-        (let ((html-template:*string-modifier* #'html-template:escape-string-minimal)
+        (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
               (json-building    (array-autocomplete-building))
               (json-building-id (array-autocomplete-building-id)))
           (html-template:fill-and-print-template #p"add-storage.tpl"

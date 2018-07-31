@@ -73,7 +73,6 @@
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus double quotes."
   (gen-escape-function "<>&'"))
 
-
 (defun escape-string-all-but-single-quotes (string)
   "Escapes all characters in STRING which aren't defined in ISO-8859-1 minus single quotes."
   (gen-escape-function "<>&\""))

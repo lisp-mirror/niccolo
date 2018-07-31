@@ -20,6 +20,8 @@
 
 <script src="<!-- TMPL_VAR path-prefix -->/js/autocomplete-chemicals.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/decode-html-entities.js"></script>
+
 <script>
  // Shorthand for $( document ).ready()
  $(function() {
@@ -28,7 +30,7 @@
 
      $( "#expire-date" ).datepicker({dateFormat : "yy-mm-dd"});
 
-     var availableStorages = <!-- TMPL_VAR json-storages -->;
+     var availableStorages = <!-- TMPL_VAR json-storages -->.map(decodeHtmlEntities);
      var availableStoragesId   = <!-- TMPL_VAR json-storages-id -->;
      $( "#target-storage" ).autocomplete({
 	 source: availableStorages ,

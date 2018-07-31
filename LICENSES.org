@@ -503,3 +503,12 @@
   ACTION OF  CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF  OR IN
   CONNECTION WITH  THE SOFTWARE OR  THE USE  OR OTHER DEALINGS  IN THE
   SOFTWARE.
+
+- www/js/decode-html-entities.js
+  derived from:
+
+  https://stackoverflow.com/questions/1147359/how-to-decode-html-entities-using-jquery#1395954
+  author lucascaro https://stackoverflow.com/users/428486/lucascaro
+  © lucascaro released under creative commons
+  Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+  https://creativecommons.org/licenses/by-sa/4.0/

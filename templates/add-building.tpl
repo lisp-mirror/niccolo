@@ -1,18 +1,20 @@
 <script src="<!-- TMPL_VAR path-prefix -->/js/sort-table.js"></script>
 
+<script src="<!-- TMPL_VAR path-prefix -->/js/decode-html-entities.js"></script>
+
 <script>
-    // Shorthand for $( document ).ready()
-    $(function() {
-	var availableAddr = <!-- TMPL_VAR json-addresses -->;
-	var availableId   = <!-- TMPL_VAR json-addresses-id -->;
-	$( "#target-address" ).autocomplete({
-	    source: availableAddr ,
-	    select: function( event, ui ) {
-		var idx = $.inArray(ui.item.label, availableAddr);
-		$("#target-address-id").val(availableId[idx]);
-	    }
-	});
-    });
+ // Shorthand for $( document ).ready()
+ $(function() {
+     var availableAddr = <!-- TMPL_VAR json-addresses -->.map(decodeHtmlEntities);
+     var availableId   = <!-- TMPL_VAR json-addresses-id -->;
+     $( "#target-address" ).autocomplete({
+	 source: availableAddr ,
+	 select: function( event, ui ) {
+	     var idx = $.inArray(ui.item.label, availableAddr);
+	     $("#target-address-id").val(availableId[idx]);
+	 }
+     });
+ });
 </script>
 
 <form method="GET" ACTION="<!-- TMPL_VAR path-prefix -->/add-building/">
