@@ -476,8 +476,8 @@
                                :owner         (db:id user)
                                :notes         (clean-string notes))))
             (save chem) ; useless?
-            (values errors-msg success-msg chem)
-            (values errors-msg success-msg chem))))))
+            (values errors-msg success-msg chem))
+          (values errors-msg success-msg nil)))))
 
 (define-lab-route search-chem-prod ("/search-chem-prod/" :method :get)
   (with-authentication
