@@ -16,15 +16,23 @@
 
 (in-package :restas.lab)
 
-(define-constant +name-lab-id+                   "id"            :test #'string=)
-
 (define-constant +name-lab-name+                 "name"          :test #'string=)
 
 (define-constant +name-lab-complete-name+        "complete-name" :test #'string=)
 
 (define-constant +name-lab-owner+                "resp"          :test #'string=)
 
-(gen-autocomplete-functions db:laboratory db:complete-name)
+(defun array-autocomplete-laboratory (user-id)
+   (let ((all (sort (filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
+     (obj->json-string
+      (loop for i in all
+            collect (db:complete-name i)))))
+
+(defun array-autocomplete-laboratory-id (user-id)
+   (let ((all (sort (filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
+     (obj->json-string
+      (loop for i in all
+         collect (db:id i)))))
 
 (defun add-new-laboratory (name complete-name &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (regexp-validate (list

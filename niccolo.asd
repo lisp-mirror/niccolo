@@ -119,6 +119,7 @@
                (:file "waste-letter")
                (:file "waste-stats")
                (:file "sensors")
+               (:file "carcinogenic-logbook")
                (:file "l-factor")
                (:file "l-factor-snpa")
                (:module federated-query

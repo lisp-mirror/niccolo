@@ -61,6 +61,11 @@
                     </a>
                 </li>
                 <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR carcinogenic-log -->">
+                        <!-- TMPL_VAR carcinogenic-log-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
                     <a href="<!-- TMPL_VAR waste-stats -->">
                         <!-- TMPL_VAR waste-stats-lbl -->
                     </a>

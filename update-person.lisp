@@ -16,27 +16,29 @@
 
 (in-package :restas.lab)
 
-(defun update-person (id name surname organization official-id address-id)
+(defun update-person (id name surname organization official-id address-id email)
   (let* ((errors-msg-1 (concatenate 'list
-                                    (regexp-validate (list
-                                                      (list id
-                                                            +pos-integer-re+
-                                                            (_ "ID invalid"))
-                                                      (list address-id
-                                                            +pos-integer-re+
-                                                            (_ "Address id invalid"))
-                                                      (list name
-                                                            +free-text-re+
-                                                            (_ "Name invalid"))
-                                                      (list surname
-                                                            +free-text-re+
-                                                            (_ "Surname invalid"))
-                                                      (list organization
-                                                            +free-text-re+
-                                                            (_ "Organization"))
-                                                      (list official-id
-                                                            +free-text-re+
-                                                            (_ "Official id"))))))
+                                    (regexp-validate (list (list id
+                                                                 +pos-integer-re+
+                                                                 (_ "ID invalid"))
+                                                           (list address-id
+                                                                 +pos-integer-re+
+                                                                 (_ "Address id invalid"))
+                                                           (list name
+                                                                 +free-text-re+
+                                                                 (_ "Name invalid"))
+                                                           (list surname
+                                                                 +free-text-re+
+                                                                 (_ "Surname invalid"))
+                                                           (list organization
+                                                                 +free-text-re+
+                                                                 (_ "Organization"))
+                                                           (list official-id
+                                                                 +free-text-re+
+                                                                 (_ "Official id"))
+                                                           (list email
+                                                                 +email-re+
+                                                                 (_ "Email"))))))
          (errors-msg-2  (when (and (not errors-msg-1)
                                    (not (object-exists-in-db-p 'db:person id)))
                           (list (_ "Person does not exists in database"))))
@@ -63,7 +65,8 @@
               (db:surname      person-updated) surname
               (db:address-id   person-updated) address-id
               (db:organization person-updated) organization
-              (db:official-id  person-updated) official-id)
+              (db:official-id  person-updated) official-id
+              (db:email        person-updated) email)
         (save person-updated)
         (manage-update-person (and success-msg id) success-msg errors-msg))
       (manage-update-person id success-msg errors-msg))))
@@ -88,6 +91,7 @@
                              :organization-lb (_ "Organization")
                              :official-id-lb  (_ "Official ID")
                              :operations-lb   (_ "Operations")
+                             :email-lb        (_ "Email")
                              :name            +name-person-name+
                              :surname         +name-person-surname+
                              :address-id      +name-person-address-id+
@@ -99,6 +103,8 @@
                                                    (db:name new-person))
                              :surname-value   (and id
                                                    (db:surname new-person))
+                             :email-value     (and id
+                                                   (db:email new-person))
                              :address-id-value (and id
                                                     (db:address-id new-person))
                              :address-value    (and id
@@ -126,7 +132,8 @@
                 (new-surname      (get-clean-parameter +name-person-surname+))
                 (new-address-id   (get-clean-parameter +name-person-address-id+))
                 (new-organization (get-clean-parameter +name-person-organization+))
-                (new-official-id  (get-clean-parameter +name-person-official-id+)))
+                (new-official-id  (get-clean-parameter +name-person-official-id+))
+                (new-email        (get-clean-parameter +name-email+)))
             (if (all-not-null-p new-name
                                 new-surname
                                 new-address-id
@@ -137,6 +144,7 @@
                                new-surname
                                new-organization
                                new-official-id
-                               new-address-id)
+                               new-address-id
+                               new-email)
                 (prepare-for-update-person id))))
       (manage-update-person nil nil (list *insufficient-privileges-message*)))))

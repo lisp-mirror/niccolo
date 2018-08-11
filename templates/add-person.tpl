@@ -28,6 +28,9 @@
     <label for="official-id-text"><!-- TMPL_VAR official-id-lb --></label>
     <input id="official-id-text" type="text" name="<!-- TMPL_VAR official-id -->" />
 
+    <label for="person-email"><!-- TMPL_VAR email-lb --></label>
+    <input id="person-email" type="text" name="<!-- TMPL_VAR email -->">
+
     <label for="target-address"
            class="input-autocomplete-label">
         <!-- TMPL_VAR address-lb -->

@@ -259,8 +259,8 @@
                                     :path   path)
                      stream)))
 
-(defun delete-uri (link-symbol row)
-  (restas:genurl link-symbol :id (getf row :id)))
+(defun delete-uri (link-symbol row &key (id-keyword :id))
+  (restas:genurl link-symbol :id (getf row id-keyword)))
 
 ;; web, "lab" specific
 
@@ -655,6 +655,7 @@
 (defun local-time-obj-now ()
   (local-time:now))
 
+; db -> application
 (defun encode-datetime-string (d &optional (fallback nil))
   (handler-case
       (local-time:parse-timestring d)
@@ -789,3 +790,10 @@
       (do* ((ct     0                    (1+ ct))
             (accum  (extract-x ct) (extract-x ct)))
            ((>= accum value) (extract-y (1- ct)))))))
+
+;; misc
+
+(defun normalize-quantity-units (qty units)
+  (if (scan "^m" units)
+      (/ qty 1000)
+      qty))

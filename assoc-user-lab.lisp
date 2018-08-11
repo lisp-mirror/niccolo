@@ -20,6 +20,24 @@
 
 (define-constant +name-labs-name+        "labs"               :test #'string=)
 
+(defgeneric user-lab-associed-p (user lab))
+
+(defmethod user-lab-associed-p ((user db:user) (lab db:laboratory))
+  (user-lab-associed-p (db:id user) (db:owner lab)))
+
+(defmethod user-lab-associed-p ((user number) (lab db:laboratory))
+  (user-lab-associed-p user (db:owner lab)))
+
+(defmethod user-lab-associed-p ((user number) (lab number))
+  (= user lab))
+
+(defmethod user-lab-associed-p ((user session-user:user-session) (lab db:laboratory))
+  (user-lab-associed-p (db:id user) (db:owner lab)))
+
+(defmethod user-lab-associed-p ((user number) (lab string))
+  (when-let ((lab (single 'db:laboratory :id (safe-parse-number lab -100))))
+    (user-lab-associed-p user (db:owner lab))))
+
 (defun fetch-user-labs-template ()
   (let* ((all-users      (filter 'db:user))
          (all-labs       (filter 'db:laboratory)))

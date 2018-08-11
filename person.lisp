@@ -31,12 +31,13 @@
 (gen-autocomplete-functions db:person db:build-description)
 
 (defun all-person-select ()
-  (query (select (( :as :p.id           :id)
-                  ( :as :p.name         :name)
-                  ( :as :p.surname      :surname)
-                  ( :as :p.address-id   :address-id)
-                  ( :as :p.organization :organization)
-                  ( :as :p.official-id  :official-id))
+  (query (select ((:as :p.id           :id)
+                  (:as :p.name         :name)
+                  (:as :p.surname      :surname)
+                  (:as :p.address-id   :address-id)
+                  (:as :p.organization :organization)
+                  (:as :p.official-id  :official-id)
+                  (:as :p.email        :email))
            (from (:as :person  :p)))))
 
 (defun build-template-list-person (start-from data-count
@@ -67,7 +68,7 @@
 (defun ensure-person-id (a &optional (default -1))
   (floor (safe-parse-number a default)))
 
-(defun add-new-person (name surname organization official-id address-id
+(defun add-new-person (name surname organization official-id address-id email
                        &key (start-from 0) (data-count 1))
   (let* ((errors-msg-1 (regexp-validate (list
                                          (list name
@@ -84,7 +85,10 @@
                                                (_ "Official id"))
                                          (list address-id
                                                +pos-integer-re+
-                                               (_ "Address")))))
+                                               (_ "Address"))
+                                         (list email
+                                               +email-re+
+                                               (_ "Email invalid")))))
          (errors-msg-2 (when (not errors-msg-1)
                          (unique-p-validate* 'db:person
                                             (:name  :surname :organization)
@@ -105,7 +109,8 @@
                          :surname      surname
                          :address-id   (ensure-person-id address-id 0)
                          :organization organization
-                         :official-id  official-id)))
+                         :official-id  official-id
+                         :email        email)))
         (save new-person)))
     (manage-person  success-msg
                     errors-msg
@@ -139,11 +144,13 @@
                                                          :organization-lb (_ "Organization")
                                                          :official-id-lb  (_ "Official ID")
                                                          :operations-lb   (_ "Operations")
+                                                         :email-lb        (_ "Email")
                                                          :name            +name-person-name+
                                                          :surname         +name-person-surname+
                                                          :address-id      +name-person-address-id+
                                                          :organization    +name-person-organization+
                                                          :official-id     +name-person-official-id+
+                                                         :email           +name-email+
                                                          :json-addresses    json-addresses
                                                          :json-addresses-id json-addresses-id
                                                          :next-start        next-start
@@ -171,6 +178,7 @@
                           (get-clean-parameter +name-person-organization+)
                           (get-clean-parameter +name-person-official-id+)
                           (get-clean-parameter +name-person-address-id+)
+                          (get-clean-parameter +name-email+)
                           :start-from (session-pagination-start pagination-uri
                                                                 utils:*alias-pagination*)
                           :data-count (session-pagination-count pagination-uri

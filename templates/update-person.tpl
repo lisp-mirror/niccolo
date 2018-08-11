@@ -30,6 +30,11 @@
     <input id="official-id-text" type="text" name="<!-- TMPL_VAR official-id -->"
            value="<!-- TMPL_VAR official-id-value -->"/>
 
+    <label for="person-email"><!-- TMPL_VAR email-lb --></label>
+    <input id="person-email" type="text" name="<!-- TMPL_VAR email -->"
+           value="<!-- TMPL_VAR email-value -->">
+
+
     <label for="target-address"
            class="input-autocomplete-label">
         <!-- TMPL_VAR address-lb -->

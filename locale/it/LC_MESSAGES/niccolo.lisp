@@ -366,13 +366,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Working temperature"
-translation "Temperatura di lavoro(°C)"
+translation "Temperatura di lavoro (°C)"
 plurals-form "Working temperature"
 status :TRANSLATED
 plurals NIL
 
  id "Boiling point"
-translation "Temperatura di ebollizione(°C)"
+translation "Temperatura di ebollizione (°C)"
 plurals-form "Boiling point"
 status :TRANSLATED
 plurals NIL
@@ -380,12 +380,6 @@ plurals NIL
  id "Exposition type"
 translation "Tipo di esposizione"
 plurals-form "Exposition type"
-status :TRANSLATED
-plurals NIL
-
- id "Exposition time (week)"
-translation "Tempo di esposizione per settimana (min.)"
-plurals-form "Exposition time (week)"
 status :TRANSLATED
 plurals NIL
 
@@ -446,12 +440,6 @@ plurals NIL
  id "Value ~a for \"~a\" not valid please insert a new one:"
 translation "Valore ~a per \"~a\" non valido, reintrodurre:"
 plurals-form "Value ~a for \"~a\" not valid please insert a new one:"
-status :TRANSLATED
-plurals NIL
-
- id "exposition time (week)"
-translation "tempo di esposizione per settimana (min.)"
-plurals-form "exposition time (week)"
 status :TRANSLATED
 plurals NIL
 
@@ -642,7 +630,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Your language is now ~s"
-translation "La lingua ~s stata selezionata"
+translation "La lingua ~s è stata selezionata"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -690,7 +678,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Username already in the database"
-translation "username gia' presente nel database"
+translation "Username già presente nel database"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -738,7 +726,7 @@ status :TRANSLATED
 plurals NIL
 
  id "City field invalid"
-translation "Campo Città non valido"
+translation "Campo città non valido"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -834,7 +822,7 @@ status :TRANSLATED
 plurals NIL
 
  id "GHS Precautionary code already associated with this chemical compound."
-translation "Codice di precauzione GHS già associa a questo composto chimico"
+translation "Codice di precauzione GHS già associato a questo composto chimico"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -852,7 +840,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Saved building: ~s - ~s"
-translation "Edificio salvato ~s - ~s"
+translation "Edificio salvato: ~s - ~s"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -876,7 +864,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage Buildings"
-translation "Gestisci edifici"
+translation "Gestisci Edifici"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -924,13 +912,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Manage Chemical Compound"
-translation "Gestisci composti chimici"
+translation "Gestisci Composti Chimici"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Saved chemical: ~s"
-translation "Composto chimico salvato"
+translation "Composto chimico ~s salvato"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -948,13 +936,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Product ~a not deleted. "
-translation "Prodotto ~a non cancellato "
+translation "Prodotto ~a non cancellato. "
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Product ~a deleted. "
-translation "Prodotto ~a cancellato "
+translation "Prodotto ~a cancellato. "
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -984,7 +972,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Lent product to ~a"
-translation "Presta prodotto a ~a"
+translation "Prestato prodotto a ~a"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1014,7 +1002,7 @@ status :TRANSLATED
 plurals NIL
 
  id "You are not an user!"
-translation "Non sei un utente"
+translation "Non sei un utente!"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1308,7 +1296,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Update Building"
-translation "Aggiorna edificio"
+translation "Aggiorna Edificio"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1350,7 +1338,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Update Chemical Compound"
-translation "Aggiorna compsoto chimico"
+translation "Aggiorna Composto Chimico"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1362,7 +1350,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Chemical: ~s updated"
-translation "Prodotto Chimico: ~s aggiornato"
+translation "Prodotto chimico: ~s aggiornato"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1656,7 +1644,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Proper Shipping Name"
-translation "Identificato di spedizione"
+translation "Identificativo di spedizione"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1722,7 +1710,7 @@ status :TRANSLATED
 plurals NIL
 
  id "MSDS file"
-translation "File MSDS"
+translation "File scheda di sicurezza"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1776,7 +1764,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Generate barcode"
-translation "Genera barcode"
+translation "Genera codice a barre"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -1938,7 +1926,7 @@ status :TRANSLATED
 plurals NIL
 
  id "This system  uses a  central authentication  system (CAS).  Ask your  system administrators/Webmaster/IT Department about users identity management."
-translation "Questo sistema utilizza un central authentication  system (CAS). Chiedi al tuo amministratore di sistema/webmaster/sezione_informatica chiarimenti sulla gestione delle identità degli utenti"
+translation "Questo sistema utilizza un sistema di autenticazione centralizzato (CAS). Chiedi al tuo amministratore di sistema/webmaster/sezione_informatica chiarimenti sull'autenticazione e l'accesso ai servizi."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2160,7 +2148,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Product ~a from building ~a (storage name ~a) has expired validity date."
-translation "Prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) ha oltrepassato la data di validità"
+translation "Il prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) ha oltrepassato la data di validità"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2172,7 +2160,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Product ~a from building ~a (storage name ~a) has expired."
-translation "Prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) è scaduto."
+translation "Il prodotto ~a dell'edificio ~a (unità di stoccaggio ~a) è scaduto."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2220,13 +2208,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Expire date not properly formatted."
-translation "Data di scadenza impropriamente impostata"
+translation "Data di scadenza impropriamente impostata."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Validity date not properly formatted."
-translation "Data di validità impropriamente impostata"
+translation "Data di validità impropriamente impostata."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2550,7 +2538,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Updated chemical shortage threshold."
-translation "Aggiornato minima disponibilità prodotto"
+translation "Aggiornato minima disponibilità prodotto."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2772,7 +2760,7 @@ status :TRANSLATED
 plurals NIL
 
  id "HP statement does not exists in database."
-translation "Frase HP non presente nel database"
+translation "Frase HP non presente nel database."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2790,19 +2778,19 @@ status :TRANSLATED
 plurals NIL
 
  id "physical state updated."
-translation "stato fisico aggiornato"
+translation "stato fisico aggiornato."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Physical state code already in the database with different ID"
-translation "Stato fisico gia' presente nel database con un id differente"
+translation "Stato fisico già presente nel database con un id differente"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "physical state does not exists in database."
-translation "lo stato fisico non e' presente nel database"
+translation "lo stato fisico non è presente nel database"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2832,7 +2820,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Physical state already in the database"
-translation "Stato fisico gia' nel database"
+translation "Stato fisico già nel database"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -2964,7 +2952,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Replied to Message ~a"
-translation "Rispota al messaggio ~a"
+translation "Risposta al messaggio ~a"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3084,7 +3072,7 @@ status :TRANSLATED
 plurals NIL
 
  id "validity"
-translation "validita'"
+translation "validità"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3114,7 +3102,7 @@ status :TRANSLATED
 plurals NIL
 
  id "There is no threads system available for the software on your platform therefore sensors monitoring will not works; please consider supporting the development of the compiler SBCL (www.sbcl.org) to improve threads system."
-translation "La piattaforma usata non supporta i thread, quindi il sistema di sensori non funzionera'; prendete in considerazione la possibilita' di sostenere lo sviluppo del compilatore che usano gli sviluppatori di questo programma: www.sbcl.org"
+translation "La piattaforma usata non supporta i thread, quindi il sistema di sensori non funzionerà; prendete in considerazione la possibilita' di sostenere lo sviluppo del compilatore che usano gli sviluppatori di questo programma: www.sbcl.org"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3288,13 +3276,13 @@ status :TRANSLATED
 plurals NIL
 
  id "Sample ~a not deleted. "
-translation "Campione non cancellato"
+translation "Campione ~a non cancellato."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Sample ~a deleted. "
-translation "Campione ~a cancellato"
+translation "Campione ~a cancellato. "
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3492,7 +3480,7 @@ status :TRANSLATED
 plurals NIL
 
  id "Quantity used (g or ml)"
-translation "Quantità utilizzata"
+translation "Quantità utilizzata (g o mL)"
 plurals-form "Quantità utilizzata"
 status :TRANSLATED
 plurals NIL
@@ -3624,7 +3612,7 @@ status :TRANSLATED
 plurals NIL
 
  id "This laboratory does not exists in database."
-translation "Questo laboratorio non e' presente nel database"
+translation "Questo laboratorio non è presente nel database."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3672,7 +3660,7 @@ status :TRANSLATED
 plurals NIL
 
  id "User does not exists in database."
-translation "Questo utente non e' presente nel database"
+translation "Questo utente non e' presente nel database."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3690,7 +3678,7 @@ status :TRANSLATED
 plurals NIL
 
  id "This operation is available for waste manager only."
-translation "Questa operazione e' disponibile solo per il responsabile della gestione dei rifiuti."
+translation "Questa operazione è disponibile solo per il responsabile della gestione dei rifiuti."
 plurals-form ""
 status :TRANSLATED
 plurals NIL
@@ -3822,13 +3810,151 @@ status :TRANSLATED
 plurals NIL
 
  id "Official id"
-translation "ID ufficiale"
+translation "Codice fiscale"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
 
  id "Person does not exists in database"
 translation "Persona non presente nel database"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Log non cancelled"
+translation "Registrazione non cancellata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Log ~a marked as canceled"
+translation "Registrazione ~a segnata come cancellata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Carcinogenic log entry canceled"
+translation "Registrazione di uso di sostanza cancerogena cancellata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Product name"
+translation "Nome del Prodotto"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Work methods"
+translation "Metodi di lavoro"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Work type (ID code)"
+translation "Tipo di lavoro (Codice ID)"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Worker code"
+translation "Codice lavoratore"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Worker"
+translation "Lavoratore"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Carcinogenic Logbook"
+translation "Registro dei cancerogeni"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Carcinogenic log entry added"
+translation "Aggiunta registrazione uso cancerogeno"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Saved carcinogenic log entry"
+translation "Registrazione uso cancerogeno salvata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "You are not in charge for this laboratory"
+translation "Non sei il responsabile di questo laboratorio"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Exposition type invalid"
+translation "Tipo di esposizione non valida"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Work method invalid"
+translation "Metodo di lavoro non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Work type code invalid"
+translation "Codice di tipo di lavoro non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Work type invalid"
+translation "Tipo di lavoro non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Worker code invalid"
+translation "Codice lavoratore non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Person ID invalid"
+translation "Persona non valida"
+plurals-form ""
+status :FUZZY
+plurals NIL
+
+ id "laboratory ID invalid"
+translation "Laboratorio non valido"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "A log entry related to your activity at ~s has been canceled:~2% ~a~%"
+translation "Una registrazione collegata alla tua attività nel ~s è stata cancellata:~2% ~a~%"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "A log entry related to your activity at ~s has been recorded:~2% ~a~%"
+translation "Una registrazione collegata alla tua attività nel ~s è stata salvata:~2% ~a~%"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Carcinogenic usage logbook"
+translation "Registro uso cancerogeni"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "This compound is carcinogenic according to the database, please fill the form with additional informations below."
+translation "Questo composto è cancerogeno secondo il database, prego compila il modulo qui sotto con ulteriori informazioni"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

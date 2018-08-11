@@ -164,6 +164,8 @@
                       :manage-adr-lbl        (_ "ADR codes")
                       :manage-hp-waste-lbl   (_ "HP waste codes")
                       :manage-hp-waste       (restas:genurl 'hp-waste)
+                      :carcinogenic-log-lbl  (_ "Carcinogenic usage logbook")
+                      :carcinogenic-log      (restas:genurl 'carcinogenic-logbook)
                       :manage-waste-phys-state-lbl   (_ "Waste physical state")
                       :manage-waste-phys-state       (restas:genurl 'waste-phys-state)
                       :places-lbl                    (_ "Places")

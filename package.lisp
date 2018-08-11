@@ -142,9 +142,11 @@
    :+name-count-pagination-dec+
    :+name-op-pagination-inc+
    :+name-op-pagination-dec+
+   :+name-email+
    :+no-html-tags-at-all+
    :+html-tags-text-minimal-formatting+
    :+cookie-key-script-visited+
+   :+name-lab-id+
    :+query-product-path+
    :+query-compound-hazard-path+
    :+post-federated-query-results+
@@ -195,6 +197,7 @@
    :cl-ppcre
    :envy
    :crane
+   :config
    :constants)
   (:export
    :build-description
@@ -250,6 +253,7 @@
    :other-cid
    :msds
    :structure-file
+   :carcinogenic-iarc-p
    :chemical-hazard
    :chemical-precautionary
    :ghs-p
@@ -325,7 +329,15 @@
    :chemical-tracking-data
    :tracking-id
    :track-date
-   :track-type))
+   :track-type
+   :carcinogenic-logbook
+   :worker-code
+   :work-type
+   :work-type-code
+   :work-methods
+   :exposition-time
+   :recording-date
+   :canceled))
 
 (defpackage :validation
   (:use
@@ -642,7 +654,8 @@
    :log-and-mail
    :with-http-ignored-errors
    :load-values-discrete-ranges
-   :get-value-discrete-range))
+   :get-value-discrete-range
+   :normalize-quantity-units))
 
 (defpackage :i18n
   (:use

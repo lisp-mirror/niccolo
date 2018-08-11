@@ -83,6 +83,10 @@ input[type=checkbox] {
     display: inline;
 }
 
+.strike {
+    text-decoration: line-through
+}
+
 .chem-prod-add-searh-wrapper {
     width: 60%;
 }

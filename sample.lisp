@@ -139,8 +139,8 @@
                              :errors errors
                              :infos  infos)
     (let ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
-          (json-laboratory    (array-autocomplete-laboratory))
-          (json-laboratory-id (array-autocomplete-laboratory-id))
+          (json-laboratory    (array-autocomplete-laboratory (get-session-user-id)))
+          (json-laboratory-id (array-autocomplete-laboratory-id (get-session-user-id)))
           (json-person        (array-autocomplete-person))
           (json-person-id     (array-autocomplete-person-id))
           (has-local-results-p (> (length data) 0)))
@@ -246,6 +246,7 @@
                                        (list (_ "Checkin date not valid"))))
            (error-not-own            (when (and (not errors-msg-1)
                                                 (not errors-msg-lab-not-found))
+                                       ;; TODO change with 'user-lab-associed-p
                                        (let ((lab (single 'db:laboratory :id lab-id)))
                                          (db:with-owner-object (owner lab)
                                            (when (or (not owner)

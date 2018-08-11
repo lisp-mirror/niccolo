@@ -121,9 +121,13 @@
 
 (define-constant +name-count-pagination-dec+      "less"                     :test #'string=)
 
+(define-constant +name-email+                     "email"                    :test #'string=)
+
 (define-constant +start-pagination-offset+       10                          :test #'=)
 
 (define-constant +cookie-key-script-visited+      "script-visited"           :test #'string=)
+
+(define-constant +name-lab-id+                    "id"            :test #'string=)
 
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
 

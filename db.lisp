@@ -120,7 +120,15 @@
    :nullp t
    :foreign (ghs-pictogram :restrict :cascade)))
 
+(defgeneric carcinogenic-iarc-p (object))
+
 (defgeneric build-carcinogenic-description (object))
+
+(defmethod carcinogenic-iarc-p ((object string))
+  (string= object +ghs-carcinogenic-code+))
+
+(defmethod carcinogenic-iarc-p ((object ghs-hazard-statement))
+  (carcinogenic-iarc-p (carcinogenic object)))
 
 (defmethod build-carcinogenic-description ((object ghs-hazard-statement))
   (if (string= (carcinogenic object) +ghs-carcinogenic-code+)
@@ -223,6 +231,11 @@
    :type  text
    :nullp t))
 
+(defmethod carcinogenic-iarc-p ((object chemical-compound))
+  (let ((all-h (mapcar #'(lambda (a) (single 'ghs-hazard-statement :id (ghs-h a)))
+                       (filter 'chemical-hazard :compound-id (id object)))))
+    (remove-if-not #'carcinogenic-iarc-p all-h)))
+
 (deftable user ()
   (username
    :type text
@@ -273,7 +286,10 @@
     :nullp nil)
    (official-id
     :type text
-    :nullp nil))
+    :nullp nil)
+   (email
+    :type text
+    :nullp t))
 
 (defmethod build-description ((object person))
   (format nil "~a ~a, ~a" (name object) (surname object) (organization object)))
@@ -312,6 +328,9 @@
 
 (defmethod print-object ((object chemical-product) stream)
   (format stream "~a (~a)" (name (single 'chemical-compound :id (compound object))) (id object)))
+
+(defmethod carcinogenic-iarc-p ((object chemical-product))
+  (carcinogenic-iarc-p (single 'chemical-compound :id (compound object))))
 
 (deftable chemical-compound-preferences ()
   (owner
@@ -558,3 +577,57 @@
   (data
    :type text
    :nullp nil))
+
+(deftable carcinogenic-logbook ()
+  (laboratory-id
+   :type integer
+   :foreign (laboratory :restrict :cascade))
+  (chemical-id
+   :type integer
+   :foreign (chemical-compound :restrict :cascade))
+  (person-id
+   :type integer
+   :foreign (person :restrict :cascade))
+  (worker-code
+   :type text
+   :nullp nil)
+  (work-type
+   :type text
+   :nullp nil)
+  (work-type-code
+   :type text
+   :nullp nil)
+  (work-methods
+   :type text
+   :nullp nil)
+  (quantity
+   :type integer
+   :nullp nil)
+  (units
+   :type double
+   :nullp nil)
+  (exposition-time
+   :type integer
+   :nullp nil)
+  (canceled
+   :type integer
+   :nullp t)
+  (recording-date
+   :type timestamp
+   :nullp nil))
+
+(defmethod build-description ((object db:carcinogenic-logbook))
+  (let ((lab    (single 'db:laboratory :id (db:laboratory-id object)))
+        (chem   (db:name (single 'db:chemical-compound :id (db:chemical-id object))))
+        (person (single 'db:person :id (db:person-id object))))
+    (format nil
+            "~a ~a ~a ~a ~a ~a ~a ~a ~a~%"
+            (db:complete-name lab)
+            (db:build-description person)
+            chem
+            (db:worker-code     object)
+            (db:work-type       object)
+            (db:work-type-code  object)
+            (db:work-methods    object)
+            (db:exposition-time object)
+            (db:recording-date  object))))
