@@ -21,7 +21,6 @@
 
      $("#export-csv-local-button").click(function (e){
 	 let csv = table2csv("results", cleanField);
-	 console.log(csv);
 	 location.href = "data:text/csv;base64," +  window.btoa(csv);
      });
 

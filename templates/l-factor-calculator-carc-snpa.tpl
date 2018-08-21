@@ -87,7 +87,6 @@
 
      $("#export-csv-button").click(function (e){
 	 let csv = table2csv("results");
-	 console.log(csv);
 	 location.href = "data:text/csv;base64," +  window.btoa(csv);
      });
 
