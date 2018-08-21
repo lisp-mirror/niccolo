@@ -29,8 +29,8 @@
 (defmethod carc-log-entry->mail ((log db:carcinogenic-logbook) &key (added t))
   (let ((lab (single 'db:laboratory :id (db:laboratory-id log)))
         (msg (if added
-                 (_ "A log entry related to your activity at ~s has been recorded:~2% ~a~%")
-                 (_ "A log entry related to your activity at ~s has been canceled:~2% ~a~%"))))
+                 (_ "A log entry related to your carcinogenics substances usage at ~s has been *recorded*:~2% ~a~%")
+                 (_ "A log entry related to your carcinogenics substances at ~s has been *canceled*:~2% ~a~%"))))
     (format nil
             msg
             (db:complete-name lab)
@@ -103,7 +103,7 @@
                     (person    (single 'db:person new-carc-person-id)))
                 (when (and send-email
                            (db:email person))
-                  (send-email (_ "Carcinogenic log entry added")
+                  (send-email (_ "Carcinogenic log entry")
                               (db:email person)
                               (carc-log-entry->mail log-entry)))
                 (values log-entry t nil))
@@ -145,7 +145,7 @@
         (setf (elt res rown)
               (concatenate 'list
                            row
-                           (list :canceledp (db-nil-p (getf row :canceled)))
+                           (list :canceledp (not (db-nil-p (getf row :canceled))))
                            (list :quantity-rounded
                                  (format nil "~,4f" (getf row :quantity)))
                            (list :worker
@@ -179,11 +179,11 @@
                                                          :next-start         next-start
                                                          :prev-start         prev-start
                                                          :worker-lb          (_ "Worker")
+                                                         :laboratory-id-lb   (_ "Laboratory ID")
                                                          :laboratory-name-lb (_ "Laboratory")
                                                          :quantity-lb
                                                          (_ "Quantity (Mass or Volume)")
                                                          :units-lb           (_ "Unit of measure")
-                                                         :lab-name-lb        (_ "Laboratory")
                                                          :person-id-lb       (_ "Worker")
                                                          :worker-code-lb     (_ "Worker code")
                                                          :work-type-lb       (_ "Work type")
@@ -194,6 +194,8 @@
                                                          (_ "Exposition time (min)")
                                                          :chemical-name-lb
                                                          (_ "Product name")
+                                                         :log-canceled-p-lb
+                                                         (_ "Canceled")
                                                          :operations-lb      (_ "Operations")
                                                          :labs-id            +name-lab-id+
                                                          :json-laboratory    json-laboratory

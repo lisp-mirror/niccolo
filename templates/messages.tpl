@@ -1,4 +1,4 @@
-<!-- - this is the messages resulting from forms actions -->
+<!-- - this are the messages resulting from forms actions -->
 <!-- TMPL_IF display-messages-p -->
 <div class="messages">
     <!-- TMPL_IF add-infos-p -->

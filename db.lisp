@@ -621,13 +621,13 @@
         (chem   (db:name (single 'db:chemical-compound :id (db:chemical-id object))))
         (person (single 'db:person :id (db:person-id object))))
     (format nil
-            "~a ~a ~a ~a ~a ~a ~a ~a ~a~%"
-            (db:complete-name lab)
-            (db:build-description person)
-            chem
-            (db:worker-code     object)
-            (db:work-type       object)
-            (db:work-type-code  object)
-            (db:work-methods    object)
-            (db:exposition-time object)
-            (db:recording-date  object))))
+            "\"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\"~%"
+            (string-utils:escape-csv-field (db:complete-name lab))
+            (string-utils:escape-csv-field (db:build-description person))
+            (string-utils:escape-csv-field chem)
+            (string-utils:escape-csv-field (db:worker-code     object))
+            (string-utils:escape-csv-field (db:work-type       object))
+            (string-utils:escape-csv-field (db:work-type-code  object))
+            (string-utils:escape-csv-field (db:work-methods    object))
+            (string-utils:escape-csv-field (db:exposition-time object))
+            (utils:decode-date-string      (db:recording-date  object)))))

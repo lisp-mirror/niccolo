@@ -3958,4 +3958,34 @@ translation "Questo composto è cancerogeno secondo il database, prego compila i
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Laboratory ID"
+translation "Identificativo del laboratorio"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Carcinogenic log entry"
+translation "Registrazione sull'uso dei prodotti cancerogeni"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "A log entry related to your carcinogenics substances at ~s has been *canceled*:~2% ~a~%"
+translation "Una voce relativa all'uso delle sostanze cancerogene presso il laboratorio ~s è stata *annullata*:~2%~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "A log entry related to your carcinogenics substances usage at ~s has been *recorded*:~2% ~a~%"
+translation "Una voce relativa all'uso delle sostanze cancerogene presso il laboratorio ~s è stata *aggiunta*:~2%~a"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Canceled"
+translation "Annullato"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

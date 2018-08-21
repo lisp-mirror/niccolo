@@ -23,6 +23,16 @@ function getFragment (url) {
     return url.match("#.+$");
 }
 
+function getQueryString(url) {
+    url = urlize(url);
+    let match = url.match("\\?([^#]+)");
+    if (match && match.length > 1) {
+        return decodeURIComponent(match[1]);
+    } else {
+        return null;
+    }
+
+}
 
 function getParameterByName(name, url) {
     url = urlize(url);

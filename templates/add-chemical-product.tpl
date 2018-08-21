@@ -80,7 +80,7 @@
      });
 
      function cleanField (field){
-	 return field.replace(/\[[^\]]+\]/g, "").replace(/[\s\t]+/, "");
+	 return field.replace(/\[[^\]]+\]/g, "").replace(/[\s]{2,}/g, "");
 
      }
 
@@ -498,7 +498,7 @@
 	  </a>
           <!-- TMPL_UNLESS chemical-tracked-p -->
           <a href="<!-- TMPL_VAR add-tracking-link -->">
-	      <!-- TMPL_INCLUDE 'chart-button.tpl' -->
+	      <!-- TMPL_INCLUDE 'add-chart-button.tpl' -->
           </a>
           <!-- /TMPL_UNLESS -->
           <!-- TMPL_IF chemical-tracked-p -->
