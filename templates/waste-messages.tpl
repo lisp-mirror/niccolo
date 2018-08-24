@@ -33,7 +33,7 @@
             <td class="message"><!-- TMPL_VAR text --></td>
             <td class="reg-number"><!-- TMPL_VAR registration-number --></td>
             <td class="operations">
-                <a href="<!-- TMPL_VAR delete-link -->">
+                <a class="delete-message-link" href="<!-- TMPL_VAR delete-link -->">
                     <!-- TMPL_INCLUDE 'delete-button.tpl' -->
                 </a>
                 <!-- TMPL_IF admin-p -->

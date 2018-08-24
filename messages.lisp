@@ -736,7 +736,10 @@
   (with-authentication
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
       (set-delete-message id))
-    (restas:redirect 'user-messages)))
+    (let ((query-search (get-clean-parameter +name-msg-search-query+)))
+      (if (string-empty-p query-search)
+          (restas:redirect 'user-messages)
+          (restas:redirect 'user-messages +name-msg-search-query+ query-search)))))
 
 (defun email-text-closed-success-user (msg)
   (format nil

@@ -24,7 +24,7 @@
             <td class="subject"><!-- TMPL_VAR subject --></td>
             <td class="message"><!-- TMPL_VAR text --></td>
             <td class="operations">
-                <a href="<!-- TMPL_VAR delete-link -->">
+                <a class="delete-message-link" href="<!-- TMPL_VAR delete-link -->">
                     <!-- TMPL_INCLUDE 'delete-button.tpl' -->
                 </a>
             </td>
