@@ -127,7 +127,9 @@
 
 (define-constant +cookie-key-script-visited+      "script-visited"           :test #'string=)
 
-(define-constant +name-lab-id+                    "id"            :test #'string=)
+(define-constant +name-lab-id+                    "id"                        :test #'string=)
+
+(define-constant +ws-message-count-key+           "count"                     :test #'string=)
 
 (sanitize:define-sanitize-mode +no-html-tags-at-all+ :elements ())
 

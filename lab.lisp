@@ -66,7 +66,7 @@
                                            (with-path-prefix
                                                :num-msg
                                              (format nil (n_ "You have ~a message"
-                                                             "You have ~a message"
+                                                             "You have ~a messages"
                                                              (number-of-msg-sent-to-me))
                                                      (number-of-msg-sent-to-me))
                                              :messages-url (restas:genurl 'user-messages))
@@ -149,6 +149,8 @@
 
 (defun render-main-menu (stream &key (use-animated-logo-p nil))
   (let ((template (with-path-prefix
+                      :message-count-service-url (restas:genurl 'ws-get-messages-counts)
+                      :message-count-key         +ws-message-count-key+
                       :has-nyan              (time-to-nyan) ;-)
                       :use-animated-logo-p   use-animated-logo-p
                       :safety-lbl            (_ "Safety")

@@ -1,3 +1,5 @@
+<!-- TMPL_INCLUDE 'messages-notification.js.tpl' -->
+
 <div class="left-menu">
     <a href="<!-- TMPL_VAR path-prefix -->/">
         <!-- TMPL_IF has-nyan -->
@@ -16,86 +18,80 @@
     <p class="nyan-caption">Let's chem-nyan!</p>
     <!-- /TMPL_IF -->
 
+    <a id="message-notification-link"
+       href="<!-- TMPL_VAR user-messages -->"
+       onclick="forceHideMessageNotification()">
+        <div id="message-notification-icon" class="fa fa-stack fa-3x">
+            <i class="fa fa-envelope fa-stack-3x"></i>
+            <i id="message-notification-count" class="fa fa-stack-1x"></i>
+        </div>
+    </a>
     <ul id="accordion-menu">
-        <li class="menu-level-1"><!-- TMPL_VAR safety-lbl --></li>
+        <li class="menu-level-1"><!-- TMPL_VAR chemical-products-lbl --></li>
         <li class="menu-level-2">
             <ul>
                 <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-ghs-hazard -->">
-                        <!-- TMPL_VAR manage-ghs-hazard-lbl -->
+                    <a href="<!-- TMPL_VAR manage-chemical-products -->">
+                        <!-- TMPL_VAR manage-chemical-products-lbl -->
                     </a>
                 </li>
+            </ul>
+            <ul>
                 <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-ghs-precaution -->">
-                        <!-- TMPL_VAR manage-ghs-precaution-lbl -->
+                    <a href="<!-- TMPL_VAR import-chemical-products -->">
+                        <!-- TMPL_VAR import-chemical-products-lbl -->
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li class="menu-level-1"><!-- TMPL_VAR samples-lbl --></li>
+        <li class="menu-level-2">
+            <ul>
                 <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-cer -->">
-                        <!-- TMPL_VAR manage-cer-lbl -->
+                    <a href="<!-- TMPL_VAR manage-samples -->">
+                        <!-- TMPL_VAR manage-samples-lbl -->
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li class="menu-level-1"><!-- TMPL_VAR users-lbl --></li>
+        <li class="menu-level-2">
+            <ul>
                 <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-sensors -->">
-                        <!-- TMPL_VAR  manage-sensors-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-adr -->">
-                        <!-- TMPL_VAR manage-adr-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-hp-waste -->">
-                        <!-- TMPL_VAR manage-hp-waste-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-waste-phys-state -->">
-                        <!-- TMPL_VAR manage-waste-phys-state-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR waste-letter -->">
-                        <!-- TMPL_VAR waste-letter-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR carcinogenic-log -->">
-                        <!-- TMPL_VAR carcinogenic-log-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR waste-stats -->">
-                        <!-- TMPL_VAR waste-stats-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR l-factor-calculator -->">
-                        <!-- TMPL_VAR l-factor-calculator-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR l-factor-calculator-carc -->">
-                        <!-- TMPL_VAR l-factor-calculator-carc-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR l-factor-calculator-snpa -->">
-                        <!-- TMPL_VAR l-factor-calculator-snpa-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR l-factor-calculator-carc-snpa -->">
-                        <!-- TMPL_VAR l-factor-calculator-carc-snpa-lbl -->
-                    </a>
-                </li>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR store-classify-tree -->">
-                        <!-- TMPL_VAR store-classify-tree-lbl -->
+                    <a href="<!-- TMPL_VAR user-messages -->">
+                        <!-- TMPL_VAR user-messages-lb -->
                     </a>
                 </li>
 
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR broadcast-messages -->">
+                        <!-- TMPL_VAR broadcast-messages-lb -->
+                    </a>
+                </li>
+
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-user -->">
+                        <!-- TMPL_VAR manage-user-lbl -->
+                    </a>
+                </li>
+
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-user-lab -->">
+                        <!-- TMPL_VAR manage-user-lab-lbl -->
+                    </a>
+                </li>
+
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR change-password -->">
+                        <!-- TMPL_VAR change-password-lbl -->
+                    </a>
+                </li>
+
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR user-preferences -->">
+                        <!-- TMPL_VAR user-preferences-lbl -->
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="menu-level-1"><!-- TMPL_VAR places-lbl --></li>
@@ -139,79 +135,12 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-level-1"><!-- TMPL_VAR chemical-products-lbl --></li>
-        <li class="menu-level-2">
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-chemical-products -->">
-                        <!-- TMPL_VAR manage-chemical-products-lbl -->
-                    </a>
-                </li>
-            </ul>
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR import-chemical-products -->">
-                        <!-- TMPL_VAR import-chemical-products-lbl -->
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-level-1"><!-- TMPL_VAR samples-lbl --></li>
-        <li class="menu-level-2">
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-samples -->">
-                        <!-- TMPL_VAR manage-samples-lbl -->
-                    </a>
-                </li>
-            </ul>
-        </li>
         <li class="menu-level-1"><!-- TMPL_VAR persons-lbl --></li>
         <li class="menu-level-2">
             <ul>
                 <li class="with-menu-item-anim">
                     <a href="<!-- TMPL_VAR manage-person -->">
                         <!-- TMPL_VAR manage-person-lbl -->
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-level-1"><!-- TMPL_VAR users-lbl --></li>
-        <li class="menu-level-2">
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR user-messages -->">
-                        <!-- TMPL_VAR user-messages-lb -->
-                    </a>
-                </li>
-
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR broadcast-messages -->">
-                        <!-- TMPL_VAR broadcast-messages-lb -->
-                    </a>
-                </li>
-
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-user -->">
-                        <!-- TMPL_VAR manage-user-lbl -->
-                    </a>
-                </li>
-
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-user-lab -->">
-                        <!-- TMPL_VAR manage-user-lab-lbl -->
-                    </a>
-                </li>
-
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR change-password -->">
-                        <!-- TMPL_VAR change-password-lbl -->
-                    </a>
-                </li>
-
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR user-preferences -->">
-                        <!-- TMPL_VAR user-preferences-lbl -->
                     </a>
                 </li>
             </ul>

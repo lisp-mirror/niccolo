@@ -437,6 +437,10 @@
   (status
    :type text
    :nullp nil)
+  (watchedp
+   :type text
+   :default nil
+   :nullp t)
   (sent-time
    :type timestamp
    :nullp nil)
@@ -629,5 +633,5 @@
             (string-utils:escape-csv-field (db:work-type       object))
             (string-utils:escape-csv-field (db:work-type-code  object))
             (string-utils:escape-csv-field (db:work-methods    object))
-            (string-utils:escape-csv-field (db:exposition-time object))
+            (string-utils:escape-csv-field (format nil "~a" (db:exposition-time object)))
             (utils:decode-date-string      (db:recording-date  object)))))

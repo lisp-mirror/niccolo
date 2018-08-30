@@ -24,9 +24,16 @@
             <td class="subject"><!-- TMPL_VAR subject --></td>
             <td class="message"><!-- TMPL_VAR text --></td>
             <td class="operations">
-                <a class="delete-message-link" href="<!-- TMPL_VAR delete-link -->">
+                <a class="delete-message-link"
+                   href="<!-- TMPL_VAR delete-link -->">
                     <!-- TMPL_INCLUDE 'delete-button.tpl' -->
                 </a>
+                <!-- TMPL_UNLESS watchedp -->
+                <a class="mark-watched-link"
+                   href="<!-- TMPL_VAR mark-watched-link -->">
+                    <!-- TMPL_INCLUDE 'mark-watched-button.tpl' -->
+                </a>
+                <!-- /TMPL_UNLESS -->
             </td>
         </tr>
         <!-- TMPL_LOOP children -->

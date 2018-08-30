@@ -3988,4 +3988,16 @@ translation "Annullato"
 plurals-form ""
 status :TRANSLATED
 plurals NIL
+
+ id "Note: the opening date has been automatically added"
+translation "Nota: la data di apertura è stata aggiunta automaticamente"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "Opening date can not be removed"
+translation "La data di apertura non può essere cambiata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
 )

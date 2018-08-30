@@ -103,14 +103,12 @@
 
 (defun add-new-building (name address-id)
   (let* ((errors-msg-1 (concatenate 'list
-                                    (regexp-validate   (list
-                                                        (list name
-                                                              +free-text-re+
-                                                              (_ "Name invalid"))))
-                                    (regexp-validate (list
-                                                      (list address-id
-                                                            +pos-integer-re+
-                                                            (_ "Address invalid"))))))
+                                    (regexp-validate (list (list name
+                                                                 +free-text-re+
+                                                                 (_ "Name invalid"))))
+                                    (regexp-validate (list (list address-id
+                                                                 +pos-integer-re+
+                                                                 (_ "Address invalid"))))))
          (errors-msg-address-not-found (when (and (not errors-msg-1)
                                                   (not (single 'db:address :id address-id)))
                                          (list "Address not in the database")))

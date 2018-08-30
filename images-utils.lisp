@@ -39,6 +39,8 @@
 
 (define-constant +default-graph-h+      768     :test #'=)
 
+(defparameter    *graph-y-offset*   +graph-y-offset+)
+
 (defun coord->norm (a max)
   (clamp (/ a max) 0.0 1.0))
 
@@ -62,19 +64,19 @@
   (norm->coord +graph-x-offset+ (cl-gd:image-width)))
 
 (defun graph-y-end ()
-  (norm->coord +graph-y-offset+ (cl-gd:image-height)))
+  (norm->coord *graph-y-offset* (cl-gd:image-height)))
 
 (defun graph-x-end ()
   (- (cl-gd:image-width) (norm->coord +graph-x-offset+ (cl-gd:image-width))))
 
 (defun graph-y-origin ()
-  (- (cl-gd:image-height) (norm->coord +graph-y-offset+ (cl-gd:image-height))))
+  (- (cl-gd:image-height) (norm->coord *graph-y-offset* (cl-gd:image-height))))
 
 (defmacro with-normalized-draw ((x y) &body body)
   (with-gensyms (x-offset-denorm y-offset-denorm
                  x-denorm        y-denorm)
   `(let* ((,x-offset-denorm (norm->coord +graph-x-offset+ (cl-gd:image-width)))
-          (,y-offset-denorm (norm->coord +graph-y-offset+ (cl-gd:image-height)))
+          (,y-offset-denorm (norm->coord *graph-y-offset* (cl-gd:image-height)))
           (,x-denorm        (norm->coord ,x (- (cl-gd:image-width)  ,x-offset-denorm)))
           (,y-denorm        (norm->coord ,y (- (cl-gd:image-height) ,y-offset-denorm))))
      (cl-gd:with-transformation (:x1     (- (+ ,x-offset-denorm ,x-denorm))
@@ -216,7 +218,7 @@
       (with-normalized-draw (0.0 0.0)
         (cl-gd:draw-line 0 0                                                          ; x1 y1
                          0 (- (cl-gd:image-height)                                    ;
-                              (* 2.0 (norm->coord +graph-y-offset+ untransformed-h))) ; x2 y2
+                              (* 2.0 (norm->coord *graph-y-offset* untransformed-h))) ; x2 y2
                          :color color)
         (loop
            for i     from 0.0 to 1.01 by tic-step
@@ -244,7 +246,6 @@
                                                                      :font-name   font-name
                                                                      :angle       angle
                                                                      :color       color)))
-
                      (cl-gd:draw-freetype-string (math-utils:add-epsilon-rel (- (elt label-size 0)
                                                                                 (elt label-size 2))
                                                                              0.1)
@@ -255,53 +256,54 @@
                                                  :angle      angle
                                                  :color      color)))))))))
 
-(defun draw-graph (xs ys &optional
+(defun draw-graph (xs ys &key
                            (y-tics-number 20)
-                           (major-tic 2))
-  (images-utils:with-http-png-reply (+default-graph-w+ +default-graph-h+)
-    (if (and (> (length xs) 1)
-             (> (length ys) 1)
-             (= (length xs)
-                (length ys)))
-        (let* ((actual-y-range (scale-y-axis ys y-tics-number))
-               (max-y          (reduce #'max actual-y-range))
-               (min-y          (reduce #'min actual-y-range))
-               (x-step         (/ 1.0 (length xs)))
-               (slope          (/ 1.0 (- max-y min-y)))
-               (q              (- (* slope min-y)))
-               (norm-y         (map 'vector
-                                    #'(lambda (a) (+ (* slope
-                                                        (string-utils:safe-parse-number a))
-                                                     q))
-                                    ys))
-               (norm-x          xs)
-               (bottom-gap-size (* 0.8 (norm->coord +graph-y-offset+ +default-graph-h+)))
-               (min-x-label-fontsize (loop for i in norm-x minimize
-                                          (find-x-label-sizes i bottom-gap-size))))
-          (fill-bg 240 240 240)
-          (draw-graph-x-axis :tics-number (length xs)
-                             :major       (max 1 (truncate (/ (length xs) 10)))
-                             :tics-label  norm-x
-                             :font-size   min-x-label-fontsize)
-          (draw-graph-y-axis :tics-number y-tics-number
-                             :major       major-tic
-                             :tics-label  ys)
-          (loop
-             for i from 0
-             for x from 0.0 by x-step
-             for y across norm-y      do
-               (draw-graph-point-norm x
-                                      y
-                                      255 0 0)))
-
-        (with-allocated-color (fg 255 255 0)
-          (fill-bg 0 0 0)
-          (cl-gd:draw-string (truncate (* 0.1 (cl-gd:image-width)))
-                             (truncate (* 0.1 (cl-gd:image-height)))
-                             (_ "Error occurred while processing data")
-                             :font :giant
-                             :up nil
-                             :color fg)))))
+                           (major-tic      2)
+                           (graph-y-offset +graph-y-offset+))
+  (let ((*graph-y-offset* graph-y-offset))
+    (images-utils:with-http-png-reply (+default-graph-w+ +default-graph-h+)
+      (if (and (> (length xs) 1)
+               (> (length ys) 1)
+               (= (length xs)
+                  (length ys)))
+          (let* ((actual-y-range (scale-y-axis ys y-tics-number))
+                 (max-y          (reduce #'max actual-y-range))
+                 (min-y          (reduce #'min actual-y-range))
+                 (x-step         (/ 1.0 (length xs)))
+                 (slope          (/ 1.0 (- max-y min-y)))
+                 (q              (- (* slope min-y)))
+                 (norm-y         (map 'vector
+                                      #'(lambda (a) (+ (* slope
+                                                          (string-utils:safe-parse-number a))
+                                                       q))
+                                      ys))
+                 (norm-x          xs)
+                 (bottom-gap-size (* 0.7 (norm->coord *graph-y-offset* +default-graph-h+)))
+                 (min-x-label-fontsize (loop for i in norm-x minimize
+                                            (find-x-label-sizes i bottom-gap-size))))
+            (fill-bg 240 240 240)
+            (draw-graph-x-axis :tics-number (length xs)
+                               :major       (max 1 (truncate (/ (length xs) 10)))
+                               :tics-label  norm-x
+                               :font-size   min-x-label-fontsize)
+            (draw-graph-y-axis :tics-number y-tics-number
+                               :major       major-tic
+                               :tics-label  ys)
+            (loop
+               for i from 0
+               for x from 0.0 by x-step
+               for y across norm-y      do
+                 (draw-graph-point-norm x
+                                        y
+                                        255 0 0)))
+          (with-allocated-color (fg 255 255 0)
+            (fill-bg 0 0 0)
+            (cl-gd:draw-string (truncate (* 0.1 (cl-gd:image-width)))
+                               (truncate (* 0.1 (cl-gd:image-height)))
+                               (_ "Error occurred while processing data")
+                               :font :giant
+                               :up nil
+                               :color fg))))))
 
 (defun %draw-subdiamond (r g b x y size &optional (filled t))
   (with-allocated-color (color r g b)

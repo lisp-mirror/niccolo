@@ -33,9 +33,16 @@
             <td class="message"><!-- TMPL_VAR text --></td>
             <td class="reg-number"><!-- TMPL_VAR registration-number --></td>
             <td class="operations">
-                <a class="delete-message-link" href="<!-- TMPL_VAR delete-link -->">
+                <a class="delete-message-link"
+                   href="<!-- TMPL_VAR delete-link -->">
                     <!-- TMPL_INCLUDE 'delete-button.tpl' -->
                 </a>
+                <!-- TMPL_UNLESS watchedp -->
+                <a class="mark-watched-link"
+                   href="<!-- TMPL_VAR mark-watched-link -->">
+                    <!-- TMPL_INCLUDE 'mark-watched-button.tpl' -->
+                </a>
+                <!-- /TMPL_UNLESS -->
                 <!-- TMPL_IF admin-p -->
                 <a href="<!-- TMPL_VAR close-w-success-link -->"
                    onclick="return <!-- TMPL_INCLUDE 'confirm.tpl' -->">

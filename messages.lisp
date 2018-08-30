@@ -175,6 +175,14 @@
                     :recipient (db:id user)
                     (:!= :status +msg-status-deleted+)))))
 
+(defun number-of-msg-sent-to-me-not-watched ()
+  "Only non-deleted and not red"
+  (with-session-user (user)
+    (length (filter 'db:message
+                    :recipient   (db:id user)
+                    (:!= :status +msg-status-deleted+)
+                    (:is-null    :watchedp)))))
+
 (defun create-expiration-messages (expired-product-list)
   "Expired-Product-List comes from evaluation of (fetch-expired-products)"
   (with-session-user (user)
@@ -258,6 +266,7 @@
                              (:as :message.sent-time :sent-time)
                              (:as :message.subject   :subject)
                              (:as :message.text      :text)
+                             (:as :message.watchedp  :watched-p)
                              (:as :sender.username   :sender-username)
                              (:as :rcpt.username     :rcpt-username))
                       (from :message)
@@ -267,12 +276,17 @@
                                    (:= :mid id)))))
          (row (first (keywordize-query-results (query the-query)))))
     (when row
-      (let* ((delete-link  (restas:genurl 'delete-expire-message :id (getf row :mid))))
+      (let* ((delete-link       (restas:genurl 'delete-expire-message :id (getf row :mid)))
+             (mark-watched-link (restas:genurl 'mark-message-watched  :id (getf row :mid))))
         (setf row
-              (nconc row
-                     (children-template (getf row :mid))
-                     (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
-                     (list :delete-link delete-link)))))
+              (concatenate 'list
+                           row
+                           (list :watchedp (not (db-nil-p (getf row :watched-p))))
+                           (children-template (getf row :mid))
+                           (list :decoded-sent-time
+                                 (decode-datetime-string (getf row :sent-time)))
+                           (list :delete-link delete-link)
+                           (list :mark-watched-link mark-watched-link)))))
     row))
 
 (defun build-expiration-template (&optional (query nil))
@@ -281,6 +295,7 @@
                                (:as :message.sent-time :sent-time)
                                (:as :message.subject   :subject)
                                (:as :message.text      :text)
+                               (:as :message.watchedp  :watched-p)
                                (:as :sender.username   :sender-username)
                                (:as :rcpt.username     :rcpt-username)
                                (:as :exp-msg.product   :chemp-id))
@@ -297,18 +312,25 @@
                                                     (keywordize-query-results (query the-query)))))
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
-               (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+               (delete-link       (restas:genurl 'delete-expire-message
+                                                 :id (getf row :msg-id)))
+               (mark-watched-link (restas:genurl 'mark-message-watched
+                                                 :id (getf row :msg-id)))
                (search-link  (if (not (db-nil-p (getf row :chemp-id)))
                                  (gen-id-product-search-query (getf row :chemp-id))
                                  nil)))
           (setf (elt raw rown)
-                (nconc row
-                       (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
-                       (list :delete-link delete-link)
-                       (children-template (getf row :msg-id))
-                       (list :search-link search-link)
-                       (list :chemp-id-string (or (getf row :chemp-id)
-                                                  (_ "Product deleted")))))))
+                (concatenate 'list
+                             row
+                             (list :watchedp (not (db-nil-p (getf row :watched-p))))
+                             (list :decoded-sent-time
+                                   (decode-datetime-string (getf row :sent-time)))
+                             (list :delete-link delete-link)
+                             (list :mark-watched-link mark-watched-link)
+                             (children-template (getf row :msg-id))
+                             (list :search-link search-link)
+                             (list :chemp-id-string (or (getf row :chemp-id)
+                                                        (_ "Product deleted")))))))
       raw)))
 
 (defun build-validity-expired-template (&optional (query nil))
@@ -317,6 +339,7 @@
                                (:as :message.sent-time :sent-time)
                                (:as :message.subject   :subject)
                                (:as :message.text      :text)
+                               (:as :message.watchedp  :watched-p)
                                (:as :sender.username   :sender-username)
                                (:as :rcpt.username     :rcpt-username)
                                (:as :exp-msg.product   :chemp-id))
@@ -334,17 +357,23 @@
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
                (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+               (mark-watched-link (restas:genurl 'mark-message-watched
+                                                 :id (getf row :msg-id)))
                (search-link  (if (not (db-nil-p (getf row :chemp-id)))
                                  (gen-id-product-search-query (getf row :chemp-id))
                                  nil)))
           (setf (elt raw rown)
-                (nconc row
-                       (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
-                       (list :delete-link delete-link)
-                       (children-template (getf row :msg-id))
-                       (list :search-link search-link)
-                       (list :chemp-id-string (or (getf row :chemp-id)
-                                                  (_ "Product deleted")))))))
+                (concatenate 'list
+                             row
+                             (list :watchedp (not (db-nil-p (getf row :watched-p))))
+                             (list :decoded-sent-time
+                                   (decode-datetime-string (getf row :sent-time)))
+                             (list :delete-link delete-link)
+                             (list :mark-watched-link mark-watched-link)
+                             (children-template (getf row :msg-id))
+                             (list :search-link search-link)
+                             (list :chemp-id-string (or (getf row :chemp-id)
+                                                        (_ "Product deleted")))))))
       raw)))
 
 (defun %build-waste-template (user-id &optional (other-status nil))
@@ -353,6 +382,7 @@
                              (:as :message.sent-time             :sent-time)
                              (:as :message.subject               :subject)
                              (:as :message.text                  :text)
+                             (:as :message.watchedp              :watched-p)
                              (:as :waste-msg.weight              :weight)
                              (:as :waste-msg.id                  :waste-id)
                              (:as :waste-msg.registration-number :registration-number)
@@ -369,7 +399,7 @@
                                   `(:= 1 1))
                               (:not (:= :message.status +msg-status-deleted+))
                               (:= :message.recipient user-id)))
-                      (order-by :message.sent-time :desc)))
+                      (order-by (:desc :message.id))))
          (raw (keywordize-query-results (query the-query))))
     raw))
 
@@ -390,7 +420,10 @@
                                                                              other-status))))
         (do-rows (rown res) raw
           (let* ((row (elt raw rown))
-                 (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+                 (delete-link          (restas:genurl 'delete-expire-message
+                                                      :id (getf row :msg-id)))
+                 (mark-watched-link    (restas:genurl 'mark-message-watched
+                                                      :id (getf row :msg-id)))
                  (close-w-success-link (restas:genurl 'close-w-success-message
                                                        :id (getf row :msg-id)))
                  (close-w-failure-link (restas:genurl 'close-w-failure-message
@@ -400,8 +433,10 @@
             (setf (elt raw rown)
                   (concatenate 'list
                                row
-                               (list :decoded-sent-time (decode-datetime-string (getf row
-                                                                                      :sent-time)))
+                               (list :watchedp (not (db-nil-p (getf row :watched-p))))
+                               (list :decoded-sent-time
+                                     (decode-datetime-string (getf row :sent-time)))
+                               (list :mark-watched-link     mark-watched-link)
                                (list :delete-link           delete-link)
                                (list :close-w-success-link  close-w-success-link)
                                (list :close-w-failure-link  close-w-failure-link)
@@ -417,6 +452,7 @@
                              (:as :message.sent-time :sent-time)
                              (:as :message.subject   :subject)
                              (:as :message.text      :text)
+                             (:as :message.watchedp  :watched-p)
                              (:as :sender.username   :sender-username)
                              (:as :rcpt.username     :rcpt-username)
                              (:as :rcpt.id           :rcpt-id)
@@ -432,7 +468,7 @@
                                   `(:= 1 1))
                               (:not (:= :message.status +msg-status-deleted+))
                               (:= :message.recipient user-id)))
-                      (order-by :message.sent-time :desc)))
+                      (order-by (:desc :message.sent-time))))
          (raw (keywordize-query-results (query the-query))))
     raw))
 
@@ -442,15 +478,20 @@
       (let* ((raw (%build-shortage-template (db:id user) other-status)))
         (do-rows (rown res) raw
           (let* ((row (elt raw rown))
-                 (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+                 (delete-link           (restas:genurl 'delete-expire-message
+                                                       :id (getf row :msg-id)))
+                 (mark-watched-link     (restas:genurl 'mark-message-watched
+                                                       :id (getf row :msg-id)))
                  (close-w-success-link  (restas:genurl 'close-w-success-message
                                                        :id (getf row :msg-id)))
                  (close-w-failure-link  (restas:genurl 'close-w-failure-message
                                                        :id (getf row :msg-id))))
             (setf (elt raw rown)
                   (nconc row
+                         (list :watchedp (not (getf row :watched-p)))
                          (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
                          (list :delete-link delete-link)
+                         (list :mark-watched-link mark-watched-link)
                          (list :close-w-success-link close-w-success-link)
                          (list :close-w-failure-link close-w-failure-link)
                          (list :admin-p (session-admin-p))
@@ -541,6 +582,7 @@
                                (:as :message.sent-time :sent-time)
                                (:as :message.subject   :subject)
                                (:as :message.text      :text)
+                               (:as :message.watchedp  :watched-p)
                                (:as :sender.username   :sender-username)
                                (:as :rcpt.username     :rcpt-username))
                         (from :message)
@@ -551,17 +593,23 @@
                         (where (:and
                                 (:not (:= :message.status +msg-status-deleted+))
                                 (:= :message.recipient (db:id user))
-                                (:is-null :msg-rel.parent)))))
+                                (:is-null :msg-rel.parent)))
+                        (order-by (:desc :msg-id))))
            (raw (remove-if-not-plist-template-match query
                                                     (keywordize-query-results (query the-query)))))
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
-               (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id))))
+               (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
+               (mark-watched-link (restas:genurl 'mark-message-watched :id (getf row :msg-id))))
           (setf (elt raw rown)
-                (nconc row
-                       (list :decoded-sent-time (decode-datetime-string (getf row :sent-time)))
-                       (list :delete-link delete-link)
-                       (children-template (getf row :msg-id))))))
+                (concatenate 'list
+                             row
+                             (list :watchedp (not (db-nil-p (getf row :watched-p))))
+                             (list :decoded-sent-time
+                                   (decode-datetime-string (getf row :sent-time)))
+                             (list :delete-link delete-link)
+                             (list :mark-watched-link mark-watched-link)
+                             (children-template (getf row :msg-id))))))
       (multiple-value-bind (exp-message validity-exp-message waste-messages)
           (build-all-specialized-messages)
         (remove-if #'(lambda (a)
@@ -732,10 +780,30 @@
             (dolist (child-id children)
               (set-delete-message child-id :deletable-p-fn deletable-p-fn))))))))
 
+(defun set-message-watched (id)
+  (with-session-user (user)
+    (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
+      (let ((to-be-marked (single 'db:message :id (parse-integer id))))
+        (when (and to-be-marked
+                   (= (db:id user)
+                      (db:recipient to-be-marked)))
+          (setf (db:watchedp to-be-marked) "t")
+          (save to-be-marked))))))
+
+;; TODO: wrong name, deletes all type of messages actually
 (define-lab-route delete-expire-message ("/delete-expire-message-prod/:id" :method :get)
   (with-authentication
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
       (set-delete-message id))
+    (let ((query-search (get-clean-parameter +name-msg-search-query+)))
+      (if (string-empty-p query-search)
+          (restas:redirect 'user-messages)
+          (restas:redirect 'user-messages +name-msg-search-query+ query-search)))))
+
+(define-lab-route mark-message-watched ("/mark-message-watched/:id" :method :get)
+  (with-authentication
+    (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
+      (set-message-watched id))
     (let ((query-search (get-clean-parameter +name-msg-search-query+)))
       (if (string-empty-p query-search)
           (restas:redirect 'user-messages)

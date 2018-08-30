@@ -429,6 +429,10 @@
                                                                       (:<= :chemp-id to))))))))
     (manage-chem-prod errors-msg nil :data results))))
 
+(defun maybe-add-tracking-log (chemical-product user)
+  (when (chemical-tracked-p (db:id chemical-product) (db:id user))
+    (tracking-add-record-qty (db:id user) (db:compound chemical-product))))
+
 (defun add-single-chem-prod (chemical-id storage-id shelf quantity units notes
                              validity-date expire-date)
   (with-session-user (user)
@@ -465,18 +469,19 @@
                                                             :id chemical-id)))))))
       (if (and user
                (not errors-msg))
-          (let* ((chem (create 'db:chemical-product
-                               :compound      chemical-id
-                               :storage       storage-id
-                               :shelf         shelf
-                               :quantity      quantity
-                               :units         units
-                               :validity-date (encode-datetime-string validity-date)
-                               :expire-date   (encode-datetime-string expire-date)
-                               :owner         (db:id user)
-                               :notes         (clean-string notes))))
-            (save chem) ; useless?
-            (values errors-msg success-msg chem))
+          (let* ((new-chem (create 'db:chemical-product
+                                   :compound      chemical-id
+                                   :storage       storage-id
+                                   :shelf         shelf
+                                   :quantity      quantity
+                                   :units         units
+                                   :validity-date (encode-datetime-string validity-date)
+                                   :expire-date   (encode-datetime-string expire-date)
+                                   :owner         (db:id user)
+                                   :notes         (clean-string notes))))
+            (save new-chem) ; useless?
+            (maybe-add-tracking-log new-chem user)
+            (values errors-msg success-msg new-chem))
           (values errors-msg success-msg nil)))))
 
 (define-lab-route search-chem-prod ("/search-chem-prod/" :method :get)
@@ -566,10 +571,12 @@
     (with-session-user (user)
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no")
                                         (list owner +pos-integer-re+ "no"))))
-        (let ((to-trash (single 'db:chemical-product :id (parse-integer id))))
+        (let* ((chemprod-id  (safe-parse-number id -1))
+               (to-trash     (single 'db:chemical-product :id chemprod-id)))
           (if (and to-trash
                    (= (db:id user) (parse-integer owner)))
               (progn
+                (maybe-add-tracking-log to-trash user)
                 (del to-trash)
                 (manage-chem-prod (list (_ "Product deleted")) nil))
               (manage-chem-prod nil (list (_ "Product not deleted")))))))))

@@ -221,6 +221,11 @@
             (plist->json template))
           +http-not-found+))))
 
+(define-lab-route ws-get-messages-counts ("/ws/user-messages/counts" :method :get)
+  (with-authentication
+    (let* ((counts (number-of-msg-sent-to-me-not-watched)))
+      (plist->json (list +ws-message-count-key+ counts)))))
+
 ;;;; federated query
 
 (defmacro with-federated-query-enabled (&body body)

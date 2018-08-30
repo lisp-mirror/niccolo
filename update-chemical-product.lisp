@@ -28,22 +28,26 @@
 
 (define-constant +name-carc-log-exposition-time+ "exposition-time" :test #'string=)
 
-(defun build-product-diff-table (product old-validity-date old-expire-date old-opening-date)
+(defun build-product-diff-table (product old-validity-date old-expire-date old-opening-date
+                                 old-quantity old-units)
   (utils:template->string  #p"product-diff.tpl"
                            (list
                             :header                  (format nil
                                                              (_ "Product ~a updated")
                                                              (db:id product))
+                            :quantity-lb             (_ "Quantity (Mass or Volume)")
                             :validity-date-lb        (_ "Validity date")
                             :expire-date-lb          (_ "Expire date")
                             :opening-package-date-lb (_ "Opening package date")
+                            :old-quantity            (safe-parse-number old-quantity "")
+                            :old-units               (clean-string old-units)
                             :old-validity-date       (decode-datetime-string old-validity-date)
                             :old-expire-date         (decode-datetime-string old-expire-date)
                             :old-opening-date        (decode-date-string     old-opening-date)
-                            :new-validity-date
-                            (decode-datetime-string (db:validity-date product))
-                            :new-expire-date
-                            (decode-datetime-string (db:expire-date product))
+                            :new-quantity            (db:quantity product)
+                            :new-units               (db:units product)
+                            :new-validity-date       (decode-datetime-string (db:validity-date product))
+                            :new-expire-date         (decode-datetime-string (db:expire-date product))
                             :new-opening-date
                             (decode-date-string (db:opening-package-date product)))))
 
@@ -54,7 +58,7 @@
       ((null encoded-opening)
        nil)
       (encoded-reference
-       (if (local-time:timestamp< encoded-opening encoded-reference)
+       (if (local-time:timestamp< encoded-reference encoded-opening )
            (list (format nil (_ "Error: opening date ~a is older than ~a (~a)")
                          opening
                          date-type-label
@@ -102,6 +106,14 @@
                                                 (%error-opening-before new-validity-date
                                                                        (_ "validity")
                                                                        new-validity-date)))
+           (chem                           (when (null errors-msg-exists)
+                                             (single 'db:chemical-product :id id)))
+           (error-nullify-opening-date     (when (and chem
+                                                      (string-empty-p new-opening-date)
+                                                      (not (string-empty-p
+                                                            (decode-datetime-string
+                                                             (db:opening-package-date chem)))))
+                                          (list (_ "Opening date can not be removed"))))
            (errors-msg (concatenate 'list
                                     errors-validity
                                     errors-expire
@@ -110,14 +122,17 @@
                                     errors-opening-before-validity
                                     errors-msg-id
                                     errors-msg-generic
-                                    errors-msg-exists))
+                                    errors-msg-exists
+                                    error-nullify-opening-date))
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Chemical product: ~s updated") id)))))
       (if (not errors-msg)
           (let* ((new-chem          (single 'db:chemical-product :id id))
                  (old-exp-date      (db:expire-date          new-chem))
                  (old-validity-date (db:validity-date        new-chem))
-                 (old-opening-date  (db:opening-package-date new-chem)))
+                 (old-opening-date  (db:opening-package-date new-chem))
+                 (old-quantity      (db:quantity             new-chem))
+                 (old-units         (db:units                new-chem)))
             ;; this function wiill update the table 'db:carcinogenic-loogbook iff the chemical is
             ;; carcinogenic (as for 'db:carcinogenic-iarc-p).
             (multiple-value-bind (success-log-added log-was-needed log-carc-errors-messages)
@@ -137,13 +152,20 @@
                   (progn
                     (setf (db:validity-date new-chem) (encode-datetime-string new-validity-date))
                     (setf (db:expire-date    new-chem) (encode-datetime-string new-expire-date))
+                    ;; add opening date if picking a fraction of the product
+                    (when (and (string-empty-p new-opening-date)
+                               (<= (normalize-quantity-units (safe-parse-number quantity -1) units)
+                                   (normalize-quantity-units (db:quantity new-chem)
+                                                             (db:units    new-chem))))
+                      (push (_ "Note: the opening date has been automatically added")
+                            success-msg)
+                      (setf new-opening-date (decode-date-string (local-time-obj-now))))
                     (setf (db:opening-package-date new-chem)
                           (encode-datetime-string new-opening-date))
                     (setf (db:quantity new-chem) (parse-integer quantity))
                     (setf (db:units new-chem) units)
                     (save new-chem)
-                    (when (chemical-tracked-p id (db:id user))
-                      (tracking-add-record-qty (db:id user) (db:compound new-chem)))
+                    (maybe-add-tracking-log new-chem user)
                     (let ((parent-messages
                            (concatenate 'list
                                         (fetch-expired-messages-linked-to-product (db:id new-chem))
@@ -157,7 +179,9 @@
                                                (build-product-diff-table new-chem
                                                                          old-validity-date
                                                                          old-exp-date
-                                                                         old-opening-date)
+                                                                         old-opening-date
+                                                                         old-quantity
+                                                                         old-units)
                                                :parent-message parent-message))
                           (send-user-message (make-instance 'db:message)
                                              (db:id user)
@@ -166,7 +190,9 @@
                                              (build-product-diff-table new-chem
                                                                        old-validity-date
                                                                        old-exp-date
-                                                                       old-opening-date)
+                                                                       old-opening-date
+                                                                       old-quantity
+                                                                       old-units)
                                              :parent-message nil)))
                     (manage-update-chem-prod (and success-msg id) success-msg errors-msg))
                   (if log-was-needed

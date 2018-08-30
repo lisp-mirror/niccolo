@@ -36,6 +36,17 @@
             (db:complete-name lab)
             (db:build-description log))))
 
+(defun make-carc-log-units (chemprod)
+  (let ((raw-units (db:units chemprod)))
+    ;; Sorry... :(
+    (cond
+      ((string= "ml" raw-units)
+       "L")
+      ((cl-ppcre:scan "^m+.+" raw-units)
+       (subseq raw-units 1))
+      (t
+       raw-units))))
+
 (defun update-chemprod-carcinogenic-log (chemprod new-quantity new-units old-quantity old-units
                                          new-carc-laboratory-id
                                          new-carc-person-id new-carc-worker-code new-carc-work-type
@@ -88,7 +99,7 @@
           ;; "Values are success-log-added log-was-needed log-carc-errors-messages"
           (if success-msg
               (let ((log-entry (create 'db:carcinogenic-logbook
-                                       :chemical-id     (db:compound  chemprod)
+                                       :chemical-id     (db:compound chemprod)
                                        :laboratory-id   new-carc-laboratory-id
                                        :person-id       new-carc-person-id
                                        :worker-code     new-carc-worker-code
@@ -99,7 +110,7 @@
                                        :recording-date  (local-time-obj-now)
                                        :quantity        (- actual-old-quantity
                                                            actual-new-quantity)
-                                       :units           "g or L"))
+                                       :units           (make-carc-log-units chemprod)))
                     (person    (single 'db:person new-carc-person-id)))
                 (when (and send-email
                            (db:email person))

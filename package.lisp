@@ -143,10 +143,11 @@
    :+name-op-pagination-inc+
    :+name-op-pagination-dec+
    :+name-email+
+   :+name-lab-id+
    :+no-html-tags-at-all+
    :+html-tags-text-minimal-formatting+
    :+cookie-key-script-visited+
-   :+name-lab-id+
+   :+ws-message-count-key+
    :+query-product-path+
    :+query-compound-hazard-path+
    :+post-federated-query-results+
@@ -293,6 +294,7 @@
    :recipient
    :echo-to
    :sent-time
+   :watchedp
    :subject
    :status
    :text

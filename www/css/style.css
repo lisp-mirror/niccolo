@@ -121,6 +121,30 @@ textarea {
     animation: software-logo-in 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
+#message-notification-icon {
+    color:    #047595;
+    position: absolute;
+    top:      0;
+    border:   0;
+    padding:  0;
+    margin:   auto;
+}
+
+#message-notification-count {
+    font-family:   Sans;
+    transform:     scale(0.25) translate(-20%, 50%);
+    color:         yellow;
+    font-weight:   bolder;
+    font-size:     100%;
+    background:    red;
+    border-radius: 50%;
+    border:        1px solid black;
+}
+
+#message-notification-link {
+    display: none;
+}
+
 .text-highlighted {
     background: yellow;
     color:      red;
@@ -397,11 +421,11 @@ table.product-diff td{
     border: 0;
 }
 
-table.product-diff .new-date{
+table.product-diff .new{
     font-weight: bold;
 }
 
-table.product-diff .old-date{
+table.product-diff .old{
     color: gray;
 }
 

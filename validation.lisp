@@ -148,7 +148,7 @@
 (defun sdf-validate-p (filepath)
   (molfile:parse-mdl-catch-errors (read-file-into-string filepath)))
 
-(define-constant +other-cid-re+ "^([A-Z]){1,}-[0-9]+-[0-9]+-[0-9]+$" :test #'string=)
+(define-constant +other-cid-re+ "^([A-Z])*-?[0-9]+-[0-9]+-[0-9]+$" :test #'string=)
 
 (defun other-registry-number-validate-p (d)
   (scan +other-cid-re+ d))

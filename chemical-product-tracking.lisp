@@ -48,7 +48,7 @@
                                        (from  (:as :chemical-tracking-data :track))
                                        (where (:and (:= :track.track-type  tracking-type)
                                                     (:= :track.tracking-id (db:id tracking))))
-                                       (order-by :track.track-date :asc))))))
+                                       (order-by (:asc :track.track-date)))))))
 
 (defun tracking-add-record-qty (user-id chemical-id)
   (when-let* ((tracking (find-tracking user-id chemical-id)))
@@ -86,7 +86,7 @@
       (restas:redirect 'search-chem-prod)))
   +http-ok+)
 
-(defun generate-tracking-graph (time-format chemical-id)
+(defun generate-tracking-graph (time-format chemical-id y-offset)
   (with-authentication
     (with-session-user (user)
       (let* ((error-valid-id (regexp-validate (list (list chemical-id
@@ -114,13 +114,16 @@
                                                                  (string= (car a) (car b)))))
                      (xs      (mapcar #'car combined-data))
                      (ys      (mapcar #'cdr combined-data)))
-                (images-utils:draw-graph xs ys))))))))
+                (images-utils:draw-graph xs ys :graph-y-offset y-offset))))))))
 
 (define-lab-route graph-chem-quantity-months ("/images/qty-months/:chemical-id")
-  (generate-tracking-graph '(:year "-" :short-month) chemical-id))
+  (generate-tracking-graph '(:year "-" :short-month) chemical-id 0.13))
 
 (define-lab-route graph-chem-quantity-days ("/images/qty-days/:chemical-id")
-  (generate-tracking-graph '(:year "-" :short-month "-" :day) chemical-id))
+  (generate-tracking-graph '(:year "-" (:month 2) "-" (:day 2)) chemical-id 0.15))
+
+(define-lab-route graph-chem-quantity-hours ("/images/qty-hours/:chemical-id")
+  (generate-tracking-graph '(:year "-" (:month 2) "-" (:day  2) " " (:hour 2)) chemical-id 0.2))
 
 (defun manage-tracking-chem-prod (infos errors &key (chemprod-id nil))
   (let ((chemical (chem-prod->chem-compound chemprod-id)))
@@ -135,6 +138,9 @@
                                                               :chemical-id chemprod-id)
                                                :tracking-quantity-latest-days
                                                (restas:genurl 'graph-chem-quantity-days
+                                                              :chemical-id chemprod-id)
+                                               :tracking-quantity-hours
+                                               (restas:genurl 'graph-chem-quantity-hours
                                                               :chemical-id chemprod-id))
                                              :stream stream))))
 

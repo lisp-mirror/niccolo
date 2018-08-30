@@ -28,25 +28,36 @@
      (restore ,doc)))
 
 (defun render-chemprod-barcode-x-y (doc id x y)
-  (let ((barcode (make-instance 'brcd:code128))
-        (product (crane:single 'db:chemical-product :id (parse-integer id))))
+  (let* ((barcode         (make-instance 'brcd:code128))
+         (product         (crane:single 'db:chemical-product :id (parse-integer id)))
+         (y-end-barcode (- (- (height +a4-page-size+)
+                                y)
+                             (brcd:height barcode)))
+         (y-line-div      (+ y-end-barcode (brcd:height barcode))))
     (set-parameter doc +parameter-key-searchpath+
                       (namestring (local-system-path +data-path+)))
     (brcd:parse barcode (string-utils:encode-barcode (db:id product)))
     (save doc)
+    (with-save-restore (doc)
+      (ps:setlinewidth doc 0.5)
+      (ps:setcolor doc ps:+color-type-fillstroke+ cl-colors:+red+)
+      ;; hline
+      (ps:moveto doc 0 y-line-div)
+      (ps:lineto doc (width +a4-page-size+) y-line-div)
+      (ps:stroke doc))
     (translate doc
-                  (- x (/ (brcd:width barcode) 2))
-                  (- (- (height +a4-page-size+) y) (brcd:height barcode)))
+               (- x (/ (brcd:width barcode) 2))
+               y-end-barcode)
     (brcd:draw barcode doc)
     (let ((font (findfont doc +default-font-name+ "" t)))
-      (setcolor doc +color-type-fillstroke+ (cl-colors:rgb 0.0 0.0 0.0))
+      (setcolor doc +color-type-fillstroke+ cl-colors:+red+)
       (setfont doc font 5.0)
       (show-boxed doc (format nil "~a ~a"
                                  (db:id product)
                                  (db:name (crane:single 'db:chemical-compound
                                                         :id (db:compound product))))
                      0
-                     0
+                     -0.5
                      (brcd:width barcode)
                      0
                      +boxed-text-h-mode-center+
