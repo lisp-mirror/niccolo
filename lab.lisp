@@ -153,6 +153,7 @@
                       :message-count-key         +ws-message-count-key+
                       :has-nyan              (time-to-nyan) ;-)
                       :use-animated-logo-p   use-animated-logo-p
+                      :show-admin-menus-p    (with-editor-or-above-credentials t nil)
                       :safety-lbl            (_ "Safety")
                       :manage-ghs-hazard     (restas:genurl 'ghs-hazard)
                       :manage-ghs-hazard-lbl (_ "GHS Hazard Codes")

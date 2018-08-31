@@ -94,10 +94,10 @@
       (1+ +user-acl-level+)))
 
 (defun session-admin-p ()
-  (= (db:level (tbnl:session-value +user-session+)) +admin-acl-level+))
+  (= (get-session-level) +admin-acl-level+))
 
 (defun session-waste-manager-p ()
-  (= (db:level (tbnl:session-value +user-session+)) +waste-manager-acl-level+))
+  (= (get-session-level) +waste-manager-acl-level+))
 
 (defgeneric account-enabled-p (user))
 

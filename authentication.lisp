@@ -138,11 +138,10 @@
        ,if-not))
 
 (defmacro with-minimum-level ((level) passed not-passed)
-  (with-gensyms (user)
-    `(with-session-user (,user)
-       (if (<= (db:level ,user) ,level)
-           ,passed
-           ,not-passed))))
+  `(progn
+     (if (<= (get-session-level) ,level)
+         ,passed
+         ,not-passed)))
 
 (defmacro with-editor-or-above-credentials (passed not-passed)
   `(with-minimum-level (+editor-acl-level+)

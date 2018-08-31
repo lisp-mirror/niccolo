@@ -26,7 +26,89 @@
             <i id="message-notification-count" class="fa fa-stack-1x"></i>
         </div>
     </a>
+
     <ul id="accordion-menu">
+        <li class="menu-level-1"><!-- TMPL_VAR safety-lbl --></li>
+        <li class="menu-level-2">
+            <ul>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-ghs-hazard -->">
+                        <!-- TMPL_VAR manage-ghs-hazard-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-ghs-precaution -->">
+                        <!-- TMPL_VAR manage-ghs-precaution-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-cer -->">
+                        <!-- TMPL_VAR manage-cer-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-sensors -->">
+                        <!-- TMPL_VAR  manage-sensors-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-adr -->">
+                        <!-- TMPL_VAR manage-adr-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-hp-waste -->">
+                        <!-- TMPL_VAR manage-hp-waste-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-waste-phys-state -->">
+                        <!-- TMPL_VAR manage-waste-phys-state-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR waste-letter -->">
+                        <!-- TMPL_VAR waste-letter-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR carcinogenic-log -->">
+                        <!-- TMPL_VAR carcinogenic-log-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR waste-stats -->">
+                        <!-- TMPL_VAR waste-stats-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR l-factor-calculator -->">
+                        <!-- TMPL_VAR l-factor-calculator-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR l-factor-calculator-carc -->">
+                        <!-- TMPL_VAR l-factor-calculator-carc-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR l-factor-calculator-snpa -->">
+                        <!-- TMPL_VAR l-factor-calculator-snpa-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR l-factor-calculator-carc-snpa -->">
+                        <!-- TMPL_VAR l-factor-calculator-carc-snpa-lbl -->
+                    </a>
+                </li>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR store-classify-tree -->">
+                        <!-- TMPL_VAR store-classify-tree-lbl -->
+                    </a>
+                </li>
+
+            </ul>
+        </li>
         <li class="menu-level-1"><!-- TMPL_VAR chemical-products-lbl --></li>
         <li class="menu-level-2">
             <ul>
@@ -94,6 +176,27 @@
                 </li>
             </ul>
         </li>
+        <!-- TMPL_IF show-admin-menus-p -->
+        <li class="menu-level-1"><!-- TMPL_VAR chemical-compounds-lbl --></li>
+        <li class="menu-level-2">
+            <ul>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-chemicals -->">
+                        <!-- TMPL_VAR manage-chemicals-lbl -->
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-level-1"><!-- TMPL_VAR persons-lbl --></li>
+        <li class="menu-level-2">
+            <ul>
+                <li class="with-menu-item-anim">
+                    <a href="<!-- TMPL_VAR manage-person -->">
+                        <!-- TMPL_VAR manage-person-lbl -->
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="menu-level-1"><!-- TMPL_VAR places-lbl --></li>
         <li class="menu-level-2">
             <ul>
@@ -125,25 +228,6 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-level-1"><!-- TMPL_VAR chemical-compounds-lbl --></li>
-        <li class="menu-level-2">
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-chemicals -->">
-                        <!-- TMPL_VAR manage-chemicals-lbl -->
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-level-1"><!-- TMPL_VAR persons-lbl --></li>
-        <li class="menu-level-2">
-            <ul>
-                <li class="with-menu-item-anim">
-                    <a href="<!-- TMPL_VAR manage-person -->">
-                        <!-- TMPL_VAR manage-person-lbl -->
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <!-- /TMPL_IF -->
     </ul>
 </div>
