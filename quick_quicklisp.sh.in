@@ -35,7 +35,6 @@
  --eval "(ql:quickload \"html-template\")"              \
  --eval "(ql:quickload \"cl-base64\")"                  \
  --eval "(ql:quickload \"osicat\")"                     \
- --eval "(ql:quickload \"log4cl\")"                     \
  --eval "(ql:quickload \"ironclad\")"                   \
  --eval "(ql:quickload \"cl-who\")"                     \
  --eval "(ql:quickload \"cl-json\")"                    \

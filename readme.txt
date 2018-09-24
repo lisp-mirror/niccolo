@@ -53,7 +53,6 @@ Table of Contents
   • html-template;
   • cl-base64;
   • osicat;
-  • log4cl;
   • ironclad;
   • cl-who;
   • cl-json;

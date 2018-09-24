@@ -36,7 +36,6 @@
                :html-template
                :osicat
                :xmls
-               :log4cl
                :cl-base64
                :ironclad
                :cl-who
