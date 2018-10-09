@@ -41,6 +41,7 @@
                :cl-who
                :cl-json
                :cl-i18n
+               :cl-colors2
                :flexi-streams
                :cl-csv
                :cl-gd

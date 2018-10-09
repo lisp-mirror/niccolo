@@ -49,7 +49,7 @@
 
 (define-constant +salt-byte-length+              8                           :test #'=)
 
-(define-constant +ghs-carcinogenic-code+         "1"                         :test #'string=)
+(define-constant +ghs-carcinogenic-code+         "^1"                        :test #'string=)
 
 (define-constant +page-margin-top+              20                           :test #'=)
 

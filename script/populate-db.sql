@@ -39,7 +39,7 @@ INSERT INTO "ghs-hazard-statement" VALUES(26,8,'0','Autoriscaldante in grandi qu
 INSERT INTO "ghs-hazard-statement" VALUES(27,8,'0','A contatto con l acqua libera gas infiammabili che possono infiammarsi spontaneamente','H260');
 INSERT INTO "ghs-hazard-statement" VALUES(28,8,'0','A contatto con acqua libera gas infiammabili.','H261');
 INSERT INTO "ghs-hazard-statement" VALUES(29,9,'0','Può provocare o aggravare un incendio comburente','H270');
-INSERT INTO "ghs-hazard-statement" VALUES(30,9,'0','Può provocare un incendio o un esplosione molto comnburente','H271');
+INSERT INTO "ghs-hazard-statement" VALUES(30,9,'0','Può provocare un incendio o un esplosione molto comburente','H271');
 INSERT INTO "ghs-hazard-statement" VALUES(31,9,'0','Può aggravare un incendio comburente','H272');
 INSERT INTO "ghs-hazard-statement" VALUES(32,5,'0','Può provocare ustioni o lesioni criogeniche ','H281');
 INSERT INTO "ghs-hazard-statement" VALUES(33,1,'0','Può essere corrosivo per i metalli','H290');
@@ -57,7 +57,7 @@ INSERT INTO "ghs-hazard-statement" VALUES(44,2,'0','Letale se inalato','H330');
 INSERT INTO "ghs-hazard-statement" VALUES(45,2,'0','Tossico se inalato','H331');
 INSERT INTO "ghs-hazard-statement" VALUES(46,6,'0','Può irritare le vie respiratorie','H335');
 INSERT INTO "ghs-hazard-statement" VALUES(47,6,'0','Può provocare sonnolenza o vertigini.','H336');
-INSERT INTO "ghs-hazard-statement" VALUES(48,3,'Mutageno','Può provocare alterazioni genetiche','H340');
+INSERT INTO "ghs-hazard-statement" VALUES(48,3,'1 (Mutageno)','Può provocare alterazioni genetiche','H340');
 INSERT INTO "ghs-hazard-statement" VALUES(49,3,'Sospetto mutageno','Sospettato di provocare alterazioni genetiche ','H341');
 INSERT INTO "ghs-hazard-statement" VALUES(50,3,'Sospetto cancerogeno cat. 2','Sospettato di provocare il cancro','H351');
 INSERT INTO "ghs-hazard-statement" VALUES(51,3,'0','Può nuocere alla fertilità o al feto','H360');
@@ -81,6 +81,7 @@ INSERT INTO "ghs-hazard-statement" VALUES(68,2,'0',' a  contatto con acidi liber
 INSERT INTO "ghs-hazard-statement" VALUES(69,2,'0','A contatto con acidi libera gas tossic','EUH031');
 INSERT INTO "ghs-hazard-statement" VALUES(70,4,'0','Nuoc e alla salute pubblica e all’ambiente distruggendo l’ozono dello  strato superiore dell’atmosfera','H420');
 INSERT INTO "ghs-hazard-statement" VALUES(71,3,'0','Può nuocere al feto.','H360d');
+INSERT INTO "ghs-hazard-statement" VALUES(72,10,'1','Può provocare il cancro se inalato.','H350i');
 
 INSERT INTO "adr-code" VALUES(1,null,'Ammonium picrate, dry or wetted with less than 10 percent water, by mass','1.1D','UN0004');
 INSERT INTO "adr-code" VALUES(2,null,'Black powder or Gunpowder, granular or as a meal','1.1D','UN0027');
@@ -2230,10 +2231,5 @@ INSERT INTO "ghs-precautionary-statement" VALUES(107,'IN CASO DI CONTATTO CON GL
 INSERT INTO "ghs-precautionary-statement" VALUES(108,'IN CASO DI CONTATTO CON LA PELLE (o con i capelli): togliere immediatamente tutti gli indumenti contaminati. Sciacquare la pelle/fare una doccia.','P303+P361+P353');
 INSERT INTO "ghs-precautionary-statement" VALUES(109,'IN CASO DI INALAZIONE: trasportare l infortunato all aria aperta e mantenerlo a riposo in posizione che favorisca la respirazione. Contattare immediatamente un CENTRO ANTIVELENI o un medico.','P304+P340+P310');
 
-
-DELETE FROM sqlite_sequence;
-INSERT INTO "sqlite_sequence" VALUES('adr-code',2038);
-INSERT INTO "sqlite_sequence" VALUES('ghs-hazard-statement',71);
-INSERT INTO "sqlite_sequence" VALUES('ghs-precautionary-statement',109);
 
 COMMIT;
