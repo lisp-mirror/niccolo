@@ -244,7 +244,10 @@ already installed and ASDF configured  (but you should install all the
   without or with CAS authentication respectively.
 * BUGS
 
-  Please send bug report to cage-dev at twistfold dot it
+  Please send bug report to cage-dev at twistfold dot it or
+  file a bug report on
+  the [[https://notabug.org/cage/niccolo/issues][issue tracker]].
+
 
 ** Known bugs
 - federated query works only in sbcl.
