@@ -32,6 +32,17 @@
 	 return bgColor;
      }
 
+     function sumMsgFn (s) {
+         return "<span style=\"background-color:" + colorizeRes(s) + '">' + s + "</span>";
+     }
+
+
+     $( "#sum-selected" ).click(sumGenFunction(sumMsgFn));
+
+     $( "#dialog-sum" ).dialog({
+         show:  { effect: false },
+         autoOpen: false
+     });
 
      $( "#start" ).on('click', function(e){
 	 var extractText = function (a) { return $(a).text().trim(); }

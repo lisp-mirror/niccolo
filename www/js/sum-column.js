@@ -16,9 +16,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Shorthand for $( document ).ready()
-$(function() {
-    $( "#sum-selected" ).click(function(e){
+
+function defaultMsgFn (s) {
+    return s;
+}
+
+function sumGenFunction (msgFn = defaultMsgFn) {
+    return function(e){
 	e.preventDefault();
 	var selectedRows = $.makeArray($( ".sortable" ).find("tbody").find("tr"));
 	var sumProduct   = function (a, b){
@@ -31,14 +35,10 @@ $(function() {
 	};
 	var sum          = selectedRows.reduce(sumProduct,0);
 	$( "#dialog-sum" ).children("p").remove();
-	$( "#dialog-sum" ).append("<p>Quantity: <b>" + sum + "</b></p>");
+	$( "#dialog-sum" ).append("<p>Quantity: <b>"           +
+                                  msgFn.call(this, sum) +
+                                  "</b></p>");
 	$( "#dialog-sum" ).dialog("open");
 
-    })
-
-    $( "#dialog-sum" ).dialog({
-	show:  { effect: false },
-	autoOpen: false
-    });
-
-});
+    };
+}

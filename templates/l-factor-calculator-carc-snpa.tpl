@@ -28,6 +28,18 @@
 	     return $.makeArray($(a).children( "option:selected" )).map(extractText);
 	 }
 
+         function sumMsgFn (s) {
+             return "<span style=\"background-color:" + colorizeRes(s) + '">' + s + "</span>";
+         }
+
+
+         $( "#sum-selected" ).click(sumGenFunction(sumMsgFn));
+
+         $( "#dialog-sum" ).dialog({
+             show:  { effect: false },
+             autoOpen: false
+         });
+
 	 var obj                = {};
          obj.labName            = $( "#lab-name" ).val().trim();
 	 obj.name               = $( "#chem-name" ).val().trim();
