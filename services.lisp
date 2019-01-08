@@ -105,6 +105,13 @@
 
 ;; risk calculator
 
+(define-constant +invalid-risk-results+ -1 :test #'=)
+
+(defun actual-risk-results (res &optional (err risk-calculator:*errors*))
+  (if err
+      +invalid-risk-results+
+      res))
+
 (define-lab-route l-factor-i ("/ws/l-factor/" :method :post)
   (with-authentication
     (if  (post-parameter-notags "req")
@@ -129,7 +136,9 @@
                                                               0.0)
                                                            (%extract-parse :safety-threshold params)
                                                            1.0))))
-             (utils:plist->json (list :name name :res results :err risk-calculator:*errors*))))
+             (utils:plist->json (list :name name
+                                      :res  (actual-risk-results results)
+                                      :err  risk-calculator:*errors*))))
          (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
 
 (define-lab-route l-factor-carc-i ("/ws/l-factor-carc/" :method :post)
@@ -144,8 +153,9 @@
                                                      (%extract-parse :quantity-used params)
                                                      (%extract-parse :usage-per-day params)
                                                      (%extract-parse :usage-per-year params))))
-      (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
-
+      (utils:plist->json (list :name name
+                               :res  (actual-risk-results results)
+                               :err  risk-calculator:*errors*)))))
 
 ;; risk calculator snpa
 
@@ -169,26 +179,28 @@
            (let* ((risk-calculator:*errors* '())
                   (params  (json:decode-json-from-string (post-parameter-notags "req")))
                   (name    (cdr (assoc :name params)))
-                  (res (risk-calculator-snpa:l-factor-i-snpa (cdr (assoc :r-phrases params))
-                                                             (cdr (assoc :exposition-types params))
-                                                             (cadr (assoc :physical-state params))
-                                                             (%extract-parse :working-temp params)
-                                                             (%extract-parse :boiling-point params)
-                                                             (cadr (assoc :exposition-time-type
-                                                                          params))
-                                                             (%extract-parse :exposition-time
-                                                                             params)
-                                                             (cadr (assoc :usage params))
-                                                             (%extract-parse :quantity-used params)
-                                                             (%extract-parse :quantity-stocked
-                                                                             params)
-                                                             (cadr (assoc :work-type params))
-                                                             (cdr (assoc :protections-factor
-                                                                         params))
-                                                             (split-thresholds
-                                                              (cdr (assoc :safety-thresholds
-                                                                          params))))))
-             (utils:plist->json (list :name name :res res :err risk-calculator:*errors*))))
+                  (results (risk-calculator-snpa:l-factor-i-snpa (cdr (assoc :r-phrases params))
+                                                                 (cdr (assoc :exposition-types params))
+                                                                 (cadr (assoc :physical-state params))
+                                                                 (%extract-parse :working-temp params)
+                                                                 (%extract-parse :boiling-point params)
+                                                                 (cadr (assoc :exposition-time-type
+                                                                              params))
+                                                                 (%extract-parse :exposition-time
+                                                                                 params)
+                                                                 (cadr (assoc :usage params))
+                                                                 (%extract-parse :quantity-used params)
+                                                                 (%extract-parse :quantity-stocked
+                                                                                 params)
+                                                                 (cadr (assoc :work-type params))
+                                                                 (cdr (assoc :protections-factor
+                                                                             params))
+                                                                 (split-thresholds
+                                                                  (cdr (assoc :safety-thresholds
+                                                                              params))))))
+             (utils:plist->json (list :name name
+                                      :res  (actual-risk-results results)
+                                      :err  risk-calculator:*errors*))))
          (utils:plist->json (list :res "0.0" :err (_ "empty request"))))))
 
 (define-lab-route l-factor-carc-i-snpa ("/ws/l-factor-carc-snpa/" :method :post)
@@ -203,7 +215,9 @@
                      (%extract-parse :quantity-used params)
                      (%extract-parse :usage-per-day params)
                      (%extract-parse :usage-per-year params))))
-      (utils:plist->json (list :name name :res results :err risk-calculator:*errors*)))))
+      (utils:plist->json (list :name name
+                               :res  (actual-risk-results results)
+                               :err  risk-calculator:*errors*)))))
 
 ;; messages
 

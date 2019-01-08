@@ -454,7 +454,7 @@
   (node
    :type integer
    :foreign (message :restrict :cascade)
-   :nullp nil)
+   :nullp t)
   (parent
    :type integer
    :foreign (message :restrict :cascade)

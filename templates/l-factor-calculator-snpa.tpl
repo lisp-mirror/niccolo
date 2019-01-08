@@ -16,8 +16,10 @@
      function colorizeRes (val){
 	 var bgColor ="#ffffff";
 
-	 if (val >= 0.001 &&
-	     val < 0.01){
+         if (val < 0.0){
+	     bgColor = "#ff00ff";
+	 } else if (val >= 0.001 &&
+	            val < 0.01){
 	     bgColor = "#00ff00";
 	 }else if (val >= 0.01 &&
 		   val < 0.1){
@@ -35,7 +37,6 @@
      function sumMsgFn (s) {
          return "<span style=\"background-color:" + colorizeRes(s) + '">' + s + "</span>";
      }
-
 
      $( "#sum-selected" ).click(sumGenFunction(sumMsgFn));
 
@@ -67,6 +68,7 @@
 	 obj.workType           = extractSelected($( "#work-type" ));
 	 obj.protectionsFactor  = extractSelected($( "#protection-factors" ));
 	 obj.safetyThresholds   = $( "#safety-thresholds" ).val().trim();
+         obj.notes              = $( "#notes" ).val().trim();
 	 var jj = JSON.stringify(obj);
 	 $.ajax({
 	     url:    "<!-- TMPL_VAR service-link -->",
@@ -92,6 +94,7 @@
 			   "<td>{{protectionsFactor}}</td>"                                     +
 			   "<td><pre>{{safetyThresholds}}</pre></td>"                           +
 			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>"   +
+                           "<td >{{notes}}</td>"                                                +
 			   "<td >{{err}}</td>"                                                  +
 			   "<td>"                                                               +
 			   "<i class=\"fa fa-remove fa-2x table-button delete-row-button\""     +
@@ -115,6 +118,7 @@
 	     tplView.protectionsFactor  = obj.protectionsFactor;
 	     tplView.safetyThresholds   = obj.safetyThresholds;
 	     tplView.bgRes              = colorizeRes(info.res);
+             tplView.notes              = obj.notes;
 	     tplView.res                = info.res;
 	     tplView.err                = info.err;
 	     $( "#results" ).append(Mustache.render(tpl,tplView));
@@ -229,6 +233,13 @@
               rows="20"
 	      name="safety-thresholds"></textarea>
 
+
+    <label for="notes"><!-- TMPL_VAR  notes-lb --></label>
+    <textarea id ="notes"
+              cols="70"
+              rows="10"
+	      name="notes"></textarea>
+
     <input id="start" type="submit" value="Calculate" />
 
     <h3>
@@ -300,6 +311,9 @@
 	</th>
 	<th>
 	    <!-- TMPL_VAR results-lb -->
+	</th>
+        <th>
+	    <!-- TMPL_VAR notes-lb -->
 	</th>
 	<th>
 	    <!-- TMPL_VAR errors-lb -->

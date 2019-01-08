@@ -16,16 +16,18 @@
      function colorizeRes (val){
          var bgColor ="#ffffff";
 
-         if (val >= 0.001 &&
-             val < 0.01){
+         if (val < 0.0) {
+             bgColor = "#ff00ff";
+         } else if (val >= 0.001 &&
+                    val < 0.01){
              bgColor = "#00ff00";
-         }else if (val >= 0.01 &&
-                   val < 0.1){
+         } else if (val >= 0.01 &&
+                    val < 0.1){
              bgColor = "#ffff00";
-         }else if (val >= 0.1 &&
-                   val < 1){
+         } else if (val >= 0.1 &&
+                    val < 1){
              bgColor = "#ff7a00";
-         }else if (val >= 1){
+         } else if (val >= 1){
              bgColor = "#ff0000";
          }
 
@@ -68,6 +70,7 @@
          obj.workType           = extractSelected($( "#work-type" ));
          obj.protectionsFactor  = extractSelected($( "#protection-factors" ));
          obj.safetyThreshold    = $( "#safety-threshold" ).val().trim();
+         obj.notes              = $( "#notes" ).val().trim();
          var jj = JSON.stringify(obj);
          $.ajax({
              url:    "<!-- TMPL_VAR service-link -->",
@@ -93,6 +96,7 @@
                            "<td>{{protectionsFactor}}</td>"                                     +
                            "<td>{{safetyThreshold}}</td>"                                       +
                            "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>"   +
+                           "<td >{{notes}}</td>"                                                  +
                            "<td >{{err}}</td>"                                                  +
                            "<td>"                                                               +
                            "<i class=\"fa fa-remove fa-2x table-button delete-row-button\""     +
@@ -116,6 +120,7 @@
              tplView.protectionsFactor  = obj.protectionsFactor;
              tplView.safetyThreshold    = obj.safetyThreshold;
              tplView.bgRes              = colorizeRes(info.res);
+             tplView.notes              = obj.notes;
              tplView.res                = info.res;
              tplView.err                = info.err;
              $( "#results" ).append(Mustache.render(tpl,tplView));
@@ -141,6 +146,7 @@
      $("#clear-forms").on('click', clearAllForms);
  });
 </script>
+
 <form onclick="return false;">
     <div id="dialog-sum" title="Total"></div>
 
@@ -226,7 +232,16 @@
 
     <input type="text" id="safety-threshold" value="0.1" />
 
+    <label for="notes"><!-- TMPL_VAR  notes-lb --></label>
+    <textarea id ="notes"
+              cols="70"
+              rows="10"
+	      name="notes"></textarea>
+
+
     <input id="start" type="submit" value="Calculate" />
+
+
 
     <h3>
         <!-- TMPL_VAR table-res-header -->
@@ -296,6 +311,9 @@
         <th>
             <!-- TMPL_VAR results-lb -->
         </th>
+        <th>
+	    <!-- TMPL_VAR notes-lb -->
+	</th>
         <th>
             <!-- TMPL_VAR errors-lb -->
         </th>

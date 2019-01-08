@@ -114,6 +114,7 @@
                                  (_ "The minimun quantity of this product, for weekly/daily necessity, is used in this laboratory")
                                  :safety-thresholds-lb      (_ "Safety threshold. Format: a line for each entry. Entry is: chemical-name threshold concentration. Concentration must be provided as mass fraction (i.e. (0.0, 1.0))")
                                  :safety-threshold-lb       (_ "Safety threshold")
+                                 :notes-lb                  (_ "Notes")
                                  :results-lb                (_ "Results")
                                  :table-res-header          (_ "Results")
                                  :errors-lb                 (_ "Errors")
@@ -138,7 +139,6 @@
                                                template
                                                :stream stream)))))
 
-
 (define-lab-route l-factor-carc-snpa ("/l-factor-carc-calculator-snpa/" :method :get)
   (restas.lab:with-authentication
     (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
@@ -160,6 +160,7 @@
                                  :sum-quantities-lb         (_ "Sum quantities")
                                  :clear-lb                  (_ "Clear fields")
                                  :operations-lb             (_ "Operations")
+                                 :notes-lb                  (_ "Notes")
                                  :table-res-header          (_ "Results")
                                  :errors-lb                 (_ "Errors")
                                  :json-chemicals            json-chemical

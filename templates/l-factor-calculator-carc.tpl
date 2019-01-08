@@ -15,7 +15,9 @@
 	 function colorizeRes (val){
 	     var bgColor ="#ff0000";
 
-	     if (val < 1){
+             if (val < 0.0){
+		 bgColor = "#ff00ff";
+	     } else if (val < 1){
 		 bgColor = "#00ff00";
 	     }
 
@@ -50,6 +52,7 @@
 	 obj.quantityUsed       = $( "#quantity-used"  ).val().trim();
 	 obj.usagePerDay        = $( "#usage-per-day"  ).val().trim();
 	 obj.usagePerYear       = $( "#usage-per-year" ).val().trim();
+         obj.notes              = $( "#notes" ).val().trim();
 	 var jj = JSON.stringify(obj);
 	 $.ajax({
 	     url:    "<!-- TMPL_VAR service-link -->",
@@ -69,6 +72,7 @@
 			   "<td>{{usagePerDay}}</td>"                                           +
 			   "<td>{{usagePerYear}}</td>"                                          +
 			   "<td class=  \"sum\" style=\"background: {{bgRes}}\">{{res}}</td>"   +
+                           "<td >{{notes}}</td>"                                                  +
 			   "<td >{{err}}</td>"                                                  +
 			   "<td>"                                                               +
 			   "<i class=\"fa fa-remove fa-2x table-button delete-row-button\""     +
@@ -85,6 +89,7 @@
 	     tplView.quantityUsed     = obj.quantityUsed;
 	     tplView.usagePerDay      = obj.usagePerDay;
 	     tplView.usagePerYear     = obj.usagePerYear;
+             tplView.notes            = obj.notes;
 	     tplView.bgRes            = colorizeRes(info.res);
 	     tplView.res              = info.res;
 	     tplView.err              = info.err;
@@ -158,7 +163,14 @@
     <label for="usage-per-day"><!-- TMPL_VAR usage-per-day-lb --></label>
     <input type="text" id="usage-per-day" value="100"/>
     <label for="usage-per-year"><!-- TMPL_VAR usage-per-year-lb --></label>
-    <input type="text" id="usage-per-year" value="100"/xk>
+    <input type="text" id="usage-per-year" value="100"/>
+
+    <label for="notes"><!-- TMPL_VAR  notes-lb --></label>
+    <textarea id ="notes"
+              cols="70"
+              rows="10"
+	      name="notes"></textarea>
+
     <input id="start" type="submit" value="Calculate" />
 
 
@@ -209,6 +221,9 @@
 	</th>
 	<th>
 	    <!-- TMPL_VAR results-lb -->
+	</th>
+        <th>
+	    <!-- TMPL_VAR notes-lb -->
 	</th>
 	<th>
 	    <!-- TMPL_VAR errors-lb -->

@@ -788,7 +788,10 @@
                    (= (db:id user)
                       (db:recipient to-be-marked)))
           (setf (db:watchedp to-be-marked) "t")
-          (save to-be-marked))))))
+          (save to-be-marked)
+          (let ((children  (filter 'db:message-relation :parent (parse-integer id))))
+            (loop for child in children do
+                 (set-message-watched (format nil "~a" (db:node child))))))))))
 
 ;; TODO: wrong name, deletes all type of messages actually
 (define-lab-route delete-expire-message ("/delete-expire-message-prod/:id" :method :get)
