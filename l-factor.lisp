@@ -43,20 +43,21 @@
                    "POWDER" "SOLID"))
 
 (defun select-exp-time-type ()
-  (list (list :exp-time-type "TLV-CEILING")
-        (list :exp-time-type "TLV-STEL")
-        (list :exp-time-type "TLV-TWA")))
+  (list (list :exp-time-type "TLV-TWA")
+        (list :exp-time-type "TLV-CEILING")
+        (list :exp-time-type "TLV-STEL")))
 
 (defun select-usage ()
-  (%select-builder :usage "+almost-closed-system+"
-                   "+matrix-inclusion+"
+  (%select-builder :usage
                    "+low-dispersion+"
+                   "+almost-closed-system+"
+                   "+matrix-inclusion+"
                    "+high-dispersion+"))
 
 (defun select-work-type ()
   (%select-builder :work-type
-                   "+maintenance+"
                    "+normal-job+"
+                   "+maintenance+"
                    "+cleaning+"))
 
 (defun select-protection-factors ()

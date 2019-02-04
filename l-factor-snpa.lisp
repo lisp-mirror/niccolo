@@ -34,10 +34,10 @@
 
 (defun select-usage ()
   (restas.lab:%select-builder :usage
+                              "+low-dispersion+"
                               "+closed-system+"
                               "+almost-closed-system+"
                               "+closed-opened-sometimes+"
-                              "+low-dispersion+"
                               "+high-dispersion+"))
 
 (defun select-quantity-stocked ()
@@ -47,10 +47,10 @@
 
 (defun select-work-type ()
   (restas.lab:%select-builder :work-type
+                              "+normal-job+"
                               "+maintenance+"
                               "+waste-management-sampling+"
-                              "+cleaning+"
-                              "+normal-job+"))
+                              "+cleaning+"))
 
 (defun select-protection-factors ()
   (restas.lab:%select-builder :protection-factor

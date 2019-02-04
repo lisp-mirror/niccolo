@@ -153,7 +153,7 @@
     </select>
 
     <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
-    <input type="text" id="working-temp" value="25"/>
+    <input type="text" id="working-temp" value="20"/>
     <label for="quantity-used"><!-- TMPL_VAR quantity-used-lb --></label>
     <input type="text" id="quantity-used" value="100"/>
     <label for="usage-per-day"><!-- TMPL_VAR usage-per-day-lb --></label>

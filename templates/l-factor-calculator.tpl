@@ -182,7 +182,7 @@
     </select>
 
     <label for="working-temp"><!-- TMPL_VAR working-temp-lb --></label>
-    <input type="text" id="working-temp" value="25"/>
+    <input type="text" id="working-temp" value="20"/>
 
     <label for="boiling-point"><!-- TMPL_VAR boiling-point-lb --></label>
     <input type="text" id="boiling-point" value="100"/>
