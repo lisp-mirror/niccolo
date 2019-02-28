@@ -125,13 +125,13 @@
 (defgeneric build-carcinogenic-description (object))
 
 (defmethod carcinogenic-iarc-p ((object string))
-  (string= object +ghs-carcinogenic-code+))
+  (cl-ppcre:scan +ghs-carcinogenic-code+ object))
 
 (defmethod carcinogenic-iarc-p ((object ghs-hazard-statement))
   (carcinogenic-iarc-p (carcinogenic object)))
 
 (defmethod build-carcinogenic-description ((object ghs-hazard-statement))
-  (if (cl-ppcre:scan (carcinogenic object) +ghs-carcinogenic-code+)
+  (if (carcinogenic-iarc-p (carcinogenic object))
       "Carcinogenic according IARC"
       ""))
 
