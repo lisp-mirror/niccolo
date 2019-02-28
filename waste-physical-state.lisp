@@ -23,10 +23,10 @@
 
 
 (defun all-waste-phys-state-select ()
-;:id :code :explanation :carcinogenic :pictogram)
-  (query (select (( :as :wp.id          :id)
-                  ( :as :wp.explanation :explanation))
-           (from (:as :waste-physical-state :wp)))))
+  (db-query (select (( :as :wp.id          :id)
+                     ( :as :wp.explanation :explanation))
+              (from (:as :waste-physical-state :wp))
+              (order-by (:asc :wp.explanation)))))
 
 (defun build-template-list-waste-phys-state (&key (delete-link nil) (update-link nil))
   (let ((raw (map 'list #'(lambda (row)
@@ -61,9 +61,9 @@
                            (list (format nil (_ "Saved new physical state: ~s")
                                          explanation)))))
     (when (not errors-msg)
-      (let ((state (create 'db:waste-physical-state
+      (let ((state (db-create'db:waste-physical-state
                          :explanation  explanation)))
-        (save state)))
+        (db-save state)))
     (manage-waste-phys-state success-msg errors-msg)))
 
 (defun manage-waste-phys-state (infos errors)
@@ -97,8 +97,8 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:waste-physical-state :id id)))
+            (let ((to-trash (db-single 'db:waste-physical-state :id id)))
               (when to-trash
-                (del (single 'db:waste-physical-state :id id)))))
+                (db-del (db-single 'db:waste-physical-state :id id)))))
           (restas:redirect 'waste-phys-state))
       (manage-waste-phys-state nil (list *insufficient-privileges-message*)))))

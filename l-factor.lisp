@@ -21,7 +21,7 @@
 (define-constant +h-code+  "h-code" :test #'string=)
 
 (defun fetch-all-ghs ()
-  (let ((raw (filter 'db:ghs-hazard-statement)))
+  (let ((raw (db-filter 'db:ghs-hazard-statement)))
     (loop for i in raw collect (list :h-code (db:code i)))))
 
 (defun sort-all-ghs-tpl (tpl)

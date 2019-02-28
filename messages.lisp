@@ -40,13 +40,13 @@
 
 (defun status-deleted-p-fn ()
   #'(lambda (a)
-      (let ((msg (single 'db:message :id (db:message a))))
+      (let ((msg (db-single 'db:message :id (db:message a))))
         (and msg
              (string= (db:status msg) +msg-status-deleted+)))))
 
 (defun status-open-p-fn ()
   #'(lambda (a)
-      (let ((msg (single 'db:message :id (db:message a))))
+      (let ((msg (db-single 'db:message :id (db:message a))))
         (and msg
              (string= (db:status msg) +msg-status-open+)))))
 
@@ -69,10 +69,10 @@
   (with-authentication
     (with-session-user (user)
       (let ((db-user   (user-session->user user))
-            (rcpt-user (single 'db:user :id rcpt-id)))
+            (rcpt-user (db-single 'db:user :id rcpt-id)))
         (when (and db-user
                    rcpt-user)
-          (let ((msg (create 'db:message
+          (let ((msg (db-create 'db:message
                              :sender    sender-id
                              :recipient rcpt-id
                              :echo-to   echo-message
@@ -80,11 +80,11 @@
                              :sent-time sent-time
                              :status    +msg-status-open+
                              :text      text)))
-            (create 'db:message-relation
+            (db-create 'db:message-relation
                     :node   (db:id msg)
                     :parent parent-message
                     :child  child-message)
-            (create 'db:message-relation
+            (db-create 'db:message-relation
                     :node   parent-message
                     :parent nil
                     :child  (db:id msg))
@@ -104,9 +104,9 @@
                                   rcpt-id
                                   subject
                                   text)))
-      (create 'db:expiration-message
-              :message (db:id msg)
-              :product product-id))))
+      (db-create 'db:expiration-message
+                 :message (db:id msg)
+                 :product product-id))))
 
 (defmethod send-user-message  ((object db:validity-expired-message) sender-id rcpt-id subject text
                                &key
@@ -117,9 +117,9 @@
                                   rcpt-id
                                   subject
                                   text)))
-      (create 'db:validity-expired-message
-              :message (db:id msg)
-              :product product-id))))
+      (db-create 'db:validity-expired-message
+                 :message (db:id msg)
+                 :product product-id))))
 
 (defmethod send-user-message  ((object db:compound-shortage-message) sender-id rcpt-id subject text
                                &key
@@ -130,7 +130,7 @@
                                   rcpt-id
                                   subject
                                   text)))
-      (create 'db:compound-shortage-message
+      (db-create 'db:compound-shortage-message
               :message (db:id msg)
               :compound compound-id))))
 
@@ -153,17 +153,17 @@
                                          subject
                                          text
                                          :echo-message echo-message))
-           (waste-msg (create 'db:waste-message
+           (waste-msg (db-create'db:waste-message
                               :message     (db:id msg)
                               :cer-code-id cer-code-id
                               :building-id building-id
                               :weight      weight)))
       (dolist (adr-id adr-ids)
-        (create 'db:waste-message-adr
+        (db-create 'db:waste-message-adr
                 :waste-message (db:id waste-msg)
                 :adr-code-id   adr-id))
       (dolist (hp-id hp-ids)
-        (create 'db:waste-message-hp
+        (db-create'db:waste-message-hp
                 :waste-message (db:id waste-msg)
                 :hp-code-id    hp-id))
       msg)))
@@ -171,31 +171,31 @@
 (defun number-of-msg-sent-to-me ()
   "Only non-deleted"
   (with-session-user (user)
-    (length (filter 'db:message
-                    :recipient (db:id user)
-                    (:!= :status +msg-status-deleted+)))))
+    (length (db-filter 'db:message
+                       :recipient (db:id user)
+                       (:!= :status +msg-status-deleted+)))))
 
 (defun number-of-msg-sent-to-me-not-watched ()
   "Only non-deleted and not red"
   (with-session-user (user)
-    (length (filter 'db:message
-                    :recipient   (db:id user)
-                    (:!= :status +msg-status-deleted+)
-                    (:is-null    :watchedp)))))
+    (length (db-filter 'db:message
+                       :recipient   (db:id user)
+                       (:!= :status +msg-status-deleted+)
+                       (:is-null    :watchedp)))))
 
 (defun create-expiration-messages (expired-product-list)
   "Expired-Product-List comes from evaluation of (fetch-expired-products)"
   (with-session-user (user)
-    (let ((admin (single 'db:user :level +admin-acl-level+)))
+    (let ((admin (db-single 'db:user :level +admin-acl-level+)))
       (when admin
         (dolist (expired expired-product-list)
           (let ((chemp-id (getf expired :chemp-id)))
-            (when (or (null (filter 'db:expiration-message :product chemp-id))
+            (when (or (null (db-filter 'db:expiration-message :product chemp-id))
                       (and
                        (some (status-deleted-p-fn)
-                             (filter 'db:expiration-message :product chemp-id))
+                             (db-filter 'db:expiration-message :product chemp-id))
                        (not (some (status-open-p-fn)
-                                  (filter 'db:expiration-message :product chemp-id)))))
+                                  (db-filter 'db:expiration-message :product chemp-id)))))
               (let* ((msg-text (format nil
                                        (_ "Product ~a from building ~a (storage name ~a) has expired.")
                                        (getf expired :chem-name)
@@ -211,16 +211,16 @@
 (defun create-validity-expired-messages (expired-product-list)
   "Expired-Product-List comes from evaluation of (fetch-expired-products)"
   (with-session-user (user)
-    (let ((admin (single 'db:user :level +admin-acl-level+)))
+    (let ((admin (db-single 'db:user :level +admin-acl-level+)))
       (when admin
         (dolist (expired expired-product-list)
           (let ((chemp-id (getf expired :chemp-id)))
-            (when (or (null (filter 'db:validity-expired-message :product chemp-id))
+            (when (or (null (db-filter 'db:validity-expired-message :product chemp-id))
                       (and
                        (some (status-deleted-p-fn)
-                             (filter 'db:validity-expired-message :product chemp-id))
+                             (db-filter 'db:validity-expired-message :product chemp-id))
                        (not (some (status-open-p-fn)
-                                  (filter 'db:validity-expired-message :product chemp-id)))))
+                                  (db-filter 'db:validity-expired-message :product chemp-id)))))
               (let* ((msg-text (format nil
                                        (_ "Product ~a from building ~a (storage name ~a) has expired validity date.")
                                        (getf expired :chem-name)
@@ -236,22 +236,22 @@
 (defun fetch-children-messages (msg-id)
   (sort
    (mapcar #'db:child
-           (filter 'db:message-relation (:and (:= :node msg-id)
-                                              (:not (:is-null :child)))))
+           (db-filter 'db:message-relation (:and (:= :node msg-id)
+                                                 (:not (:is-null :child)))))
    #'(lambda (a b)
-       (timestamp-compare-desc (db:sent-time (single 'db:message :id a))
-                               (db:sent-time (single 'db:message :id b))))))
+       (timestamp-compare-desc (db:sent-time (db-single 'db:message :id a))
+                               (db:sent-time (db-single 'db:message :id b))))))
 
 (defun fetch-parent-message (msg-id)
   (first
    (remove-if #'null
               (mapcar #'db:parent
-                      (filter 'db:message-relation :node msg-id)))))
+                      (db-filter 'db:message-relation :node msg-id)))))
 
 (defun children-template (msg-id)
   (list :children (remove-if #'null
                              (mapcar #'(lambda (a)
-                                         (let ((msg (single 'db:message :id a)))
+                                         (let ((msg (db-single 'db:message :id a)))
                                            (when msg
                                              (list
                                               :child-id a
@@ -273,8 +273,8 @@
                       (left-join (:as :user :sender) :on (:= :message.sender :sender.id))
                       (left-join (:as :user :rcpt)   :on (:= :message.recipient :rcpt.id))
                       (where (:and (:not (:= :message.status +msg-status-deleted+))
-                                   (:= :mid id)))))
-         (row (first (keywordize-query-results (query the-query)))))
+                                   (:= :message.id id)))))
+         (row (first (keywordize-query-results (db-query the-query)))))
     (when row
       (let* ((delete-link       (restas:genurl 'delete-expire-message :id (getf row :mid)))
              (mark-watched-link (restas:genurl 'mark-message-watched  :id (getf row :mid))))
@@ -309,7 +309,7 @@
                                  (:= :message.recipient (db:id user))))
                          (order-by (:desc :message.sent-time))))
            (raw (remove-if-not-plist-template-match query
-                                                    (keywordize-query-results (query the-query)))))
+                                                    (keywordize-query-results (db-query the-query)))))
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
                (delete-link       (restas:genurl 'delete-expire-message
@@ -353,7 +353,7 @@
                                  (:= :message.recipient (db:id user))))
                          (order-by (:desc :message.sent-time))))
            (raw (remove-if-not-plist-template-match query
-                                                    (keywordize-query-results (query the-query)))))
+                                                    (keywordize-query-results (db-query the-query)))))
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
                (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
@@ -400,7 +400,7 @@
                               (:not (:= :message.status +msg-status-deleted+))
                               (:= :message.recipient user-id)))
                       (order-by (:desc :message.id))))
-         (raw (keywordize-query-results (query the-query))))
+         (raw (keywordize-query-results (db-query the-query))))
     raw))
 
 (defun trivial-find-plist-template-fn (query)
@@ -469,7 +469,7 @@
                               (:not (:= :message.status +msg-status-deleted+))
                               (:= :message.recipient user-id)))
                       (order-by (:desc :message.sent-time))))
-         (raw (keywordize-query-results (query the-query))))
+         (raw (keywordize-query-results (db-query the-query))))
     raw))
 
 (defun build-shortage-template (&optional (other-status nil))
@@ -500,16 +500,16 @@
 
 (defun fetch-all-chemicals-by-users (id)
   (keywordize-query-results
-   (query (select ((:as :chemp.compound :id)
-                   (:as :chemp.compound :id))
-            (from (:as :chemical-product :chemp))
-            (where (:= :chemp.owner id))
-            (group-by :chemp.compound)))))
+   (db-query (select ((:as :chemp.compound :id)
+                      (:as :chemp.compound :id))
+               (from (:as :chemical-product :chemp))
+               (where (:= :chemp.owner id))
+               (group-by :chemp.compound)))))
 
 (defun chemical-quantities-total (id)
   (let ((compound-ids (map 'vector #'last-elt (fetch-all-chemicals-by-users id))))
     (loop for compound-id across compound-ids collect
-         (let ((all-products (filter 'db:chemical-product :owner id :compound compound-id)))
+         (let ((all-products (db-filter 'db:chemical-product :owner id :compound compound-id)))
            (let ((sum (reduce #'(lambda (a b)
                                   (let ((qty   (db:quantity b))
                                         (units (db:units    b)))
@@ -518,7 +518,7 @@
                                         (+ a qty))))
                               all-products
                               :initial-value 0.0))
-                 (threshold (single 'db:chemical-compound-preferences
+                 (threshold (db-single 'db:chemical-compound-preferences
                                     :owner id :compound compound-id)))
              (list :owner id
                    :id compound-id
@@ -535,7 +535,7 @@
 (defun create-shortage-messages (shortage-products-list)
   "Shortage-products-list comes from evaluation of (shortage-products-list id)"
   (with-session-user (user)
-    (let ((admin (single 'db:user :level +admin-acl-level+)))
+    (let ((admin (db-single 'db:user :level +admin-acl-level+)))
       (when admin
         (dolist (shortage shortage-products-list)
           (let ((chem-id  (getf shortage :id))
@@ -547,7 +547,7 @@
                                             (= (getf a :compound-id)
                                                chem-id)))
                                  template))
-              (let* ((chem (single 'db:chemical-compound :id chem-id))
+              (let* ((chem (db-single 'db:chemical-compound :id chem-id))
                      (msg-text (format nil
                                        (_ "Product ~a quantity (~a) below threshold: ~a.")
                                        (db:name chem)
@@ -596,7 +596,7 @@
                                 (:is-null :msg-rel.parent)))
                         (order-by (:desc :msg-id))))
            (raw (remove-if-not-plist-template-match query
-                                                    (keywordize-query-results (query the-query)))))
+                                                    (keywordize-query-results (db-query the-query)))))
       (do-rows (rown res) raw
         (let* ((row (elt raw rown))
                (delete-link  (restas:genurl 'delete-expire-message :id (getf row :msg-id)))
@@ -636,7 +636,7 @@
                                      (:= :exp-msg.product id-product)))
                          (where (:and
                                  (:not (:= :message.status +msg-status-deleted+))))))
-         (raw (keywordize-query-results (query the-query))))
+         (raw (keywordize-query-results (db-query the-query))))
     (mapcar #'(lambda (a) (second a)) raw)))
 
 (defun fetch-validity-expired-messages-linked-to-product (id-product)
@@ -649,7 +649,7 @@
                                       (:= :exp-msg.product id-product)))
                          (where (:and
                                  (:not (:= :message.status +msg-status-deleted+))))))
-         (raw (keywordize-query-results (query the-query))))
+         (raw (keywordize-query-results (db-query the-query))))
     (mapcar #'(lambda (a) (second a)) raw)))
 
 (defun print-messages (errors infos &key (query nil))
@@ -754,7 +754,7 @@
                                              :stream stream))))
 
 (defun waste-message-p (message)
-  (single 'db:waste-message :message (db:id message)))
+  (db-single 'db:waste-message :message (db:id message)))
 
 (defun waste-message-deletable-p (user message)
   (and (waste-message-p message)         ;; yes, the message is linked to a waste request
@@ -769,27 +769,27 @@
                                                            (db:recipient message))))))
   (with-session-user (user)
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
-      (let ((to-trash (single 'db:message :id (parse-integer id))))
+      (let ((to-trash (db-single 'db:message :id (parse-integer id))))
         (when (and to-trash
                    (funcall deletable-p-fn user to-trash))
           (setf (db:status to-trash) +msg-status-deleted+)
-          (save to-trash)
+          (db-save to-trash)
           ;; recursive delete
           (let ((children (mapcar #'(lambda (u) (format nil "~a" (db:child u)))
-                                  (filter 'db:message-relation :node (db:id to-trash)))))
+                                  (db-filter 'db:message-relation :node (db:id to-trash)))))
             (dolist (child-id children)
               (set-delete-message child-id :deletable-p-fn deletable-p-fn))))))))
 
 (defun set-message-watched (id)
   (with-session-user (user)
     (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
-      (let ((to-be-marked (single 'db:message :id (parse-integer id))))
+      (let ((to-be-marked (db-single 'db:message :id (parse-integer id))))
         (when (and to-be-marked
                    (= (db:id user)
                       (db:recipient to-be-marked)))
           (setf (db:watchedp to-be-marked) "t")
-          (save to-be-marked)
-          (let ((children  (filter 'db:message-relation :parent (parse-integer id))))
+          (db-save to-be-marked)
+          (let ((children  (db-filter 'db:message-relation :parent (parse-integer id))))
             (loop for child in children do
                  (set-message-watched (format nil "~a" (db:node child))))))))))
 
@@ -829,12 +829,12 @@
                                                          +integer-re+
                                                          (_ "Invalid message ID provided")))))
                (error-no-message (if (and (not error-no-id)
-                                          (not (single 'db:message :id id)))
+                                          (not (db-single 'db:message :id id)))
                                      (_ "No message with ID ~a found")
                                      nil)))
           (if (and (not error-no-id)
                    (not error-no-message))
-              (let ((parent (single 'db:message :id id)))
+              (let ((parent (db-single 'db:message :id id)))
                 (send-user-message (make-instance 'db:message)
                                    (db:recipient parent)
                                    (db:recipient parent)
@@ -843,7 +843,7 @@
                                    :child-message nil
                                    :parent-message id)
                 (when (db:echo-to parent)
-                  (let ((echo-message (single 'db:message :id (db:echo-to parent))))
+                  (let ((echo-message (db-single 'db:message :id (db:echo-to parent))))
                     (when echo-message
                       (send-user-message (make-instance 'db:message)
                                          (db:recipient    parent)
@@ -869,12 +869,12 @@
                                                          +integer-re+
                                                          (_ "Invalid message ID provided")))))
                (error-no-message (if (and (not error-no-id)
-                                          (not (single 'db:message :id id)))
+                                          (not (db-single 'db:message :id id)))
                                      (_ "No message with ID ~a found")
                                      nil)))
           (if (and (not error-no-id)
                    (not error-no-message))
-              (let ((parent (single 'db:message :id id)))
+              (let ((parent (db-single 'db:message :id id)))
                 (send-user-message (make-instance 'db:message)
                                    (db:recipient parent)
                                    (db:recipient parent)
@@ -885,9 +885,9 @@
                                    :child-message nil
                                    :parent-message id)
                 (setf (db:status parent) status)
-                (save parent)
+                (db-save parent)
                 (when (db:echo-to parent)
-                  (let ((echo-message (single 'db:message :id (db:echo-to parent))))
+                  (let ((echo-message (db-single 'db:message :id (db:echo-to parent))))
                     (when echo-message
                       (send-user-message (make-instance 'db:message)
                                          (db:recipient    parent)
@@ -903,7 +903,7 @@
                                          :child-message nil
                                          :parent-message (db:id echo-message))
                       (setf (db:status echo-message) status)
-                      (save echo-message))))
+                      (db-save echo-message))))
                 (print-messages nil (list (format nil
                                                   (if (string= status +msg-status-closed-success+)
                                                       (_ "Message ~a closed with success")
@@ -939,7 +939,7 @@
                                                       #'identity
                                                       :default nil)))
                (wrapper-message (and message
-                                     (single 'db:message :id (db:message message)))))
+                                     (db-single 'db:message :id (db:message message)))))
           (when message
             (cond
               ((and wrapper-message
@@ -947,7 +947,7 @@
                     (null  (db:registration-number message))
                     (string= (db:status wrapper-message) +msg-status-closed-success+))
                (setf (db:registration-number message) (get-clean-parameter +name-registration-num+))
-               (save message)
+               (db-save message)
                (reply-to (format nil "~a" (db:id wrapper-message))
                          (format nil
                                  (_ "Added registration number ~a")
@@ -986,7 +986,7 @@
          (errors         (append error-subject error-body)))
     (if (not errors)
         (progn
-          (dolist (user (filter 'db:user))
+          (dolist (user (db-filter 'db:user))
             (send-user-message (make-instance 'db:message)
                                (admin-id)
                                (db:id user)

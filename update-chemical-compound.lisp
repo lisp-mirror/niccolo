@@ -28,7 +28,7 @@
 
          (errors-msg-2  (when (and (not errors-msg-1)
                                    (not errors-msg-id)
-                                   (not (single 'db:chemical-compound :id id)))
+                                   (not (db-single 'db:chemical-compound :id id)))
                           "Chemical compound not in database"))
          (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-id errors-msg-2)
                               (exists-with-different-id-validate 'db:chemical-compound
@@ -49,7 +49,7 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Chemical: ~s updated") name)))))
     (if (not errors-msg)
-        (let ((new-chem (single 'db:chemical-compound :id id)))
+        (let ((new-chem (db-single 'db:chemical-compound :id id)))
           (setf (db:name        new-chem) name
                 (db:pubchem-cid new-chem) (if (scan +pos-integer-re+ cid)
                                               cid
@@ -57,7 +57,7 @@
                 (db:other-cid   new-chem) (if (string-empty-p other-cid)
                                               nil
                                               other-cid))
-          (save new-chem)
+          (db-save new-chem)
           (manage-update-chem (and success-msg id) success-msg errors-msg))
         (manage-chem success-msg errors-msg))))
 
@@ -68,7 +68,7 @@
                       #'manage-update-chem))
 
 (defun manage-update-chem (id infos errors)
-  (let ((new-chem (and id (single 'db:chemical-compound :id id))))
+  (let ((new-chem (and id (db-single 'db:chemical-compound :id id))))
     (with-standard-html-frame (stream (_ "Update Chemical Compound")
                                       :infos infos
                                       :errors errors)

@@ -38,10 +38,10 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "HP code updated."))))))
     (if (not errors-msg)
-      (let ((new-code (single 'db:hp-waste-code :id id)))
+      (let ((new-code (db-single 'db:hp-waste-code :id id)))
         (setf (db:code         new-code) code
               (db:explanation  new-code) expl)
-        (save new-code)
+        (db-save new-code)
         (manage-update-hp-waste-code (and success-msg id) success-msg errors-msg))
       (manage-hp-waste-code success-msg errors-msg))))
 
@@ -52,7 +52,7 @@
                       #'manage-update-hp-waste-code))
 
 (defun manage-update-hp-waste-code (id infos errors)
-  (let ((new-code (and id (single 'db:hp-waste-code :id id))))
+  (let ((new-code (and id (db-single 'db:hp-waste-code :id id))))
     (with-standard-html-frame (stream (_ "Update HP code statement")
                                       :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-hp-waste-code.tpl"

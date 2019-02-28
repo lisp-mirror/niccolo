@@ -20,8 +20,7 @@
    :alexandria
    :cl-ppcre
    :envy
-   :hunchentoot
-   :crane)
+   :hunchentoot)
   (:export
    :+program-name+
    :local-system-path
@@ -153,7 +152,8 @@
    :+post-federated-query-results+
    :+query-visited+
    :+query-http-parameter-key+
-   :+query-http-response-key+))
+   :+query-http-response-key+
+   :+free-text-re+))
 
 (defpackage :conditions
   (:use :cl)
@@ -190,6 +190,45 @@
    :define-conffile-writer
    :parse-simple-config
    :get-config-val))
+
+(defpackage :db-utils
+    (:use
+     :cl
+     :alexandria
+     :cl-ppcre
+     :config
+     :constants
+     :crane)
+    (:export
+     :do-rows
+     :fetch-raw-list
+     :prepare-for-sql-like
+     :keywordize-query-results
+     :get-max-id
+     :object-exists-in-db-p
+     :query-low-level
+     :db-filter
+     :db-single
+     :db-single-or-create
+     :db-single!
+     :db-create
+     :db-save
+     :db-query
+     :db-del
+     :db-nil-p
+     :db-non-nil-p
+     :if-db-nil-else
+     :count-all
+     :get-column-from-id))
+
+(defpackage :db-config
+  (:use
+   :cl
+   :alexandria
+   :cl-ppcre
+   :envy
+   :hunchentoot
+   :crane))
 
 (defpackage :db
   (:use
@@ -346,9 +385,10 @@
    :cl
    :alexandria
    :cl-ppcre
-   :crane
+   :sxql
    :config
-   :constants)
+   :constants
+   :db-utils)
   (:export
    :all-not-null-p
    :all-null-p
@@ -377,7 +417,6 @@
    :+integer-re+
    :+pos-integer-re+
    :+email-re+
-   :+free-text-re+
    :+internet-address-re+
    :+script-file-re+
    :+cer-code-re+
@@ -508,43 +547,12 @@
    :render-many-chemprod-barcodes
    :render-many-sample-barcodes))
 
-(defpackage :db-utils
-    (:use
-     :cl
-     :alexandria
-     :cl-ppcre
-     :config
-     :constants
-     :crane)
-    (:export
-     :do-rows
-     :fetch-raw-list
-     :prepare-for-sql-like
-     :keywordize-query-results
-     :get-max-id
-     :object-exists-in-db-p
-     :query-low-level
-     :db-nil-p
-     :if-db-nil-else
-     :count-all
-     :get-column-from-id))
-
-(defpackage :db-config
-  (:use
-   :cl
-   :alexandria
-   :cl-ppcre
-   :envy
-   :hunchentoot
-   :crane))
-
 (defpackage :session-user
   (:use
    :cl
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
    :config
    :constants)
   (:export
@@ -573,9 +581,9 @@
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
    :config
-   :constants)
+   :constants
+   :db-utils)
   (:export
    :+uri-query-start+
    :define-lab-route
@@ -657,7 +665,8 @@
    :with-http-ignored-errors
    :load-values-discrete-ranges
    :get-value-discrete-range
-   :normalize-quantity-units))
+   :normalize-quantity-units
+   :sequence-group-by))
 
 (defpackage :i18n
   (:use
@@ -696,7 +705,7 @@
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
+   :sxql
    :config
    :constants
    :db
@@ -804,7 +813,7 @@
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
+   :sxql
    :config
    :constants
    :validation
@@ -828,13 +837,13 @@
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
+   :sxql
    :config
    :constants
+   :db-utils
    :validation
    :ps-utils
    :string-utils
-   :db-utils
    :session-user
    :utils
    :views)
@@ -867,7 +876,6 @@
    :alexandria
    :cl-ppcre
    :hunchentoot
-   :crane
    :config
    :constants
    :validation

@@ -56,8 +56,8 @@
 
 (defun chem-prod->chem-compound (id)
   (when (object-exists-in-db-p 'db:chemical-product (safe-parse-number id -1))
-    (let ((prod (single 'db:chemical-product :id (safe-parse-number id -1))))
-      (single 'db:chemical-compound :id (db:compound prod)))))
+    (let ((prod (db-single 'db:chemical-product :id (safe-parse-number id -1))))
+      (db-single 'db:chemical-compound :id (db:compound prod)))))
 
 (defun make-pubchem-2d (cid &key (size :small))
   (let ((path  (format nil "/rest/pug/compound/cid/~a/PNG" cid))
@@ -155,7 +155,7 @@
             (concatenate 'list
                          row
                          (list :storage-link
-                               (if (not (eq (getf row :storage-map-id) :nil))
+                               (if (db-non-nil-p (getf row :storage-map-id))
                                    (gen-map-storage-link (getf row :storage-map-id)
                                                          (getf row :storage-s-coord)
                                                          (getf row :storage-t-coord))
@@ -195,7 +195,7 @@
   raw)
 
 (defun fetch-loan (product-id)
-  (let ((raw (query (select ((:as :u.username :username))
+  (let ((raw (db-query (select ((:as :u.username :username))
                       (from :loans)
                       (left-join (:as :user :u) :on (:= :loans.user-to :u.id))
                       (where (:= :loans.product product-id))))))
@@ -204,7 +204,7 @@
 (defun fetch-expired-products ()
   (with-session-user (user)
     (let* ((expiration-date (next-expiration-date))
-           (expired-raw (query (gen-all-prod-select
+           (expired-raw (db-query (gen-all-prod-select
                                  (where
                                   (:and
                                    (:= :chemp.owner (db:id user))
@@ -215,16 +215,17 @@
 (defun fetch-validity-expired-products ()
   (with-session-user (user)
     (let* ((expiration-date (next-expiration-date))
-           (expired         (build-template-list-chemical-prod (query (gen-all-prod-select
+           (expired         (build-template-list-chemical-prod (db-query (gen-all-prod-select
                                                                         (where
                                                                          (:and
                                                                           (:= :chemp.owner (db:id user))
-                                                                          (:< :validity-date expiration-date))))))))
+                                                                          (:< :chemp.validity-date
+                                                                              expiration-date))))))))
       expired)))
 
 (defun fetch-product-by-id (id &optional (delete-link nil) (update-link nil))
   (when id
-    (build-template-list-chemical-prod (query (gen-all-prod-select (where (:= :chemp-id id))))
+    (build-template-list-chemical-prod (db-query (gen-all-prod-select (where (:= :chemp.id id))))
                                        delete-link
                                        update-link)))
 
@@ -233,20 +234,20 @@
                       &optional
                         (delete-link nil)
                         (update-link nil))
-  (let ((raw (query (gen-all-prod-select (where
-                                          (:and (:like :owner-name
+  (let ((raw (db-query (gen-all-prod-select (where
+                                          (:and (:like :user.username
                                                        (prepare-for-sql-like owner))
-                                                (:like :chem-name
+                                                (:like :chem.name
                                                        (prepare-for-sql-like chem-name))
-                                                (:like :building-name
+                                                (:like :bui.name
                                                        (prepare-for-sql-like building-name))
                                                 (if floor
-                                                    (list := :storage-floor floor)
+                                                    (list := :storage.floor-number floor)
                                                     (list := 1 1))
-                                                (:like :storage-name
+                                                (:like :storage.name
                                                        (prepare-for-sql-like storage-name))
                                                 (if shelf
-                                                    (list := :shelf shelf)
+                                                    (list := :chemp.shelf shelf)
                                                     (list := 1 1))))))))
     (when struct-file
       (let ((group (molfile:parse-mdl-catch-errors (read-file-into-string struct-file))))
@@ -262,12 +263,14 @@
     (build-template-list-chemical-prod raw delete-link update-link)))
 
 (defun fetch-product-min-id (id &optional (delete-link nil) (update-link nil))
-  (let ((raw (query (gen-all-prod-select (where
-                                          (:> :chemp-id id))))))
-    (build-template-list-chemical-prod raw delete-link update-link)))
+  (with-session-user (user)
+    (let ((raw (db-query (gen-all-prod-select (where (:and
+                                                      (:> :chemp.id id)
+                                                      (:= :chemp.owner (db:id user))))))))
+      (build-template-list-chemical-prod raw delete-link update-link))))
 
 (defun fetch-all-product (&optional (delete-link nil) (update-link nil))
-  (let ((raw (query (gen-all-prod-select))))
+  (let ((raw (db-query (gen-all-prod-select))))
     (build-template-list-chemical-prod raw delete-link update-link)))
 
 (defun manage-chem-prod (infos errors &key (data (fetch-all-product 'delete-chem-prod
@@ -421,12 +424,12 @@
                                                      (list to
                                                            +pos-integer-re+
                                                            (_ "Ending range ivalid"))))))
-          (results      (build-template-list-chemical-prod (query (gen-all-prod-select
+          (results      (build-template-list-chemical-prod (db-query (gen-all-prod-select
                                                                     (where
                                                                      (:and
                                                                       (:= :chemp.owner (db:id user))
-                                                                      (:>= :chemp-id from)
-                                                                      (:<= :chemp-id to))))))))
+                                                                      (:>= :chemp.id from)
+                                                                      (:<= :chemp.id to))))))))
     (manage-chem-prod errors-msg nil :data results))))
 
 (defun maybe-add-tracking-log (chemical-product user)
@@ -445,12 +448,12 @@
                                            (list quantity    +pos-integer-re+ (_ "Quantity invalid"))
                                            (list units       +free-text-re+ (_ "Units invalid")))))
            (errors-msg-chem-not-found (when (and (not errors-msg-1)
-                                                 (not (single 'db:chemical-compound
+                                                 (not (db-single 'db:chemical-compound
                                                               :id chemical-id)))
                                         (list (_ "Chemical compound not in the database"))))
            (errors-msg-stor-not-found (when (and (not errors-msg-1)
                                                  (not errors-msg-chem-not-found)
-                                                 (not (single 'db:storage
+                                                 (not (db-single 'db:storage
                                                               :id storage-id)))
                                         (list (_ "Storage not in the database"))))
            (errors-msg-validity-date       (when (not (date-validate-p validity-date))
@@ -465,11 +468,11 @@
                                     errors-msg-expire-date))
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Saved chemical product: ~a")
-                                           (db:name (single 'db:chemical-compound
+                                           (db:name (db-single 'db:chemical-compound
                                                             :id chemical-id)))))))
       (if (and user
                (not errors-msg))
-          (let* ((new-chem (create 'db:chemical-product
+          (let* ((new-chem (db-create'db:chemical-product
                                    :compound      chemical-id
                                    :storage       storage-id
                                    :shelf         shelf
@@ -479,7 +482,7 @@
                                    :expire-date   (encode-datetime-string expire-date)
                                    :owner         (db:id user)
                                    :notes         (clean-string notes))))
-            (save new-chem) ; useless?
+            (db-save new-chem) ; useless?
             (maybe-add-tracking-log new-chem user)
             (values errors-msg success-msg new-chem))
           (values errors-msg success-msg nil)))))
@@ -572,12 +575,12 @@
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no")
                                         (list owner +pos-integer-re+ "no"))))
         (let* ((chemprod-id  (safe-parse-number id -1))
-               (to-trash     (single 'db:chemical-product :id chemprod-id)))
+               (to-trash     (db-single 'db:chemical-product :id chemprod-id)))
           (if (and to-trash
                    (= (db:id user) (parse-integer owner)))
               (progn
                 (maybe-add-tracking-log to-trash user)
-                (del to-trash)
+                (db-del to-trash)
                 (manage-chem-prod (list (_ "Product deleted")) nil))
               (manage-chem-prod nil (list (_ "Product not deleted")))))))))
 
@@ -588,26 +591,26 @@
                                                (_ "Id product invalid"))))))
     (if errors-msg-1
         (manage-chem-prod nil errors-msg-1)
-        (if (not (single 'db:user :id from-uid))
+        (if (not (db-single 'db:user :id from-uid))
             (manage-chem-prod nil (list (_ "You are not an user!")))
-            (if (not (single 'db:user :username to-username))
+            (if (not (db-single 'db:user :username to-username))
                 (manage-chem-prod nil (list (format nil (_ "There is not any user called ~s")
                                                     to-username)))
-                (if (not (single 'db:chemical-product :id (parse-integer id)))
+                (if (not (db-single 'db:chemical-product :id (parse-integer id)))
                     (manage-chem-prod nil (list (_ "Id product invalid")))
-                    (if (single 'db:loans :product (parse-integer id))
+                    (if (db-single 'db:loans :product (parse-integer id))
                         (manage-chem-prod nil (list (_ "Product already lent")))
-                        (if (not (= (db:owner (single 'db:chemical-product
+                        (if (not (= (db:owner (db-single 'db:chemical-product
                                                       :id (parse-integer id)))
                                     from-uid))
                             (manage-chem-prod nil (list (_ "You do not own this product")))
-                            (if (= (db:id (single 'db:user :username to-username)) from-uid)
+                            (if (= (db:id (db-single 'db:user :username to-username)) from-uid)
                                 (manage-chem-prod nil (list (_ "You can not lend to yourself")))
                                 (progn
-                                  (create 'db:loans
+                                  (db-create'db:loans
                                           :product   (parse-integer id)
                                           :user-from from-uid
-                                          :user-to   (db:id (single 'db:user
+                                          :user-to   (db:id (db-single 'db:user
                                                                     :username to-username)))
                                   (manage-chem-prod (list (format nil (_ "Lent product to ~a")
                                                                   to-username))
@@ -616,11 +619,11 @@
 (define-lab-route remove-loan ("/lending-remove/:id" :method :get)
   (with-authentication
     (let* ((act-product-id (or (scan-to-strings +pos-integer-re+ id) +db-invalid-id+))
-           (loan (single 'db:loans :product (parse-integer act-product-id))))
+           (loan (db-single 'db:loans :product (parse-integer act-product-id))))
       (if (and loan
                (= (get-session-user-id) (db:user-from loan)))
           (progn
-            (del loan)
+            (db-del loan)
             (manage-chem-prod (list (_ "Success")) nil))
           (manage-chem-prod nil (list (_ "Failure")))))))
 
@@ -632,7 +635,7 @@
 (defmethod db:generate-ps-custom-label ((product db:chemical-product)
                                         &key &allow-other-keys)
   (let ((haz-data (keywordize-query-results
-                   (query
+                   (db-query
                     (select ((:as :chem.name               :name)
                              (:as :ghs-h.code              :code-h)
                              (:as :ghs-pict.pictogram-file :pictogram)
@@ -656,7 +659,7 @@
                       (where
                        (:= :chemp.id (db:id product)))))))
         (prec-data (keywordize-query-results
-                    (query
+                    (db-query
                      (select ((:as :ghs-p.code              :code-p))
                        (from (:as :chemical-product :chemp))
                        (left-join (:as :chemical-compound   :chem)
@@ -757,7 +760,7 @@
 (define-lab-route gen-custom-label ("/custom-label/:id" :method :get)
   (with-authentication
     (let* ((act-product-id (or (scan-to-strings +pos-integer-re+ id) +db-invalid-id+))
-           (product        (single 'db:chemical-product
+           (product        (db-single 'db:chemical-product
                                    :id (parse-integer act-product-id))))
       (if product
           (progn
@@ -772,7 +775,7 @@
             (all-messages ""))
         (loop for id in ids do
              (if (not (regexp-validate (list (list id +pos-integer-re+ (_ "no")))))
-                 (let ((object (single class :id id)))
+                 (let ((object (db-single class :id id)))
                    (when (not (null object))
                      (db:with-owner-object (owner object)
                        (if (and (not (null owner))
@@ -783,7 +786,7 @@
                                                              (format nil
                                                                      message-ok
                                                                      object)))
-                             (crane:del object))
+                             (db-del object))
                            (setf all-errors (concatenate 'string
                                                          all-errors
                                                          (format nil message-error object)))))))))
@@ -799,7 +802,7 @@
       (let* ((errors-shortage-not-int  (when (not (integer-positive-validate shortage))
                                          (list (_ "Shortage threshold not valid (must be a positive integer)"))))
              (errors-msg-chem-not-found (when (and (not errors-shortage-not-int)
-                                                   (not (single 'db:chemical-compound
+                                                   (not (db-single 'db:chemical-compound
                                                                 :id id)))
                                           (list (_ "Chemical compound not in the database"))))
              (errors-msg (concatenate 'list
@@ -809,11 +812,11 @@
                                (list (format nil (_ "Updated chemical shortage threshold."))))))
         (when (and user
                    (not errors-msg))
-          (let ((threshold (single-or-create 'db:chemical-compound-preferences
+          (let ((threshold (db-single-or-create 'db:chemical-compound-preferences
                                              :compound id
                                              :owner (db:id user))))
             (setf (db:shortage threshold) (parse-integer shortage))
-            (save threshold)))
+            (db-save threshold)))
         (manage-chem-prod success-msg errors-msg)))))
 
 (define-lab-route others-op-chem-prod ("/others-op-chem-prod/" :method :post)
@@ -890,9 +893,9 @@
                (setf row (mapcar #'strip-tags row))
                (incf row-number)
                (if (= (length row) +csv-field-count+)
-                   (let ((chemical   (single 'db:chemical-compound
+                   (let ((chemical   (db-single 'db:chemical-compound
                                              :name (elt row +csv-field-name+)))
-                         (storage    (single 'db:storage
+                         (storage    (db-single 'db:storage
                                              :name (elt row +csv-field-storage+)
                                              :id   building-id))
                          (date-valid (if (date-validate-p (elt row +csv-field-date-validity+))
@@ -944,7 +947,7 @@
                                          (push (list :chemp-id       (db:id            prod)
                                                      :chem-name      (db:name          chemical)
                                                      :building-name
-                                                     (db:name (single 'db:building
+                                                     (db:name (db-single 'db:building
                                                                       :id building-id))
                                                      :storage-floor   (db:floor-number storage)
                                                      :storage-name    (db:name         storage)

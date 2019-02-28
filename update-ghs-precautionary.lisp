@@ -38,10 +38,10 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "GHS precautionary statements updated."))))))
     (if (not errors-msg)
-      (let ((new-prec (single 'db:ghs-precautionary-statement :id id)))
+      (let ((new-prec (db-single 'db:ghs-precautionary-statement :id id)))
         (setf (db:code         new-prec) code
               (db:explanation  new-prec) expl)
-        (save new-prec)
+        (db-save new-prec)
         (manage-update-prec (and success-msg id) success-msg errors-msg))
       (manage-ghs-precautionary-code success-msg errors-msg))))
 
@@ -52,7 +52,7 @@
                       #'manage-update-prec))
 
 (defun manage-update-prec (id infos errors)
-  (let ((new-prec (and id (single 'db:ghs-precautionary-statement :id id))))
+  (let ((new-prec (and id (db-single 'db:ghs-precautionary-statement :id id))))
     (with-standard-html-frame (stream (_ "Update GHS precautionary statement")
                                       :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-precautionary.tpl"

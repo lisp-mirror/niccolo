@@ -120,7 +120,7 @@
     (bt:with-recursive-lock-held (lock)
       (let ((now (local-time-obj-now)))
         (setf (db:session-nonce object) (sensor-nonce))
-        (save object)
+        (db-save object)
         (multiple-value-bind (res successp)
             (%ask-sensors (db:description   object)
                           (db:address       object)
@@ -135,25 +135,24 @@
                 (setf (db:last-value object) res)
                 (dump-sensor-log-line object))
               (setf (db:status object) +sensor-error-status+))
-          (save object)))))
+          (db-save object)))))
 
   ;; web routines
 
   (defun-w-lock fetch-all-sensors (&optional (delete-link nil) (update-link))
-    (let ((raw (query
-                (select ((:as :s.id                :sid)
-                         (:as :s.description       :description)
-                         (:as :s.address           :address)
-                         (:as :s.path              :path)
-                         ;(:as :s.secret            :secret)
-                         (:as :s.script-file       :script)
-                         (:as :s.status            :status)
-                         (:as :s.last-access-time  :access-time)
-                         (:as :s.last-value        :last-value)
-                         (:as :s.map-id            :map-link-id)
-                         (:as :s.s-coord           :s-coord)
-                         (:as :s.t-coord           :t-coord))
-                  (from (:as :sensor :s))))))
+    (let ((raw (db-query (select ((:as :s.id                :sid)
+                                  (:as :s.description       :description)
+                                  (:as :s.address           :address)
+                                  (:as :s.path              :path)
+                                        ;(:as :s.secret            :secret)
+                                  (:as :s.script-file       :script)
+                                  (:as :s.status            :status)
+                                  (:as :s.last-access-time  :access-time)
+                                  (:as :s.last-value        :last-value)
+                                  (:as :s.map-id            :map-link-id)
+                                  (:as :s.s-coord           :s-coord)
+                                  (:as :s.t-coord           :t-coord))
+                           (from (:as :sensor :s))))))
       (loop for row in raw collect
            (let* ((sid           (getf row :|sid|))
                   (description   (getf row :|description|))
@@ -189,7 +188,7 @@
                     :has-sensor-log    (if (uiop:file-exists-p (build-log-path sid))
                                            t
                                            nil)
-                    :has-sensor-link   (getf row :|map-link-id|))
+                    :has-sensor-link   (db-non-nil-p (getf row :|map-link-id|)))
               (if delete-link
                   (list :delete-link (restas:genurl delete-link :id sid)))
               (if update-link
@@ -271,7 +270,7 @@
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Saved sensor: ~s") description)))))
       (when (not errors-msg)
-        (let ((sensor (create 'db:sensor
+        (let ((sensor (db-create'db:sensor
                               :description description
                               :address     address
                               :path        path
@@ -281,7 +280,7 @@
                               :last-access-time (local-time-obj-now)
                               :s-coord 0
                               :t-coord 0)))
-          (save sensor)))
+          (db-save sensor)))
       (manage-sensor success-msg errors-msg
                      :start-from start-from
                      :data-count data-count)))
@@ -315,9 +314,9 @@
       (with-admin-credentials
           (with-pagination (pagination-uri utils:*alias-pagination*)
             (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-              (let ((to-trash (single 'db:sensor :id id)))
+              (let ((to-trash (db-single 'db:sensor :id id)))
                 (when to-trash
-                  (del (single 'db:sensor :id id)))))
+                  (db-del (db-single 'db:sensor :id id)))))
             (restas:redirect 'sensor))
         (manage-sensor nil (list *insufficient-privileges-message*)))))
 
@@ -338,10 +337,10 @@
                                                                         (_ "Sensor id ivalid"))))))
 
                      (errors-msg-sensor-not-found (when (and (not errors-msg-1)
-                                                             (not (single 'db:sensor :id sid)))
+                                                             (not (db-single 'db:sensor :id sid)))
                                                     (list (_ "Sensor not in the database"))))
                      (errors-msg-map-not-found (when (and (not errors-msg-1)
-                                                          (not (single 'db:plant-map :id mid)))
+                                                          (not (db-single 'db:plant-map :id mid)))
                                                  (list (_ "Map not in the database"))))
                      (error-no-coords          (regexp-validate (list (list x
                                                                             +pos-integer-re+
@@ -364,11 +363,11 @@
                               (cl-gd:image-size bg)
                             (let ((sc (round (* +relative-coord-scaling+ (/ (parse-integer x) w))))
                                   (tc (round (* +relative-coord-scaling+ (/ (parse-integer y) h))))
-                                  (updated-sensor  (single 'db:sensor :id sid))) ;; always not null here
+                                  (updated-sensor  (db-single 'db:sensor :id sid))) ;; always not null here
                               (setf (db:s-coord updated-sensor) sc
                                     (db:t-coord updated-sensor) tc
                                     (db:map-id  updated-sensor)  mid)
-                              (save updated-sensor)))))
+                              (db-save updated-sensor)))))
                       (restas:redirect 'sensor))
                     (restas:redirect 'sensor)))))
         (manage-sensor nil (list *insufficient-privileges-message*)))))
@@ -405,7 +404,7 @@
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Updated sensor: ~s") description)))))
       (if (not errors-msg)
-          (let ((sensor (single 'db:sensor :id id)))
+          (let ((sensor (db-single 'db:sensor :id id)))
             (setf (db:description sensor) description)
             (setf (db:address     sensor) address)
             (setf (db:path        sensor) path)
@@ -413,7 +412,7 @@
             (setf (db:status      sensor) +sensor-ok-status+)
             (setf (db:script-file sensor) script)
             (setf (db:status      sensor) +sensor-ok-status+)
-            (save sensor)
+            (db-save sensor)
             (manage-update-sensor (and success-msg id) success-msg errors-msg))
           (manage-sensor success-msg errors-msg))))
 
@@ -483,7 +482,7 @@
       (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
                                                             (_ "Map id invalid")))))
              (error-msg-map-not-found (when (and (not error-msg-no-int)
-                                                 (not (single 'db:plant-map
+                                                 (not (db-single 'db:plant-map
                                                               :id (parse-integer id))))
                                         (list (_ "Map not in the database"))))
              (all-errors (append error-msg-no-int error-msg-map-not-found)))
@@ -504,7 +503,7 @@
   (defun sensor-update-loop ()
     (do ()
         (nil ())
-      (let ((all-sensors (filter 'db:sensor)))
+      (let ((all-sensors (db-filter 'db:sensor)))
         (loop for sensor in all-sensors do
              (ask-sensors sensor))
         (sleep +sensor-read-delay+))))

@@ -16,12 +16,52 @@
 
 (in-package :db-utils)
 
+(defparameter *db-lock* (bt:make-recursive-lock))
+
+(defmacro with-global-lock (&body body)
+  `(bt:with-recursive-lock-held (*db-lock*)
+     (crane:with-transaction ()
+       ,@body)))
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun query-low-level (sql database-name)
     "Bypass crane and execute sql query with dbi"
     (when (crane.config:debugp)
       (format t "~&Query: ~A~&" sql))
-    (dbi:execute (dbi:prepare (crane.connect:get-connection database-name) sql))))
+    (with-global-lock
+      (dbi:execute (dbi:prepare (crane.connect:get-connection database-name) sql)))))
+
+(defmacro db-filter (class &rest params)
+  `(with-global-lock
+    (crane:filter ,class ,@params)))
+
+(defmacro db-single (class &rest params)
+  `(with-global-lock
+    (crane:single ,class ,@params)))
+
+(defmacro db-single! (class &rest params)
+  `(with-global-lock
+    (crane:single! ,class ,@params)))
+
+(defmacro db-single-or-create (class &rest params)
+  `(with-global-lock
+     (crane:single-or-create ,class ,@params)))
+
+(defmacro db-create (class &rest params)
+  `(with-global-lock
+    (crane:create ,class ,@params)))
+
+(defun db-save (obj)
+  (with-global-lock
+    (crane:save obj)))
+
+(defun db-del (obj)
+  (with-global-lock
+    (crane:del obj)))
+
+(defun db-query (query &optional database-name)
+  (with-global-lock
+    (query query database-name)))
 
 (defmacro do-rows ((row res) table &body body)
   `(let ((,res ,table))
@@ -29,10 +69,10 @@
      ,res))
 
 (defun fetch-raw-list (what)
-  (crane:filter what))
+  (db-filter what))
 
 (defun prepare-for-sql-like (s)
-  (if (cl-ppcre:scan validation:+free-text-re+ s)
+  (if (cl-ppcre:scan +free-text-re+ s)
       (format nil "%~a%" s)
       "%"))
 
@@ -52,23 +92,27 @@
       0))
 
 (defun object-exists-in-db-p (class id)
-  (crane:single class :id id))
+  (db-single class :id id))
 
 (defmacro if-db-nil-else (expr else)
-  `(if (not (eq ,expr :nil))
+  `(if (not (db-nil-p ,expr))
        ,expr
        ,else))
 
 (defun db-nil-p (a)
   (or (null a)
-      (eq a :nil)))
+      (eq a :nil)
+      (eq a :null)))
+
+(defun db-non-nil-p (a)
+  (not (db-nil-p a)))
 
 (defun count-all (class)
-  (second (first (crane:query (select ((:as (:count :*) :ct))
-                                (from class))))))
+  (second (first (db-query (select ((:as (:count :*) :ct))
+                             (from class))))))
 
 (defun get-column-from-id (id re object column-fn &key (default ""))
-  (let ((obj-db (single object :id (if (scan-to-strings re id)
+  (let ((obj-db (db-single object :id (if (scan-to-strings re id)
                                        (parse-integer id)
                                        +db-invalid-id-number+))))
     (if obj-db

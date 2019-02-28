@@ -26,8 +26,8 @@
 
 (define-constant +waste-spreadsheet-registered-only+         1 :test #'=)
 
-(defmacro gen-select-message-statistics (status group-by-column)
-  `(select ((:as (:sum :waste-message.weight)       :sum-weight)
+(defmacro gen-select-message-statistics (status)
+  `(select ((:as :waste-message.weight              :weight)
             (:as :cer-code.id                       :cer-id)
             (:as :user.username                     :username)
             (:as :message.sent-time                 :sent-time)
@@ -46,17 +46,30 @@
      (inner-join :building :on (:= :building.id :waste-message.building-id))
      (inner-join :address  :on (:= :address.id  :building.address-id))
      (inner-join :cer-code :on (:= :cer-code.id :waste-message.cer-code-id))
-     (inner-join :user     :on (:=  :user.id     :message.sender))
-     (group-by ,group-by-column)))
+     (inner-join :user     :on (:=  :user.id     :message.sender))))
 
 (defmacro define-aggregation-waste-query (group-by-column)
-  `(defun ,(format-symbol t "~:@(waste-messages-statistics-by-~a~)" group-by-column)
-       (status &optional (last-year-only nil))
-     (let* ((the-query (gen-select-message-statistics status ,group-by-column))
-            (raw (keywordize-query-results (query the-query))))
-       (if last-year-only
-           (remove-if (remove-old-waste-stats) raw)
-           raw))))
+  (with-gensyms (the-query raw raw-recent grouped weight-sum)
+    `(defun ,(format-symbol t "~:@(waste-messages-statistics-by-~a~)" group-by-column)
+         (status &optional (last-year-only nil))
+       (let* ((,the-query  (gen-select-message-statistics status))
+              (,raw        (keywordize-query-results (db-query ,the-query)))
+              (,raw-recent (if last-year-only
+                               (remove-if (remove-old-waste-stats) ,raw)
+                               ,raw))
+              (,grouped    (utils:sequence-group-by ,raw-recent
+                                                    :test
+                                                    (lambda (a b) (equal (getf a ,group-by-column)
+                                                                         (getf b ,group-by-column)))))
+              (,weight-sum (loop for single-group in ,grouped collect
+                                (reduce #'(lambda (a b) (+ a (getf b :weight)))
+                                        single-group
+                                        :initial-value 0.0))))
+         (loop  for group in ,grouped
+                for i     from 0 by 1
+            collect
+              (append (first group)
+                      (list :sum-weight (elt ,weight-sum i))))))))
 
 (define-aggregation-waste-query :cer-id)
 

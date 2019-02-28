@@ -58,7 +58,7 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Sample updated")))))
     (if (not errors-msg)
-        (let* ((sample (single 'db:chemical-sample :id id)))
+        (let* ((sample (db-single 'db:chemical-sample :id id)))
           (setf (db:checkout-date sample) (encode-datetime-string new-checkout-date)
                 (db:description   sample) clean-description
                 ;; note: no need to check input as 'encode-compliantp
@@ -68,20 +68,20 @@
                 (db:units         sample) units
                 (db:notes         sample) clean-notes
                 (db:person-id     sample) person-id)
-          (save sample)
+          (db-save sample)
           (manage-update-sample (and success-msg id) success-msg errors-msg))
         (manage-update-sample id success-msg errors-msg))))
 
 (defun manage-update-sample (id infos errors)
   (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
          (new-sample (and (safe-parse-number id nil)
-                          (single 'db:chemical-sample :id (parse-integer id))))
+                          (db-single 'db:chemical-sample :id (parse-integer id))))
          (decoded-compliantp (and new-sample
                                   (decode-compliantp (db:compliantp new-sample))))
          (json-person        (array-autocomplete-person))
          (json-person-id     (array-autocomplete-person-id))
          (person-object      (and (safe-parse-number id nil)
-                                  (single 'db:person
+                                  (db-single 'db:person
                                           :id (db:person-id new-sample))))
          (person-description (and person-object
                                   (db:build-description person-object))))
@@ -128,7 +128,7 @@
   (with-authentication
     (with-session-user (user)
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
-        (let* ((to-update (single 'db:chemical-sample :id (parse-integer id))))
+        (let* ((to-update (db-single 'db:chemical-sample :id (parse-integer id))))
           (db:with-owner-object (owner to-update)
             (let ((owner-id (and owner (db:id owner))))
               (if (and to-update

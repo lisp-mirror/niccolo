@@ -298,8 +298,8 @@ td.chemp-haz-diamond img {
 
 .add-functionality-overlay {
     font-family: Mono;
-    transform:   scale(0.8) translate(-20%,15%);
-    color:       rgba(0, 0, 255, 0.9);
+    transform:   scale(0.8) translate(37%,12%);
+    color:       #0f99c0;
     font-weight: bolder;
     font-size:   100%;
 }

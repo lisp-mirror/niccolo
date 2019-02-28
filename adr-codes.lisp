@@ -23,13 +23,14 @@
 (define-constant +name-adr-uncode+         "uncode"     :test #'string=)
 
 (defun all-adr-code-select ()
-  (query (select (( :as :adr.id                       :id)
+  (db-query (select (( :as :adr.id                       :id)
                   ( :as :adr.uncode                   :uncode)
                   ( :as :adr.code-class               :code-class)
                   ( :as :adr.explanation              :explanation)
                   ( :as :adr-pictogram.pictogram-file :pictogram))
            (from (:as :adr-code :adr))
-           (left-join :adr-pictogram :on (:= :adr.pictogram :adr-pictogram.id)))))
+           (left-join :adr-pictogram :on (:= :adr.pictogram :adr-pictogram.id))
+           (order-by (:asc :adr.uncode)))))
 
 (defun build-template-list-adr-code (start-from data-count
                                      &key (delete-link nil) (update-link nil))
@@ -86,11 +87,11 @@
                                          (_ "Saved new ADR code: ~s - ~s")
                                          code-class expl)))))
     (when (not errors-msg)
-      (let ((ghs (create 'db:adr-code
+      (let ((ghs (db-create'db:adr-code
                          :code-class code-class
                          :uncode uncode
                          :explanation expl)))
-        (save ghs)))
+        (db-save ghs)))
     (manage-adr-code success-msg errors-msg
                      :start-from start-from
                      :data-count data-count)))
@@ -153,9 +154,9 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:adr-code :id id)))
+            (let ((to-trash (db-single 'db:adr-code :id id)))
               (when to-trash
-                (del (single 'db:adr-code  :id id)))))
+                (db-del (db-single 'db:adr-code  :id id)))))
           (restas:redirect 'adr))
       (manage-adr-code nil (list *insufficient-privileges-message*)))))
 
@@ -166,11 +167,11 @@
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list (get-clean-parameter +pictogram-form-key+)
                                                        +pos-integer-re+ "")))))
-            (let ((adr-code (single 'db:adr-code :id id))
-                  (pict     (single 'db:adr-pictogram :id (get-clean-parameter +pictogram-form-key+))))
+            (let ((adr-code (db-single 'db:adr-code :id id))
+                  (pict     (db-single 'db:adr-pictogram :id (get-clean-parameter +pictogram-form-key+))))
               (when (and adr-code
                          pict)
                 (setf (db:pictogram adr-code) (db:id pict))
-                (save adr-code))))
+                (db-save adr-code))))
           (restas:redirect 'adr))
       (manage-adr-code nil (list *insufficient-privileges-message*)))))

@@ -31,7 +31,7 @@
                                    (not (object-exists-in-db-p 'db:building id)))
                           (list (_ "Building does not exists in database"))))
          (errors-msg-address-not-found (when (and (not errors-msg-1)
-                                                  (not (single 'db:address :id address-id)))
+                                                  (not (db-single 'db:address :id address-id)))
                                          (list (_ "Address not in the database"))))
          (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
                               (exists-with-different-id-validate 'db:building
@@ -47,10 +47,10 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Building updated")))))
     (if (not errors-msg)
-      (let ((building-updated (single 'db:building :id id)))
+      (let ((building-updated (db-single 'db:building :id id)))
         (setf (db:name       building-updated) name
               (db:address-id building-updated) address-id)
-        (save building-updated)
+        (db-save building-updated)
         (manage-update-building (and success-msg id) success-msg errors-msg))
       (manage-building success-msg errors-msg))))
 
@@ -77,10 +77,10 @@
                             :address-id-value (and id
                                                    (db:address-id new-building))
                             :address-value    (and id
-                                                   (single 'db:address
+                                                   (db-single 'db:address
                                                            :id (db:address-id new-building))
                                                    (db:build-description
-                                                    (single 'db:address
+                                                    (db-single 'db:address
                                                             :id (db:address-id new-building))))
                             :name        +name-building-proper-name+
                             :address-id  +name-building-address-id+

@@ -29,13 +29,13 @@
 
 (defun render-chemprod-barcode-x-y (doc id x y)
   (let* ((barcode         (make-instance 'brcd:code128))
-         (product         (crane:single 'db:chemical-product :id (parse-integer id)))
+         (product         (db-utils:db-single 'db:chemical-product :id (parse-integer id)))
          (y-end-barcode (- (- (height +a4-page-size+)
-                                y)
-                             (brcd:height barcode)))
+                              y)
+                           (brcd:height barcode)))
          (y-line-div      (+ y-end-barcode (brcd:height barcode))))
     (set-parameter doc +parameter-key-searchpath+
-                      (namestring (local-system-path +data-path+)))
+                   (namestring (local-system-path +data-path+)))
     (brcd:parse barcode (string-utils:encode-barcode (db:id product)))
     (save doc)
     (with-save-restore (doc)
@@ -53,15 +53,15 @@
       (setcolor doc +color-type-fillstroke+ cl-colors:+red+)
       (setfont doc font 5.0)
       (show-boxed doc (format nil "~a ~a"
-                                 (db:id product)
-                                 (db:name (crane:single 'db:chemical-compound
-                                                        :id (db:compound product))))
-                     0
-                     -0.5
-                     (brcd:width barcode)
-                     0
-                     +boxed-text-h-mode-center+
-                     ""))
+                              (db:id product)
+                              (db:name (db-utils:db-single 'db:chemical-compound
+                                                           :id (db:compound product))))
+                  0
+                  -0.5
+                  (brcd:width barcode)
+                  0
+                  +boxed-text-h-mode-center+
+                  ""))
     (restore doc)
     (brcd:height barcode)))
 
@@ -77,11 +77,11 @@
     (brcd:parse barcode (string-utils:encode-barcode text))
     (with-save-restore (doc)
       (ps:scale doc
-                 (/ w (brcd:width barcode))
-                 (/ h (+ padding font-size (brcd:height barcode))))
+                (/ w (brcd:width barcode))
+                (/ h (+ padding font-size (brcd:height barcode))))
       (with-save-restore (doc)
-         (ps:translate doc padding padding)
-         (brcd:draw barcode doc))
+        (ps:translate doc padding padding)
+        (brcd:draw barcode doc))
       (with-save-restore (doc)
         (ps:draw-text-confined-in-box doc
                                       font
@@ -129,7 +129,7 @@
          (x  +sample-labels-padding+))
         ((null ids))
       (when (validation:id-valid-and-used-p 'db:chemical-sample (first-elt ids))
-        (let ((sample (crane:single 'db:chemical-sample :id (first-elt ids))))
+        (let ((sample (db-utils:db-single 'db:chemical-sample :id (first-elt ids))))
           (when (>= (+ x w) +page-rendering-max-w+)
             (setf x +sample-labels-padding+)
             (incf y h))
@@ -168,11 +168,11 @@
      (set-info ,doc +ps-comment-key-orientation+ "Portrait")
      (open-doc ,doc nil)
      (let ((img-header (open-image-file ,doc +image-file-type-eps+
-                                           (namestring (local-system-path +letter-header+))
-                                           "" 0)))
+                                        (namestring (local-system-path +letter-header+))
+                                        "" 0)))
        (begin-page ,doc)
        (set-parameter ,doc +parameter-key-searchpath+
-                         (namestring (local-system-path +data-path+)))
+                      (namestring (local-system-path +data-path+)))
        (place-image ,doc img-header 0.0 (- 210 +header-image-export-height+) 1.0)
        ,@body
        (end-page ,doc)
@@ -199,17 +199,17 @@
          (*callback-string* ""))
      (open-doc ,doc nil)
      (let ((img-header (open-image-file ,doc +image-file-type-png+
-                                           (namestring (local-system-path +letter-header+))
-                                           "" 0)))
+                                        (namestring (local-system-path +letter-header+))
+                                        "" 0)))
        (begin-page ,doc)
        (set-parameter ,doc +parameter-key-searchpath+
-                         (namestring (local-system-path +data-path+)))
+                      (namestring (local-system-path +data-path+)))
        (place-image ,doc img-header 0.0 (- 297 +header-image-export-height+) 1.0))
-       ,@body
-       (end-page ,doc)
-       (close-doc ,doc)
-       (shutdown)
-       *callback-string*))
+     ,@body
+     (end-page ,doc)
+     (close-doc ,doc)
+     (shutdown)
+     *callback-string*))
 
 (let ((memoized-font nil)
       (memoized-doc  nil))
@@ -237,7 +237,7 @@
        for id in ids
        for y from +page-margin-top+ do
          (when (and (scan validation:+pos-integer-re+ id)
-                    (crane:single 'db:chemical-product :id (parse-integer id)))
+                    (db-utils:db-single 'db:chemical-product :id (parse-integer id)))
            (when (> (+ y saved-barcode-h) (- (height +a4-page-size+) +page-margin-top+))
              (end-page doc)
              (begin-page doc)

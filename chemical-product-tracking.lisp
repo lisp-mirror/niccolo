@@ -20,12 +20,12 @@
 
 (defun chemical-tracked-p (product-id user-id)
   (when-let ((compound (chem-prod->chem-compound product-id)))
-    (single 'db:chemical-usage-tracking
+    (db-single 'db:chemical-usage-tracking
             :chemical-id (db:id compound)
             :user-id     user-id)))
 
 (defun sum-chem-quantity (user-id chemical-id)
-  (when-let ((products (filter 'db:chemical-product
+  (when-let ((products (db-filter 'db:chemical-product
                                :owner    (safe-parse-number user-id     -1)
                                :compound (safe-parse-number chemical-id -1))))
     (reduce #'(lambda (sum-so-far product)
@@ -37,14 +37,14 @@
             :initial-value 0.0)))
 
 (defun find-tracking (user-id chemical-id)
-  (single 'db:chemical-usage-tracking
+  (db-single 'db:chemical-usage-tracking
           :user-id     (safe-parse-number user-id     -1)
           :chemical-id (safe-parse-number chemical-id -1)))
 
 (defun find-chemical-tracking (chemprod-id user-id tracking-type)
   (when-let* ((chemical (chem-prod->chem-compound (safe-parse-number chemprod-id -1)))
               (tracking (find-tracking user-id (db:id chemical))))
-    (keywordize-query-results (query (select :*
+    (keywordize-query-results (db-query (select :*
                                        (from  (:as :chemical-tracking-data :track))
                                        (where (:and (:= :track.track-type  tracking-type)
                                                     (:= :track.tracking-id (db:id tracking))))
@@ -52,7 +52,7 @@
 
 (defun tracking-add-record-qty (user-id chemical-id)
   (when-let* ((tracking (find-tracking user-id chemical-id)))
-    (create 'db:chemical-tracking-data
+    (db-create'db:chemical-tracking-data
             :tracking-id (db:id tracking)
             :track-date  (local-time-obj-now)
             :track-type  +tracking-type-quantity+
@@ -67,7 +67,7 @@
                                              (:user-id :chemical-id)
                                              ((db:id user) (db:id compound))
                                              "ok")))
-          (create 'db:chemical-usage-tracking
+          (db-create'db:chemical-usage-tracking
                   :user-id      (db:id user)
                   :chemical-id  (db:id compound))
           (tracking-add-record-qty (db:id user) (db:id compound))))
@@ -78,11 +78,11 @@
   (with-authentication
     (with-session-user (user)
       (when-let* ((compound (chem-prod->chem-compound id-product))
-                  (tracking (single! 'db:chemical-usage-tracking
+                  (tracking (db-single! 'db:chemical-usage-tracking
                                      :user-id      (db:id user)
                                      :chemical-id  (db:id compound))))
 
-        (del tracking))
+        (db-del tracking))
       (restas:redirect 'search-chem-prod)))
   +http-ok+)
 

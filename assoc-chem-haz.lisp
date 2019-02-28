@@ -24,7 +24,7 @@
 (define-constant +name-haz-compound-id+ "haz-compound-id" :test #'string=)
 
 (defun fetch-hazard-from-compound-id (id &optional (delete-link nil))
-  (let ((raw (query
+  (let ((raw (db-query
 	      (select ((:as :chem.id               :chem-id)
 		       (:as :haz.id                :id)
 		       (:as :haz-stat.code         :code)
@@ -57,8 +57,8 @@
 		(list :delete-link (restas:genurl delete-link :id id :id-chem chem-id))))))))
 
 (defun fetch-assoc-by-ids (haz-id chem-id)
-  (query
-   (select :* (from (:as :chemical-hazard :c))
+  (db-query (select :*
+           (from (:as :chemical-hazard :c))
 	   (where (:and (:= :c.ghs-h haz-id)
 			(:= :c.compound-id chem-id))))))
 
@@ -126,11 +126,11 @@
 							    +pos-integer-re+
 							    (_ "Chemical ID invalid"))))))
 	 (errors-msg-chem-not-found (when (and (not errors-msg-1)
-					       (not (single 'db:chemical-compound
-							    :id chem-id)))
+					       (not (db-single 'db:chemical-compound
+							       :id chem-id)))
 				      (list (_ "Chemical compound not in database"))))
 	 (errors-msg-haz-not-found (when (and (not errors-msg-1)
-					      (not (single 'db:ghs-hazard-statement
+					      (not (db-single 'db:ghs-hazard-statement
 							   :id haz-id)))
 				     (list (_ "GHS Hazardous code not in database"))))
 	 (error-assoc-exists       (when (and (not errors-msg-1)
@@ -144,18 +144,18 @@
 	 (success-msg (and (not errors-msg)
 			   (list (_ "Saved association")))))
     (when (not errors-msg)
-      (let ((haz-assoc (create 'db:chemical-hazard
+      (let ((haz-assoc (db-create'db:chemical-hazard
 			       :ghs-h haz-id
 			       :compound-id chem-id)))
 
-	(save haz-assoc)))
-    (manage-assoc-chem-haz (single 'db:chemical-compound :id chem-id)
+	(db-save haz-assoc)))
+    (manage-assoc-chem-haz (db-single 'db:chemical-compound :id chem-id)
 			   success-msg errors-msg)))
 
 (define-lab-route assoc-chem-haz ("/assoc-chem-haz/:id" :method :get)
   (with-authentication
     (if (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-	(let ((chemical (single 'db:chemical-compound :id id)))
+	(let ((chemical (db-single 'db:chemical-compound :id id)))
 	  (if chemical
 	      (manage-assoc-chem-haz chemical nil nil)
 	      +http-not-found+))
@@ -175,9 +175,9 @@
 	(progn
 	  (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
-	    (let ((to-trash (single 'db:chemical-hazard :id id)))
+	    (let ((to-trash (db-single 'db:chemical-hazard :id id)))
 	      (when to-trash
-		(del (single 'db:chemical-hazard :id id))))
+		(db-del (db-single 'db:chemical-hazard :id id))))
 	    (restas:redirect 'assoc-chem-haz :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
@@ -189,8 +189,8 @@
 	(progn
 	  (when (and (not (regexp-validate (list (list id-haz  +pos-integer-re+ ""))))
 		     (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
-	    (let ((to-trash (single 'db:chemical-hazard :ghs-h id-haz :compound-id id-chem)))
+	    (let ((to-trash (db-single 'db:chemical-hazard :ghs-h id-haz :compound-id id-chem)))
 	      (when to-trash
-		(del to-trash)))
+		(db-del to-trash)))
 	    (restas:redirect 'assoc-chem-haz :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))

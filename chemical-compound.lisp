@@ -54,7 +54,7 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Saved chemical: ~s") name)))))
     (when (not errors-msg)
-      (let ((new-chem (create 'db:chemical-compound
+      (let ((new-chem (db-create 'db:chemical-compound
                               :name name
                               :other-cid   (if (string-empty-p other-cid)
                                                nil
@@ -69,7 +69,7 @@
                               :structure-file (if struct-filename
                                                   (read-file-into-string struct-filename)
                                                   nil))))
-        (save new-chem)))
+        (db-save new-chem)))
     (manage-chem success-msg errors-msg
                  :start-from start-from
                  :data-count data-count)))
@@ -112,8 +112,10 @@
                                            :assoc-sec-fq-link
                                            (restas:genurl 'assoc-chem-haz-prec-fq
                                                           :id (getf row :id))
-                                           :has-msds (if (getf row :msds) t nil)
-                                           :has-struct-file (if (getf row :structure-file) t nil)
+                                           :has-msds
+                                           (db-non-nil-p (getf row :msds))
+                                           :has-struct-file
+                                           (db-non-nil-p (getf row :structure-file))
                                            :msds-pdf-link
                                            (restas:genurl 'chemical-get-msds :id (getf row :id))
                                            :struct-file-link
@@ -157,7 +159,7 @@
 
 (defun get-chem-data-column (id column-fn)
   (when (integer-positive-validate id)
-    (let ((chem (single 'db:chemical-compound :id id)))
+    (let ((chem (db-single 'db:chemical-compound :id id)))
       (if chem
           (funcall column-fn chem)
           nil))))
@@ -208,9 +210,9 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:chemical-compound :id id)))
+            (let ((to-trash (db-single 'db:chemical-compound :id id)))
               (when to-trash
-                (del (single 'db:chemical-compound :id id)))))
+                (db-del (db-single 'db:chemical-compound :id id)))))
           (restas:redirect 'chemical))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
@@ -228,12 +230,12 @@
                                                id))))
             (if has-not-errors
                 (let ((msds-file (get-post-filename +name-chem-msds-data+))
-                      (updated-chem (single 'db:chemical-compound :id id)))
+                      (updated-chem (db-single 'db:chemical-compound :id id)))
                   (if updated-chem
                       (progn
                         (setf (db:msds updated-chem)
                               (base64-encode (read-file-into-byte-vector msds-file)))
-                        (save updated-chem)
+                        (db-save updated-chem)
                         (manage-chem success-msg nil))
                       (manage-chem nil error-not-found)))
                 (manage-chem nil error-general
@@ -256,12 +258,12 @@
                                                  id))))
               (if has-not-errors
                   (let ((struct-file  (get-post-filename +name-chem-struct-data+))
-                        (updated-chem (single 'db:chemical-compound :id id)))
+                        (updated-chem (db-single 'db:chemical-compound :id id)))
                     (if updated-chem
                         (progn
                           (setf (db:structure-file updated-chem)
                                 (read-file-into-string struct-file))
-                          (save updated-chem)
+                          (db-save updated-chem)
                           (manage-chem success-msg nil))
                         (manage-chem nil error-not-found)))
                   (manage-chem nil error-general
@@ -274,11 +276,11 @@
                              (object-exists-in-db-p 'db:chemical-compound id))))
     (when (not has-not-errors)
       (let ((old-value (get-chem-data-column id color-fn))
-            (updated-chem (single 'db:chemical-compound :id id)))
+            (updated-chem (db-single 'db:chemical-compound :id id)))
         (when updated-chem
           (setf (slot-value updated-chem color-fn)
                 (if old-value nil "1"))
-          (save updated-chem))))))
+          (db-save updated-chem))))))
 
 (define-lab-route toggle-haz-diamond-haz ("/toggle-blue/:id" :method :get)
   (with-authentication

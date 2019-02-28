@@ -25,7 +25,7 @@
                                                      (_ "Id invalid")))))
          (errors-msg-2  (when (and (not errors-msg-1)
                                    (not errors-msg-id)
-                                   (not (single 'db:plant-map :id id)))
+                                   (not (db-single 'db:plant-map :id id)))
                           (_ "Map not in database")))
          (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-id errors-msg-2)
                               (exists-with-different-id-validate 'db:plant-map
@@ -41,9 +41,9 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Map: ~s updated") description)))))
     (if (not errors-msg)
-        (let ((new-map (single 'db:plant-map :id id)))
+        (let ((new-map (db-single 'db:plant-map :id id)))
           (setf (db:description new-map) description)
-          (save new-map)
+          (db-save new-map)
           (manage-update-map (and success-msg id) success-msg errors-msg))
         (manage-map success-msg errors-msg))))
 
@@ -54,7 +54,7 @@
                       #'manage-update-map))
 
 (defun manage-update-map (id infos errors)
-  (let ((new-map (and id (single 'db:plant-map :id id))))
+  (let ((new-map (and id (db-single 'db:plant-map :id id))))
     (with-standard-html-frame (stream (_ "Update Map") :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-map.tpl"
                                              (with-back-uri (plant-map)

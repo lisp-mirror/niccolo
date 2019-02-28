@@ -25,7 +25,7 @@
 (define-constant +name-prec-code+        "code"             :test #'string=)
 
 (defun fetch-prec-from-compound-id (id &optional (delete-link nil))
-  (let ((raw (query
+  (let ((raw (db-query
               (select ((:as :chem.id               :chem-id)
                        (:as :prec.id               :id)
                        (:as :prec-stat.code        :code)
@@ -49,7 +49,7 @@
                 (list :delete-link (restas:genurl delete-link :id id :id-chem chem-id))))))))
 
 (defun fetch-prec-assoc-by-ids (prec-id chem-id)
-  (query
+  (db-query
    (select :* (from (:as :chemical-precautionary :c))
            (where (:and (:= :c.ghs-p prec-id)
                         (:= :c.compound-id chem-id))))))
@@ -96,11 +96,11 @@
                                                             +pos-integer-re+
                                                             (_ "Chemical ID invalid"))))))
          (errors-msg-chem-not-found (when (and (not errors-msg-1)
-                                               (not (single 'db:chemical-compound
+                                               (not (db-single 'db:chemical-compound
                                                             :id chem-id)))
                                       (list (_ "Chemical compound not in database"))))
          (errors-msg-prec-not-found (when (and (not errors-msg-1)
-                                               (not (single 'db:ghs-precautionary-statement
+                                               (not (db-single 'db:ghs-precautionary-statement
                                                             :id prec-id)))
                                       (list (_ "GHS Precautionary code not in database"))))
          (error-assoc-exists       (when (and (not errors-msg-1)
@@ -114,18 +114,18 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Saved association")))))
     (when (not errors-msg)
-      (let ((prec-assoc (create 'db:chemical-precautionary
+      (let ((prec-assoc (db-create'db:chemical-precautionary
                                 :ghs-p prec-id
                                 :compound-id chem-id)))
 
-        (save prec-assoc)))
-    (manage-assoc-chem-prec (single 'db:chemical-compound :id chem-id)
+        (db-save prec-assoc)))
+    (manage-assoc-chem-prec (db-single 'db:chemical-compound :id chem-id)
                             success-msg errors-msg)))
 
 (define-lab-route assoc-chem-prec ("/assoc-chem-prec/:id" :method :get)
   (with-authentication
     (if (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-        (let ((chemical (single 'db:chemical-compound :id id)))
+        (let ((chemical (db-single 'db:chemical-compound :id id)))
           (if chemical
               (manage-assoc-chem-prec chemical nil nil)
               +http-not-found+))
@@ -145,9 +145,9 @@
         (progn
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
-            (let ((to-trash (single 'db:chemical-precautionary :id id)))
+            (let ((to-trash (db-single 'db:chemical-precautionary :id id)))
               (when to-trash
-                (del (single 'db:chemical-precautionary :id id))))
+                (db-del (db-single 'db:chemical-precautionary :id id))))
             (restas:redirect 'assoc-chem-prec :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))
 
@@ -159,10 +159,10 @@
         (progn
           (when (and (not (regexp-validate (list (list id-prec  +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list id-chem +pos-integer-re+ "")))))
-            (let ((to-trash (single 'db:chemical-precautionary
+            (let ((to-trash (db-single 'db:chemical-precautionary
                                     :ghs-p id-prec
                                     :compound-id id-chem)))
               (when to-trash
-                (del to-trash)))
+                (db-del to-trash)))
             (restas:redirect 'assoc-chem-prec :id id-chem)))
       (manage-chem nil (list *insufficient-privileges-message*)))))

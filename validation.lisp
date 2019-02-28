@@ -31,8 +31,6 @@
 
 (define-constant +barcode-id-re+             "^[0-9][0-9]*$"                     :test #'string=)
 
-(define-constant +free-text-re+              "^[^;\\\"<>&]+$"                    :test #'string=)
-
 (define-constant +internet-address-re+       "^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$"
   :test #'string=)
 
@@ -70,21 +68,21 @@
        message))
 
 (defun unique-p-validate (class unique-column value-to-search-for error-message)
-  (and (query (select :* (from class) (where (:= unique-column value-to-search-for))))
+  (and (db-query (select :* (from class) (where (:= unique-column value-to-search-for))))
        (list error-message)))
 
 (defmacro unique-p-validate* (class unique-columns values-to-search-for error-message)
-  `(and (query (select :*
-                 (from ,class)
-                 (where (:and ,@(loop
-                                   for c in unique-columns
-                                   for v in values-to-search-for collect
-                                     `(:= ,c ,v))))))
+  `(and (db-query (select :*
+                    (from ,class)
+                    (where (:and ,@(loop
+                                      for c in unique-columns
+                                      for v in values-to-search-for collect
+                                        `(:= ,c ,v))))))
         (list ,error-message)))
 
 (defmacro exists-with-different-id-validate (class id unique-columns
                                              values-to-search-for error-message)
-  `(and (query (select :*
+  `(and (db-query (select :*
                  (from ,class)
                  (where (:and ,@(concatenate 'list
                                             (loop
@@ -166,7 +164,7 @@
 
 (defun user-level-validate-p (level &key (permit-admin nil))
   (if (= (parse-integer level) +waste-manager-acl-level+)
-      (not (single 'db:user :level +waste-manager-acl-level+))
+      (not (db-single 'db:user :level +waste-manager-acl-level+))
       (and (integer-positive-validate level)
            (or permit-admin
                (> (parse-integer level) +admin-acl-level+))

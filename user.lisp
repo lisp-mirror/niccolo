@@ -67,7 +67,7 @@
                                                      +email-re+
                                                      (_ "Email invalid")))))
          (errors-msg-already-in-db  (when (and (not errors-msg-invalid)
-                                               (single 'db:user :username name))
+                                               (db-single 'db:user :username name))
                                       (list (_ "Username already in the database"))))
          (errors-level-invalid      (if (not (user-level-validate-p level))
                                         (list (_ "User level not allowed"))
@@ -80,17 +80,17 @@
                            (list (format nil (_ "Saved username: ~s") name)))))
     (when (not errors-msg)
       (let* ((salt (generate-salt))
-             (new-user (create 'db:user
+             (new-user (db-create'db:user
                                :username        name
                                :email           email
                                :password        (encode-pass salt password)
                                :salt            salt
                                :account-enabled +user-account-enabled+
                                :level           (parse-integer level))))
-        (create 'db:user-preferences
+        (db-create'db:user-preferences
                 :owner (db:id new-user)
                 :language "")
-        (save new-user)))
+        (db-save new-user)))
     (manage-user success-msg errors-msg)))
 
 (defun validate-password-match (new-pass new-pass-confirm)
@@ -100,7 +100,7 @@
 
 (defun validate-change-password (old new-pass new-pass-confirm)
   (let* ((username (get-session-username))
-         (updated-user (single 'db:user :username username))
+         (updated-user (db-single 'db:user :username username))
          (errors-msg-invalid (regexp-validate (list
                                                (list old
                                                      +free-text-re+
@@ -141,11 +141,11 @@
       (let ((new-salt (generate-salt)))
         (setf (db:password updated-user) (encode-pass new-salt new-pass)
               (db:salt     updated-user)  new-salt)
-        (save updated-user)))
+        (db-save updated-user)))
     (manage-password-change success-msg errors-msg)))
 
 (defun exists-admin-p ()
-  (single 'db:user :level +admin-acl-level+))
+  (db-single 'db:user :level +admin-acl-level+))
 
 (defun add-admin-password (name email new-pass new-pass-confirm)
   (multiple-value-bind (errors-msg success-msg)
@@ -162,7 +162,7 @@
                                                          (_ "Email invalid"))))))
         (when (not errors-msg-invalid)
           (let* ((new-salt  (generate-salt)))
-            (create 'db:user
+            (db-create'db:user
                     :username name
                     :salt     new-salt
                     :email email
@@ -242,14 +242,14 @@
           (user-id (get-session-user-id)))
       (if (> user-id 0)
           (let* ((locale-table (i18n:find-translation new-locale-key))
-                 (preferences  (single 'db:user-preferences :owner user-id)))
+                 (preferences  (db-single 'db:user-preferences :owner user-id)))
             (if locale-table
                 (progn
                   (if preferences
                       (progn
                         (setf (db:language preferences) new-locale-key)
-                        (save preferences))
-                      (create 'db:user-preferences :owner user-id :language new-locale-key))
+                        (db-save preferences))
+                      (db-create'db:user-preferences :owner user-id :language new-locale-key))
                   (push (format nil
                                 (_ "Your language is now ~s")
                                 (i18n:translation-description locale-table))
@@ -271,7 +271,7 @@
           (errors  '())
           (user-id (get-session-user-id)))
       (if (> user-id 0)
-          (let* ((user (single 'db:user :id user-id))
+          (let* ((user (db-single 'db:user :id user-id))
                  (errors-msg-invalid (regexp-validate (list
                                                        (list new-email
                                                              +email-re+
@@ -285,7 +285,7 @@
                     (push errors-msg-invalid errors)
                     (let ((old-email (db:email user)))
                       (setf (db:email user) new-email)
-                      (save user)
+                      (db-save user)
                       (send-user-message (make-instance 'db:message)
                                          (db:id user)
                                          (admin-id)
@@ -353,9 +353,9 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:user :id id)))
+            (let ((to-trash (db-single 'db:user :id id)))
               (when to-trash
-                (del (single 'db:user :id id)))))
+                (db-del (db-single 'db:user :id id)))))
           (restas:redirect 'user))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
@@ -364,10 +364,10 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((user (single 'db:user :id id)))
+            (let ((user (db-single 'db:user :id id)))
               (when user
                 (setf (db:account-enabled user) new-status)
-                (save user))))
+                (db-save user))))
           (restas:redirect 'user))
       (manage-address nil (list *insufficient-privileges-message*)))))
 
@@ -383,7 +383,7 @@
                              :infos  infos
                              :errors errors)
     (with-session-user (session-user)
-      (let ((user (single 'db:user :id (db:id session-user))))
+      (let ((user (db-single 'db:user :id (db:id session-user))))
         (if session-user
             (html-template:fill-and-print-template #p"user-preferences.tpl"
                                                    (with-path-prefix

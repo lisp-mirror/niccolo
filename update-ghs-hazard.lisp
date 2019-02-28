@@ -36,11 +36,11 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "GHS hazard statements updated."))))))
     (if (not errors-msg)
-      (let ((new-haz (single 'db:ghs-hazard-statement :id id)))
+      (let ((new-haz (db-single 'db:ghs-hazard-statement :id id)))
         (setf (db:code         new-haz) code
               (db:explanation  new-haz) expl
               (db:carcinogenic new-haz) carcinogenic)
-        (save new-haz)
+        (db-save new-haz)
         (manage-update-haz (and success-msg id) success-msg errors-msg))
       (manage-ghs-hazard-code success-msg errors-msg))))
 
@@ -51,7 +51,7 @@
                       #'manage-update-haz))
 
 (defun manage-update-haz (id infos errors)
-  (let ((new-haz (and id (single 'db:ghs-hazard-statement :id id))))
+  (let ((new-haz (and id (db-single 'db:ghs-hazard-statement :id id))))
     (with-standard-html-frame (stream (_ "Update GHS hazard statement")
                                       :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-ghs-hazard.tpl"

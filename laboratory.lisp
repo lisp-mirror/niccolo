@@ -23,13 +23,13 @@
 (define-constant +name-lab-owner+                "resp"          :test #'string=)
 
 (defun array-autocomplete-laboratory (user-id)
-   (let ((all (sort (filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
+   (let ((all (sort (db-filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
      (obj->json-string
       (loop for i in all
             collect (db:complete-name i)))))
 
 (defun array-autocomplete-laboratory-id (user-id)
-   (let ((all (sort (filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
+   (let ((all (sort (db-filter 'db:laboratory :owner user-id) #'< :key #'db:id)))
      (obj->json-string
       (loop for i in all
          collect (db:id i)))))
@@ -56,10 +56,10 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Saved new laboratory ~s") name)))))
     (when (not errors-msg)
-      (let ((lab (create 'db:laboratory
+      (let ((lab (db-create'db:laboratory
                          :name          name
                          :complete-name complete-name)))
-        (save lab)))
+        (db-save lab)))
     (manage-laboratory success-msg
                        errors-msg
                        :start-from start-from
@@ -68,13 +68,16 @@
 (defun manage-laboratory (infos errors &key (start-from 0) (data-count 1))
   (let ((all-labs (fetch-raw-template-list 'db:laboratory
                                            '(:id :name :owner :complete-name)
+                                           :sort-predicate
+                                           (lambda (a b)
+                                             (string-lessp (db:name a) (db:name b)))
                                            :delete-link 'delete-laboratory
                                            :update-link 'update-laboratory
                                            :additional-tpl
                                            #'(lambda (lab)
                                                (when (and lab
                                                           (db:owner lab))
-                                                 (let ((user (single 'db:user
+                                                 (let ((user (db-single 'db:user
                                                                      :id (db:owner lab))))
                                                    (when user
                                                      (list :owner-user
@@ -129,8 +132,8 @@
     (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:laboratory :id id)))
+            (let ((to-trash (db-single 'db:laboratory :id id)))
               (when to-trash
-                (del (single 'db:laboratory :id id)))))
+                (db-del (db-single 'db:laboratory :id id)))))
           (restas:redirect 'laboratory))
       (manage-laboratory nil (list *insufficient-privileges-message*)))))

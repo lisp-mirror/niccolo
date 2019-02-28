@@ -63,17 +63,17 @@
                  :tc (- 1.0 (/ tc  +relative-coord-scaling+))))
 
 (defun fetch-all-storages (&optional (delete-link nil) (update-link))
-  (let ((raw (query
-              (select ((:as :b.id :bid)
-                       (:as :b.name :bname)
-                       (:as :s.id :sid)
-                       (:as :s.name :sname)
-                       (:as :s.floor-number :floor)
-                       (:as :s.map-id :map-link-id)
-                       (:as :s.s-coord :s-coord)
-                       (:as :s.t-coord :t-coord))
-                (from (:as :storage :s))
-                (left-join (:as :building :b) :on (:= :b.id :s.building-id))))))
+  (let ((raw (db-query (select ((:as :b.id :bid)
+                                (:as :b.name :bname)
+                                (:as :s.id :sid)
+                                (:as :s.name :sname)
+                                (:as :s.floor-number :floor)
+                                (:as :s.map-id :map-link-id)
+                                (:as :s.s-coord :s-coord)
+                                (:as :s.t-coord :t-coord))
+                         (from (:as :storage :s))
+                         (left-join (:as :building :b) :on (:= :b.id :s.building-id))
+                         (order-by (:asc :s.name))))))
      (loop for row in raw collect
           (let* ((sid           (getf row :|sid|))
                  (bid           (getf row :|bid|))
@@ -85,18 +85,18 @@
                                                       (getf row :|t-coord|)))
                  (location-add-link (restas:genurl 'list-all-storage-maps :storage-id sid))
                  (floor         (getf row :|floor|)))
-           (append
-            (list :storage-id sid :name name :building-link building-link
-                  :building-name building-name
-                  :storage-link storage-link
-                  :location-add-link location-add-link
-                  :has-storage-link (getf row :|map-link-id|)
-                  :qr-string  (gen-qr-code-search-query building-name name)
-                  :floor floor)
-            (if delete-link
-                (list :delete-link (restas:genurl delete-link :id sid)))
-            (if update-link
-                (list :update-storage-link (restas:genurl update-link :id sid))))))))
+            (append
+             (list :storage-id sid :name name :building-link building-link
+                   :building-name     building-name
+                   :storage-link      storage-link
+                   :location-add-link location-add-link
+                   :has-storage-link  (db-non-nil-p (getf row :|map-link-id|))
+                   :qr-string         (gen-qr-code-search-query building-name name)
+                   :floor             floor)
+             (if delete-link
+                 (list :delete-link (restas:genurl delete-link :id sid)))
+             (if update-link
+                 (list :update-storage-link (restas:genurl update-link :id sid))))))))
 
 (gen-autocomplete-functions db:building db:build-description)
 
@@ -149,7 +149,7 @@
                                                             +free-text-re+
                                                             (_ "Floor invalid"))))))
          (errors-msg-building-not-found (when (and (not errors-msg-1)
-                                                   (not (single 'db:building :id building-id)))
+                                                   (not (db-single 'db:building :id building-id)))
                                           (list (_ "Building not in the database"))))
          (errors-msg-already-in-db (when (and (not errors-msg-1)
                                               (not errors-msg-building-not-found))
@@ -164,13 +164,13 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Saved storage: ~s") name)))))
     (when (not errors-msg)
-      (let ((storage (create 'db:storage
+      (let ((storage (db-create'db:storage
                              :name name
                              :building-id  building-id
                              :floor-number floor
                              :s-coord 0
                              :t-coord 0)))
-        (save storage)))
+        (db-save storage)))
     (manage-storage success-msg
                     errors-msg
                     :start-from start-from
@@ -202,9 +202,9 @@
     (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:storage :id id)))
+            (let ((to-trash (db-single 'db:storage :id id)))
               (when to-trash
-                (del (single 'db:storage :id id)))))
+                (db-del (db-single 'db:storage :id id)))))
           (restas:redirect 'storage))
       (manage-storage nil (list *insufficient-privileges-message*)))))
 
@@ -224,10 +224,10 @@
                                                                     (_ "Storage id ivalid"))))))
 
                  (errors-msg-storage-not-found (when (and (not errors-msg-1)
-                                                          (not (single 'db:storage :id sid)))
+                                                          (not (db-single 'db:storage :id sid)))
                                                  (list (_ "Storage not in the database"))))
                  (errors-msg-map-not-found (when (and (not errors-msg-1)
-                                                      (not (single 'db:plant-map :id mid)))
+                                                      (not (db-single 'db:plant-map :id mid)))
                                              (list (_ "Map not in the database"))))
                  (error-no-coords          (regexp-validate (list (list x
                                                                         +pos-integer-re+
@@ -250,11 +250,11 @@
                           (cl-gd:image-size bg)
                         (let ((sc (round (* +relative-coord-scaling+ (/ (parse-integer x) w))))
                               (tc (round (* +relative-coord-scaling+ (/ (parse-integer y) h))))
-                              (updated-storage  (single 'db:storage :id sid))) ;; always not null here
+                              (updated-storage  (db-single 'db:storage :id sid))) ;; always not null here
                           (setf (db:s-coord updated-storage) sc
                                 (db:t-coord updated-storage) tc
                                 (db:map-id  updated-storage)  mid)
-                          (save updated-storage)))))
+                          (db-save updated-storage)))))
                   (restas:redirect 'storage))
                 (restas:redirect 'storage))))
       (manage-storage nil (list *insufficient-privileges-message*)))))
@@ -265,7 +265,7 @@
        (with-editor-or-above-credentials
            (progn
              (if (not (regexp-validate (list (list ,id +pos-integer-re+ "no"))))
-                 (let ((,all-maps (loop for i in (filter 'db:plant-map) collect
+                 (let ((,all-maps (loop for i in (db-filter 'db:plant-map) collect
                                        (list :map-image-src     (restas:genurl 'get-plant-map
                                                                                :id (db:id i))
                                              :map-image-desc    (db:description i)

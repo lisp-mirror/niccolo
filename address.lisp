@@ -43,10 +43,10 @@
                                                          +free-text-re+
                                                          (_ "Link invalid"))))))
          (errors-msg-2  (when (and (all-null-p errors-msg-1 errors-msg-link)
-                                   (single 'db:address
-                                           :line-1  line-1
-                                           :city    city
-                                           :zipcode zipcode))
+                                   (db-single 'db:address
+                                              :line-1  line-1
+                                              :city    city
+                                              :zipcode zipcode))
                           (list (_ "Address already in the database"))))
          (errors-msg (concatenate 'list errors-msg-1 errors-msg-2))
          (success-msg (and (not errors-msg)
@@ -54,19 +54,23 @@
                                          (_ "Saved address: ~s - ~s ~s")
                                          line-1 zipcode city)))))
     (when (not errors-msg)
-      (let ((address (create 'db:address
+      (let ((address (db-create'db:address
                              :line-1 line-1
                              :city city
                              :zipcode zipcode
                              :link (if (string-empty-p link)
                                        (generate-openstreetmap-link line-1 city)
                                        link))))
-        (save address)))
+        (db-save address)))
     (manage-address success-msg errors-msg)))
 
 (defun manage-address (infos errors)
   (let ((all-addresses (fetch-raw-template-list 'db:address
                                                 '(:id :line-1 :city :zipcode :link)
+                                                :sort-predicate
+                                                (lambda (a b)
+                                                  (string-lessp (db:build-description a)
+                                                                (db:build-description b)))
                                                 :delete-link 'delete-address
                                                 :additional-tpl
                                                 #'(lambda (row)
@@ -108,8 +112,8 @@
     (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:address :id id)))
+            (let ((to-trash (db-single 'db:address :id id)))
               (when to-trash
-                (del (single 'db:address :id id)))))
+                (db-del (db-single 'db:address :id id)))))
           (restas:redirect 'address))
       (manage-address nil (list *insufficient-privileges-message*)))))

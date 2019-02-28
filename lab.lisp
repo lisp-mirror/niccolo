@@ -98,8 +98,8 @@
   (with-authentication
     (with-session-user (user)
       (let* ((raw-query (get-clean-parameter +name-msg-search-query+))
-             (query (and (not (string-utils:string-empty-p raw-query))
-                         (clean-string raw-query))))
+             (query     (and (not (string-utils:string-empty-p raw-query))
+                             (clean-string raw-query))))
         (create-expiration-messages (fetch-expired-products))
         (create-validity-expired-messages (fetch-validity-expired-products))
         (create-shortage-messages (shortage-products-list (db:id user)))
@@ -248,8 +248,8 @@
       (call-next-method)))
 
 (defun initialize-pictogram (class path)
-  (unless (crane:single class :pictogram-file (namestring path))
-    (save (create class :pictogram-file (namestring path)))))
+  (unless (db-single class :pictogram-file (namestring path))
+    (db-save (db-create class :pictogram-file (namestring path)))))
 
 (defun initialize-ghs-pictogram (path)
   (initialize-pictogram 'db:ghs-pictogram path))

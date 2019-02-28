@@ -87,13 +87,13 @@
     `(progn
        (defun ,fn-name ()
          ,(with-gensyms (all)
-             `(let ((,all (sort (filter (quote ,class))  #'< :key #'db:id)))
+             `(let ((,all (sort (db-filter (quote ,class))  #'< :key #'db:id)))
                 (obj->json-string
                  (loop for i in ,all collect
                       (,data-fn i))))))
        (defun ,fn-name-id ()
          ,(with-gensyms (all)
-            `(let ((,all (sort (filter (quote ,class)) #'< :key #'db:id)))
+            `(let ((,all (sort (db-filter (quote ,class)) #'< :key #'db:id)))
                (obj->json-string
                 (loop for i in ,all collect
                      (db:id i)))))))))
@@ -291,7 +291,6 @@
                    :domain    +hostname+))
 
 ;; web rendering
-
 
 ;; pagination
 
@@ -498,7 +497,7 @@
 ;; pictograms
 
 (defun all-pictograms (class)
-  (crane:filter class))
+  (db-filter class))
 
 (defun pictogram->preview-path (orig-path prefix-path &key (extension +pictogram-web-image-ext+))
   (concatenate 'string
@@ -522,7 +521,7 @@
                                                      +ghs-pictogram-web-image-subdir+)))
   (and (db-utils:object-exists-in-db-p 'db:ghs-pictogram id-pictogram)
        (local-uri (pictogram->preview-path (db:pictogram-file
-                                            (single 'db:ghs-pictogram :id id-pictogram))
+                                            (db-single 'db:ghs-pictogram :id id-pictogram))
                                            prefix
                                            :extension +pictogram-web-image-ext+))))
 ; rendering
@@ -605,12 +604,15 @@
                                             :stream ,stream)))
 
 (defun fetch-raw-template-list (what template-keyword &key
+                                                        (sort-predicate
+                                                         (lambda (a b)
+                                                           (< (db:id a) (db:id b))))
                                                         (delete-link nil)
                                                         (disable-link nil)
                                                         (enable-link  nil)
                                                         (update-link  nil)
                                                         (additional-tpl nil))
-  (let ((raw (filter what)))
+  (let ((raw (sort (db-filter what) sort-predicate)))
     (loop for data in raw collect
          (let ((plist '()))
            (loop
@@ -655,10 +657,23 @@
 (defun local-time-obj-now ()
   (local-time:now))
 
-; db -> application
-(defun encode-datetime-string (d &optional (fallback nil))
+;; db -> application
+
+(defgeneric encode-datetime-string (object &optional fallback))
+
+(defmethod encode-datetime-string ((d string) &optional (fallback nil))
   (handler-case
       (local-time:parse-timestring d)
+     (error () fallback)))
+
+(defmethod encode-datetime-string ((d number) &optional (fallback nil))
+  (handler-case
+      (local-time:universal-to-timestamp d)
+     (error () fallback)))
+
+(defmethod encode-datetime-string (d &optional (fallback nil))
+  (handler-case
+      (local-time:universal-to-timestamp d)
      (error () fallback)))
 
 (defgeneric decode-datetime-string (object))
@@ -671,6 +686,9 @@
                                                      (:day 2) " " (:hour 2) ":" (:min 2))))
 
 (defmethod decode-datetime-string ((object string))
+  (decode-datetime-string (encode-datetime-string object)))
+
+(defmethod decode-datetime-string ((object number))
   (decode-datetime-string (encode-datetime-string object)))
 
 (defgeneric decode-date-string (object))
@@ -797,3 +815,10 @@
   (if (scan "^m" units)
       (/ qty 1000)
       qty))
+
+(defun sequence-group-by (sequence &key (test #'=))
+  (let ((distinct '()))
+    (loop for i in sequence do
+         (pushnew i distinct :test test))
+    (loop for i in distinct collect
+         (remove-if-not #'(lambda (a) (funcall test a i)) sequence))))

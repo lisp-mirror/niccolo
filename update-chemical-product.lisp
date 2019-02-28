@@ -107,7 +107,7 @@
                                                                        (_ "validity")
                                                                        new-validity-date)))
            (chem                           (when (null errors-msg-exists)
-                                             (single 'db:chemical-product :id id)))
+                                             (db-single 'db:chemical-product :id id)))
            (error-nullify-opening-date     (when (and chem
                                                       (string-empty-p new-opening-date)
                                                       (not (string-empty-p
@@ -127,7 +127,7 @@
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Chemical product: ~s updated") id)))))
       (if (not errors-msg)
-          (let* ((new-chem          (single 'db:chemical-product :id id))
+          (let* ((new-chem          (db-single 'db:chemical-product :id id))
                  (old-exp-date      (db:expire-date          new-chem))
                  (old-validity-date (db:validity-date        new-chem))
                  (old-opening-date  (db:opening-package-date new-chem))
@@ -164,7 +164,7 @@
                           (encode-datetime-string new-opening-date))
                     (setf (db:quantity new-chem) (parse-integer quantity))
                     (setf (db:units new-chem) units)
-                    (save new-chem)
+                    (db-save new-chem)
                     (maybe-add-tracking-log new-chem user)
                     (let ((parent-messages
                            (concatenate 'list
@@ -216,7 +216,7 @@
 
 (defun manage-update-chem-prod (id infos errors)
   (let* ((html-template:*string-modifier* #'escape-string-all-but-double-quotes)
-         (new-chem-prod             (and id (single 'db:chemical-product :id (parse-integer id))))
+         (new-chem-prod             (and id (db-single 'db:chemical-product :id (parse-integer id))))
          (json-person               (array-autocomplete-person))
          (json-person-id            (array-autocomplete-person-id))
          (json-laboratory           (array-autocomplete-laboratory (get-session-user-id)))
@@ -283,7 +283,7 @@
     (with-session-user (user)
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no")
                                         (list owner +pos-integer-re+ "no"))))
-        (let ((to-update (single 'db:chemical-product :id (parse-integer id))))
+        (let ((to-update (db-single 'db:chemical-product :id (parse-integer id))))
           (if (and to-update
                    (= (db:id user) (parse-integer owner)))
               (let ((new-expire              (get-clean-parameter +name-expire-date+))

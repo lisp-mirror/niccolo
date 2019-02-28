@@ -31,14 +31,14 @@
 (gen-autocomplete-functions db:person db:build-description)
 
 (defun all-person-select ()
-  (query (select ((:as :p.id           :id)
-                  (:as :p.name         :name)
-                  (:as :p.surname      :surname)
-                  (:as :p.address-id   :address-id)
-                  (:as :p.organization :organization)
-                  (:as :p.official-id  :official-id)
-                  (:as :p.email        :email))
-           (from (:as :person  :p)))))
+  (db-query (select ((:as :p.id           :id)
+                     (:as :p.name         :name)
+                     (:as :p.surname      :surname)
+                     (:as :p.address-id   :address-id)
+                     (:as :p.organization :organization)
+                     (:as :p.official-id  :official-id)
+                     (:as :p.email        :email))
+              (from (:as :person  :p)))))
 
 (defun build-template-list-person (start-from data-count
                                         &key (delete-link nil) (update-link nil))
@@ -54,7 +54,7 @@
         (slice-for-pagination raw start-from data-count)
       (let* ((row (elt res rown)))
         (setf (getf row :complete-address)
-              (db:build-description (single 'db:address :id (getf row :address-id))))
+              (db:build-description (db-single 'db:address :id (getf row :address-id))))
         (setf (elt res rown)
               (concatenate 'list
                            row
@@ -95,7 +95,7 @@
                                             (name   surname  organization)
                                             (_ "Person already in the database"))))
          (error-address (when (and (all-null-p errors-msg-1 errors-msg-2)
-                                   (not (single 'db:address
+                                   (not (db-single 'db:address
                                                 :id (ensure-person-id address-id -1))))
                           (list (_ "Address invalid"))))
 
@@ -104,14 +104,14 @@
                            (list (format nil (_ "Saved new person: ~s - ~s")
                                          name surname)))))
     (when (not errors-msg)
-      (let ((new-person (create 'db:person
+      (let ((new-person (db-create'db:person
                          :name         name
                          :surname      surname
                          :address-id   (ensure-person-id address-id 0)
                          :organization organization
                          :official-id  official-id
                          :email        email)))
-        (save new-person)))
+        (db-save new-person)))
     (manage-person  success-msg
                     errors-msg
                     :start-from start-from
@@ -190,8 +190,8 @@
     (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:person :id id)))
+            (let ((to-trash (db-single 'db:person :id id)))
               (when to-trash
-                (del (single 'db:person :id id)))))
+                (db-del (db-single 'db:person :id id)))))
           (restas:redirect 'person))
       (manage-person nil (list *insufficient-privileges-message*)))))

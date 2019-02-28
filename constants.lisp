@@ -150,3 +150,5 @@
 (define-constant +query-http-parameter-key+        "q"                       :test #'string=)
 
 (define-constant +query-http-response-key+         "r"                       :test #'string=)
+
+(define-constant +free-text-re+                    "^[^;\\\"<>&]+$"          :test #'string=)

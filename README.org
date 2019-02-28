@@ -46,13 +46,12 @@ disposing.
 
   - libxml2 (needed for cl-sanitize)
   - libgd;
-  - libsqlite3;
   - pslib.
 
 *** External programs
     - sbcl;
     - wget;
-    - sqlite3;
+    - postgreSQL;
     - screen;
     - gcc;
     - bash;
@@ -204,17 +203,37 @@ already installed and ASDF configured  (but you should install all the
       + Software
         - the arduino IDE
 
-24. =sh 'start_server.sh'= (or =sh 'start_server-cas.sh'=
+24. Create and configure a postgreSQL database
+    Please refer to postgreSQL documentation to create the database and user.
+
+    Then fill the forms in ~db-configuration.lisp~:
+
+    #+BEGIN_SRC lisp
+        (eval-when (:compile-toplevel :load-toplevel :execute)
+                  (setup :migrations-directory (config:local-system-path #p"migrations/")
+                         :databases (list :main
+                                          (list :type :postgres
+                                                :name "-----"
+                                                :user "-----"
+                                                :pass "-----"))
+                  (connect))
+                         :debug nil)
+
+    #+END_SRC
+
+25. ~sh 'start_server.sh'~ (or ~sh 'start_server-cas.sh'~
     if you are using  [[CAS authentication][the CAS authentication protocol]])
 
-25. point your browser to
-    =https://+hostname+:(+https-poxy-port+|+https-port+)/+path-prefix+/add-admin/=
-    where =+hostname+=  and =+path-prefix+= are the values  of the variables setted  in point
+26. point your browser to
+    #+BEGIN_SRC text
+    https://+hostname+:(+https-proxy-port+|+https-port+)/+path-prefix+/add-admin/
+    #+END_SRC
+    where ~+hostname+~  and ~+path-prefix+~ are the values  of the variables setted  in point
     19, also specify  the actual port your server is  listening on the
-    internet (=+https-poxy-port+= or =+https-port+=) to generate the administrator account.
+    internet (~+https-proxy-port+~ or ~+https-port+~) to generate the administrator account.
 
 * Authentication
- Niccolo comes with two kinds of autenthication mechanisms.
+ Niccolo comes with two kinds of autentication mechanisms.
 
 ** Internal database of users
  The first is based on an table in its own database which stores username/password.
@@ -236,7 +255,7 @@ already installed and ASDF configured  (but you should install all the
    authentication instead.
 
    Please   note   that,   depending    of   the   content   of   your
-   source-registry.conf  file   (expecially  if  you  use   the  :tree
+   source-registry.conf  file   (especially  if  you  use   the  :tree
    options), .../lib/mini-cas/ *will* be reached by ASDF.
 
 * Start server

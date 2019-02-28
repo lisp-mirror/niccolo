@@ -37,13 +37,13 @@
 (gen-autocomplete-functions db:cer-code db:code)
 
 (defun lab-id->name (id)
-  (let ((res (single 'db:laboratory :id id)))
+  (let ((res (db-single 'db:laboratory :id id)))
     (if res
         (format nil "~a[~a]" (db:complete-name res) (db:name res))
         (_ "Laboratory unknown"))))
 
 (defun adr-list ()
-  (let ((raw (filter 'db:adr-code)))
+  (let ((raw (db-filter 'db:adr-code)))
     (loop for i in raw collect
          (list :adr-id         (db:id i)
                :adr-uncode     (db:uncode i)
@@ -51,7 +51,7 @@
                :adr-expl       (db:explanation i)))))
 
 (defun hp-list ()
-  (let ((raw (filter 'db:hp-waste-code)))
+  (let ((raw (db-filter 'db:hp-waste-code)))
     (loop for i in raw collect
          (list :hp-id         (db:id i)
                :hp-code       (db:code i)
@@ -262,7 +262,7 @@
   (remove-if #'null
              (map 'list #'(lambda (a)
                             (and (db:pictogram a)
-                                 (single class
+                                 (db-single class
                                          :id (db:pictogram a))))
                   objects)))
 
@@ -275,7 +275,7 @@
                                                      (scan-to-strings +pos-integer-re+ a))
                                                  ids)))
                 collect
-                  (single class :id i))))
+                  (db-single class :id i))))
 
 (defun %draw-pictograms-row (doc objs y)
   (let ((x-offset   0.0)

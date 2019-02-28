@@ -72,14 +72,14 @@
                        #'(lambda(e)
                            (declare (ignore e))
                            (invoke-restart 'cl-i18n:return-untranslated))))
-         (let ((,preferences (crane:single 'db:user-preferences :owner ,user-id)))
+         (let ((,preferences (db-utils:db-single 'db:user-preferences :owner ,user-id)))
            (if ,preferences
-               (let* ((,locale          (i18n:find-translation (db:language ,preferences)))
-                      (,locale-table    (if ,locale
-                                            (translation-table ,locale)
-                                            (make-hash-table)))
-                      (,locale-plural   (and ,locale
-                                             (translation-plural-function ,locale))))
+               (let* ((,locale        (i18n:find-translation (db:language ,preferences)))
+                      (,locale-table  (if ,locale
+                                          (translation-table ,locale)
+                                          (make-hash-table)))
+                      (,locale-plural (and ,locale
+                                           (translation-plural-function ,locale))))
                      (cl-i18n:with-translation (,locale-table ,locale-plural)
                        ,@body))
                (cl-i18n:with-translation ((make-hash-table :test 'equal)

@@ -17,17 +17,16 @@
 (in-package :views)
 
 (defun json-all-storage-long-desc ()
-  (let ((raw (query
-              (select (:storage.id
-                       (:as :storage.name :stname)
-                       :storage.floor-number
-                       :building.name
-                       :address.line-1
-                       :address.city)
-                (from :storage)
-                (left-join :building :on (:= :building.id :storage.building-id))
-                (left-join :address :on  (:= :address.id  :building.address-id))
-                (order-by  :storage.id)))))
+  (let ((raw (db-utils:db-query (select (:storage.id
+                                         (:as :storage.name :stname)
+                                         :storage.floor-number
+                                         :building.name
+                                         :address.line-1
+                                         :address.city)
+                                  (from :storage)
+                                  (left-join :building :on (:= :building.id :storage.building-id))
+                                  (left-join :address :on  (:= :address.id  :building.address-id))
+                                  (order-by  :storage.id)))))
     (values
      (obj->json-string
       (loop for i in raw collect (obj->json-string (getf i :|id|))))

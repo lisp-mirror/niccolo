@@ -23,11 +23,11 @@
   "")
 
 (defmethod carc-log-entry->mail ((log number) &key (added t))
-  (carc-log-entry->mail (single 'db:carcinogenic-logbook (safe-parse-number log -1))
+  (carc-log-entry->mail (db-single 'db:carcinogenic-logbook (safe-parse-number log -1))
                         :added added))
 
 (defmethod carc-log-entry->mail ((log db:carcinogenic-logbook) &key (added t))
-  (let ((lab (single 'db:laboratory :id (db:laboratory-id log)))
+  (let ((lab (db-single 'db:laboratory :id (db:laboratory-id log)))
         (msg (if added
                  (_ "A log entry related to your carcinogenics substances usage at ~s has been *recorded*:~2% ~a~%")
                  (_ "A log entry related to your carcinogenics substances at ~s has been *canceled*:~2% ~a~%"))))
@@ -98,7 +98,7 @@
                                  (format nil (_ "Saved carcinogenic log entry")))))
           ;; "Values are success-log-added log-was-needed log-carc-errors-messages"
           (if success-msg
-              (let ((log-entry (create 'db:carcinogenic-logbook
+              (let ((log-entry (db-create'db:carcinogenic-logbook
                                        :chemical-id     (db:compound chemprod)
                                        :laboratory-id   new-carc-laboratory-id
                                        :person-id       new-carc-person-id
@@ -111,7 +111,7 @@
                                        :quantity        (- actual-old-quantity
                                                            actual-new-quantity)
                                        :units           (make-carc-log-units chemprod)))
-                    (person    (single 'db:person new-carc-person-id)))
+                    (person    (db-single 'db:person new-carc-person-id)))
                 (when (and send-email
                            (db:email person))
                   (send-email (_ "Carcinogenic log entry")
@@ -125,7 +125,7 @@
   (when lab-id
     (let ((one-year-ago (crane.inflate-deflate:deflate (local-time:timestamp- (local-time:now)
                                                                               1 :year))))
-      (query (select ((:as :carc.id         :log-id)
+      (db-query (select ((:as :carc.id         :log-id)
                       :worker-code
                       :work-type
                       :work-type-code
@@ -160,7 +160,7 @@
                            (list :quantity-rounded
                                  (format nil "~,4f" (getf row :quantity)))
                            (list :worker
-                                 (db:build-description (single 'db:person
+                                 (db:build-description (db-single 'db:person
                                                                :id (getf row :person-id))))
                            (if delete-link
                                (list :delete-link (delete-uri delete-link row :id-keyword :log-id))
@@ -218,14 +218,14 @@
   (with-authentication
     (with-pagination (pagination-uri utils:*alias-pagination*)
       (let* ((log-id (safe-parse-number id -1))
-             (log    (single 'db:carcinogenic-logbook :id log-id)))
+             (log    (db-single 'db:carcinogenic-logbook :id log-id)))
         (if (and log
                  (user-lab-associed-p (get-session-user-id)
-                                      (single 'db:laboratory
+                                      (db-single 'db:laboratory
                                               :id (db:laboratory-id log))))
-            (let ((person (single 'db:person :id (db:person-id log))))
+            (let ((person (db-single 'db:person :id (db:person-id log))))
               (setf (db:canceled log) 1)
-              (save log)
+              (db-save log)
               (when (db:email person)
                 (send-email (_ "Carcinogenic log entry canceled")
                             (db:email person)

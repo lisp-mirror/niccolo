@@ -24,7 +24,7 @@
 
 (defmethod owner-user-db-object (object)
   (and (owner object)
-       (single 'user :id (owner object))))
+       (db-utils:db-single 'user :id (owner object))))
 
 (defmacro with-owner-object ((owner object) &body body)
   `(let ((,owner (and ,object (db:owner-user-db-object ,object))))
@@ -71,7 +71,7 @@
 (defmethod build-description ((object building))
   (format nil "~a ~a"
           (name object)
-          (build-complete-address (single 'address :id (address-id object)))))
+          (build-complete-address (db-utils:db-single 'address :id (address-id object)))))
 
 (deftable storage ()
   (name
@@ -101,7 +101,7 @@
   (pictogram-file
    :type text
    :nullp nil
-   :uniquep t))
+   :uniquep nil))
 
 (deftable ghs-hazard-statement ()
   (code
@@ -152,7 +152,7 @@
   (pictogram-file
    :type text
    :nullp nil
-   :uniquep t))
+   :uniquep nil))
 
 (deftable adr-code ()
   (uncode
@@ -232,8 +232,8 @@
    :nullp t))
 
 (defmethod carcinogenic-iarc-p ((object chemical-compound))
-  (let ((all-h (mapcar #'(lambda (a) (single 'ghs-hazard-statement :id (ghs-h a)))
-                       (filter 'chemical-hazard :compound-id (id object)))))
+  (let ((all-h (mapcar #'(lambda (a) (db-utils:db-single 'ghs-hazard-statement :id (ghs-h a)))
+                       (db-utils:db-filter 'chemical-hazard :compound-id (id object)))))
     (remove-if-not #'carcinogenic-iarc-p all-h)))
 
 (deftable user ()
@@ -327,10 +327,13 @@
    :nullp t))
 
 (defmethod print-object ((object chemical-product) stream)
-  (format stream "~a (~a)" (name (single 'chemical-compound :id (compound object))) (id object)))
+  (format stream
+          "~a (~a)"
+          (name (db-utils:db-single 'chemical-compound :id (compound object)))
+          (id object)))
 
 (defmethod carcinogenic-iarc-p ((object chemical-product))
-  (carcinogenic-iarc-p (single 'chemical-compound :id (compound object))))
+  (carcinogenic-iarc-p (db-utils:db-single 'chemical-compound :id (compound object))))
 
 (deftable chemical-compound-preferences ()
   (owner
@@ -370,7 +373,7 @@
 
 (defmethod owner-user-db-object ((object laboratory))
   (and (owner object)
-       (single 'user :id (owner object))))
+       (db-utils:db-single 'user :id (owner object))))
 
 (deftable loans ()
   (product
@@ -417,7 +420,7 @@
   (format stream "~a" (name object)))
 
 (defmethod owner-user-db-object ((object chemical-sample))
-  (let ((lab (single 'laboratory :id (laboratory-id object))))
+  (let ((lab (db-utils:db-single 'laboratory :id (laboratory-id object))))
     (and lab
          (owner-user-db-object lab))))
 
@@ -608,7 +611,7 @@
    :type integer
    :nullp nil)
   (units
-   :type double
+   :type  numeric
    :nullp nil)
   (exposition-time
    :type integer
@@ -621,9 +624,9 @@
    :nullp nil))
 
 (defmethod build-description ((object db:carcinogenic-logbook))
-  (let ((lab    (single 'db:laboratory :id (db:laboratory-id object)))
-        (chem   (db:name (single 'db:chemical-compound :id (db:chemical-id object))))
-        (person (single 'db:person :id (db:person-id object))))
+  (let ((lab    (db-utils:db-single 'db:laboratory :id (db:laboratory-id object)))
+        (chem   (db:name (db-utils:db-single 'db:chemical-compound :id (db:chemical-id object))))
+        (person (db-utils:db-single 'db:person :id (db:person-id object))))
     (format nil
             "\"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\" \"~a\"~%"
             (string-utils:escape-csv-field (db:complete-name lab))

@@ -78,7 +78,7 @@
            (encoded-checkout-date (encode-datetime-string (getf row :checkout-date)))
            (decoded-checkout-date (decode-datetime-string encoded-checkout-date))
            (decoded-checkin-date  (decode-date-string     encoded-checkin-date))
-           (decoded-person        (db:build-description   (single 'db:person
+           (decoded-person        (db:build-description   (db-single 'db:person
                                                                   :id (getf row :person-id))))
            (gen-custom-label-link (restas:genurl 'gen-sample-custom-label
                                                  :id (getf row :sample-id))))
@@ -108,29 +108,29 @@
 
 (defun fetch-sample-by-id (id &optional (delete-link nil) (update-link nil))
   (when id
-    (build-template-list-samples (query (gen-all-prod-select (where (:= :sample-id id))))
+    (build-template-list-samples (db-query (gen-all-prod-select (where (:= :sample-id id))))
                                  delete-link
                                  update-link)))
 
 (defun fetch-sample (owner sample-name lab-name &optional
                                                 (delete-link nil)
                                                 (update-link nil))
-  (let ((raw (query (gen-all-sample-select (where
-                                            (:and (:like :owner-name
-                                                         (prepare-for-sql-like owner))
-                                                  (:like :sample-name
-                                                         (prepare-for-sql-like sample-name))
-                                                  (:like :lab-name
-                                                         (prepare-for-sql-like lab-name))))))))
+  (let ((raw (db-query (gen-all-sample-select (where
+                                               (:and (:like :user.username
+                                                            (prepare-for-sql-like owner))
+                                                     (:like :sample.name
+                                                            (prepare-for-sql-like sample-name))
+                                                     (:like :lab.name
+                                                            (prepare-for-sql-like lab-name))))))))
     (build-template-list-samples raw delete-link update-link)))
 
 (defun fetch-sample-min-id (id &optional (delete-link nil) (update-link nil))
-  (let ((raw (query (gen-all-sample-select (where
-                                            (:> :chemp-id id))))))
+  (let ((raw (db-query (gen-all-sample-select (where
+                                               (:> :sample.id id))))))
     (build-template-list-samples raw delete-link update-link)))
 
 (defun fetch-all-samples (&optional (delete-link nil) (update-link nil))
-  (let ((raw (query (gen-all-sample-select))))
+  (let ((raw (db-query (gen-all-sample-select))))
     (build-template-list-samples raw delete-link update-link)))
 
 (defun manage-sample (infos errors &key (data nil))
@@ -208,11 +208,11 @@
 
 (defun gen-lab-actual-name (lab-id prefix sample-id)
   "note: no error check"
-  (format nil "~a~a~a" (db:name (single 'db:laboratory :id lab-id)) prefix sample-id))
+  (format nil "~a~a~a" (db:name (db-single 'db:laboratory :id lab-id)) prefix sample-id))
 
 (defun gen-lab-temp-name (lab-id prefix)
   "note: no error check"
-  (format nil "~a~a" (db:name (single 'db:laboratory :id lab-id)) prefix))
+  (format nil "~a~a" (db:name (db-single 'db:laboratory :id lab-id)) prefix))
 
 (defun add-single-sample (lab-id name quantity units description compliantp notes
                           checkin-date person-id)
@@ -247,7 +247,7 @@
            (error-not-own            (when (and (not errors-msg-1)
                                                 (not errors-msg-lab-not-found))
                                        ;; TODO change with 'user-lab-associed-p
-                                       (let ((lab (single 'db:laboratory :id lab-id)))
+                                       (let ((lab (db-single 'db:laboratory :id lab-id)))
                                          (db:with-owner-object (owner lab)
                                            (when (or (not owner)
                                                      (/= (db:id user) (db:id owner)))
@@ -263,7 +263,7 @@
                              (list (_ "Samples saved")))))
       (if (and user
                (not errors-msg))
-          (let* ((sample (create 'db:chemical-sample
+          (let* ((sample (db-create'db:chemical-sample
                                  :name          (gen-lab-temp-name lab-id name)
                                  :compliantp    (encode-compliantp compliantp)
                                  :description   description
@@ -274,9 +274,9 @@
                                  :checkout-date nil
                                  :person-id     person-id
                                  :notes         (clean-string notes))))
-            (save sample) ; useless?
+            (db-save sample) ; useless?
             (setf (db:name sample) (gen-lab-actual-name lab-id name (db:id sample)))
-            (save sample)
+            (db-save sample)
             (values errors-msg success-msg sample))
           (values errors-msg success-msg nil)))))
 
@@ -309,14 +309,14 @@
   (with-authentication
     (with-session-user (user)
       (when (not (regexp-validate (list (list id +pos-integer-re+ "no"))))
-        (let ((to-trash (single 'db:chemical-sample :id (parse-integer id))))
+        (let ((to-trash (db-single 'db:chemical-sample :id (parse-integer id))))
           (db:with-owner-object (owner to-trash)
             (let ((owner-id (and owner (db:id owner))))
               (if (and to-trash
                        owner-id
                        (= (db:id user) owner-id))
                   (progn
-                    (del to-trash)
+                    (db-del to-trash)
                     (manage-sample (list (format nil (_ "Sample ~a deleted") (db:name to-trash)))
                                    nil))
                   (manage-sample nil (list (_ "Sample not deleted")))))))))))
@@ -341,7 +341,7 @@
 (define-lab-route gen-sample-custom-label ("/sample-custom-label/:id" :method :get)
   (with-authentication
     (let* ((act-product-id (or (scan-to-strings +pos-integer-re+ id) +db-invalid-id+))
-           (product        (single 'db:chemical-sample
+           (product        (db-single 'db:chemical-sample
                                    :id (parse-integer act-product-id))))
       (if product
           (progn

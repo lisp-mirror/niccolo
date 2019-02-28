@@ -27,7 +27,7 @@
 (define-constant +name-building-address-link+    "link"       :test #'string=)
 
 (defun fetch-single-building (id)
-  (let ((raw (query
+  (let ((raw (db-query
               (select ((:as :buil.id :bid)
                        :buil.name
                        (:as :add.line-1 :address)
@@ -36,7 +36,7 @@
                        (:as :add.link :address-link))
                 (from (:as :building :buil))
                 (left-join (:as :address :add) :on (:= :add.id :buil.address-id))
-                (where (:= :bid id))))))
+                (where (:= :buil.id id))))))
     (and raw
          (let* ((row (elt raw 0))
                 (id      (getf row :|bid|))
@@ -49,7 +49,7 @@
            (list :id id :name name :address address :link link)))))
 
 (defun fetch-all-buildings (&optional (delete-link nil) (update-link nil))
-  (let ((raw (query
+  (let ((raw (db-query
               (select ((:as :buil.id :bid)
                        :buil.name
                        (:as :add.line-1 :address)
@@ -57,7 +57,8 @@
                        :add.zipcode
                        (:as :add.link :address-link))
                 (from (:as :building :buil))
-                (left-join (:as :address :add) :on (:= :add.id :buil.address-id))))))
+                (left-join (:as :address :add) :on (:= :add.id :buil.address-id))
+                (order-by  (:asc :buil.name))))))
     (loop for row in raw collect
          (let ((id      (getf row :|bid|))
                (name    (getf row :|name|))
@@ -110,7 +111,7 @@
                                                                  +pos-integer-re+
                                                                  (_ "Address invalid"))))))
          (errors-msg-address-not-found (when (and (not errors-msg-1)
-                                                  (not (single 'db:address :id address-id)))
+                                                  (not (db-single 'db:address :id address-id)))
                                          (list "Address not in the database")))
          (errors-msg-already-in-db (when (or (not errors-msg-1)
                                              (not errors-msg-address-not-found))
@@ -125,13 +126,13 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "Saved building: ~s - ~s") name
                                          (db:build-complete-address
-                                          (single 'db:address :id address-id)))))))
+                                          (db-single 'db:address :id address-id)))))))
     (when (not errors-msg)
-      (let ((building (create 'db:building
+      (let ((building (db-create'db:building
                               :name name
                               :address-id address-id)))
 
-        (save building)))
+        (db-save building)))
     (manage-building success-msg errors-msg)))
 
 (define-lab-route building ("/building/" :method :get)
@@ -151,8 +152,8 @@
     (with-editor-or-above-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:building :id id)))
+            (let ((to-trash (db-single 'db:building :id id)))
               (when to-trash
-                (del (single 'db:building :id id)))))
+                (db-del (db-single 'db:building :id id)))))
           (restas:redirect 'building))
       (manage-building nil (list *insufficient-privileges-message*)))))

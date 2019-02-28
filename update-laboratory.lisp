@@ -36,10 +36,10 @@
            (success-msg (and (not errors-msg)
                              (list (format nil (_ "Laboratory ~s updated") name)))))
       (if (not errors-msg)
-          (let ((new-laboratory (single 'db:laboratory :id id)))
+          (let ((new-laboratory (db-single 'db:laboratory :id id)))
             (setf (db:name          new-laboratory) name
                   (db:complete-name new-laboratory) complete-name)
-            (save new-laboratory)
+            (db-save new-laboratory)
             (manage-update-laboratory (and success-msg id) success-msg errors-msg))
           (manage-ghs-hazard-code success-msg errors-msg))))
 
@@ -50,7 +50,7 @@
                       #'manage-update-laboratory))
 
 (defun manage-update-laboratory (id infos errors)
-  (let ((new-laboratory (and id (single 'db:laboratory :id id))))
+  (let ((new-laboratory (and id (db-single 'db:laboratory :id id))))
     (with-standard-html-frame (stream (_ "Update laboratory")
                                       :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-laboratory.tpl"

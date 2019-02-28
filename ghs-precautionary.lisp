@@ -40,10 +40,10 @@
                                          (_ "Saved new GHS precautionary statements: ~s - ~s")
                                          code expl)))))
     (when (not errors-msg)
-      (let ((ghs (create 'db:ghs-precautionary-statement
+      (let ((ghs (db-create'db:ghs-precautionary-statement
                          :code code
                          :explanation expl)))
-        (save ghs)))
+        (db-save ghs)))
     (manage-ghs-precautionary-code success-msg
                                    errors-msg
                                    :start-from start-from
@@ -53,6 +53,9 @@
 
   (let* ((all-ghss       (fetch-raw-template-list 'db:ghs-precautionary-statement
                                                   '(:id :code :explanation)
+                                                  :sort-predicate
+                                                  (lambda (a b)
+                                                    (string-lessp (db:code a) (db:code b)))
                                                   :delete-link 'delete-ghs-precautionary
                                                   :additional-tpl
                                                   #'(lambda (row)
@@ -114,8 +117,8 @@
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:ghs-precautionary-statement :id id)))
+            (let ((to-trash (db-single 'db:ghs-precautionary-statement :id id)))
               (when to-trash
-                (del (single 'db:ghs-precautionary-statement  :id id)))))
+                (db-del (db-single 'db:ghs-precautionary-statement  :id id)))))
           (restas:redirect 'ghs-precautionary))
       (manage-ghs-precautionary-code nil (list *insufficient-privileges-message*)))))

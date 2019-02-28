@@ -17,16 +17,11 @@
 (in-package :db-config)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (setup
-   :migrations-directory (config:local-system-path #p"migrations/")
-   :databases (list :main
-                    (list :type :sqlite3
-                          :name (uiop:unix-namestring (config:local-system-path #p"lab.db"))))
-   ;; use debug t for query printing
-   :debug nil)
-  (connect)
-  ;; set foreign_keys support
-  ;; (crane:query-low-level "PRAGMA foreign_keys = ON;" crane:*default-db*)
-  ;; next two statement activates autocommit
-  (db-utils:query-low-level "BEGIN TRANSACTION;" crane:*default-db*)
-  (db-utils:query-low-level "COMMIT;" crane:*default-db*))
+  (setup :migrations-directory (config:local-system-path #p"migrations/")
+         :databases (list :main
+                          (list :type :postgres
+                                :name "-----"
+                                :user "----"
+                                :pass "----"))
+         :debug nil)
+  (connect))

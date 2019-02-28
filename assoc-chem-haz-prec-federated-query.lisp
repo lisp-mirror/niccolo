@@ -20,7 +20,7 @@
   "Most useful for federated query"
   (with-output-to-string (stream)
     (cl-json:with-array (stream)
-      (let* ((compounds (filter 'db:chemical-compound
+      (let* ((compounds (db-filter 'db:chemical-compound
                                 (:like :name (prepare-for-sql-like chem-substring)))))
         (loop for compound in compounds do
              (cl-json:as-array-member (stream)
@@ -77,7 +77,7 @@
 (define-lab-route assoc-chem-haz-prec-fq ("/assoc-chem-security-fq/:id" :method :get)
   (with-authentication
     (if (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-        (let ((chemical (single 'db:chemical-compound :id id)))
+        (let ((chemical (db-single 'db:chemical-compound :id id)))
           (if chemical
               (manage-assoc-chem-haz-prec-fq chemical nil nil)
               +http-not-found+))

@@ -46,12 +46,12 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Address updated")))))
     (if (not errors-msg)
-      (let ((address-updated (single 'db:address :id id)))
+      (let ((address-updated (db-single 'db:address :id id)))
         (setf (db:line-1  address-updated) line-1
               (db:city    address-updated) city
               (db:zipcode address-updated) zipcode
               (db:link    address-updated) link)
-        (save address-updated)
+        (db-save address-updated)
         (manage-update-address (and success-msg id) success-msg errors-msg))
       (manage-address success-msg errors-msg))))
 

@@ -35,9 +35,9 @@
          (success-msg (and (not errors-msg)
                            (list (format nil (_ "physical state updated."))))))
     (if (not errors-msg)
-      (let ((new-phys (single 'db:waste-physical-state :id id)))
+      (let ((new-phys (db-single 'db:waste-physical-state :id id)))
         (setf (db:explanation  new-phys) expl)
-        (save new-phys)
+        (db-save new-phys)
         (manage-update-waste-phys-state (and success-msg id) success-msg errors-msg))
       (manage-waste-phys-state success-msg errors-msg))))
 
@@ -48,7 +48,7 @@
                       #'manage-update-waste-phys-state))
 
 (defun manage-update-waste-phys-state (id infos errors)
-  (let ((new-phys (and id (single 'db:waste-physical-state :id id))))
+  (let ((new-phys (and id (db-single 'db:waste-physical-state :id id))))
     (with-standard-html-frame (stream (_ "Update waste physical state")
                                       :infos infos :errors errors)
       (html-template:fill-and-print-template #p"update-waste-phys-state.tpl"

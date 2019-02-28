@@ -50,7 +50,7 @@
   (and user
        (db:id user)
        (> (db:id user) 0)
-       (single 'db:user :id (db:id user))))
+       (db-utils:db-single 'db:user :id (db:id user))))
 
 (defun get-session-username ()
   (if (and (tbnl:start-session)
@@ -78,7 +78,7 @@
   (db:id (waste-manager-user)))
 
 (defun user-level (level)
-  (single 'db:user :level level))
+  (db-utils:db-single 'db:user :level level))
 
 (defun admin-user ()
   (user-level +admin-acl-level+))

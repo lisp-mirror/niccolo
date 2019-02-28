@@ -25,13 +25,14 @@
 (define-constant +pictogram-form-key+           "pictogram"    :test #'string=)
 
 (defun all-ghs-hazard-code-select ()
-  (query (select (( :as :h.id                         :id)
+  (db-query (select (( :as :h.id                         :id)
                   ( :as :h.code                       :code)
                   ( :as :h.explanation                :explanation)
                   ( :as :h.carcinogenic               :carcinogenic)
                   ( :as :ghs-pictogram.pictogram-file :pictogram))
            (from (:as :ghs-hazard-statement  :h))
-           (left-join :ghs-pictogram   :on (:= :h.pictogram :ghs-pictogram.id)))))
+           (left-join :ghs-pictogram   :on (:= :h.pictogram :ghs-pictogram.id))
+           (order-by (:asc :h.code)))))
 
 (defun build-template-list-hazard-code (start-from data-count
                                         &key (delete-link nil) (update-link nil))
@@ -79,12 +80,12 @@
                            (list (format nil (_ "Saved new GHS hazard statements: ~s - ~s")
                                          code expl)))))
     (when (not errors-msg)
-      (let ((ghs (create 'db:ghs-hazard-statement
+      (let ((ghs (db-create'db:ghs-hazard-statement
                          :code         code
                          :explanation  expl
                          :carcinogenic carcenogenic
                          :pictogram    +pictogram-id-none+)))
-        (save ghs)))
+        (db-save ghs)))
     (manage-ghs-hazard-code success-msg
                             errors-msg
                             :start-from start-from
@@ -150,9 +151,9 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:ghs-hazard-statement :id id)))
+            (let ((to-trash (db-single 'db:ghs-hazard-statement :id id)))
               (when to-trash
-                (del (single 'db:ghs-hazard-statement :id id)))))
+                (db-del (db-single 'db:ghs-hazard-statement :id id)))))
           (restas:redirect 'ghs-hazard))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))
 
@@ -163,11 +164,11 @@
           (when (and (not (regexp-validate (list (list id +pos-integer-re+ ""))))
                      (not (regexp-validate (list (list (get-clean-parameter +pictogram-form-key+)
                                                        +pos-integer-re+ "")))))
-            (let ((h-code (single 'db:ghs-hazard-statement :id id))
-                  (pict   (single 'db:ghs-pictogram :id (get-clean-parameter +pictogram-form-key+))))
+            (let ((h-code (db-single 'db:ghs-hazard-statement :id id))
+                  (pict   (db-single 'db:ghs-pictogram :id (get-clean-parameter +pictogram-form-key+))))
               (when (and h-code
                          pict)
                 (setf (db:pictogram h-code) (db:id pict))
-                (save h-code))))
+                (db-save h-code))))
           (restas:redirect 'ghs-hazard))
       (manage-ghs-hazard-code nil (list *insufficient-privileges-message*)))))

@@ -7,8 +7,6 @@
 ---   https://creativecommons.org/licenses/by-sa/3.0/deed.it
 
 
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
 
 INSERT INTO "ghs-hazard-statement" VALUES(1,7,'0','Esplosivo instabile','H200');
 INSERT INTO "ghs-hazard-statement" VALUES(2,7,'0','Esplosivo pericolo di esplosione di massa','H201');
@@ -2230,6 +2228,3 @@ INSERT INTO "ghs-precautionary-statement" VALUES(106,'Richiedere informazioni al
 INSERT INTO "ghs-precautionary-statement" VALUES(107,'IN CASO DI CONTATTO CON GLI OCCHI: sciacquare accuratamente  per parecchi minuti. Togliere le eventuali lenti a contatto se è agevole  farlo. Continuare a sciacquare.','P305+P351+P338');
 INSERT INTO "ghs-precautionary-statement" VALUES(108,'IN CASO DI CONTATTO CON LA PELLE (o con i capelli): togliere immediatamente tutti gli indumenti contaminati. Sciacquare la pelle/fare una doccia.','P303+P361+P353');
 INSERT INTO "ghs-precautionary-statement" VALUES(109,'IN CASO DI INALAZIONE: trasportare l infortunato all aria aperta e mantenerlo a riposo in posizione che favorisca la respirazione. Contattare immediatamente un CENTRO ANTIVELENI o un medico.','P304+P340+P310');
-
-
-COMMIT;

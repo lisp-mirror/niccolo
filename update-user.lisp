@@ -44,11 +44,11 @@
                                              (list (format nil (_ "Updated user: ~s") name)))))
     (when (and id
                (not errors-msg))
-      (let* ((updated-user (single 'db:user :id (parse-integer id))))
+      (let* ((updated-user (db-single 'db:user :id (parse-integer id))))
         (setf (db:username updated-user) name)
         (setf (db:email    updated-user) email)
         (setf (db:level    updated-user) level)
-        (save updated-user)))
+        (db-save updated-user)))
     (manage-update-user id success-msg errors-msg)))
 
 (defun prepare-for-update-user (id)
@@ -58,7 +58,7 @@
                       #'manage-update-user))
 
 (defun manage-update-user (id infos errors)
-  (let* ((new-user  (and id (single 'db:user :id id)))
+  (let* ((new-user  (and id (db-single 'db:user :id id)))
          (new-uname (and new-user (db:username new-user)))
          (new-email (and new-user (db:email    new-user)))
          (id        (and new-user (db:id       new-user)))

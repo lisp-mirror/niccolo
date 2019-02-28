@@ -43,7 +43,7 @@
                                    (not (object-exists-in-db-p 'db:person id)))
                           (list (_ "Person does not exists in database"))))
          (errors-msg-address-not-found (when (and (not errors-msg-1)
-                                                  (not (single 'db:address :id address-id)))
+                                                  (not (db-single 'db:address :id address-id)))
                                          (list (_ "Address not in the database"))))
          (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2
                                               errors-msg-address-not-found)
@@ -60,14 +60,14 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Person updated")))))
     (if (not errors-msg)
-      (let ((person-updated (single 'db:person :id id)))
+      (let ((person-updated (db-single 'db:person :id id)))
         (setf (db:name         person-updated) name
               (db:surname      person-updated) surname
               (db:address-id   person-updated) address-id
               (db:organization person-updated) organization
               (db:official-id  person-updated) official-id
               (db:email        person-updated) email)
-        (save person-updated)
+        (db-save person-updated)
         (manage-update-person (and success-msg id) success-msg errors-msg))
       (manage-update-person id success-msg errors-msg))))
 
@@ -108,10 +108,10 @@
                              :address-id-value (and id
                                                     (db:address-id new-person))
                              :address-value    (and id
-                                                    (single 'db:address
+                                                    (db-single 'db:address
                                                             :id (db:address-id new-person))
                                                     (db:build-description
-                                                     (single 'db:address
+                                                     (db-single 'db:address
                                                              :id (db:address-id new-person))))
                              :official-id-value  (and id
                                                      (db:official-id new-person))

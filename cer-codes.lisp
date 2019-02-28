@@ -35,10 +35,10 @@
                                            (_ "Saved new CER code: ~s - ~s")
                                            code expl)))))
     (when (not errors-msg)
-      (let ((cer-code (create 'db:cer-code
+      (let ((cer-code (db-create'db:cer-code
                               :code code
                               :explanation expl)))
-        (save cer-code)))
+        (db-save cer-code)))
     (manage-cer-code success-msg errors-msg
                      :start-from start-from
                      :data-count data-count)))
@@ -46,6 +46,9 @@
 (defun manage-cer-code (infos errors &key (start-from 0) (data-count 1))
   (let* ((all-cer-codes       (fetch-raw-template-list 'db:cer-code
                                                        '(:id :code :explanation)
+                                                        :sort-predicate
+                                                        (lambda (a b)
+                                                          (string-lessp (db:code a) (db:code b)))
                                                        :delete-link 'delete-cer))
          (paginated-cer-codes (slice-for-pagination all-cer-codes
                                                     (actual-pagination-start start-from)
@@ -97,8 +100,8 @@
     (with-admin-credentials
         (with-pagination (pagination-uri utils:*alias-pagination*)
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (let ((to-trash (single 'db:cer-code :id id)))
+            (let ((to-trash (db-single 'db:cer-code :id id)))
               (when to-trash
-                (del (single 'db:cer-code  :id id)))))
+                (db-del (db-single 'db:cer-code  :id id)))))
           (restas:redirect 'cer))
       (manage-cer-code nil (list *insufficient-privileges-message*)))))

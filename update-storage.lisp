@@ -34,7 +34,7 @@
                                    (not (object-exists-in-db-p 'db:storage id)))
                           (list (_ "Storage does not exists in database"))))
          (errors-msg-building-not-found (when (and (not errors-msg-1)
-                                                   (not (single 'db:building :id building-id)))
+                                                   (not (db-single 'db:building :id building-id)))
                                          (list (_ "Building not in the database"))))
          (errors-msg-unique (when (all-null-p errors-msg-1 errors-msg-2)
                               (exists-with-different-id-validate 'db:storage
@@ -50,11 +50,11 @@
          (success-msg (and (not errors-msg)
                            (list (_ "Storage updated")))))
     (if (not errors-msg)
-      (let ((storage-updated (single 'db:storage :id id)))
+      (let ((storage-updated (db-single 'db:storage :id id)))
         (setf (db:name         storage-updated) name
               (db:building-id  storage-updated) building-id
               (db:floor-number storage-updated) floor)
-        (save storage-updated)
+        (db-save storage-updated)
         (manage-update-storage (and success-msg id) success-msg errors-msg))
       (manage-storage success-msg errors-msg))))
 
@@ -82,10 +82,10 @@
                                   :building-id-value (and id
                                                           (db:building-id new-storage))
                                   :building-value  (and id
-                                                        (single 'db:building
+                                                        (db-single 'db:building
                                                                 :id (db:building-id new-storage))
                                                         (db:build-description
-                                                         (single 'db:building
+                                                         (db-single 'db:building
                                                                  :id (db:building-id new-storage))))
                                   :floor-value     (and id
                                                         (db:floor-number new-storage))

@@ -18,8 +18,8 @@
 
 (defun authenticate-user (uname password)
   "Return user, if authenticated, nil otherwise"
-  (when (and uname password (single 'db:user :username uname))
-    (let* ((user            (single  'db:user :username uname)))
+  (when (and uname password (db-single 'db:user :username uname))
+    (let* ((user            (db-single  'db:user :username uname)))
       (if (db:chkpass user password)
           user
           nil))))
@@ -44,7 +44,7 @@
        (multiple-value-bind (,response ,username)
            (mini-cas:service-validate (parameter mini-cas:+query-ticket-key+))
          (when ,response
-           (let ((,user (single 'db:user :username ,username)))
+           (let ((,user (db-single 'db:user :username ,username)))
              (if (and ,user
                       (account-enabled-p ,user))
                  (progn

@@ -23,7 +23,7 @@
     (let* ((error-msg-no-int (regexp-validate (list (list id +pos-integer-re+
                                                           (_ "Map id invalid")))))
            (error-msg-storage-not-found (when (and (not error-msg-no-int)
-                                                   (not (single 'db:building :id id)))
+                                                   (not (db-single 'db:building :id id)))
                                           (list (_ "Storage not in the database"))))
            (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
@@ -36,7 +36,7 @@
                                                           +pos-integer-re+
                                                           (_ "Chemical compound id invalid")))))
            (error-msg-storage-not-found (when (and (not error-msg-no-int)
-                                                   (not (single 'db:chemical-compound :id id)))
+                                                   (not (db-single 'db:chemical-compound :id id)))
                                           (list (_ "Chemical compound not in the database"))))
            (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
@@ -50,7 +50,7 @@
                                                           +pos-integer-re+
                                                           (_ "Chemical compound id invalid")))))
            (error-msg-storage-not-found (when (and (not error-msg-no-int)
-                                                   (not (single 'db:chemical-compound :id id)))
+                                                   (not (db-single 'db:chemical-compound :id id)))
                                           (list (_ "Chemical compound not in the database"))))
            (all-errors (append error-msg-no-int error-msg-storage-not-found)))
       (if (not all-errors)
@@ -63,7 +63,7 @@
     (let* ((error-msg (regexp-validate (list (list (get-clean-parameter +name-haz-code+)
                                                    +ghs-hazard-code-re+
                                                    (_ "Chemical compound id invalid")))))
-           (code      (single 'db:ghs-hazard-statement :code (get-clean-parameter +name-haz-code+))))
+           (code      (db-single 'db:ghs-hazard-statement :code (get-clean-parameter +name-haz-code+))))
       (if (and (not error-msg)
                code)
           (obj->json-string (db:id code))
@@ -74,7 +74,7 @@
     (let* ((error-msg (regexp-validate (list (list (get-clean-parameter +name-prec-code+)
                                                    +ghs-precautionary-code-re+
                                                    (_ "Chemical compound id invalid")))))
-           (code      (single 'db:ghs-precautionary-statement
+           (code      (db-single 'db:ghs-precautionary-statement
                               :code (get-clean-parameter +name-prec-code+))))
       (if (and (not error-msg)
                code)
@@ -84,7 +84,7 @@
 (define-lab-route single-chemprod-barcode ("/ws/gen-barcode/:id" :method :get)
   (with-authentication
     (if (and (scan +pos-integer-re+ id)
-             (single 'db:chemical-product :id (parse-integer id)))
+             (db-single 'db:chemical-product :id (parse-integer id)))
         (progn
           (setf (header-out :content-type) +mime-postscript+)
           (let ((doc (make-instance 'ps:psdoc :page-size ps:+a4-page-size+)))
@@ -227,7 +227,7 @@
                                                           +pos-integer-re+
                                                           (_ "Id message invalid")))))
            (error-msg-not-found (when (and (not error-msg-no-int)
-                                           (not (single 'db:message :id id)))
+                                           (not (db-single 'db:message :id id)))
                                   (list (_ "Message not found"))))
            (all-errors (append error-msg-no-int error-msg-not-found)))
       (if (not all-errors)
@@ -258,7 +258,7 @@
             (let* ((products-query (gen-all-prod-select (where
                                                          (:like :chem-name
                                                                 (prepare-for-sql-like (fq:request query))))))
-                   (products-plists (build-template-list-chemical-prod (query products-query)))
+                   (products-plists (build-template-list-chemical-prod (db-query products-query)))
                    (products-serialized (chemical-products-template->json-string products-plists
                                                                                  :other-pairs
                                                                                  (cons :host
@@ -408,7 +408,7 @@
           (if (or error-valid-id
                   error-not-exists)
               +http-not-found+
-              (let* ((sensor        (single 'db:sensor :id id))
+              (let* ((sensor        (db-single 'db:sensor :id id))
                      (log-file-path (build-log-path sensor)))
                 (when (uiop:file-exists-p log-file-path)
                   (let ((xs '())
@@ -443,7 +443,7 @@
       (if (or error-valid-id
               error-not-exists)
           +http-not-found+
-          (let* ((chem (single 'db:chemical-compound :id id)))
+          (let* ((chem (db-single 'db:chemical-compound :id id)))
             (images-utils:draw-hazard-diamond +haz-diamond-size+
                                               :hazard    (db:haz-color       chem)
                                               :fire      (db:fire-color      chem)

@@ -26,7 +26,7 @@
 
 (defun dump-map (id)
   (let ((tmp-file (utils:temp-filename))
-        (map      (single 'db:plant-map :id id)))
+        (map      (db-single 'db:plant-map :id id)))
     (if map
         (with-open-file (stream tmp-file :direction :output :if-exists :error
                                 :if-does-not-exist :create
@@ -89,10 +89,10 @@
                               :element-type '(unsigned-byte 8))
         (let ((raw-data (make-array (file-length stream))))
           (read-sequence raw-data stream)
-          (let ((plant-map (create 'db:plant-map
+          (let ((plant-map (db-create'db:plant-map
                                    :description description
                                    :data (base64-encode raw-data))))
-            (save plant-map)))))
+            (db-save plant-map)))))
     (manage-map success-msg errors-msg)))
 
 (defun manage-map (infos errors)
@@ -135,14 +135,14 @@
     (with-admin-credentials
         (progn
           (when (not (regexp-validate (list (list id +pos-integer-re+ ""))))
-            (del (single 'db:plant-map :id id)))
+            (db-del (db-single 'db:plant-map :id id)))
           (restas:redirect 'plant-map))
       (manage-map nil (list *insufficient-privileges-message*)))))
 
 (define-lab-route get-plant-map ("/get-map/:id")
   (with-authentication
     (if (integer-validate id)
-        (let ((raw (single 'db:plant-map :id id)))
+        (let ((raw (db-single 'db:plant-map :id id)))
           (if raw
               (progn
                 (setf (header-out :content-type) "image/png")
@@ -177,12 +177,12 @@
                                                id))))
             (if has-not-errors
                 (let ((map-file (get-post-filename +name-map-data+))
-                      (updated-map (single 'db:plant-map :id id)))
+                      (updated-map (db-single 'db:plant-map :id id)))
                   (if updated-map
                       (progn
                         (setf (db:data updated-map)
                               (base64-encode (read-file-into-byte-vector map-file)))
-                        (save updated-map)
+                        (db-save updated-map)
                         (manage-map success-msg nil))
                       (manage-map nil error-not-found)))
                 (manage-map nil error-general))))
@@ -191,7 +191,7 @@
 (define-lab-route get-sensors-map ("/get-sensors-map/:id")
   (with-authentication
     (if (and (integer-validate id)
-             (single 'db:plant-map :id id))
+             (db-single 'db:plant-map :id id))
         (with-standard-html-frame (stream
                                "Monitor Sensors"
                                :errors nil
