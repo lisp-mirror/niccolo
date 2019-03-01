@@ -127,10 +127,10 @@
            (ghs-prec-link    (restas:genurl 'ws-ghs-prec   :id (getf row :chem-id)))
            (msds-link        (restas:genurl 'chemical-get-msds :id (getf row :chem-id)))
            (barcode-link     (restas:genurl 'single-chemprod-barcode :id (getf row :chemp-id)))
-           (thumbnail-link   (if (not (eq (getf row :chem-cid) :nil))
+           (thumbnail-link   (if (db-non-nil-p (getf row :chem-cid))
                                  (make-pubchem-2d (getf row :chem-cid))
                                  (actual-image-unknown-struct-path)))
-           (structure-link   (if (not (eq (getf row :chem-cid) :nil))
+           (structure-link   (if (db-non-nil-p (getf row :chem-cid))
                                  (make-pubchem-2d (getf row :chem-cid) :size :large)
                                  (actual-image-unknown-struct-path)))
            (haz-diamond-url  (restas:genurl 'display-hazard-diamond :id (getf row :chem-id)))
@@ -173,7 +173,7 @@
                          (list :thumbnail-link               thumbnail-link)
                          (list :structure-link               structure-link)
                          (list :checkbox-id                  (getf row :chemp-id))
-                         (list :chem-cid-exists              (not (eq (getf row :chem-cid) :nil)))
+                         (list :chem-cid-exists              (db-non-nil-p (getf row :chem-cid)))
                          (list :lending-user                 lending-user)
                          (list :remove-lending-link          remove-loan-link)
                          (list :gen-custom-label-link        gen-custom-label-link)
@@ -628,7 +628,7 @@
           (manage-chem-prod nil (list (_ "Failure")))))))
 
 (defun get-code (key row)
-  (if (eq (getf key row) :nil)
+  (if (db-nil-p (getf key row))
       ""
       (getf key row)))
 
@@ -739,7 +739,7 @@
                                          :test #'string=)
            for x = +page-margin-left+ then (+ x pict-size) do
              (with-save-restore (doc)
-               (when (not (eq (getf row :pictogram) :nil))
+               (when (db-non-nil-p (getf row :pictogram))
                  (let* ((pict-path (uiop:unix-namestring (local-system-path (getf row :pictogram))))
                         (pict-img  (ps:open-image-file doc
                                                      ps:+image-file-type-eps+

@@ -291,7 +291,7 @@
                                          (admin-id)
                                          (_ "Email changed")
                                          (format nil
-                                                 (_ "User ~a changed his/hers email from ~a to ~a.")
+                                                 (_ "User ~a changed their email from ~a to ~a.")
                                                  (db:username user)
                                                  old-email
                                                  (db:email user)))

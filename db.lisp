@@ -611,7 +611,7 @@
    :type integer
    :nullp nil)
   (units
-   :type  numeric
+   :type  text
    :nullp nil)
   (exposition-time
    :type integer

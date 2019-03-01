@@ -27,7 +27,7 @@
                                 (_ "Laboratory does not exists in database")))
            (errors-msg-unique
             (when (all-null-p errors-msg-1 errors-msg-2)
-              (exists-with-different-id-validate 'db:ghs-hazard-statement
+              (exists-with-different-id-validate 'db:laboratory
                                                  id
                                                  (:name :complete-name)
                                                  (name  complete-name)

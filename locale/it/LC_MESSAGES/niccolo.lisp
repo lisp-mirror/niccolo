@@ -2309,12 +2309,6 @@ plurals-form ""
 status :TRANSLATED
 plurals NIL
 
- id "User ~a changed his/hers email from ~a to ~a."
-translation "Utente ~a ha cambiato la sua mail da ~a a ~a"
-plurals-form ""
-status :TRANSLATED
-plurals NIL
-
  id "Email changed"
 translation "Email cambiata"
 plurals-form ""
@@ -3997,6 +3991,12 @@ plurals NIL
 
  id "Opening date can not be removed"
 translation "La data di apertura non può essere cambiata"
+plurals-form ""
+status :TRANSLATED
+plurals NIL
+
+ id "User ~a changed their email from ~a to ~a."
+translation "L'utente ~a ha cambiato la sua mail da ~a a ~a"
 plurals-form ""
 status :TRANSLATED
 plurals NIL

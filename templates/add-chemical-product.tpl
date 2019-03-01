@@ -269,13 +269,13 @@
 	   name=""
 	   value="<!-- TMPL_VAR sum-quantities-lb -->"/>
     <fieldset class="lending">
-      <legend><!-- TMPL_VAR lending-lb --></legend>
-      <label for="username-lending"><!-- TMPL_VAR user-lb --></label>
-      <input id="username-lending" type="text"
-	     name="<!-- TMPL_VAR username-lending -->" />
-      <input id="submit-lend-to" type="submit"
-	     name="<!-- TMPL_VAR submit-lend-to -->"
-	     value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
+        <legend><!-- TMPL_VAR lending-lb --></legend>
+        <input id="submit-lend-to" type="submit"
+	       name="<!-- TMPL_VAR submit-lend-to -->"
+	       value="<!-- TMPL_VAR submit-lend-to-lb -->"/>
+        <label for="username-lending"><!-- TMPL_VAR user-lb --></label>
+        <input id="username-lending" type="text"
+	       name="<!-- TMPL_VAR username-lending -->" />
     </fieldset>
 
     <fieldset class="chem-shortage">
